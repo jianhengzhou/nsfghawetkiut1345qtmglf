@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GitHub</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- login -->
+    <string name="account">account</string>
+    <string name="password">password</string>
+    <string name="login">Login</string>
+    <string name="logining">Logining</string>
+    <string name="registe">Registe</string>
+    <string name="login_error">The account or password cannot be empty</string>
+
+</resources>

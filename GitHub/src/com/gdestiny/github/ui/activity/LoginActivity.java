@@ -21,9 +21,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.utils.Constants;
+import com.gdestiny.github.utils.SnappyDBUtils;
 import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
+import com.snappydb.SnappydbException;
 
 public class LoginActivity extends BaseFragmentActivity implements
 		OnClickListener {
@@ -49,8 +52,10 @@ public class LoginActivity extends BaseFragmentActivity implements
 		TextView registe = (TextView) findViewById(R.id.registe);
 		registe.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-		account.setText("guandichao@163.com");
-		password.setText("gdc723124938215");
+		if (Constants.Debug) {
+			account.setText("guandichao@163.com");
+			password.setText("gdc723124938215");
+		}
 
 		registe.setOnClickListener(this);
 		findViewById(R.id.login).setOnClickListener(this);
@@ -66,18 +71,24 @@ public class LoginActivity extends BaseFragmentActivity implements
 
 	private void login(String account, String password) {
 		hideSoftInputMethod();
-		// GitHubClient client = new GitHubClient();
-		// client.setCredentials(account, password);
 		if (dialog == null)
 			dialog = new ProgressDialog(this);
 		dialog.setMessage(account);
 		dialog.setCancelable(true);
 		dialog.show();
 		LoginTask task = new LoginTask();
-		task.execute("");
-		// Intent intent = new Intent(this, HomeActivity.class);
-		// startActivity(intent);
-		// finish();
+		task.execute(new String[] { account, password });
+		// RepositoryTask task = new RepositoryTask();
+		// task.execute("");
+	}
+
+	private void saveLoginState(User user) throws SnappydbException {
+		SnappyDBUtils.putBoolean(context, "isLogin", true);
+		SnappyDBUtils.putString(context, "account", account.getText()
+				.toString());
+		SnappyDBUtils.putString(context, "password", password.getText()
+				.toString());
+		SnappyDBUtils.putSerializable(context, "user", user);
 	}
 
 	private class LoginTask extends AsyncTask<String, Void, User> {
@@ -85,14 +96,15 @@ public class LoginActivity extends BaseFragmentActivity implements
 		@Override
 		protected User doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			GitHubClient client = new GitHubClient();
-			client.setCredentials("guandichao@163.com", "gdc723124938215");
+			GitHubClient client = GitHubApplication.initClient(params[0],
+					params[1]);
 			User user = null;
 			try {
 				user = new UserService(client).getUser();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				System.out.println(e.getMessage());
 				return null;
 			}
 			return user;
@@ -104,10 +116,20 @@ public class LoginActivity extends BaseFragmentActivity implements
 			super.onPostExecute(result);
 			dialog.dismiss();
 			if (result == null) {
-				ToastUtils.show(context, "error");
+				ToastUtils.show(context,
+						getResources().getString(R.string.auth_error));
 			} else {
-				ToastUtils.show(context, "succeed");
 				System.out.println("" + TestUtils.printUser(result));
+				try {
+					saveLoginState(result);
+				} catch (SnappydbException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					ToastUtils.show(context, e.getMessage());
+				}
+				Intent intent = new Intent(context, HomeActivity.class);
+				startActivity(intent);
+				finish();
 			}
 		}
 

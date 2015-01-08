@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.app.GitHubApplication;
 
 public class SplashActivity extends Activity {
 
@@ -27,8 +28,13 @@ public class SplashActivity extends Activity {
 			@Override
 			public void handleMessage(Message msg) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(SplashActivity.this,
-						LoginActivity.class);
+				Intent intent = null;
+				if (GitHubApplication.isLogin()) {
+					intent = new Intent(SplashActivity.this, HomeActivity.class);
+				} else {
+					intent = new Intent(SplashActivity.this,
+							LoginActivity.class);
+				}
 				startActivity(intent);
 				SplashActivity.this.finish();
 			}

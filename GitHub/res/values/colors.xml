@@ -3,5 +3,10 @@
 
     <color name="transparent">#00000000</color>
     <color name="white">#ffffff</color>
+    <color name="common_blue_bk">#ff1a85ff</color>
+    <color name="common_icon_blue">#56abe4</color>
 
-</resources>
+    <drawable name="common_blue_drawable_bk">#1a85ff</drawable>
+    <drawable name="menu_item_normal">#00000000</drawable>
+    <drawable name="menu_item_pressed">#55ffffff</drawable>
+</resources>

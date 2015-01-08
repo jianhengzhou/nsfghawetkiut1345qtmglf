@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.gdestiny.github.ui.view.ImageViewEx
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/menu_avatar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_avatar"
+        app:sriv_border_color="@drawable/selector_common_image_border"
+        app:sriv_border_width="3dp"
+        app:sriv_oval="true" />
+
+    <TextView
+        android:id="@+id/menu_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/menu_avatar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin4"
+        android:text="@string/name"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text22" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/menu_name"
+        android:layout_marginTop="@dimen/margin8"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/menu_repository"
+                style="@style/common_menu_text_style"
+                android:drawableLeft="@drawable/selector_icon_repository"
+                android:text="@string/repository" />
+
+            <TextView
+                android:id="@+id/menu_news"
+                style="@style/common_menu_text_style"
+                android:drawableLeft="@drawable/selector_icon_news"
+                android:text="@string/news" />
+
+            <TextView
+                android:id="@+id/menu_follower"
+                style="@style/common_menu_text_style"
+                android:drawableLeft="@drawable/selector_icon_follower"
+                android:text="@string/followers" />
+
+            <TextView
+                android:id="@+id/menu_following"
+                style="@style/common_menu_text_style"
+                android:drawableLeft="@drawable/selector_icon_following"
+                android:text="@string/following" />
+
+            <include layout="@layout/includer_divider_w" />
+
+            <TextView
+                android:id="@+id/menu_gists"
+                style="@style/common_menu_text_style"
+                android:drawableLeft="@drawable/selector_icon_gists"
+                android:text="@string/gists" />
+
+            <include layout="@layout/includer_divider_w" />
+
+            <TextView
+                android:id="@+id/menu_issue"
+                style="@style/common_menu_text_style"
+                android:drawableLeft="@drawable/selector_icon_issue"
+                android:text="@string/issue" />
+
+            <include layout="@layout/includer_divider_w" />
+
+            <TextView
+                android:id="@+id/menu_bookmarks"
+                style="@style/common_menu_text_style"
+                android:drawableLeft="@drawable/selector_icon_bookmarks"
+                android:text="@string/bookmarks" />
+
+            <include layout="@layout/includer_divider_w" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

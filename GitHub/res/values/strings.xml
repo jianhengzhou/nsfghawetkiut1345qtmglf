@@ -5,6 +5,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- test test test test test test -->
+    <string name="name">gdestiny</string>
+
     <!-- login -->
     <string name="account">account</string>
     <string name="password">password</string>
@@ -12,5 +15,15 @@
     <string name="logining">Logining</string>
     <string name="registe">Registe</string>
     <string name="login_error">The account or password cannot be empty</string>
+    <string name="auth_error">Check your account or password</string>
+
+    <!-- menu -->
+    <string name="repository">Repository</string>
+    <string name="news">News</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="gists">Gists</string>
+    <string name="issue">Issue</string>
+    <string name="bookmarks">Bookmarks</string>
 
 </resources>

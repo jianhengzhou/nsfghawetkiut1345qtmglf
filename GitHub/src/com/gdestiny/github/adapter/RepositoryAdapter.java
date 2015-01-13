@@ -65,6 +65,14 @@ public class RepositoryAdapter extends BaseAdapter {
 			if (holder.language.getVisibility() == View.GONE)
 				holder.language.setVisibility(View.VISIBLE);
 		}
+		if (TextUtils.isEmpty(repositoryList.get(position).getDescription())) {
+			if (holder.description.getVisibility() == View.VISIBLE)
+				holder.description.setVisibility(View.GONE);
+		} else {
+			holder.description.setText(repositoryList.get(position).getDescription());
+			if (holder.description.getVisibility() == View.GONE)
+				holder.description.setVisibility(View.VISIBLE);
+		}
 		holder.star.setText(repositoryList.get(position).getWatchers() + "");
 		holder.pull.setText(repositoryList.get(position).getForks() + "");
 		return convertView;
@@ -74,12 +82,14 @@ public class RepositoryAdapter extends BaseAdapter {
 
 		public Holder(View v) {
 			name = (TextView) v.findViewById(R.id.repository_name);
+			description = (TextView) v.findViewById(R.id.repository_description);
 			language = (TextView) v.findViewById(R.id.repository_language);
 			star = (TextView) v.findViewById(R.id.repository_star);
 			pull = (TextView) v.findViewById(R.id.repository_pull);
 		}
 
 		public TextView name;
+		public TextView description;
 		public TextView language;
 		public TextView star;
 		public TextView pull;

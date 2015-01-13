@@ -1,14 +1,28 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="Theme.Sherlock.Light">
-        <item name="android:windowIsTranslucent">true</item>
-    </style>
+    <item name="tag_imageloader" type="id"></item>
 
     <style name="SwipeBackLayout">
         <item name="edge_size">50dip</item>
         <item name="shadow_left">@drawable/shadow_left</item>
         <item name="shadow_right">@drawable/shadow_right</item>
         <item name="shadow_bottom">@drawable/shadow_bottom</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.Sherlock.Light">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="ptrHeaderStyle">@style/Widget.Custom.Pull_Style</item>
+    </style>
+
+    <style name="Widget.Custom.Pull_Style" parent="android:Widget">
+        <item name="ptrHeaderBackground">@color/common_title_refresh_blue</item>
+        <item name="ptrHeaderTitleTextAppearance">@style/TextAppearance.Custom.Pull_Text</item>
+        <item name="ptrProgressBarColor">@color/common_title_refresh_blue</item>
+    </style>
+
+    <style name="TextAppearance.Custom.Pull_Text" parent="android:TextAppearance.Large.Inverse">
+        <item name="android:textSize">@dimen/text14</item>
+        <item name="android:textColor">@color/common_light_black</item>
     </style>
 
     <style name="editText_style">
@@ -35,6 +49,22 @@
         <item name="android:textSize">@dimen/text18</item>
         <item name="android:clickable">true</item>
         <item name="android:background">@drawable/selector_common_menu_item</item>
+    </style>
+
+    <style name="titlebar_pop_lsit">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:cacheColorHint">@color/transparent</item>
+        <item name="android:scrollingCache">true</item>
+        <item name="android:smoothScrollbar">true</item>
+        <item name="android:listSelector">@drawable/selector_listviewitem</item>
+        <item name="android:dividerHeight">0.5dip</item>
+        <item name="android:divider">#dddddd</item>
+    </style>
+
+    <style name="titlebar_popupwindow_anim">
+        <item name="android:windowEnterAnimation">@anim/titlebar_popupwindow_in</item>
+        <item name="android:windowExitAnimation">@anim/titlebar_popupwindow_out</item>
     </style>
 
 </resources>

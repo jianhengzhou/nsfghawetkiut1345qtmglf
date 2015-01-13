@@ -28,7 +28,7 @@ import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
 import com.snappydb.SnappydbException;
 
-public class LoginActivity extends BaseFragmentActivity implements
+public class LoginActivity extends BaseActivity implements
 		OnClickListener {
 
 	private EditText account;
@@ -45,14 +45,16 @@ public class LoginActivity extends BaseFragmentActivity implements
 		initView();
 	}
 
-	private void initView() {
+	@Override
+	protected void initView() {
+		// TODO Auto-generated method stub
 		context = this;
 		account = (EditText) findViewById(R.id.account);
 		password = (EditText) findViewById(R.id.password);
 		TextView registe = (TextView) findViewById(R.id.registe);
 		registe.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-		if (Constants.Debug) {
+		if (Constants.isDebug) {
 			account.setText("guandichao@163.com");
 			password.setText("gdc723124938215");
 		}
@@ -61,6 +63,12 @@ public class LoginActivity extends BaseFragmentActivity implements
 		findViewById(R.id.login).setOnClickListener(this);
 		findViewById(R.id.password_del).setOnClickListener(this);
 		findViewById(R.id.account_del).setOnClickListener(this);
+	}
+
+	@Override
+	protected void initData() {
+		// TODO Auto-generated method stub
+
 	}
 
 	private boolean isLoginEnable() {
@@ -173,4 +181,5 @@ public class LoginActivity extends BaseFragmentActivity implements
 					this.getCurrentFocus().getWindowToken(), 0);
 		}
 	}
+
 }

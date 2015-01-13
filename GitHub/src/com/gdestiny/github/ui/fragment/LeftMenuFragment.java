@@ -52,8 +52,21 @@ public class LeftMenuFragment extends BaseFragment implements OnClickListener {
 	}
 
 	@Override
+	protected void initView() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void initData() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public void onClick(View v) {
 		if (clickListener != null)
 			clickListener.onClick(v);
 	}
+
 }

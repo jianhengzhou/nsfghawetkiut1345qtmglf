@@ -3,32 +3,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    
     <ImageView
         android:id="@+id/repository_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin16"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
-        android:src="@drawable/common_repository_pressed" />
+        android:src="@drawable/common_repository_item" />
 
     <TextView
         android:id="@+id/repository_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin16"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/margin16"
-        android:layout_marginTop="@dimen/margin8"
+        android:layout_marginTop="@dimen/margin4"
         android:layout_toRightOf="@id/repository_icon"
-        android:textSize="@dimen/text22" />
+        android:textColor="@color/common_light_black"
+        android:textSize="@dimen/text18" />
+
+    <TextView
+        android:id="@+id/repository_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/repository_name"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_toRightOf="@id/repository_icon"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:layout_marginRight="@dimen/margin16"
+        android:textColor="@color/common_light_grey"
+        android:textSize="@dimen/text16" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/repository_name"
-        android:layout_marginBottom="@dimen/margin8"
+        android:layout_below="@id/repository_description"
+        android:layout_marginBottom="@dimen/margin4"
         android:layout_toRightOf="@id/repository_icon"
         android:orientation="horizontal" >
 
@@ -37,8 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin16"
-            android:text="Java"
-            android:textColor="#a9b7b7"
+            android:textColor="@color/common_icon_grey"
             android:textSize="@dimen/text14" />
 
         <TextView
@@ -47,8 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin16"
             android:drawableLeft="@drawable/little_star"
-            android:text="18"
-            android:textColor="#a9b7b7"
+            android:textColor="@color/common_icon_grey"
             android:textSize="@dimen/text14" />
 
         <TextView
@@ -57,8 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin16"
             android:drawableLeft="@drawable/little_pull"
-            android:text="15"
-            android:textColor="#a9b7b7"
+            android:textColor="@color/common_icon_grey"
             android:textSize="@dimen/text14" />
     </LinearLayout>
 

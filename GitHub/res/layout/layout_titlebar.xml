@@ -2,32 +2,69 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_blue_bk" >
+    android:background="@color/common_icon_blue" >
 
-    <com.gdestiny.github.ui.view.ImageViewEx
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/titlebar_avatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+    <LinearLayout
+        android:id="@+id/title_left_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin16"
-        android:contentDescription="@string/app_name"
-        android:scaleType="centerCrop"
-        android:src="@drawable/default_avatar"
-        app:sriv_border_color="@drawable/selector_common_image_border"
-        app:sriv_border_width="1dp"
-        app:sriv_oval="true" />
+        android:background="@drawable/selector_back_layout"
+        android:clickable="true"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/titlebar_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/common_btn_back" />
+
+        <com.gdestiny.github.ui.view.ImageViewEx
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/titlebar_back_icon"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/margin8"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_avatar"
+            app:sriv_oval="true" />
+
+        <TextView
+            android:id="@+id/titlebar_back_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/margin16"
+            android:text="@string/repository"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text18" />
+    </LinearLayout>
 
     <ImageButton
         android:id="@+id/titlebar_rignt_btn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin16"
         android:background="@color/transparent"
         android:contentDescription="@string/app_name"
+        android:paddingRight="@dimen/margin16"
+        android:src="@drawable/selector_common_btn_refresh"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/titlebar_menu_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@color/transparent"
+        android:contentDescription="@string/app_name"
+        android:paddingRight="@dimen/margin8"
         android:src="@drawable/selector_common_btn_more" />
 
 </RelativeLayout>

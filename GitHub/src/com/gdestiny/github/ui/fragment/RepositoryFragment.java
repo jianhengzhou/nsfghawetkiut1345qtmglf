@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.service.RepositoryService;
+import org.eclipse.egit.github.core.service.WatcherService;
 
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,7 +23,7 @@ import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
-public class RepositoryFragment extends BaseFragment {
+public class RepositoryFragment extends BaseLoadFragment {
 
 	private ListView repositoryList;
 	private RepositoryAdapter repositoryAdapter;
@@ -49,17 +51,27 @@ public class RepositoryFragment extends BaseFragment {
 	@Override
 	protected void initView() {
 		// TODO Auto-generated method stub
-		super.initView();
-		repositoryList = (ListView) this.currentView.findViewById(R.id.repository_list);
+		repositoryList = (ListView) this.currentView
+				.findViewById(R.id.repository_list);
+		this.pullToRefreshLayout = (PullToRefreshLayout) this.currentView
+				.findViewById(R.id.pull_refresh_layout);
+		ActionBarPullToRefresh.from(getActivity()).allChildrenArePullable()
+				.listener(this).setup(pullToRefreshLayout);
 	}
 
 	@Override
 	protected void initData() {
 		// TODO Auto-generated method stub
-		super.initData();
-		showProgress();
+		// showProgress();
+		pullToRefreshLayout.setRefreshing(true);
 		RepositoryTask task = new RepositoryTask();
 		task.execute("");
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		// TODO Auto-generated method stub
+		// pullToRefreshLayout.setRefreshing(false);
 	}
 
 	private class RepositoryTask extends
@@ -70,8 +82,10 @@ public class RepositoryFragment extends BaseFragment {
 			// TODO Auto-generated method stub
 			List<Repository> list = null;
 			try {
-				list = new RepositoryService(GitHubApplication.getClient())
-						.getRepositories();
+				// list = new RepositoryService(GitHubApplication.getClient())
+				// .getRepositories();
+				list = new WatcherService(GitHubApplication.getClient())
+						.getWatched();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -84,7 +98,8 @@ public class RepositoryFragment extends BaseFragment {
 		protected void onPostExecute(List<Repository> result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			dismissProgress();
+			// dismissProgress();
+			pullToRefreshLayout.setRefreshing(false);
 			if (result == null) {
 				ToastUtils.show(getActivity(), "error");
 			} else {

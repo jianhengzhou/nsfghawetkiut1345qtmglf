@@ -5,6 +5,12 @@
     <color name="white">#ffffff</color>
     <color name="common_blue_bk">#ff1a85ff</color>
     <color name="common_icon_blue">#56abe4</color>
+    <color name="common_light_black">#2a2a2a</color>
+    <color name="common_icon_grey">#a9b7b7</color>
+    <color name="common_light_grey">#aab7b7</color>
+    
+    <color name="common_title_refresh_blue">#aa56abe4</color>
+    <color name="common_title_back_layout">#55ffffff</color>
 
     <drawable name="common_blue_drawable_bk">#1a85ff</drawable>
     <drawable name="menu_item_normal">#00000000</drawable>

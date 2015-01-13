@@ -2,22 +2,28 @@ package com.gdestiny.github.app;
 
 import org.eclipse.egit.github.core.client.GitHubClient;
 
+import android.app.Application;
+import android.content.Context;
+
 import com.gdestiny.github.utils.SnappyDBUtils;
 import com.snappydb.SnappydbException;
 
-import android.app.Application;
-
 public class GitHubApplication extends Application {
 
+	private static Context context;
 	private static boolean isLogin;
 	private static GitHubClient client;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		context = getApplicationContext();
 		initLogin();
 	}
 
+	public static Context getContext(){
+		return context;
+	}
 	public static GitHubClient initClient(String str1, String str2) {
 		client = new GitHubClient();
 		client.setCredentials(str1, str2);

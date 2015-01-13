@@ -31,4 +31,16 @@ public class NewsFragment extends BaseFragment {
 		return this.currentView;
 	}
 
+	@Override
+	protected void initView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void initData() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

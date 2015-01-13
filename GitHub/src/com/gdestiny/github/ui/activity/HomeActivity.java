@@ -8,10 +8,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.ui.fragment.FollowingFragment;
 import com.gdestiny.github.ui.fragment.LeftMenuFragment;
-import com.gdestiny.github.ui.fragment.NewsFragment;
 import com.gdestiny.github.ui.fragment.RepositoryFragment;
 import com.gdestiny.github.ui.view.ResideMenu;
+import com.gdestiny.github.utils.GLog;
 
 public class HomeActivity extends BaseFragmentActivity implements
 		OnClickListener {
@@ -27,13 +28,40 @@ public class HomeActivity extends BaseFragmentActivity implements
 		// .listener(this)
 		// .setup((PullToRefreshLayout) findViewById(R.id.ptr_layout));
 		initMenu();
-		showFragment(currentFragment = new RepositoryFragment());
+		RepositoryFragment repositoryFragment = new RepositoryFragment();
+		showFragment(repositoryFragment);
+	}
+
+	@Override
+	protected void initView() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void initData() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void onleftLayout() {
+		// TODO Auto-generated method stub
+		resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
 	}
 
 	private void showFragment(Fragment fragment) {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.replace(R.id.home_frame, fragment);
+		// fragmentTransaction.setCustomAnimations(R.anim.in, R.anim.out);
+		if (!fragment.isAdded()) {
+			ft.add(R.id.home_frame, fragment);
+		} else {
+			ft.show(fragment);
+		}
+		if (currentFragment != null)
+			ft.hide(currentFragment);
 		ft.commit();
+		currentFragment = fragment;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -61,7 +89,11 @@ public class HomeActivity extends BaseFragmentActivity implements
 			break;
 		case R.id.menu_news:
 			break;
+		case R.id.menu_following:
+			showFragment(new FollowingFragment());
+			break;
 		}
 		resideMenu.closeMenu();
 	}
+
 }

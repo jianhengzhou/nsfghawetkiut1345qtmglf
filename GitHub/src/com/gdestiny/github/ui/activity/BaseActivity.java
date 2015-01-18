@@ -8,6 +8,7 @@ import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public abstract class BaseActivity extends SherlockActivity implements
 	private SwipeBackActivityHelper mHelper;
 	protected TitleBar titlebar;
 
+	protected Context context;
 	protected String mClassName;
 	protected StringBuilder mBuffer = new StringBuilder();
 
@@ -38,13 +40,19 @@ public abstract class BaseActivity extends SherlockActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		context = this;
 		mClassName = getClass().getSimpleName();
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onCreate()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onCreate()").toString());
 
 		mHelper = new SwipeBackActivityHelper(this);
 		mHelper.onActivityCreate();
 		initActionBar();
+	}
+
+	public TitleBar getTitlebar() {
+		return titlebar;
 	}
 
 	protected void initActionBar() {
@@ -95,42 +103,48 @@ public abstract class BaseActivity extends SherlockActivity implements
 	@Override
 	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onAttachedToWindow()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onAttachedToWindow()").toString());
 	}
 
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onNewIntent()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onNewIntent()").toString());
 	}
 
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onRestart()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onRestart()").toString());
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onStart()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onStart()").toString());
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onResume()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onResume()").toString());
 	}
 
 	@Override
 	public boolean onSearchRequested() {
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onSearchRequested()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onSearchRequested()").toString());
 		return super.onSearchRequested();
 	}
 
@@ -146,49 +160,56 @@ public abstract class BaseActivity extends SherlockActivity implements
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onSaveInstanceState()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onSaveInstanceState()").toString());
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onRestoreInstanceState()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onRestoreInstanceState()").toString());
 		super.onRestoreInstanceState(savedInstanceState);
 	}
 
 	@Override
 	public void onBackPressed() {
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onBackPressed()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onBackPressed()").toString());
 		super.onBackPressed();
 	}
 
 	@Override
 	public void finish() {
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".finish()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".finish()").toString());
 		super.finish();
 	}
 
 	@Override
 	protected void onPause() {
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onPause()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onPause()").toString());
 		super.onPause();
 	}
 
 	@Override
 	protected void onStop() {
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onStop()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onStop()").toString());
 		super.onStop();
 	}
 
 	@Override
 	protected void onDestroy() {
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onDestroy()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onDestroy()").toString());
 		super.onDestroy();
 	}
 

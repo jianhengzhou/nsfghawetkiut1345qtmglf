@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- main menu -->
+    <string name="repository">Repository</string>
+    <string name="news">News</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="gists">Gists</string>
+    <string name="issue">Issue</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="setting">Setting</string>
+    <string name="exit">Exit</string>
+
+    <!-- repository menu -->
+    <string name="sort">Sort</string>
+    <string name="refresh">Refresh</string>
+
+    <!-- sort menu -->
+    <string name="all">All</string>
+    <string name="alphabet">alphabet</string>
+    <string name="star">Star</string>
+    <string name="own">Own</string>
+    <string name="time">Time</string>
+    <string name="user">User</string>
+    <string name="name">Name</string>
+
+</resources>

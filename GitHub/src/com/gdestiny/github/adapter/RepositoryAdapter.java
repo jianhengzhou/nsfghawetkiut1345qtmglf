@@ -4,24 +4,36 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
 
-import com.gdestiny.github.R;
-
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.gdestiny.github.R;
+import com.gdestiny.github.utils.ImageLoaderUtils;
+import com.gdestiny.github.utils.ViewUtils;
 
 public class RepositoryAdapter extends BaseAdapter {
 
-	private List<Repository> repositoryList;
+	private List<?> repositoryList;
 	private Context context;
 
-	public RepositoryAdapter(Context context, List<Repository> repositoryList) {
+	public RepositoryAdapter(Context context, List<?> repositoryList) {
 		this.repositoryList = repositoryList;
 		this.context = context;
+	}
+
+	public RepositoryAdapter(Context context) {
+		this.context = context;
+	}
+
+	public void setData(List<?> repositoryList) {
+		this.repositoryList = repositoryList;
+		notifyDataSetChanged();
 	}
 
 	@Override
@@ -56,42 +68,72 @@ public class RepositoryAdapter extends BaseAdapter {
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
-		holder.name.setText(repositoryList.get(position).getName());
-		if (TextUtils.isEmpty(repositoryList.get(position).getLanguage())) {
-			if (holder.language.getVisibility() == View.VISIBLE)
-				holder.language.setVisibility(View.GONE);
-		} else {
-			holder.language.setText(repositoryList.get(position).getLanguage());
-			if (holder.language.getVisibility() == View.GONE)
-				holder.language.setVisibility(View.VISIBLE);
+		if (repositoryList.get(position) instanceof Repository) {
+			ViewUtils.setVisibility(holder.normoalItem, View.VISIBLE);
+			ViewUtils.setVisibility(holder.tag, View.GONE);
+
+			Repository repo = (Repository) repositoryList.get(position);
+			holder.name.setText(repo.getName());
+			if (TextUtils.isEmpty(repo.getLanguage())) {
+				ViewUtils.setVisibility(holder.language, View.GONE);
+			} else {
+				holder.language.setText(repo.getLanguage());
+				ViewUtils.setVisibility(holder.language, View.VISIBLE);
+			}
+			if (TextUtils.isEmpty(repo.getDescription())) {
+				ViewUtils.setVisibility(holder.description, View.GONE);
+			} else {
+				holder.description.setText(repo.getDescription());
+				ViewUtils.setVisibility(holder.description, View.VISIBLE);
+			}
+			holder.star.setText(repo.getWatchers() + "");
+			holder.pull.setText(repo.getForks() + "");
+			holder.owner.setText(repo.getOwner().getLogin());
+			ImageLoaderUtils.displayImage(repo.getOwner().getAvatarUrl(),
+					holder.icon, R.drawable.common_repository_item,
+					R.drawable.common_repository_item);
+		} else if (repositoryList.get(position) instanceof Character) {
+			holder.tag.setText((Character) repositoryList.get(position) + "");
+			ViewUtils.setVisibility(holder.normoalItem, View.GONE);
+			ViewUtils.setVisibility(holder.tag, View.VISIBLE);
+			// return tag;
 		}
-		if (TextUtils.isEmpty(repositoryList.get(position).getDescription())) {
-			if (holder.description.getVisibility() == View.VISIBLE)
-				holder.description.setVisibility(View.GONE);
-		} else {
-			holder.description.setText(repositoryList.get(position).getDescription());
-			if (holder.description.getVisibility() == View.GONE)
-				holder.description.setVisibility(View.VISIBLE);
-		}
-		holder.star.setText(repositoryList.get(position).getWatchers() + "");
-		holder.pull.setText(repositoryList.get(position).getForks() + "");
 		return convertView;
+	}
+
+	@Override
+	public boolean isEnabled(int position) {
+		// TODO Auto-generated method stub
+		if (repositoryList.get(position) instanceof Character)
+			return false;
+		return super.isEnabled(position);
 	}
 
 	private class Holder {
 
 		public Holder(View v) {
+			icon = (ImageView) v.findViewById(R.id.repository_icon);
 			name = (TextView) v.findViewById(R.id.repository_name);
-			description = (TextView) v.findViewById(R.id.repository_description);
+			description = (TextView) v
+					.findViewById(R.id.repository_description);
+			owner = (TextView) v.findViewById(R.id.repository_owner);
 			language = (TextView) v.findViewById(R.id.repository_language);
 			star = (TextView) v.findViewById(R.id.repository_star);
 			pull = (TextView) v.findViewById(R.id.repository_pull);
+
+			tag = (TextView) v.findViewById(R.id.item_repo_tag);
+			normoalItem = v.findViewById(R.id.item_repo_normal);
 		}
 
+		public ImageView icon;
 		public TextView name;
 		public TextView description;
+		public TextView owner;
 		public TextView language;
 		public TextView star;
 		public TextView pull;
+
+		public View normoalItem;
+		public TextView tag;
 	}
 }

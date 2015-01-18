@@ -11,6 +11,7 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -29,8 +30,13 @@ public class StatusPopUpWindow extends PopupWindow {
 	private ArrayList<StatusPopWindowItem> mActionItems = new ArrayList<StatusPopWindowItem>();
 	private StatusPopUpWindowItemClickListener mOnitemclicklistener = null;
 
+	// 二级菜单
+	private ListView mListViewSecondly;
+	private StatusPopUpAdapter mSecondlyAdapter;
+	private ArrayList<StatusPopWindowItem> mSecondlyActionItems;
+
 	public interface StatusPopUpWindowItemClickListener {
-		public void onitemclick(int drawableid);
+		public void onitemclick(int titleId);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -59,6 +65,82 @@ public class StatusPopUpWindow extends PopupWindow {
 				}
 			}
 		});
+	}
+
+	public void initSecondlyStatus() {
+		getSecondlyListView();
+		mSecondlyActionItems = new ArrayList<StatusPopWindowItem>();
+		mSecondlyAdapter = new StatusPopUpAdapter(mContext,
+				mSecondlyActionItems);
+		mListViewSecondly.setAdapter(mSecondlyAdapter);
+		mListViewSecondly.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				if (arg2 == mSecondlyAdapter.getCount() - 1) {
+					backUpperLever();
+					return;
+				}
+				if (mOnitemclicklistener != null) {
+					mOnitemclicklistener.onitemclick(mSecondlyActionItems
+							.get(arg2).titleid);
+				}
+			}
+		});
+	}
+
+	public void setSecondlyItem(Context context,
+			LinkedHashMap<Integer, Integer> itemmap) {
+		mSecondlyActionItems.clear();
+		Iterator<Integer> iterator = itemmap.keySet().iterator();
+		while (iterator.hasNext()) {
+			int titleid = iterator.next().intValue();
+			StatusPopWindowItem action = null;
+			if (itemmap.get(titleid) == null) {
+				action = new StatusPopWindowItem(context, titleid);
+			} else {
+				action = new StatusPopWindowItem(context, titleid,
+						itemmap.get(titleid));
+			}
+			if (action != null) {
+				mSecondlyActionItems.add(action);
+			}
+		}
+		// 增加返回
+		mSecondlyActionItems.add(new StatusPopWindowItem(context,
+				"Upper Level", R.drawable.common_secondly_back));
+		mSecondlyAdapter.notifyDataSetChanged();
+
+	}
+
+	public void showSecondlyStatus() {
+		if (mListViewSecondly != null) {
+			mListView.setAnimation(AnimationUtils.loadAnimation(
+					mContext, R.anim.right_to_left_out));
+			mListView.setVisibility(View.GONE);
+			mListViewSecondly.setAnimation(AnimationUtils.loadAnimation(
+					mContext, R.anim.right_to_left_in));
+			mListViewSecondly.setVisibility(View.VISIBLE);
+		}
+	}
+
+	public void backUpperLever() {
+		if (mListViewSecondly != null) {
+			mListViewSecondly.setAnimation(AnimationUtils.loadAnimation(
+					mContext, R.anim.left_to_right_out));
+			mListViewSecondly.setVisibility(View.GONE);
+			mListView.setAnimation(AnimationUtils.loadAnimation(
+					mContext, R.anim.left_to_right_in));
+			mListView.setVisibility(View.VISIBLE);
+		}
+	}
+
+	public void resetSecondly() {
+		if (mListViewSecondly != null) {
+			if (mListViewSecondly.getVisibility() == View.VISIBLE) {
+				mListView.setVisibility(View.VISIBLE);
+				mListViewSecondly.setVisibility(View.GONE);
+			}
+		}
 	}
 
 	/**
@@ -108,6 +190,13 @@ public class StatusPopUpWindow extends PopupWindow {
 			mListView = (ListView) getContentView().findViewById(
 					R.id.popwindow_list);
 		return mListView;
+	}
+
+	public ListView getSecondlyListView() {
+		if (mListViewSecondly == null)
+			mListViewSecondly = (ListView) getContentView().findViewById(
+					R.id.popwindow_list_secondly);
+		return mListViewSecondly;
 	}
 
 }

@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.ui.fragment.FollowingFragment;
 import com.gdestiny.github.ui.fragment.LeftMenuFragment;
 import com.gdestiny.github.ui.fragment.RepositoryFragment;
 import com.gdestiny.github.ui.view.ResideMenu;
-import com.gdestiny.github.utils.GLog;
 
 public class HomeActivity extends BaseFragmentActivity implements
 		OnClickListener {
@@ -30,6 +30,12 @@ public class HomeActivity extends BaseFragmentActivity implements
 		initMenu();
 		RepositoryFragment repositoryFragment = new RepositoryFragment();
 		showFragment(repositoryFragment);
+	}
+
+	@Override
+	protected void initActionBar() {
+		super.initActionBar();
+		titlebar.setTitleIcon(GitHubApplication.getUser().getAvatarUrl());
 	}
 
 	@Override
@@ -84,16 +90,21 @@ public class HomeActivity extends BaseFragmentActivity implements
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.menu_avatar:
+			resideMenu.closeMenu();
 			break;
 		case R.id.menu_repository:
+			resideMenu.closeMenu();
 			break;
 		case R.id.menu_news:
+			resideMenu.closeMenu();
 			break;
 		case R.id.menu_following:
+			resideMenu.closeMenu();
 			showFragment(new FollowingFragment());
+		case R.id.menu_exit:
+			finish();
 			break;
 		}
-		resideMenu.closeMenu();
 	}
 
 }

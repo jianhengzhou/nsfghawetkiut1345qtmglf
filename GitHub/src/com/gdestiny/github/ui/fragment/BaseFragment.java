@@ -4,6 +4,7 @@ import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,7 +18,7 @@ import android.view.ViewGroup;
 public abstract class BaseFragment extends Fragment {
 
 	protected final String mClassName;
-	protected Activity mActivity;
+	protected Context context;
 	protected StringBuilder mBuffer = new StringBuilder();
 	protected View currentView;
 
@@ -37,9 +38,10 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onAttach()").toString());
-		mActivity = activity;
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onAttach()").toString());
+		context = activity;
 	}
 
 	/**
@@ -50,8 +52,9 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onCreate()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onCreate()").toString());
 	}
 
 	/**
@@ -64,8 +67,11 @@ public abstract class BaseFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = super.onCreateView(inflater, container, savedInstanceState);
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onCreateView()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onCreateView()").toString());
+		initView();
+		initData();
 		return view;
 	}
 
@@ -80,8 +86,9 @@ public abstract class BaseFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		initView();
 		initData();
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onActivityCreated()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onActivityCreated()").toString());
 	}
 
 	/**
@@ -93,8 +100,9 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onStart()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onStart()").toString());
 	}
 
 	/**
@@ -107,8 +115,9 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onResume()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onResume()").toString());
 	}
 
 	/**
@@ -117,9 +126,10 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onHiddenChanged(").append(hidden).append(")")
-				.toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onHiddenChanged(").append(hidden).append(")")
+						.toString());
 	}
 
 	/**
@@ -128,8 +138,9 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onSaveInstanceState()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onSaveInstanceState()").toString());
 	}
 
 	/**
@@ -138,9 +149,10 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void setRetainInstance(boolean retain) {
 		super.setRetainInstance(retain);
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".setRetainInstance(").append(retain).append(")")
-				.toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".setRetainInstance(").append(retain)
+						.append(")").toString());
 	}
 
 	/**
@@ -152,8 +164,9 @@ public abstract class BaseFragment extends Fragment {
 	 */
 	@Override
 	public void onPause() {
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onPause()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onPause()").toString());
 		super.onPause();
 	}
 
@@ -165,8 +178,9 @@ public abstract class BaseFragment extends Fragment {
 	 */
 	@Override
 	public void onStop() {
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onStop()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onStop()").toString());
 		super.onStop();
 	}
 
@@ -177,8 +191,9 @@ public abstract class BaseFragment extends Fragment {
 	 */
 	@Override
 	public void onDestroyView() {
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onDestroyView()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onDestroyView()").toString());
 		super.onDestroyView();
 	}
 
@@ -189,8 +204,9 @@ public abstract class BaseFragment extends Fragment {
 	 */
 	@Override
 	public void onDestroy() {
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onDestroy()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onDestroy()").toString());
 		super.onDestroy();
 	}
 
@@ -202,8 +218,9 @@ public abstract class BaseFragment extends Fragment {
 	 */
 	@Override
 	public void onDetach() {
-		GLog.d(Constants.GlobalTag, mBuffer.delete(0, mBuffer.length()).append(mClassName)
-				.append(".onDetach()").toString());
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onDetach()").toString());
 		super.onDetach();
 	}
 

@@ -1,5 +1,7 @@
 package com.gdestiny.github.ui.fragment;
 
+import org.eclipse.egit.github.core.User;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,12 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.ui.view.ImageViewEx;
+import com.gdestiny.github.utils.ImageLoaderUtils;
 
 public class LeftMenuFragment extends BaseFragment implements OnClickListener {
 
 	private OnClickListener clickListener;
+	private ImageViewEx avatar;
+	private TextView name;
 
 	public LeftMenuFragment(OnClickListener clickListener) {
 		this.clickListener = clickListener;
@@ -48,19 +56,24 @@ public class LeftMenuFragment extends BaseFragment implements OnClickListener {
 		this.currentView.findViewById(R.id.menu_issue).setOnClickListener(this);
 		this.currentView.findViewById(R.id.menu_bookmarks).setOnClickListener(
 				this);
+		this.currentView.findViewById(R.id.menu_setting).setOnClickListener(
+				this);
+		this.currentView.findViewById(R.id.menu_exit).setOnClickListener(this);
 		return this.currentView;
 	}
 
 	@Override
 	protected void initView() {
-		// TODO Auto-generated method stub
-
+		avatar = (ImageViewEx) this.currentView.findViewById(R.id.menu_avatar);
+		name = (TextView) this.currentView.findViewById(R.id.menu_name);
 	}
 
 	@Override
 	protected void initData() {
-		// TODO Auto-generated method stub
-
+		User user = GitHubApplication.getUser();
+		name.setText(user.getLogin());
+		ImageLoaderUtils.displayImage(user.getAvatarUrl(), avatar,
+				R.drawable.default_avatar, R.drawable.default_avatar, false);
 	}
 
 	@Override

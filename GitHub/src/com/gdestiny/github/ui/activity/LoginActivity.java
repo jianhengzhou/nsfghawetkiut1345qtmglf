@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,14 +21,14 @@ import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.GitHubTask;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.SnappyDBUtils;
 import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
 import com.snappydb.SnappydbException;
 
-public class LoginActivity extends BaseActivity implements
-		OnClickListener {
+public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	private EditText account;
 	private EditText password;
@@ -67,7 +66,6 @@ public class LoginActivity extends BaseActivity implements
 
 	@Override
 	protected void initData() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -83,11 +81,59 @@ public class LoginActivity extends BaseActivity implements
 			dialog = new ProgressDialog(this);
 		dialog.setMessage(account);
 		dialog.setCancelable(true);
-		dialog.show();
-		LoginTask task = new LoginTask();
-		task.execute(new String[] { account, password });
-		// RepositoryTask task = new RepositoryTask();
-		// task.execute("");
+		final GitHubClient client = GitHubApplication.initClient(account,
+				password);
+		new GitHubTask<User>(new GitHubTask.TaskListener<User>() {
+
+			@Override
+			public void onPrev() {
+				dialog.show();
+			}
+
+			@Override
+			public User onExcute(GitHubClient client) {
+				User user = null;
+				try {
+					user = new UserService(client).getUser();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println(e.getMessage());
+					return null;
+				}
+				return user;
+			}
+
+			@Override
+			public void onSuccess(User result) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+				if (result == null) {
+				} else {
+					System.out.println("" + TestUtils.printUser(result));
+					try {
+						saveLoginState(result);
+						GitHubApplication.setUser(result);
+						GitHubApplication.setClient(client);
+					} catch (SnappydbException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						ToastUtils.show(context, e.getMessage());
+					}
+					Intent intent = new Intent(context, HomeActivity.class);
+					startActivity(intent);
+					finish();
+				}
+			}
+
+			@Override
+			public void onError() {
+				dialog.dismiss();
+				ToastUtils.show(context,
+						getResources().getString(R.string.auth_error));
+
+			}
+		}).execute(client);
 	}
 
 	private void saveLoginState(User user) throws SnappydbException {
@@ -97,50 +143,6 @@ public class LoginActivity extends BaseActivity implements
 		SnappyDBUtils.putString(context, "password", password.getText()
 				.toString());
 		SnappyDBUtils.putSerializable(context, "user", user);
-	}
-
-	private class LoginTask extends AsyncTask<String, Void, User> {
-
-		@Override
-		protected User doInBackground(String... params) {
-			// TODO Auto-generated method stub
-			GitHubClient client = GitHubApplication.initClient(params[0],
-					params[1]);
-			User user = null;
-			try {
-				user = new UserService(client).getUser();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-				return null;
-			}
-			return user;
-		}
-
-		@Override
-		protected void onPostExecute(User result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-			dialog.dismiss();
-			if (result == null) {
-				ToastUtils.show(context,
-						getResources().getString(R.string.auth_error));
-			} else {
-				System.out.println("" + TestUtils.printUser(result));
-				try {
-					saveLoginState(result);
-				} catch (SnappydbException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					ToastUtils.show(context, e.getMessage());
-				}
-				Intent intent = new Intent(context, HomeActivity.class);
-				startActivity(intent);
-				finish();
-			}
-		}
-
 	}
 
 	@Override

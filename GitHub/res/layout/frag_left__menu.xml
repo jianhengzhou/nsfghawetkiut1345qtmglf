@@ -29,9 +29,44 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text22" />
 
+    <RelativeLayout
+        android:id="@+id/menu_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="@dimen/margin16" >
+
+        <TextView
+            android:id="@+id/menu_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:clickable="true"
+            android:drawableLeft="@drawable/selector_icon_setting"
+            android:drawablePadding="@dimen/margin2"
+            android:gravity="center_vertical"
+            android:text="@string/setting"
+            android:textColor="@drawable/selector_common_menu_text"
+            android:textSize="@dimen/text16" />
+
+        <TextView
+            android:id="@+id/menu_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:drawableLeft="@drawable/selector_icon_exit"
+            android:drawablePadding="@dimen/margin2"
+            android:gravity="center_vertical"
+            android:text="@string/exit"
+            android:textColor="@drawable/selector_common_menu_text"
+            android:textSize="@dimen/text16" />
+    </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/menu_bottom_layout"
         android:layout_below="@id/menu_name"
         android:layout_marginTop="@dimen/margin8"
         android:scrollbars="none" >

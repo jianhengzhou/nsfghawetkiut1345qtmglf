@@ -11,9 +11,32 @@
 
         <ListView
             android:id="@+id/repository_list"
+            style="@style/normal_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
         </ListView>
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
+
+    <ImageView
+        android:id="@+id/a_z_alphabet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:clickable="true"
+        android:contentDescription="@string/app_name"
+        android:paddingRight="6dp"
+        android:src="@drawable/selector_az_sort" />
+
+    <TextView
+        android:id="@+id/alphabet_toast"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/common_status_popup_background"
+        android:gravity="center"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="48sp"
+        android:visibility="gone" />
 
 </RelativeLayout>

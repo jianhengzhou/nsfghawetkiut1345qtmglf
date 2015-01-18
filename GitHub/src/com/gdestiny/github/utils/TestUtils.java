@@ -3,6 +3,8 @@ package com.gdestiny.github.utils;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.Tree;
+import org.eclipse.egit.github.core.TreeEntry;
 import org.eclipse.egit.github.core.User;
 
 public class TestUtils {
@@ -35,9 +37,9 @@ public class TestUtils {
 
 	public static String printListRepository(List<Repository> list) {
 		StringBuilder sb = new StringBuilder();
-		
-		for(Repository rep : list){
-			sb.append("----------------\n");
+
+		for (Repository rep : list) {
+			sb.append("\n----------------\n");
 			sb.append(printRepository(rep));
 		}
 		return sb.toString();
@@ -47,24 +49,39 @@ public class TestUtils {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("getCloneUrl:").append(rep.getCloneUrl())
-		.append("\ngetDescription:").append(rep.getDescription())
-		.append("\ngetForks:").append(rep.getForks())
-		.append("\ngetGitUrl:").append(rep.getGitUrl())
-		.append("\ngetHomepage:").append(rep.getHomepage())
-		.append("\ngetHtmlUrl:").append(rep.getHtmlUrl())
-		.append("\ngetId:").append(rep.getId())
-		.append("\ngetLanguage:").append(rep.getLanguage())
-		.append("\ngetMasterBranch:").append(rep.getMasterBranch())
-		.append("\ngetMirrorUrl:").append(rep.getMirrorUrl())
-		.append("\ngetName:").append(rep.getName())
-		.append("\ngetOpenIssues:").append(rep.getOpenIssues())
-		.append("\ngetSize:").append(rep.getSize())
-		.append("\ngetSshUrl:").append(rep.getSshUrl())
-		.append("\ngetSvnUrl:").append(rep.getSvnUrl())
-		.append("\ngetUrl:").append(rep.getUrl())
-		.append("\ngetWatchers:").append(rep.getWatchers())
-		.append("\ngetCreatedAt:").append(rep.getCreatedAt())
-		.append("\ngetOwner:").append(rep.getOwner().getLogin());
+				.append("\ngetDescription:").append(rep.getDescription())
+				.append("\ngetForks:").append(rep.getForks())
+				.append("\ngetGitUrl:").append(rep.getGitUrl())
+				.append("\ngetHomepage:").append(rep.getHomepage())
+				.append("\ngetHtmlUrl:").append(rep.getHtmlUrl())
+				.append("\ngetId:").append(rep.getId())
+				.append("\ngetLanguage:").append(rep.getLanguage())
+				.append("\ngetMasterBranch:").append(rep.getMasterBranch())
+				.append("\ngetMirrorUrl:").append(rep.getMirrorUrl())
+				.append("\ngetName:").append(rep.getName())
+				.append("\ngetOpenIssues:").append(rep.getOpenIssues())
+				.append("\ngetSize:").append(rep.getSize())
+				.append("\ngetSshUrl:").append(rep.getSshUrl())
+				.append("\ngetSvnUrl:").append(rep.getSvnUrl())
+				.append("\ngetUrl:").append(rep.getUrl())
+				.append("\ngetWatchers:").append(rep.getWatchers())
+				.append("\ngetCreatedAt:").append(rep.getCreatedAt())
+				.append("\ngetOwner:").append(rep.getOwner().getLogin());
+		return sb.toString();
+	}
+
+	public static String printTree(Tree tree) {
+		StringBuilder sb = new StringBuilder();
+		List<TreeEntry> list = tree.getTree();
+		for (TreeEntry te : list) {
+			sb.append("----------------------").append("\ngetMode:")
+					.append(te.getMode()).append("\ngetPath:")
+					.append(te.getPath()).append("\ngetSha:")
+					.append(te.getSha()).append("\ngetSize:")
+					.append(te.getSize()).append("\ngetType:")
+					.append(te.getType()).append("\ngetUrl:")
+					.append(te.getUrl()).append("\n----------------------\n");
+		}
 		return sb.toString();
 	}
 }

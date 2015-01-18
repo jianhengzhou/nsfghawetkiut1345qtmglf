@@ -51,15 +51,18 @@
         <item name="android:background">@drawable/selector_common_menu_item</item>
     </style>
 
-    <style name="titlebar_pop_lsit">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="normal_listview">
         <item name="android:cacheColorHint">@color/transparent</item>
         <item name="android:scrollingCache">true</item>
         <item name="android:smoothScrollbar">true</item>
         <item name="android:listSelector">@drawable/selector_listviewitem</item>
         <item name="android:dividerHeight">0.5dip</item>
         <item name="android:divider">#dddddd</item>
+    </style>
+
+    <style name="titlebar_pop_lsit" parent="normal_listview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="titlebar_popupwindow_anim">

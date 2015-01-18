@@ -4,6 +4,7 @@ public class GLog {
 	private static boolean isDebug = true;
 
 	private GLog() {
+		throw new AssertionError();
 	}
 
 	public static void sysout(String msg) {

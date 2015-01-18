@@ -8,6 +8,7 @@ import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -28,10 +29,12 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 	protected TitleBar titlebar;
 	protected String mClassName;
 	protected StringBuilder mBuffer = new StringBuilder();
+	protected Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		context = this;
 
 		mClassName = getClass().getSimpleName();
 		GLog.d(Constants.GlobalTag,
@@ -40,7 +43,9 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 
 		mHelper = new SwipeBackActivityHelper(this);
 		mHelper.onActivityCreate();
+		initView();
 		initActionBar();
+		initData();
 	}
 
 	protected void initActionBar() {
@@ -73,6 +78,10 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 				onRightBtn();
 			}
 		});
+	}
+
+	public TitleBar getTitlebar() {
+		return titlebar;
 	}
 
 	abstract protected void initView();

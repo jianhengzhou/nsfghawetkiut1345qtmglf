@@ -303,7 +303,7 @@ public class ResideMenu extends FrameLayout {
 				ObjectAnimator.ofFloat(target, "scaleY", targetScaleY));
 
 		scaleDown.setInterpolator(AnimationUtils.loadInterpolator(activity,
-				android.R.anim.decelerate_interpolator));
+				android.R.anim.accelerate_decelerate_interpolator));
 		scaleDown.setDuration(250);
 		return scaleDown;
 	}
@@ -324,6 +324,8 @@ public class ResideMenu extends FrameLayout {
 				ObjectAnimator.ofFloat(target, "scaleX", targetScaleX),
 				ObjectAnimator.ofFloat(target, "scaleY", targetScaleY));
 
+		scaleUp.setInterpolator(AnimationUtils.loadInterpolator(activity,
+				android.R.anim.accelerate_decelerate_interpolator));
 		scaleUp.setDuration(250);
 		return scaleUp;
 	}

@@ -8,5 +8,9 @@
     <ListView
         android:id="@+id/popwindow_list"
         style="@style/titlebar_pop_lsit" />
+    <ListView
+        android:id="@+id/popwindow_list_secondly"
+        android:visibility="gone"
+        style="@style/titlebar_pop_lsit" />
 
 </LinearLayout>

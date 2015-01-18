@@ -2,18 +2,53 @@ package com.gdestiny.github.async;
 
 import org.eclipse.egit.github.core.client.GitHubClient;
 
-import android.os.AsyncTask;
+public class GitHubTask<Result> extends
+		BaseAsyncTask<GitHubClient, Void, Result> {
 
-public class GitHubTask<Result> extends AsyncTask<GitHubClient, Void, Result> {
+	private TaskListener<Result> listener;
 
-	public interface TaskListener {
-		public void onExcute();
+	@SuppressWarnings("unused")
+	private GitHubTask() {
+		throw new AssertionError();
+	}
+
+	public GitHubTask(TaskListener<Result> listener) {
+		this.listener = listener;
+	}
+
+	public interface TaskListener<T> {
+		public void onPrev();
+
+		public T onExcute(GitHubClient client);
+
+		public void onSuccess(T result);
+
+		public void onError();
+	}
+
+	@Override
+	protected void onPreExecute() {
+		// TODO Auto-generated method stub
+		super.onPreExecute();
+		listener.onPrev();
 	}
 
 	@Override
 	protected Result doInBackground(GitHubClient... params) {
 		// TODO Auto-generated method stub
-		return null;
+		if (params == null || params[0] == null)
+			return null;
+		return listener.onExcute(params[0]);
+	}
+
+	@Override
+	protected void onPostExecute(Result result) {
+		// TODO Auto-generated method stub
+		super.onPostExecute(result);
+		if (result == null && !(result instanceof Void))
+			listener.onError();
+		else
+			listener.onSuccess(result);
 	}
 
 }

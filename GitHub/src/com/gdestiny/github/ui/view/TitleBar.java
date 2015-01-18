@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow.StatusPopUpWindowItemClickListener;
+import com.gdestiny.github.utils.ImageLoaderUtils;
 
 public class TitleBar extends LinearLayout implements View.OnClickListener {
 
@@ -44,32 +45,17 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 	private void initStatusPopup() {
 		if (menuPopup != null)
 			return;
-		menuPopup = new StatusPopUpWindow(getContext(), 400,
+		menuPopup = new StatusPopUpWindow(getContext(), 350,
 				ViewGroup.LayoutParams.WRAP_CONTENT,
 				R.style.titlebar_popupwindow_anim);
 		menuPopup.setOnDismissListener(new OnDismissListener() {
 
 			@Override
 			public void onDismiss() {
+				menuPopup.resetSecondly();
 				menuBtn.setImageResource(R.drawable.selector_common_btn_more);
 			}
 		});
-		// test
-		LinkedHashMap<Integer, Integer> itemmap = new LinkedHashMap<Integer, Integer>();
-		itemmap.put(R.string.app_name, R.drawable.common_gists_pressed);
-		itemmap.put(R.string.name, R.drawable.common_bookmarks_pressed);
-		itemmap.put(R.string.news, R.drawable.common_follower_pressed);
-		itemmap.put(R.string.followers, R.drawable.common_issue_pressed);
-		itemmap.put(R.string.following, R.drawable.common_issue_pressed);
-		setStatusItem(getContext(), itemmap,
-				new StatusPopUpWindow.StatusPopUpWindowItemClickListener() {
-
-					@Override
-					public void onitemclick(int drawableid) {
-						// TODO Auto-generated method stub
-
-					}
-				});
 	}
 
 	public void setStatusItem(Context context,
@@ -79,10 +65,34 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 			menuPopup.setItem(context, itemmap, mOnitemclicklistener);
 		}
 	}
+	
+	public void initSecondly(){
+		if (menuPopup != null) {
+			menuPopup.initSecondlyStatus();
+		}
+	}
+
+	public void setSecondlyStatusItem(Context context,
+			LinkedHashMap<Integer, Integer> itemmap) {
+		if (menuPopup != null) {
+			menuPopup.setSecondlyItem(context, itemmap);
+		}
+	}
 
 	public void showStatus() {
 		if (menuPopup != null)
 			menuPopup.showAsDropDown(menuBtn);
+	}
+
+	public void showSecondly() {
+		if (menuPopup != null) {
+			menuPopup.showSecondlyStatus();
+		}
+	}
+
+	public void dissmissStatus() {
+		if (menuPopup != null && menuPopup.isShowing())
+			menuPopup.dismiss();
 	}
 
 	public void hideRight() {
@@ -100,8 +110,38 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 		menuBtn.setVisibility(View.GONE);
 	}
 
-	public void setBackLayout(String bitmapUrl, String text) {
-		
+	public StatusPopUpWindow getStatusPopup() {
+		return menuPopup;
+	}
+
+	public ImageButton getRightBtn() {
+		return rightBtn;
+	}
+
+	public ImageButton getMenuBtn() {
+		return menuBtn;
+	}
+
+	public ImageView getTitleBackIcon() {
+		return titleBackIcon;
+	}
+
+	public TextView getTitleBackText() {
+		return titleBackText;
+	}
+
+	public void setLeftLayout(String url, String text) {
+		setTitleIcon(url);
+		setTitleText(text);
+	}
+
+	public void setTitleIcon(String url) {
+		ImageLoaderUtils.displayImage(url, titleBackIcon,
+				R.drawable.default_avatar, R.drawable.ic_launcher, false);
+	}
+
+	public void setTitleText(String text) {
+		titleBackText.setText(text);
 	}
 
 	@Override

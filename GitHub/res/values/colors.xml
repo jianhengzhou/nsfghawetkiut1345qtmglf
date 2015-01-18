@@ -5,6 +5,7 @@
     <color name="white">#ffffff</color>
     <color name="common_blue_bk">#ff1a85ff</color>
     <color name="common_icon_blue">#56abe4</color>
+    <color name="common_listitem_blue">#2256abe4</color>
     <color name="common_light_black">#2a2a2a</color>
     <color name="common_icon_grey">#a9b7b7</color>
     <color name="common_light_grey">#aab7b7</color>

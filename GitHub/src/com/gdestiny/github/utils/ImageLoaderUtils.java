@@ -206,20 +206,12 @@ public class ImageLoaderUtils {
 	public static void displayImage(String uri, ImageView imageView,
 			final int defaultStartRid, final int defaultFailedRid,
 			final boolean isTran) {
-		// DisplayImageOptions options = new DisplayImageOptions.Builder()
-		// .showStubImage(defaultRid)
-		// .showImageForEmptyUri(defaultRid) // resource or drawable
-		// .showImageOnFail(defaultRid) // resource or drawable
-		// .cacheInMemory()
-		// .cacheOnDisc()
-		// .build();
 		ImageLoader.getInstance().displayImage(uri, imageView,
 				getImageOptions(defaultStartRid, defaultFailedRid),
 				new ImageLoadingListener() {
 
 					@Override
 					public void onLoadingStarted(String imageUri, View view) {
-						// TODO Auto-generated method stub
 						// startTime = System.currentTimeMillis();
 						view.setTag(R.id.tag_imageloader,
 								System.currentTimeMillis());
@@ -228,7 +220,6 @@ public class ImageLoaderUtils {
 					@Override
 					public void onLoadingFailed(String imageUri, View view,
 							FailReason failReason) {
-						// TODO Auto-generated method stub
 
 					}
 
@@ -655,6 +646,7 @@ public class ImageLoaderUtils {
 		File imgDir = new File(initImageDir());// make sure the dir exists
 		if (!imgDir.exists()) {
 			imgDir.mkdirs();
+			GLog.sysout("imgDir.mkdirs() : " +initImageDir() );
 		}
 		int initSize;
 		if (android.os.Environment.getExternalStorageState().equals(

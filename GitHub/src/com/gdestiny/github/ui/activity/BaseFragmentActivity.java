@@ -15,7 +15,6 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.gdestiny.github.R;
 import com.gdestiny.github.ui.view.TitleBar;
-import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 
@@ -37,10 +36,10 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 				mBuffer.delete(0, mBuffer.length()).append(mClassName)
 						.append(".onCreate()").toString());
 
+		initActionBar();
 		mHelper = new SwipeBackActivityHelper(this);
 		mHelper.onActivityCreate();
 		initView();
-		initActionBar();
 		initData();
 	}
 
@@ -59,7 +58,6 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				onleftLayout();
 			}
 		});
@@ -69,11 +67,10 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				onRightBtn();
 			}
 		});
-		AndroidUtils.initMiBar(this);
+		// com.gdestiny.github.utils.AndroidUtils.initMiBar(this);
 	}
 
 	public TitleBar getTitlebar() {

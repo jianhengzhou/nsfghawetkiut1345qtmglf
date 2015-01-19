@@ -26,6 +26,7 @@ import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.SnappyDBUtils;
 import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
+import com.gdestiny.github.utils.ViewUtils;
 import com.snappydb.SnappydbException;
 
 public class LoginActivity extends BaseActivity implements OnClickListener {
@@ -42,6 +43,16 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		setContentView(R.layout.act_login);
 
 		initView();
+		setSwipeBackEnable(false);
+	}
+
+	@Override
+	protected void initActionBar() {
+		// TODO Auto-generated method stub
+		super.initActionBar();
+		titlebar.setTitleText(R.string.login);
+		titlebar.hideRight();
+		ViewUtils.setVisibility(titlebar.getTitleBackIcon(),View.GONE);
 	}
 
 	@Override
@@ -182,6 +193,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			imm.hideSoftInputFromWindow(
 					this.getCurrentFocus().getWindowToken(), 0);
 		}
+	}
+
+	@Override
+	protected void onleftLayout() {
+		finish();
 	}
 
 }

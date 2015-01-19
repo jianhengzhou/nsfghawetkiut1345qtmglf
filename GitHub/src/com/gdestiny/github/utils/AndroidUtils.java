@@ -10,6 +10,20 @@ import android.view.Window;
 import com.gdestiny.github.R;
 
 public class AndroidUtils {
+	
+	private static boolean isMiuiV6;
+
+	static {
+		try {
+			Class<?> sysClass = Class.forName("android.os.SystemProperties");
+			Method getStringMethod = sysClass.getDeclaredMethod("get",
+					String.class);
+			isMiuiV6 = "V6".equals((String) getStringMethod.invoke(sysClass,
+					"ro.miui.ui.version.name"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	private AndroidUtils() {
 		throw new AssertionError();
@@ -17,6 +31,8 @@ public class AndroidUtils {
 
 	@SuppressWarnings({ "rawtypes" })
 	public static void initMiBar(Activity activity) {
+		if (!isMiuiV6)
+			return;
 		Window window = activity.getWindow();
 		window.setBackgroundDrawableResource(R.color.common_icon_blue);
 		Class clazz = window.getClass();

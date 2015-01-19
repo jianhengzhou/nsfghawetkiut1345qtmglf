@@ -15,6 +15,7 @@ import com.gdestiny.github.ui.fragment.LeftMenuFragment;
 import com.gdestiny.github.ui.fragment.RepositoryFragment;
 import com.gdestiny.github.ui.view.ResideMenu;
 import com.gdestiny.github.utils.GLog;
+import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class HomeActivity extends BaseFragmentActivity implements
@@ -29,9 +30,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_home);
-		// ActionBarPullToRefresh.from(this).allChildrenArePullable()
-		// .listener(this)
-		// .setup((PullToRefreshLayout) findViewById(R.id.ptr_layout));
+		setSwipeBackEnable(false);
 		initMenu();
 		RepositoryFragment repositoryFragment = new RepositoryFragment();
 		showFragment(repositoryFragment);
@@ -45,7 +44,6 @@ public class HomeActivity extends BaseFragmentActivity implements
 
 	@Override
 	protected void initView() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -108,6 +106,9 @@ public class HomeActivity extends BaseFragmentActivity implements
 			showFragment(new FollowingFragment());
 		case R.id.menu_exit:
 			finish();
+			break;
+		case R.id.menu_setting:
+			IntentUtils.start(context, LoginActivity.class);
 			break;
 		}
 	}

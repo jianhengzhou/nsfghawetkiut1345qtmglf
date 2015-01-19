@@ -13,9 +13,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.gdestiny.github.R;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.Constants;
@@ -38,6 +40,11 @@ public abstract class BaseActivity extends SherlockActivity implements
 
 	abstract protected void initData();
 
+	abstract protected void onleftLayout();
+
+	protected void onRightBtn() {
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,9 +54,9 @@ public abstract class BaseActivity extends SherlockActivity implements
 				mBuffer.delete(0, mBuffer.length()).append(mClassName)
 						.append(".onCreate()").toString());
 
+		initActionBar();
 		mHelper = new SwipeBackActivityHelper(this);
 		mHelper.onActivityCreate();
-		initActionBar();
 	}
 
 	public TitleBar getTitlebar() {
@@ -66,6 +73,26 @@ public abstract class BaseActivity extends SherlockActivity implements
 		actionbar.setDisplayShowHomeEnabled(false);
 		actionbar.setDisplayShowTitleEnabled(false);
 		actionbar.setDisplayUseLogoEnabled(false);
+		// ¼àÌý
+		View backLayout = titlebar.findViewById(R.id.title_left_layout);
+		backLayout.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				onleftLayout();
+			}
+		});
+		ImageButton rightBtn = (ImageButton) titlebar
+				.findViewById(R.id.titlebar_rignt_btn);
+		rightBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				onRightBtn();
+			}
+		});
 		AndroidUtils.initMiBar(this);
 	}
 

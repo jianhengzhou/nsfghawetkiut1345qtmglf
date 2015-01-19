@@ -22,6 +22,10 @@ public class LeftMenuFragment extends BaseFragment implements OnClickListener {
 	private ImageViewEx avatar;
 	private TextView name;
 
+	@SuppressWarnings("unused")
+	private LeftMenuFragment() {
+	}
+
 	public LeftMenuFragment(OnClickListener clickListener) {
 		this.clickListener = clickListener;
 	}

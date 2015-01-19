@@ -25,4 +25,10 @@ public class UserActivity extends BaseActivity {
 		
 	}
 
+	@Override
+	protected void onleftLayout() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

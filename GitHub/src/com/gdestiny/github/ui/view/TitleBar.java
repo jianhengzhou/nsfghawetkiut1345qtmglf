@@ -16,6 +16,7 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow.StatusPopUpWindowItemClickListener;
 import com.gdestiny.github.utils.ImageLoaderUtils;
+import com.gdestiny.github.utils.ViewUtils;
 
 public class TitleBar extends LinearLayout implements View.OnClickListener {
 
@@ -65,8 +66,8 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 			menuPopup.setItem(context, itemmap, mOnitemclicklistener);
 		}
 	}
-	
-	public void initSecondly(){
+
+	public void initSecondly() {
 		if (menuPopup != null) {
 			menuPopup.initSecondlyStatus();
 		}
@@ -96,18 +97,18 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 	}
 
 	public void hideRight() {
-		rightBtn.setVisibility(View.GONE);
-		menuBtn.setVisibility(View.GONE);
+		ViewUtils.setVisibility(rightBtn, View.GONE);
+		ViewUtils.setVisibility(menuBtn, View.GONE);
 	}
 
 	public void showStatusBtn() {
-		rightBtn.setVisibility(View.GONE);
-		menuBtn.setVisibility(View.VISIBLE);
+		ViewUtils.setVisibility(rightBtn, View.GONE);
+		ViewUtils.setVisibility(menuBtn, View.VISIBLE);
 	}
 
 	public void showRightBtn() {
-		rightBtn.setVisibility(View.VISIBLE);
-		menuBtn.setVisibility(View.GONE);
+		ViewUtils.setVisibility(rightBtn, View.VISIBLE);
+		ViewUtils.setVisibility(menuBtn, View.GONE);
 	}
 
 	public StatusPopUpWindow getStatusPopup() {
@@ -142,6 +143,10 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 
 	public void setTitleText(String text) {
 		titleBackText.setText(text);
+	}
+
+	public void setTitleText(int id) {
+		titleBackText.setText(id);
 	}
 
 	@Override

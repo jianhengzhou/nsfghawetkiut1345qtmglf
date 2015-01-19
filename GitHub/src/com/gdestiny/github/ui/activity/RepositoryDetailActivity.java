@@ -44,7 +44,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 		repository = (Repository) getIntent().getSerializableExtra(data);
 		titlebar.setLeftLayout(repository.getOwner().getAvatarUrl(),
 				repository.getName());
-		//getDetail();
+		// getDetail();
 	}
 
 	@SuppressWarnings("unused")

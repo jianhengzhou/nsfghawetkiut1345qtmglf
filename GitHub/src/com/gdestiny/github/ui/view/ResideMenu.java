@@ -255,6 +255,7 @@ public class ResideMenu extends FrameLayout {
 		public void onAnimationStart(Animator animation) {
 			if (isOpened()) {
 				menuView.setVisibility(VISIBLE);
+				imageViewShadow.setVisibility(View.VISIBLE);
 				if (menuListener != null)
 					menuListener.openMenu();
 			}
@@ -270,8 +271,10 @@ public class ResideMenu extends FrameLayout {
 				viewActivity.setTouchDisable(false);
 				viewActivity.setOnClickListener(null);
 				menuView.setVisibility(GONE);
-				if (menuListener != null)
+				imageViewShadow.setVisibility(View.GONE);
+				if (menuListener != null) {
 					menuListener.closeMenu();
+				}
 			}
 		}
 
@@ -438,8 +441,10 @@ public class ResideMenu extends FrameLayout {
 					ev.setAction(MotionEvent.ACTION_CANCEL);
 				}
 			} else if (pressedState == PRESSED_MOVE_HORIZANTAL) {
-				if (currentActivityScaleX < 0.95)
+				if (currentActivityScaleX < 0.95) {
 					menuView.setVisibility(VISIBLE);
+				}
+				imageViewShadow.setVisibility(VISIBLE);
 
 				float targetScale = getTargetScale(ev.getRawX());
 				ViewHelper.setScaleX(viewActivity, targetScale);

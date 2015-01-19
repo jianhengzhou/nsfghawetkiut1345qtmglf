@@ -9,6 +9,15 @@ import org.eclipse.egit.github.core.User;
 
 public class TestUtils {
 
+	public static void interrupt(long time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public static String printUser(User user) {
 		StringBuilder sb = new StringBuilder();
 

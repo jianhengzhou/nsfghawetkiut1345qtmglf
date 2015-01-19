@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">GitHub</string>
+    <string name="again_exit">press again to exit</string>
 
     <!-- test test test test test test -->
     <string name="name">gdestiny</string>
@@ -10,6 +11,8 @@
     <string name="login_error">The account or password cannot be empty</string>
     <string name="auth_error">Check your account or password</string>
     <string name="network_error">Network Error</string>
+    <string name="loading">Loading</string>
+    <string name="sorting">Sorting</string>
 
     <!-- login -->
     <string name="account">account</string>

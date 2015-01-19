@@ -9,6 +9,7 @@ import org.eclipse.egit.github.core.Tree;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.DataService;
 
+import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.GitHubTask;
 import com.gdestiny.github.utils.GLog;
@@ -28,6 +29,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.act_repository_detail);
 	}
 
 	@Override
@@ -42,9 +44,10 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 		repository = (Repository) getIntent().getSerializableExtra(data);
 		titlebar.setLeftLayout(repository.getOwner().getAvatarUrl(),
 				repository.getName());
-		getDetail();
+		//getDetail();
 	}
 
+	@SuppressWarnings("unused")
 	private void getDetail() {
 		new GitHubTask<Tree>(new GitHubTask.TaskListener<Tree>() {
 

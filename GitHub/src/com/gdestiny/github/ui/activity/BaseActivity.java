@@ -17,6 +17,7 @@ import android.view.View;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 
@@ -65,6 +66,7 @@ public abstract class BaseActivity extends SherlockActivity implements
 		actionbar.setDisplayShowHomeEnabled(false);
 		actionbar.setDisplayShowTitleEnabled(false);
 		actionbar.setDisplayUseLogoEnabled(false);
+		AndroidUtils.initMiBar(this);
 	}
 
 	@Override

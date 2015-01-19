@@ -3,7 +3,6 @@ package com.gdestiny.github.ui.fragment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,6 +33,7 @@ import com.gdestiny.github.adapter.RepositoryAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.GitHubTask;
 import com.gdestiny.github.async.GitHubTask.TaskListener;
+import com.gdestiny.github.async.SimpleUpdateTask;
 import com.gdestiny.github.bean.comparator.RepositoryComparator;
 import com.gdestiny.github.ui.activity.BaseFragmentActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
@@ -44,6 +44,7 @@ import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
+import com.gdestiny.github.utils.ViewUtils;
 
 public class RepositoryFragment extends BaseLoadFragment {
 
@@ -57,9 +58,12 @@ public class RepositoryFragment extends BaseLoadFragment {
 	@SuppressWarnings("rawtypes")
 	private List starRepository;
 
-	private Sort curSort = Sort.All;
+	private ImageView az;
 	private int currAlphbet = -1;
 	private HashMap<Character, Integer> alphaIndex = new HashMap<Character, Integer>();
+
+	private Sort curSort = Sort.All;
+	private boolean isSorting = false;
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -88,9 +92,9 @@ public class RepositoryFragment extends BaseLoadFragment {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
 				// TODO Auto-generated method stub
-				// IntentUtils.start(context, RepositoryDetailActivity.class,
-				// RepositoryDetailActivity.data,
-				// (Repository) viewRepository.get(position));
+				IntentUtils.start(context, RepositoryDetailActivity.class,
+						RepositoryDetailActivity.data,
+						(Repository) viewRepository.get(position));
 			}
 		});
 		this.pullToRefreshLayout = (PullToRefreshLayout) this.currentView
@@ -111,7 +115,6 @@ public class RepositoryFragment extends BaseLoadFragment {
 		itemmapSecondly.put(R.string.all, R.drawable.common_code_grey);
 		itemmapSecondly.put(R.string.star, R.drawable.common_star_grey);
 		itemmapSecondly.put(R.string.own, R.drawable.common_own_people_grey);
-		itemmapSecondly.put(R.string.name, R.drawable.common_name_grey);
 		itemmapSecondly.put(R.string.user, R.drawable.circle_user_grey);
 		itemmapSecondly.put(R.string.time, R.drawable.common_time_grey);
 		title.setSecondlyStatusItem(context, itemmapSecondly);
@@ -133,10 +136,19 @@ public class RepositoryFragment extends BaseLoadFragment {
 							title.showSecondly();
 							break;
 						case R.string.all:
+							asyncSort(Sort.All, false);
 							break;
 						case R.string.star:
+							asyncSort(Sort.Star, false);
 							break;
 						case R.string.own:
+							asyncSort(Sort.Own, false);
+							break;
+						case R.string.user:
+							asyncSort(Sort.User, false);
+							break;
+						case R.string.time:
+							asyncSort(Sort.Time, false);
 							break;
 						}
 						if (dismiss)
@@ -158,8 +170,7 @@ public class RepositoryFragment extends BaseLoadFragment {
 	}
 
 	private void initAlaphtSort() {
-		final ImageView az = (ImageView) this.currentView
-				.findViewById(R.id.a_z_alphabet);
+		az = (ImageView) this.currentView.findViewById(R.id.a_z_alphabet);
 		final TextView azToast = (TextView) this.currentView
 				.findViewById(R.id.alphabet_toast);
 		az.setOnTouchListener(new OnTouchListener() {
@@ -169,13 +180,15 @@ public class RepositoryFragment extends BaseLoadFragment {
 				// TODO Auto-generated method stub
 				int totalHeight = az.getHeight();
 				float y = event.getY();
-				int position = (int) ((y / totalHeight) / (1f / 27f));
+				int position = (int) ((y / totalHeight) / (1f / 28f));
 
 				char ch = 0;
-				if (position == 0)
+				if (position <= 0)
+					ch = '¡ü';
+				else if (position == 1)
 					ch = '#';
 				else if (position <= 26)
-					ch = (char) (position - 1 + 'A');
+					ch = (char) (position - 2 + 'A');
 				else if (position > 26)
 					ch = 'z';
 
@@ -185,6 +198,8 @@ public class RepositoryFragment extends BaseLoadFragment {
 					GLog.sysout(ch + "");
 					if (alphaIndex.containsKey(ch))
 						repositoryList.setSelection(alphaIndex.get(ch));
+					else if (position == 0)
+						repositoryList.setSelection(0);
 				}
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					azToast.setVisibility(View.GONE);
@@ -225,7 +240,7 @@ public class RepositoryFragment extends BaseLoadFragment {
 
 			@Override
 			public void onSuccess(Boolean result) {
-				sort(curSort);
+				sort(curSort, true);
 				repositoryAdapter.notifyDataSetChanged();
 				dismissProgress();
 			}
@@ -241,7 +256,10 @@ public class RepositoryFragment extends BaseLoadFragment {
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	private void sort(Sort sort) {
+	private void sort(Sort sort, boolean isRefresh) {
+		if (sort == curSort && !isRefresh)
+			return;
+		curSort = sort;
 		long temp = System.currentTimeMillis();
 		GLog.sysout("sort begin:" + temp);
 		if (!viewRepository.isEmpty())
@@ -263,9 +281,15 @@ public class RepositoryFragment extends BaseLoadFragment {
 		// Ôö¼Ó ×ÖÄ¸
 		if (!alphaIndex.isEmpty())
 			alphaIndex.clear();
+		if (sort == Sort.Time)
+			return;
 		for (int i = 0; i < viewRepository.size(); i++) {
 			Repository repo = (Repository) viewRepository.get(i);
 			char alpha = repo.getName().charAt(0);
+			if (sort == Sort.User)
+				alpha = repo.getOwner().getLogin().charAt(0);
+			else
+				alpha = repo.getName().charAt(0);
 			if (!Character.isLetter(alpha)) {
 				alpha = '#';
 			}
@@ -276,6 +300,38 @@ public class RepositoryFragment extends BaseLoadFragment {
 			}
 		}
 		GLog.sysout("sort time:" + (System.currentTimeMillis() - temp));
+	}
+
+	private void asyncSort(final Sort sort, final boolean isRefresh) {
+		if (isSorting) {
+			ToastUtils.show(context,
+					context.getResources().getString(R.string.sorting));
+			return;
+		}
+		new SimpleUpdateTask(new SimpleUpdateTask.UpdateListener() {
+
+			@Override
+			public void onPrev() {
+				showProgress();
+				isSorting = true;
+			}
+
+			@Override
+			public void onExcute() {
+				sort(sort, isRefresh);
+			}
+
+			@Override
+			public void onSuccess() {
+				dismissProgress();
+				isSorting = false;
+				if (sort == Sort.Time)
+					ViewUtils.setVisibility(az, View.GONE);
+				else
+					ViewUtils.setVisibility(az, View.VISIBLE);
+				repositoryAdapter.notifyDataSetChanged();
+			}
+		}).execute();
 	}
 
 	@Override

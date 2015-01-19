@@ -1,9 +1,5 @@
 package com.gdestiny.github.ui.activity;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
@@ -13,13 +9,13 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageButton;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.gdestiny.github.R;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 
@@ -49,7 +45,6 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 	}
 
 	protected void initActionBar() {
-		// initMiBar();
 		titlebar = new TitleBar(this);
 
 		ActionBar actionbar = getSupportActionBar();
@@ -78,6 +73,7 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 				onRightBtn();
 			}
 		});
+		AndroidUtils.initMiBar(this);
 	}
 
 	public TitleBar getTitlebar() {
@@ -93,48 +89,10 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 	protected void onRightBtn() {
 	}
 
-	@SuppressWarnings({ "rawtypes", "unused" })
-	private void initMiBar() {
-		Window window = getWindow();
-		window.setBackgroundDrawableResource(R.color.common_icon_blue);
-
-		Class clazz = window.getClass();
-		try {
-			int tranceFlag = 0;
-			int darkModeFlag = 0;
-			Class layoutParams = Class
-					.forName("android.view.MiuiWindowManager$LayoutParams");
-
-			Field field = layoutParams
-					.getField("EXTRA_FLAG_STATUS_BAR_TRANSPARENT");
-			tranceFlag = field.getInt(layoutParams);
-
-			field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
-			darkModeFlag = field.getInt(layoutParams);
-
-			@SuppressWarnings("unchecked")
-			Method extraFlagField = clazz.getMethod("setExtraFlags", int.class,
-					int.class);
-			// 只需要状态栏透明
-			// extraFlagField.invoke(window, tranceFlag, tranceFlag);
-			// 状态栏透明且黑色字体
-			extraFlagField.invoke(window, tranceFlag | darkModeFlag, tranceFlag
-					| darkModeFlag);
-			// 清除黑色字体
-			// extraFlagField.invoke(window, 0, darkModeFlag);
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		// TODO Auto-generated method stub
+		super.onWindowFocusChanged(hasFocus);
 	}
 
 	@Override

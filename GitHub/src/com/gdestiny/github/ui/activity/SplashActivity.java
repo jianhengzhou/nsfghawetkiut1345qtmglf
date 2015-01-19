@@ -11,6 +11,7 @@ import android.os.Message;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.utils.AndroidUtils;
 
 public class SplashActivity extends Activity {
 
@@ -22,7 +23,7 @@ public class SplashActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_splash);
-
+		AndroidUtils.initMiBar(this);
 		handler = new Handler() {
 
 			@Override

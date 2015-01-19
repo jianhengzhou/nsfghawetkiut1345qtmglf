@@ -8,6 +8,8 @@ import com.gdestiny.github.utils.GLog;
 public abstract class BaseAsyncTask<Params, Progress, Result> extends
 		AsyncTask<Params, Progress, Result> {
 
+	protected boolean running;
+
 	protected long mTimeStart;
 
 	protected long mTimeEnd;
@@ -25,6 +27,7 @@ public abstract class BaseAsyncTask<Params, Progress, Result> extends
 	protected void onPreExecute() {
 		mTimeStart = System.currentTimeMillis();
 		mMemoryStart = Runtime.getRuntime().freeMemory();
+		running = true;
 	}
 
 	/**
@@ -32,6 +35,7 @@ public abstract class BaseAsyncTask<Params, Progress, Result> extends
 	 */
 	@Override
 	protected void onPostExecute(Result result) {
+		running = false;
 		mTimeEnd = System.currentTimeMillis();
 		mMemoryEnd = Runtime.getRuntime().freeMemory();
 
@@ -46,4 +50,23 @@ public abstract class BaseAsyncTask<Params, Progress, Result> extends
 						.append(mMemoryStart - mMemoryEnd)
 						.append(" bytes memory.").toString());
 	}
+
+	@Override
+	protected void onCancelled() {
+		// TODO Auto-generated method stub
+		running = false;
+		super.onCancelled();
+	}
+
+	@Override
+	protected void onCancelled(Result result) {
+		// TODO Auto-generated method stub
+		running = false;
+		super.onCancelled(result);
+	}
+
+	public boolean isRunning() {
+		return running;
+	}
+
 }

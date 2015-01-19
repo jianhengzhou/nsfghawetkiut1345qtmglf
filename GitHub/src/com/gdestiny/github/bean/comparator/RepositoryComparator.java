@@ -20,8 +20,11 @@ public class RepositoryComparator implements Comparator<Repository> {
 		case Time:
 			return lhs.getCreatedAt().compareTo(rhs.getCreatedAt());
 		case User:
-			return lhs.getOwner().getLogin()
-					.compareToIgnoreCase(rhs.getOwner().getLogin());
+			String name1 = lhs.getOwner().getLogin();
+			String name2 = rhs.getOwner().getLogin();
+			if (name1.equals(name2))
+				return lhs.getName().compareToIgnoreCase(rhs.getName());
+			return name1.compareToIgnoreCase(name2);
 		default:
 			return lhs.getName().compareToIgnoreCase(rhs.getName());
 		}

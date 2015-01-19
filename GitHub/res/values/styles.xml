@@ -15,14 +15,14 @@
     </style>
 
     <style name="Widget.Custom.Pull_Style" parent="android:Widget">
-        <item name="ptrHeaderBackground">@color/common_title_refresh_blue</item>
+        <item name="ptrHeaderBackground">@color/common_icon_blue</item>
         <item name="ptrHeaderTitleTextAppearance">@style/TextAppearance.Custom.Pull_Text</item>
         <item name="ptrProgressBarColor">@color/common_title_refresh_blue</item>
     </style>
 
     <style name="TextAppearance.Custom.Pull_Text" parent="android:TextAppearance.Large.Inverse">
         <item name="android:textSize">@dimen/text14</item>
-        <item name="android:textColor">@color/common_light_black</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="editText_style">

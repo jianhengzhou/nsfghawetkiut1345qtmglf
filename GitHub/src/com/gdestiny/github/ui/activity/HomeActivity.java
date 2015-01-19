@@ -3,6 +3,7 @@ package com.gdestiny.github.ui.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,10 +14,14 @@ import com.gdestiny.github.ui.fragment.FollowingFragment;
 import com.gdestiny.github.ui.fragment.LeftMenuFragment;
 import com.gdestiny.github.ui.fragment.RepositoryFragment;
 import com.gdestiny.github.ui.view.ResideMenu;
+import com.gdestiny.github.utils.GLog;
+import com.gdestiny.github.utils.ToastUtils;
 
 public class HomeActivity extends BaseFragmentActivity implements
 		OnClickListener {
 
+	private long keyTime; // again exit
+	public static final int exitLimit = 2000;
 	private ResideMenu resideMenu;
 	private Fragment currentFragment;
 
@@ -107,4 +112,21 @@ public class HomeActivity extends BaseFragmentActivity implements
 		}
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			long temp = event.getEventTime();
+			GLog.sysout((temp - keyTime) + "");
+			if ((temp - keyTime) > exitLimit) {
+				ToastUtils.show(context,
+						getResources().getString(R.string.again_exit));
+				keyTime = temp;
+			} else {
+				finish();
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }

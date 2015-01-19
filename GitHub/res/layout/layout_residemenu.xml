@@ -17,7 +17,8 @@
         android:layout_height="fill_parent"
         android:background="@drawable/residemenu_shadow"
         android:contentDescription="@string/app_name"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/sv_left_menu"
@@ -32,7 +33,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:gravity="left" >
-
         </FrameLayout>
     </LinearLayout>
 

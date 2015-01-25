@@ -30,13 +30,6 @@
         <item name="android:background">@drawable/selector_common_edtitext_background</item>
     </style>
 
-    <style name="progressbar">
-        <item name="android:indeterminate">true</item>
-        <item name="android:indeterminateDrawable">@drawable/progress_circle</item>
-        <item name="android:indeterminateDuration">2000</item>
-        <item name="android:indeterminateOnly">true</item>
-    </style>
-
     <style name="common_menu_text_style">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>

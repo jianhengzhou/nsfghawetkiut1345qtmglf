@@ -100,7 +100,7 @@
                 android:drawableLeft="@drawable/selector_icon_following"
                 android:text="@string/following" />
 
-            <include layout="@layout/includer_divider_w" />
+            <include layout="@layout/includer_divider_h" />
 
             <TextView
                 android:id="@+id/menu_gists"
@@ -108,7 +108,7 @@
                 android:drawableLeft="@drawable/selector_icon_gists"
                 android:text="@string/gists" />
 
-            <include layout="@layout/includer_divider_w" />
+            <include layout="@layout/includer_divider_h" />
 
             <TextView
                 android:id="@+id/menu_issue"
@@ -116,7 +116,7 @@
                 android:drawableLeft="@drawable/selector_icon_issue"
                 android:text="@string/issue" />
 
-            <include layout="@layout/includer_divider_w" />
+            <include layout="@layout/includer_divider_h" />
 
             <TextView
                 android:id="@+id/menu_bookmarks"
@@ -124,7 +124,7 @@
                 android:drawableLeft="@drawable/selector_icon_bookmarks"
                 android:text="@string/bookmarks" />
 
-            <include layout="@layout/includer_divider_w" />
+            <include layout="@layout/includer_divider_h" />
         </LinearLayout>
     </ScrollView>
 

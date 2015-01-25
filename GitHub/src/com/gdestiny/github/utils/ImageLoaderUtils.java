@@ -639,7 +639,7 @@ public class ImageLoaderUtils {
 	}
 
 	public static String initImageDir() {
-		return Constants.IMAGE_PATH;
+		return CacheUtils.IMAGE_PATH;
 	}
 
 	private static DiskCache initImageLoaderDiskCache() {

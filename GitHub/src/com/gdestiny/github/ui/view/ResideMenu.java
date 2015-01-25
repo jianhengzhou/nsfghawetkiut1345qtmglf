@@ -438,6 +438,8 @@ public class ResideMenu extends FrameLayout {
 				}
 				if (xOffset < -50 || xOffset > 50) {
 					pressedState = PRESSED_MOVE_HORIZANTAL;
+					if(menuListener!= null)
+						menuListener.onMove();
 					ev.setAction(MotionEvent.ACTION_CANCEL);
 				}
 			} else if (pressedState == PRESSED_MOVE_HORIZANTAL) {
@@ -519,6 +521,8 @@ public class ResideMenu extends FrameLayout {
 		 * .
 		 */
 		public void closeMenu();
+		
+		public void onMove();
 	}
 
 }

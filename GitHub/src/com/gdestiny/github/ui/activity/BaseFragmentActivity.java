@@ -4,10 +4,12 @@ import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -24,7 +26,7 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 	protected TitleBar titlebar;
 	protected String mClassName;
 	protected StringBuilder mBuffer = new StringBuilder();
-	protected Context context;
+	protected Activity context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,24 +38,33 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 				mBuffer.delete(0, mBuffer.length()).append(mClassName)
 						.append(".onCreate()").toString());
 
-		initActionBar();
+		titlebar = new TitleBar(this);
+		initActionBar(titlebar);
 		mHelper = new SwipeBackActivityHelper(this);
 		mHelper.onActivityCreate();
+		setContentView();
 		initView();
 		initData();
 	}
 
-	protected void initActionBar() {
-		titlebar = new TitleBar(this);
+	abstract protected void setContentView();
+
+	abstract protected void initView();
+
+	abstract protected void initData();
+
+	abstract protected void onleftLayout();
+
+	protected void initActionBar(TitleBar titleBar) {
 
 		ActionBar actionbar = getSupportActionBar();
-		actionbar.setCustomView(titlebar);
+		actionbar.setCustomView(titleBar);
 		actionbar.setDisplayShowCustomEnabled(true);
 		actionbar.setDisplayShowHomeEnabled(false);
 		actionbar.setDisplayShowTitleEnabled(false);
 		actionbar.setDisplayUseLogoEnabled(false);
 		// ¼àÌý
-		View backLayout = titlebar.findViewById(R.id.title_left_layout);
+		View backLayout = titleBar.findViewById(R.id.title_left_layout);
 		backLayout.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -61,7 +72,7 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 				onleftLayout();
 			}
 		});
-		ImageButton rightBtn = (ImageButton) titlebar
+		ImageButton rightBtn = (ImageButton) titleBar
 				.findViewById(R.id.titlebar_rignt_btn);
 		rightBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -76,12 +87,6 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 	public TitleBar getTitlebar() {
 		return titlebar;
 	}
-
-	abstract protected void initView();
-
-	abstract protected void initData();
-
-	abstract protected void onleftLayout();
 
 	protected void onRightBtn() {
 	}
@@ -104,6 +109,50 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 		if (v == null && mHelper != null)
 			return mHelper.findViewById(id);
 		return v;
+	}
+
+	public Fragment getFragment(String tag) {
+		return getSupportFragmentManager().findFragmentByTag(tag);
+	}
+
+	public void changeFragment(int replaceLayoutId, Fragment f, String tag,
+			boolean addToBackStack, boolean anim) {
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		// if(anim)
+		// ft.setCustomAnimations(R.anim.left_to_right_in,
+		// R.anim.left_to_right_out,
+		// R.anim.right_to_left_in,
+		// R.anim.right_to_left_out);
+		Fragment currentFragment = getFragment(tag);
+		if (currentFragment != null) {
+			ft.remove(currentFragment);
+		}
+		ft.add(replaceLayoutId, f, tag);
+
+		// ft.replace(replaceLayoutId, f,tag);
+		// if(addToBackStack)ft.addToBackStack(null);
+		ft.commit();
+	}
+
+	public void changeFragment(int replaceLayoutId, Fragment orgF,
+			Fragment newF, String newFTag) {
+		if (orgF == newF) {
+			return;
+		}
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		if (orgF != null) {
+			if (orgF.isAdded()) {
+				ft.hide(orgF);
+			}
+		}
+		if (newF != null) {
+			if (newF.isAdded()) {
+				ft.show(newF);
+			} else {
+				ft.add(replaceLayoutId, newF, newFTag);
+			}
+		}
+		ft.commitAllowingStateLoss();
 	}
 
 	@Override

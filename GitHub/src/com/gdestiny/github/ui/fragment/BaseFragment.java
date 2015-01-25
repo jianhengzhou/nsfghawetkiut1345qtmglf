@@ -4,7 +4,6 @@ import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,7 +17,7 @@ import android.view.ViewGroup;
 public abstract class BaseFragment extends Fragment {
 
 	protected final String mClassName;
-	protected Context context;
+	protected Activity context;
 	protected StringBuilder mBuffer = new StringBuilder();
 	protected View currentView;
 
@@ -28,6 +27,15 @@ public abstract class BaseFragment extends Fragment {
 
 	public BaseFragment() {
 		mClassName = getClass().getSimpleName();
+	}
+
+	public void onShowRepeat(Activity activity) {
+
+	}
+
+	public void onShowInParentActivity(Activity context2) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -228,4 +236,5 @@ public abstract class BaseFragment extends Fragment {
 	public String toString() {
 		return getClass().getName();
 	}
+
 }

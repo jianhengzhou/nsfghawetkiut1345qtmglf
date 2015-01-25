@@ -54,7 +54,7 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 			@Override
 			public void onDismiss() {
 				menuPopup.resetSecondly();
-				menuBtn.setImageResource(R.drawable.selector_common_btn_more);
+				// menuBtn.setImageResource(R.drawable.selector_common_btn_more);
 			}
 		});
 	}
@@ -154,7 +154,7 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.titlebar_menu_btn:
-			menuBtn.setImageResource(R.drawable.common_btn_more_pressed);
+			// menuBtn.setImageResource(R.drawable.common_btn_more_pressed);
 			showStatus();
 			break;
 		}

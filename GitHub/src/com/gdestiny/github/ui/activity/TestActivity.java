@@ -34,4 +34,10 @@ public class TestActivity extends BaseFragmentActivity {
 		finish();
 	}
 
+	@Override
+	protected void setContentView() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

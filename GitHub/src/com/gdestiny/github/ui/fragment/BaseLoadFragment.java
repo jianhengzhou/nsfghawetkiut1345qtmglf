@@ -8,7 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public abstract class BaseLoadFragment extends BaseFragment implements OnRefreshListener {
+public abstract class BaseLoadFragment extends BaseFragment implements
+		OnRefreshListener {
 
 	protected View currentView;
 	protected PullToRefreshLayout pullToRefreshLayout;
@@ -26,6 +27,21 @@ public abstract class BaseLoadFragment extends BaseFragment implements OnRefresh
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
+	public PullToRefreshLayout getPullToRefreshLayout() {
+		return pullToRefreshLayout;
+	}
+
+	public void setPullToRefreshLayout(PullToRefreshLayout pullToRefreshLayout) {
+		this.pullToRefreshLayout = pullToRefreshLayout;
+	}
+
+	public boolean isRefreshing() {
+		if (pullToRefreshLayout != null) {
+			return pullToRefreshLayout.isRefreshing();
+		}
+		return false;
+	}
+
 	public void showProgress() {
 		if (pullToRefreshLayout != null && !pullToRefreshLayout.isRefreshing()) {
 			pullToRefreshLayout.setRefreshing(true);
@@ -38,9 +54,4 @@ public abstract class BaseLoadFragment extends BaseFragment implements OnRefresh
 		}
 	}
 
-	@Override
-	public void onRefreshStarted(View view) {
-		// TODO Auto-generated method stub
-
-	}
 }

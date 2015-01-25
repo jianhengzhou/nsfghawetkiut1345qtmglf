@@ -42,7 +42,6 @@ import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants.Sort;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
-import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
@@ -65,6 +64,11 @@ public class RepositoryFragment extends BaseLoadFragment {
 	private Sort curSort = Sort.All;
 	private boolean isSorting = false;
 
+	// menu
+	private LinkedHashMap<Integer, Integer> itemmap;
+	private LinkedHashMap<Integer, Integer> itemmapSecondly;
+	private StatusPopUpWindow.StatusPopUpWindowItemClickListener menuListener;
+
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -84,6 +88,11 @@ public class RepositoryFragment extends BaseLoadFragment {
 
 	@Override
 	protected void initView() {
+		this.pullToRefreshLayout = (PullToRefreshLayout) this.currentView
+				.findViewById(R.id.pull_refresh_layout);
+		ActionBarPullToRefresh.from(getActivity()).allChildrenArePullable()
+				.listener(this).setup(pullToRefreshLayout);
+		initStatusPopup(((BaseFragmentActivity) context).getTitlebar());
 		repositoryList = (ListView) this.currentView
 				.findViewById(R.id.repository_list);
 		repositoryList.setOnItemClickListener(new OnItemClickListener() {
@@ -97,64 +106,75 @@ public class RepositoryFragment extends BaseLoadFragment {
 						(Repository) viewRepository.get(position));
 			}
 		});
-		this.pullToRefreshLayout = (PullToRefreshLayout) this.currentView
-				.findViewById(R.id.pull_refresh_layout);
-		ActionBarPullToRefresh.from(getActivity()).allChildrenArePullable()
-				.listener(this).setup(pullToRefreshLayout);
-		initStatusPopup(((BaseFragmentActivity) context).getTitlebar());
 
 	}
 
-	private void initStatusPopup(final TitleBar title) {
-		LinkedHashMap<Integer, Integer> itemmap = new LinkedHashMap<Integer, Integer>();
-		itemmap.put(R.string.sort, R.drawable.common_status_sort);
-		itemmap.put(R.string.refresh, R.drawable.common_status_refresh);
-		// 二级菜单
-		title.initSecondly();
-		LinkedHashMap<Integer, Integer> itemmapSecondly = new LinkedHashMap<Integer, Integer>();
-		itemmapSecondly.put(R.string.all, R.drawable.common_code_grey);
-		itemmapSecondly.put(R.string.star, R.drawable.common_star_grey);
-		itemmapSecondly.put(R.string.own, R.drawable.common_own_people_grey);
-		itemmapSecondly.put(R.string.user, R.drawable.circle_user_grey);
-		itemmapSecondly.put(R.string.time, R.drawable.common_time_grey);
-		title.setSecondlyStatusItem(context, itemmapSecondly);
-		title.setStatusItem(context, itemmap,
-				new StatusPopUpWindow.StatusPopUpWindowItemClickListener() {
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden)
+			initStatusPopup(((BaseFragmentActivity) context).getTitlebar());
+	}
 
-					@Override
-					public void onitemclick(int titleId) {
-						// TODO Auto-generated method stub
-						GLog.sysout(context.getResources().getString(titleId)
-								+ "");
-						boolean dismiss = true;
-						switch (titleId) {
-						case R.string.refresh:
-							getRepository();
-							break;
-						case R.string.sort:
-							dismiss = false;
-							title.showSecondly();
-							break;
-						case R.string.all:
-							asyncSort(Sort.All, false);
-							break;
-						case R.string.star:
-							asyncSort(Sort.Star, false);
-							break;
-						case R.string.own:
-							asyncSort(Sort.Own, false);
-							break;
-						case R.string.user:
-							asyncSort(Sort.User, false);
-							break;
-						case R.string.time:
-							asyncSort(Sort.Time, false);
-							break;
+	private void initStatusPopup(final TitleBar title) {
+		if (itemmap == null) {
+			itemmap = new LinkedHashMap<Integer, Integer>();
+			itemmap.put(R.string.sort, R.drawable.common_status_sort);
+			itemmap.put(R.string.refresh, R.drawable.common_status_refresh);
+		}
+		// 二级菜单
+		if (itemmapSecondly == null) {
+			title.initSecondly();
+			itemmapSecondly = new LinkedHashMap<Integer, Integer>();
+			itemmapSecondly.put(R.string.all, R.drawable.common_code_grey);
+			itemmapSecondly.put(R.string.star, R.drawable.common_star_grey);
+			itemmapSecondly
+					.put(R.string.own, R.drawable.common_own_people_grey);
+			itemmapSecondly.put(R.string.user, R.drawable.circle_user_grey);
+			itemmapSecondly.put(R.string.time, R.drawable.common_time_grey);
+		}
+		if (menuListener == null) {
+			menuListener = new StatusPopUpWindow.StatusPopUpWindowItemClickListener() {
+
+				@Override
+				public void onitemclick(int titleId) {
+					GLog.sysout(context.getResources().getString(titleId) + "");
+					boolean dismiss = true;
+					switch (titleId) {
+					case R.string.refresh:
+						if (isRefreshing()) {
+							GLog.sysout("update is not complete");
+							return;
 						}
-						if (dismiss)
-							title.dissmissStatus();
+						getRepository();
+						break;
+					case R.string.sort:
+						dismiss = false;
+						title.showSecondly();
+						break;
+					case R.string.all:
+						asyncSort(Sort.All, false);
+						break;
+					case R.string.star:
+						asyncSort(Sort.Star, false);
+						break;
+					case R.string.own:
+						asyncSort(Sort.Own, false);
+						break;
+					case R.string.user:
+						asyncSort(Sort.User, false);
+						break;
+					case R.string.time:
+						asyncSort(Sort.Time, false);
+						break;
 					}
-				});
+					if (dismiss)
+						title.dissmissStatus();
+				}
+			};
+		}
+		title.setSecondlyStatusItem(context, itemmapSecondly);
+		title.setStatusItem(context, itemmap, menuListener);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -224,6 +244,7 @@ public class RepositoryFragment extends BaseLoadFragment {
 
 			@Override
 			public Boolean onExcute(GitHubClient client) {
+				// TestUtils.interrupt(5000);
 				try {
 					myRepository = new RepositoryService(
 							GitHubApplication.getClient()).getRepositories();
@@ -277,7 +298,7 @@ public class RepositoryFragment extends BaseLoadFragment {
 			break;
 		}
 		Collections.sort(viewRepository, new RepositoryComparator(sort));
-		GLog.sysout("" + TestUtils.printListRepository(viewRepository));
+		// GLog.sysout("" + TestUtils.printListRepository(viewRepository));
 		// 增加 字母
 		if (!alphaIndex.isEmpty())
 			alphaIndex.clear();
@@ -337,6 +358,7 @@ public class RepositoryFragment extends BaseLoadFragment {
 	@Override
 	public void onRefreshStarted(View view) {
 		getRepository();
+		ToastUtils.show(context, "Repository onRefreshStarted");
 	}
 
 }

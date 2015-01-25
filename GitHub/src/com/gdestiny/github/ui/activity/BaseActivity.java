@@ -8,7 +8,7 @@ import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -32,7 +32,7 @@ public abstract class BaseActivity extends SherlockActivity implements
 	private SwipeBackActivityHelper mHelper;
 	protected TitleBar titlebar;
 
-	protected Context context;
+	protected Activity context;
 	protected String mClassName;
 	protected StringBuilder mBuffer = new StringBuilder();
 

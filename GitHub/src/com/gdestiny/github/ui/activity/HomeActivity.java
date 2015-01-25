@@ -1,15 +1,19 @@
 package com.gdestiny.github.ui.activity;
 
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.ui.dialog.MaterialDialog;
+import com.gdestiny.github.ui.fragment.BaseLoadFragment;
+import com.gdestiny.github.ui.fragment.FollowerFragment;
 import com.gdestiny.github.ui.fragment.FollowingFragment;
 import com.gdestiny.github.ui.fragment.LeftMenuFragment;
 import com.gdestiny.github.ui.fragment.RepositoryFragment;
@@ -24,22 +28,19 @@ public class HomeActivity extends BaseFragmentActivity implements
 	private long keyTime; // again exit
 	public static final int exitLimit = 2000;
 	private ResideMenu resideMenu;
-	private Fragment currentFragment;
+	private BaseLoadFragment currentFragment;
+	private String currentFragmentTag;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.act_home);
 		setSwipeBackEnable(false);
 		initMenu();
-		RepositoryFragment repositoryFragment = new RepositoryFragment();
-		showFragment(repositoryFragment);
 	}
 
 	@Override
-	protected void initActionBar() {
-		super.initActionBar();
-		titlebar.setTitleIcon(GitHubApplication.getUser().getAvatarUrl());
+	protected void setContentView() {
+		setContentView(R.layout.act_home);
 	}
 
 	@Override
@@ -50,27 +51,16 @@ public class HomeActivity extends BaseFragmentActivity implements
 	@Override
 	protected void initData() {
 		// TODO Auto-generated method stub
-
+		titlebar.setTitleIcon(GitHubApplication.getUser().getAvatarUrl());
+		currentFragment = new RepositoryFragment();
+		currentFragmentTag = getResources().getString(R.string.repository);
+		changeFragment(R.id.home_frame, null, currentFragment,
+				currentFragmentTag);
 	}
 
 	@Override
 	protected void onleftLayout() {
-		// TODO Auto-generated method stub
 		resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
-	}
-
-	private void showFragment(Fragment fragment) {
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		// fragmentTransaction.setCustomAnimations(R.anim.in, R.anim.out);
-		if (!fragment.isAdded()) {
-			ft.add(R.id.home_frame, fragment);
-		} else {
-			ft.show(fragment);
-		}
-		if (currentFragment != null)
-			ft.hide(currentFragment);
-		ft.commit();
-		currentFragment = fragment;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -81,6 +71,49 @@ public class HomeActivity extends BaseFragmentActivity implements
 		resideMenu.setDirectionDisable(ResideMenu.DIRECTION_RIGHT);
 		resideMenu.attachToActivity(this);
 		resideMenu.setLeftMenuFragment(this, new LeftMenuFragment(this));
+		resideMenu.setMenuListener(new ResideMenu.OnMenuListener() {
+
+			@Override
+			public void openMenu() {
+				GLog.sysout("resideMenu openMenu");
+				hideHeaderView(currentFragment);
+			}
+
+			@Override
+			public void closeMenu() {
+				GLog.sysout("resideMenu closeMenu");
+				showRefreshHeader(currentFragment);
+			}
+
+			@Override
+			public void onMove() {
+				if (!resideMenu.isOpened()) {
+					hideHeaderView(currentFragment);
+				}
+			}
+		});
+	}
+
+	private void hideHeaderView(BaseLoadFragment currentFragment) {
+		if (currentFragment != null) {
+			PullToRefreshLayout mPullToRefreshLayout = currentFragment
+					.getPullToRefreshLayout();
+			if (mPullToRefreshLayout != null) {
+				mPullToRefreshLayout.getHeaderTransformer()
+						.setProgressbarVisibility(View.GONE);
+			}
+		}
+	}
+
+	private void showRefreshHeader(BaseLoadFragment currentFragment) {
+		if (currentFragment != null && currentFragment.isRefreshing()) {
+			PullToRefreshLayout mPullToRefreshLayout = currentFragment
+					.getPullToRefreshLayout();
+			if (mPullToRefreshLayout != null) {
+				mPullToRefreshLayout.getHeaderTransformer()
+						.setProgressbarVisibility(View.VISIBLE);
+			}
+		}
 	}
 
 	@Override
@@ -91,31 +124,94 @@ public class HomeActivity extends BaseFragmentActivity implements
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		boolean close = true;
 		switch (v.getId()) {
 		case R.id.menu_avatar:
-			resideMenu.closeMenu();
 			break;
 		case R.id.menu_repository:
-			resideMenu.closeMenu();
+			changeOrNewFragment(v);
 			break;
 		case R.id.menu_news:
-			resideMenu.closeMenu();
+			close = false;
+			final MaterialDialog mMaterialDialog = new MaterialDialog(this)
+					.setTitle("Repository")
+					.setMessage(
+							"qwertyuiopasdfghjklzxcvbnm,qwertyuiopsdfghjkwertyuiopasdf")
+					.setPositiveButton("OK", new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+						}
+					}).setNegativeButton("CANCEL", new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+						}
+					}).setCanceledOnTouchOutside(true);
+			mMaterialDialog.show();
+			break;
+		case R.id.menu_follower:
+			changeOrNewFragment(v);
 			break;
 		case R.id.menu_following:
-			resideMenu.closeMenu();
-			showFragment(new FollowingFragment());
+			changeOrNewFragment(v);
+			break;
 		case R.id.menu_exit:
+			close = false;
 			finish();
 			break;
 		case R.id.menu_setting:
+			close = false;
 			IntentUtils.start(context, LoginActivity.class);
 			break;
+		}
+		if (close)
+			resideMenu.closeMenu();
+	}
+
+	private void changeOrNewFragment(View v) {
+		String tag = null;
+		if (v instanceof TextView) {
+			tag = ((TextView) v).getText().toString();
+		} else if (v instanceof ImageView) {
+			tag = "user";
+		}
+		BaseLoadFragment newFragment = (BaseLoadFragment) getFragment(tag);
+		if (currentFragment != null && currentFragment == newFragment) {
+			currentFragment.onShowRepeat(context);
+			GLog.sysout("currentFragment.onShowRepeat(context);");
+		} else {
+			hideHeaderView(currentFragment);
+			if (newFragment == null) {
+				GLog.sysout("newFragment == null");
+				switch (v.getId()) {
+				case R.id.menu_avatar:
+					break;
+				case R.id.menu_repository:
+					newFragment = new RepositoryFragment();
+					break;
+				case R.id.menu_news:
+					break;
+				case R.id.menu_follower:
+					newFragment = new FollowerFragment();
+					break;
+				case R.id.menu_following:
+					newFragment = new FollowingFragment();
+					break;
+				}
+			}
+			changeFragment(R.id.home_frame, currentFragment, newFragment, tag);
+			newFragment.onShowInParentActivity(context);
+			getTitlebar().setTitleText(tag);
+			currentFragment = newFragment;
 		}
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
+		if (resideMenu.isOpened()) {
+			resideMenu.closeMenu();
+			return true;
+		}
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			long temp = event.getEventTime();
 			GLog.sysout((temp - keyTime) + "");
@@ -130,4 +226,5 @@ public class HomeActivity extends BaseFragmentActivity implements
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+
 }

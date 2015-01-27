@@ -36,6 +36,7 @@
         <activity android:name="com.gdestiny.github.ui.activity.TestActivity" />
         <activity android:name="com.gdestiny.github.ui.activity.UserActivity" />
         <activity android:name="com.gdestiny.github.ui.activity.RepositoryDetailActivity" />
+        <activity android:name="com.gdestiny.github.ui.activity.CodeFileActivity" />
     </application>
 
 </manifest>

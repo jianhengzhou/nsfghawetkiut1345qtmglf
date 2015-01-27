@@ -3,6 +3,7 @@ package com.gdestiny.github.ui.view;
 import java.util.LinkedHashMap;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +21,16 @@ import com.gdestiny.github.utils.ViewUtils;
 
 public class TitleBar extends LinearLayout implements View.OnClickListener {
 
+	public static final int ICON = 0;
+	public static final int MAIN = 1;
+	public static final int SECONDLY = 2;
+
 	private StatusPopUpWindow menuPopup;
 	private ImageButton rightBtn;
 	private ImageButton menuBtn;
 	private ImageView titleBackIcon;
 	private TextView titleBackText;
+	private TextView titleBackTextSecondly;
 
 	public TitleBar(Context context) {
 		super(context);
@@ -40,6 +46,7 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 		menuBtn = (ImageButton) findViewById(R.id.titlebar_menu_btn);
 		titleBackIcon = (ImageView) findViewById(R.id.titlebar_back_icon);
 		titleBackText = (TextView) findViewById(R.id.titlebar_back_text);
+		titleBackTextSecondly = (TextView) findViewById(R.id.titlebar_back_text_secondly);
 		menuBtn.setOnClickListener(this);
 	}
 
@@ -131,22 +138,65 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 		return titleBackText;
 	}
 
-	public void setLeftLayout(String url, String text) {
+	public void setLeftLayout(String url, String mainText) {
 		setTitleIcon(url);
-		setTitleText(text);
+		setTitleText(mainText);
+	}
+
+	public void setLeftLayout(String url, String mainText, String textSecondly) {
+		setTitleIcon(url);
+		setTitleText(mainText);
+		setTitleTextSecondly(textSecondly);
 	}
 
 	public void setTitleIcon(String url) {
-		ImageLoaderUtils.displayImage(url, titleBackIcon,
-				R.drawable.default_avatar, R.drawable.ic_launcher, false);
+		if (TextUtils.isEmpty(url)) {
+			ViewUtils.setVisibility(titleBackIcon, View.GONE);
+		} else {
+			ViewUtils.setVisibility(titleBackIcon, View.VISIBLE);
+			ImageLoaderUtils.displayImage(url, titleBackIcon,
+					R.drawable.default_avatar, R.drawable.ic_launcher, false);
+		}
 	}
 
 	public void setTitleText(String text) {
-		titleBackText.setText(text);
+		if (TextUtils.isEmpty(text)) {
+			ViewUtils.setVisibility(titleBackText, View.GONE);
+		} else {
+			ViewUtils.setVisibility(titleBackText, View.VISIBLE);
+			titleBackText.setText(text);
+		}
 	}
 
 	public void setTitleText(int id) {
 		titleBackText.setText(id);
+	}
+
+	public void setTitleTextSecondly(String text) {
+		if (TextUtils.isEmpty(text)) {
+			ViewUtils.setVisibility(titleBackTextSecondly, View.GONE);
+		} else {
+			ViewUtils.setVisibility(titleBackTextSecondly, View.VISIBLE);
+			titleBackTextSecondly.setText(text);
+		}
+	}
+
+	public void setTitleTextSecondly(int id) {
+		titleBackTextSecondly.setText(id);
+	}
+
+	public void setLeftVisibility(int which, int visibility) {
+		switch (which) {
+		case ICON:
+			ViewUtils.setVisibility(titleBackIcon, visibility);
+			break;
+		case MAIN:
+			ViewUtils.setVisibility(titleBackText, visibility);
+			break;
+		case SECONDLY:
+			ViewUtils.setVisibility(titleBackTextSecondly, visibility);
+			break;
+		}
 	}
 
 	@Override

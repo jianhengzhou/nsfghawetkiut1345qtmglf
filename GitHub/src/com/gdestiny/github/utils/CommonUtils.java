@@ -46,15 +46,36 @@ public class CommonUtils {
 		}
 		switch (count) {
 		case 0:
-			return String.format("%.0f%c", result,'B');
+			return String.format("%.0f%c", result, 'B');
 		case 1:
-			return String.format("%.2f%c", result,'K');
+			return String.format("%.2f%c", result, 'K');
 		case 2:
-			return String.format("%.2f%c", result,'M');
+			return String.format("%.2f%c", result, 'M');
 		case 3:
-			return String.format("%.2f%c", result,'G');
+			return String.format("%.2f%c", result, 'G');
 		default:
 			return String.format("%.2f", result);
 		}
+	}
+
+	public static boolean isImage(String name) {
+		int index = name.lastIndexOf('.');
+		if (index < 0) {
+			return false;
+		}
+		String ex = name.substring(index + 1);
+		return "png".equalsIgnoreCase(ex) || "jpg".equalsIgnoreCase(ex)
+				|| "gif".equalsIgnoreCase(ex) || "bmp".equalsIgnoreCase(ex);
+	}
+
+	public static boolean isImageFromPath(String path) {
+		String name = pathToName(path);
+		int index = name.lastIndexOf('.');
+		if (index < 0) {
+			return false;
+		}
+		String ex = name.substring(index + 1);
+		return "png".equalsIgnoreCase(ex) || "jpg".equalsIgnoreCase(ex)
+				|| "gif".equalsIgnoreCase(ex) || "bmp".equalsIgnoreCase(ex);
 	}
 }

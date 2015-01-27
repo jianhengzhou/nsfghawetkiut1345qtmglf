@@ -19,23 +19,31 @@ public abstract class BaseFragment extends Fragment {
 	protected final String mClassName;
 	protected Activity context;
 	protected StringBuilder mBuffer = new StringBuilder();
-	protected View currentView;
+	private View currentView;
 
 	abstract protected void initView();
 
 	abstract protected void initData();
+
+	abstract protected void setCurrentView(LayoutInflater inflater,
+			ViewGroup container, Bundle savedInstanceState);
 
 	public BaseFragment() {
 		mClassName = getClass().getSimpleName();
 	}
 
 	public void onShowRepeat(Activity activity) {
-
 	}
 
-	public void onShowInParentActivity(Activity context2) {
-		// TODO Auto-generated method stub
+	public void onShowInParentActivity(Activity activity) {
+	}
 
+	public View findViewById(int id) {
+		if (this.currentView == null) {
+			GLog.sysout("this.currentView == null");
+			return null;
+		}
+		return currentView.findViewById(id);
 	}
 
 	/**
@@ -74,13 +82,21 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = super.onCreateView(inflater, container, savedInstanceState);
 		GLog.d(Constants.GlobalTag,
 				mBuffer.delete(0, mBuffer.length()).append(mClassName)
 						.append(".onCreateView()").toString());
+		setCurrentView(inflater, container, savedInstanceState);
 		initView();
 		initData();
-		return view;
+		return this.currentView;
+	}
+
+	public void setContentView(LayoutInflater inflater, int id) {
+		this.currentView = inflater.inflate(id, null);
+	}
+
+	public View getCurrentView() {
+		return currentView;
 	}
 
 	/**
@@ -92,8 +108,6 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		initView();
-		initData();
 		GLog.d(Constants.GlobalTag,
 				mBuffer.delete(0, mBuffer.length()).append(mClassName)
 						.append(".onActivityCreated()").toString());

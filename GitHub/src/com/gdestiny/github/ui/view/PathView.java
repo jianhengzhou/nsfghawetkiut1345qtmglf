@@ -1,5 +1,6 @@
 package com.gdestiny.github.ui.view;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +29,6 @@ public class PathView extends LinearLayout {
 
 	public interface PathClickListener {
 		public void onPathClick(String path);
-
-		public void onRootClick();
 	}
 
 	public PathView(Context context) {
@@ -54,20 +53,7 @@ public class PathView extends LinearLayout {
 		hs.setHorizontalScrollBarEnabled(false);
 		hs.addView(linearLayout);
 
-		View view = LayoutInflater.from(context).inflate(R.layout.item_path,
-				null);
-		((TextView) view.findViewById(R.id.path)).setText(CodeTree.ROOT);
-		view.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (listener != null) {
-					if (resetAll())
-						listener.onRootClick();
-				}
-			}
-		});
-		addView(view);
+		addView(newView(CodeTree.ROOT));
 		addView(hs);
 	}
 
@@ -98,12 +84,15 @@ public class PathView extends LinearLayout {
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		super.onLayout(changed, l, t, r, b);
-		hs.scrollTo(hs.getWidth(), 0);
+		int width = 0;
+		for (int i = 0; i < hs.getChildCount(); i++)
+			width += hs.getChildAt(i).getWidth();
+		hs.scrollTo(width, 0);
 	}
 
 	public boolean resetAll() {
 		if (pathItems.isEmpty()) {
-			GLog.sysout("no need to reset");
+			GLog.sysout("still root no need to reset");
 			return false;
 		}
 		pathItems.removeAll(pathItems);
@@ -111,10 +100,18 @@ public class PathView extends LinearLayout {
 		return true;
 	}
 
+	/**
+	 * 点击时重置
+	 * 
+	 * @param path
+	 * @return
+	 */
 	public boolean resetPath(String path) {
+		if (path.equals(CodeTree.ROOT))
+			return resetAll();
 		int index = pathItems.indexOf(path);
 		if (index >= pathItems.size() - 1) {
-			GLog.sysout("path on the same");
+			GLog.sysout("path on the same,no need to reset");
 			return false;
 		}
 		for (int i = pathItems.size() - 1; i > index; i--) {
@@ -136,4 +133,36 @@ public class PathView extends LinearLayout {
 		this.listener = listener;
 	}
 
+	public List<String> getPathItems() {
+		return pathItems;
+	}
+
+	public void setPathItems(List<String> pathItems) {
+		this.pathItems = pathItems;
+	}
+
+	/**
+	 * 刷新时用
+	 */
+	public void resetView(String path) {
+		GLog.sysout("reset:" + path);
+		if (!pathItems.isEmpty()) {
+			pathItems.removeAll(pathItems);
+			linearLayout.removeAllViews();
+		}
+		if (!path.contains(File.separator)) {
+			add(path);
+			return;
+		}
+		int index = path.indexOf(File.separator);
+		int lastIndex = path.lastIndexOf(File.separator);
+		while (index > 0 && index <= lastIndex) {
+			String temp = path.substring(0, index);
+			GLog.sysout("index=" + index + "," + temp);
+			add(temp);
+			index = path.indexOf(File.separator, index + 1);
+		}
+		add(path.substring(lastIndex));
+
+	}
 }

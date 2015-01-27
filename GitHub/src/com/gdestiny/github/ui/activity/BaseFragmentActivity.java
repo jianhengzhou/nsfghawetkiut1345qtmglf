@@ -42,12 +42,12 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 		initActionBar(titlebar);
 		mHelper = new SwipeBackActivityHelper(this);
 		mHelper.onActivityCreate();
-		setContentView();
+		setContentView(savedInstanceState);
 		initView();
 		initData();
 	}
 
-	abstract protected void setContentView();
+	abstract protected void setContentView(Bundle savedInstanceState);
 
 	abstract protected void initView();
 

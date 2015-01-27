@@ -12,11 +12,7 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.WatcherService;
 
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -70,31 +66,15 @@ public class RepositoryFragment extends BaseLoadFragment {
 	private StatusPopUpWindow.StatusPopUpWindowItemClickListener menuListener;
 
 	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-	}
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater,
-			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		this.currentView = inflater.inflate(R.layout.frag_repository, null);
-		return this.currentView;
+	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		setContentView(inflater, R.layout.frag_repository,R.id.pull_refresh_layout);
 	}
 
 	@Override
 	protected void initView() {
-		this.pullToRefreshLayout = (PullToRefreshLayout) this.currentView
-				.findViewById(R.id.pull_refresh_layout);
-		ActionBarPullToRefresh.from(getActivity()).allChildrenArePullable()
-				.listener(this).setup(pullToRefreshLayout);
 		initStatusPopup(((BaseFragmentActivity) context).getTitlebar());
-		repositoryList = (ListView) this.currentView
-				.findViewById(R.id.repository_list);
+		repositoryList = (ListView) findViewById(R.id.repository_list);
 		repositoryList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -102,7 +82,7 @@ public class RepositoryFragment extends BaseLoadFragment {
 					int position, long arg3) {
 				// TODO Auto-generated method stub
 				IntentUtils.start(context, RepositoryDetailActivity.class,
-						RepositoryDetailActivity.data,
+						RepositoryDetailActivity.EXTRA_REPOSITORY,
 						(Repository) viewRepository.get(position));
 			}
 		});
@@ -142,7 +122,7 @@ public class RepositoryFragment extends BaseLoadFragment {
 					boolean dismiss = true;
 					switch (titleId) {
 					case R.string.refresh:
-						if (isRefreshing()) {
+						if (isLoading()) {
 							GLog.sysout("update is not complete");
 							return;
 						}
@@ -190,9 +170,8 @@ public class RepositoryFragment extends BaseLoadFragment {
 	}
 
 	private void initAlaphtSort() {
-		az = (ImageView) this.currentView.findViewById(R.id.a_z_alphabet);
-		final TextView azToast = (TextView) this.currentView
-				.findViewById(R.id.alphabet_toast);
+		az = (ImageView) findViewById(R.id.a_z_alphabet);
+		final TextView azToast = (TextView) findViewById(R.id.alphabet_toast);
 		az.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -358,7 +337,6 @@ public class RepositoryFragment extends BaseLoadFragment {
 	@Override
 	public void onRefreshStarted(View view) {
 		getRepository();
-		ToastUtils.show(context, "Repository onRefreshStarted");
 	}
 
 }

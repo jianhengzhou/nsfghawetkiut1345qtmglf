@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.bean.CodeTree;
 import com.gdestiny.github.utils.CommonUtils;
-import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ViewUtils;
 
 public class CodeTreeAdapter extends BaseAdapter {
@@ -34,7 +33,6 @@ public class CodeTreeAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		if (codeTree == null)
 			return 0;
 		return codeTree.getCount();
@@ -42,19 +40,16 @@ public class CodeTreeAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public long getItemId(int arg0) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup arg2) {
-		// TODO Auto-generated method stub
 		Holder holder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
@@ -102,7 +97,6 @@ public class CodeTreeAdapter extends BaseAdapter {
 	public void setCodeTree(CodeTree codeTree) {
 		this.codeTree = codeTree;
 		this.treeCount = codeTree.getTreeCount();
-		GLog.sysout("treeCount:" + treeCount);
 		notifyDataSetChanged();
 	}
 

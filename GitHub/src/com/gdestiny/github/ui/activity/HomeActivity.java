@@ -32,15 +32,10 @@ public class HomeActivity extends BaseFragmentActivity implements
 	private String currentFragmentTag;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void setContentView(Bundle savedInstanceState) {
+		setContentView(R.layout.act_home);
 		setSwipeBackEnable(false);
 		initMenu();
-	}
-
-	@Override
-	protected void setContentView() {
-		setContentView(R.layout.act_home);
 	}
 
 	@Override
@@ -51,7 +46,8 @@ public class HomeActivity extends BaseFragmentActivity implements
 	@Override
 	protected void initData() {
 		// TODO Auto-generated method stub
-		titlebar.setTitleIcon(GitHubApplication.getUser().getAvatarUrl());
+		getTitlebar().setTitleIcon(GitHubApplication.getUser().getAvatarUrl());
+		
 		currentFragment = new RepositoryFragment();
 		currentFragmentTag = getResources().getString(R.string.repository);
 		changeFragment(R.id.home_frame, null, currentFragment,
@@ -106,7 +102,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 	}
 
 	private void showRefreshHeader(BaseLoadFragment currentFragment) {
-		if (currentFragment != null && currentFragment.isRefreshing()) {
+		if (currentFragment != null && currentFragment.isLoading()) {
 			PullToRefreshLayout mPullToRefreshLayout = currentFragment
 					.getPullToRefreshLayout();
 			if (mPullToRefreshLayout != null) {

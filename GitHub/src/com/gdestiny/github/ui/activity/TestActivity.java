@@ -35,7 +35,7 @@ public class TestActivity extends BaseFragmentActivity {
 	}
 
 	@Override
-	protected void setContentView() {
+	protected void setContentView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		
 	}

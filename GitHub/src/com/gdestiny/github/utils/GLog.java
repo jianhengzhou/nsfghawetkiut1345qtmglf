@@ -1,5 +1,10 @@
 package com.gdestiny.github.utils;
 
+/**
+ * 
+ * @author gdestiny
+ *
+ */
 public class GLog {
 	private static boolean isDebug = true;
 

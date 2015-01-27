@@ -1,9 +1,6 @@
 package com.gdestiny.github.ui.fragment;
 
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,26 +13,15 @@ import com.gdestiny.github.utils.ToastUtils;
 public class FollowingFragment extends BaseLoadFragment {
 
 	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater,
-			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		this.currentView = inflater.inflate(R.layout.frag_following, null);
-		return this.currentView;
+	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		setContentView(inflater, R.layout.frag_following,
+				R.id.pull_refresh_layout);
 	}
 
 	@Override
 	protected void initView() {
 		// TODO Auto-generated method stub
-		this.pullToRefreshLayout = (PullToRefreshLayout) this.currentView
-				.findViewById(R.id.pull_refresh_layout);
-		ActionBarPullToRefresh.from(getActivity()).allChildrenArePullable()
-				.listener(this).setup(pullToRefreshLayout);
 		// initStatusPopup(((BaseFragmentActivity) context).getTitlebar());
 	}
 
@@ -54,12 +40,13 @@ public class FollowingFragment extends BaseLoadFragment {
 			public void onSuccess() {
 				ToastUtils.show(context, "FollowingFragment onSuccess");
 				dismissProgress();
+				noData(true);
 			}
 
 			@Override
 			public void onPrev() {
 				// TODO Auto-generated method stub
-
+				showProgress();
 			}
 
 			@Override

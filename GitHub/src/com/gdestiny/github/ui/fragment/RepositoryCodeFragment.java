@@ -9,10 +9,7 @@ import org.eclipse.egit.github.core.Tree;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.DataService;
 
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +22,20 @@ import com.gdestiny.github.adapter.CodeTreeAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.GitHubTask;
 import com.gdestiny.github.bean.CodeTree;
+import com.gdestiny.github.ui.activity.CodeFileActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.view.PathView;
 import com.gdestiny.github.ui.view.PathView.PathClickListener;
 import com.gdestiny.github.utils.GLog;
+import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class RepositoryCodeFragment extends BaseLoadFragment {
 
-	public static final String CODE = "codetree";
+	public static final String EXTRA_CODE = "codetree";
 
 	private Repository repository;
+
 	private ListView codeList;
 	private CodeTreeAdapter codeAdapter;
 
@@ -43,28 +43,21 @@ public class RepositoryCodeFragment extends BaseLoadFragment {
 	private PathView pathView;
 
 	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
-	}
+	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		setContentView(inflater, R.layout.frag_repository_code,
+				R.id.pull_refresh_layout);
+		if (savedInstanceState != null) {
+			currCodeTree = (CodeTree) savedInstanceState
+					.getSerializable(EXTRA_CODE);
 
-	@Override
-	public View onCreateView(LayoutInflater inflater,
-			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		this.currentView = inflater
-				.inflate(R.layout.frag_repository_code, null);
-		return this.currentView;
+		}
 	}
 
 	@Override
 	protected void initView() {
-		// TODO Auto-generated method stub
-		this.pullToRefreshLayout = (PullToRefreshLayout) this.currentView
-				.findViewById(R.id.pull_refresh_layout);
-		ActionBarPullToRefresh.from(getActivity()).allChildrenArePullable()
-				.listener(this).setup(pullToRefreshLayout);
-		codeList = (ListView) this.currentView.findViewById(R.id.list);
+
+		codeList = (ListView) findViewById(R.id.list);
 		codeAdapter = new CodeTreeAdapter(context);
 		codeList.setAdapter(codeAdapter);
 		codeList.setOnItemClickListener(new OnItemClickListener() {
@@ -77,21 +70,25 @@ public class RepositoryCodeFragment extends BaseLoadFragment {
 					codeAdapter.setCodeTree(currCodeTree);
 					codeList.setSelection(0);
 					pathView.add(currCodeTree.currEntry.getPath());
+				} else {
+					IntentUtils
+							.create(context, CodeFileActivity.class)
+							.putExtra(
+									CodeFileActivity.EXTRA_CODE_ENTRY,
+									currCodeTree.subEntry.get(position
+											- currCodeTree.getTreeCount()))
+							.putExtra(CodeFileActivity.EXTRA_CODE_REPOSITORY,
+									repository).start();
 				}
 			}
 		});
 
-		pathView = (PathView) this.currentView.findViewById(R.id.pathview);
+		pathView = (PathView) findViewById(R.id.pathview);
 		pathView.setPathListener(new PathClickListener() {
 
 			@Override
 			public void onPathClick(String path) {
 				setCodeData(path);
-			}
-
-			@Override
-			public void onRootClick() {
-				setCodeData(CodeTree.ROOT);
 			}
 		});
 	}
@@ -99,18 +96,23 @@ public class RepositoryCodeFragment extends BaseLoadFragment {
 	@Override
 	protected void initData() {
 		repository = (Repository) context.getIntent().getSerializableExtra(
-				RepositoryDetailActivity.data);
-		getDetail();
+				RepositoryDetailActivity.EXTRA_REPOSITORY);
+		if (currCodeTree == null)
+			getCodeDetail();
+		else {
+			codeAdapter.setCodeTree(currCodeTree);
+			if (!currCodeTree.name.equals(CodeTree.ROOT))
+				pathView.resetView(currCodeTree.currEntry.getPath());
+		}
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
 		super.onSaveInstanceState(outState);
-		outState.putSerializable(CODE, currCodeTree);
+		outState.putSerializable(EXTRA_CODE, currCodeTree);
 	}
 
-	private void getDetail() {
+	private void getCodeDetail() {
 		new GitHubTask<Tree>(new GitHubTask.TaskListener<Tree>() {
 
 			@Override
@@ -140,7 +142,6 @@ public class RepositoryCodeFragment extends BaseLoadFragment {
 			@Override
 			public void onSuccess(Tree result) {
 				dismissProgress();
-				ToastUtils.show(context, "onSuccess");
 				currCodeTree = CodeTree.toCodeTree(result);
 				codeAdapter.setCodeTree(currCodeTree);
 			}
@@ -148,7 +149,8 @@ public class RepositoryCodeFragment extends BaseLoadFragment {
 			@Override
 			public void onError() {
 				dismissProgress();
-				ToastUtils.show(context, "onError");
+				ToastUtils.show(context,
+						getResources().getString(R.string.network_error));
 			}
 		}).execute(GitHubApplication.getClient());
 	}
@@ -173,8 +175,7 @@ public class RepositoryCodeFragment extends BaseLoadFragment {
 
 	@Override
 	public void onRefreshStarted(View view) {
-		// TODO Auto-generated method stub
-
+		getCodeDetail();
 	}
 
 }

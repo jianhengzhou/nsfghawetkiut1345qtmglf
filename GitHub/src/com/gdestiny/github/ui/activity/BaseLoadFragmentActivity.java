@@ -1,4 +1,4 @@
-package com.gdestiny.github.ui.fragment;
+package com.gdestiny.github.ui.activity;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.utils.ViewUtils;
@@ -10,31 +10,27 @@ import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-public abstract class BaseLoadFragment extends BaseFragment implements
-		OnRefreshListener {
+public abstract class BaseLoadFragmentActivity extends BaseFragmentActivity
+		implements OnRefreshListener {
 
 	private PullToRefreshLayout pullToRefreshLayout;
 	private boolean isLoading = false;
+
 	private View noDataView;
 	private boolean noData;
 
-	public void setContentView(LayoutInflater inflater, int id, int refreshId) {
-		// nodata 界面
-		setContentView(inflater, R.layout.layout_nodata);
+	public void setContentView(int id, int refreshId) {
 
-		// 添加主界面
-		View content = inflater.inflate(id, null);
+		setContentView(R.layout.layout_nodata);
+
+		View content = LayoutInflater.from(context).inflate(id, null);
 		FrameLayout container = (FrameLayout) findViewById(R.id.nodata_content);
 		container.addView(content);
-
-		// 同步颜色
-		getCurrentView().setBackground(content.getBackground());
+		noDataView = findViewById(R.id.nodata);
 
 		pullToRefreshLayout = (PullToRefreshLayout) findViewById(refreshId);
 		ActionBarPullToRefresh.from(context).allChildrenArePullable()
 				.listener(this).setup(pullToRefreshLayout);
-
-		noDataView = findViewById(R.id.nodata);
 	}
 
 	public PullToRefreshLayout getPullToRefreshLayout() {

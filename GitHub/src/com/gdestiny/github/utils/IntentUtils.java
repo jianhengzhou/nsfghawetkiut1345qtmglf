@@ -1,9 +1,5 @@
 package com.gdestiny.github.utils;
 
-import static android.content.Intent.ACTION_SEND;
-import static android.content.Intent.EXTRA_SUBJECT;
-import static android.content.Intent.EXTRA_TEXT;
-
 import java.io.Serializable;
 
 import com.gdestiny.github.ui.activity.TestActivity;
@@ -11,49 +7,18 @@ import com.gdestiny.github.ui.activity.TestActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.os.Parcelable;
 
+/**
+ * 2015.1.17
+ * 
+ * @author gdestiny
+ * 
+ */
 public class IntentUtils {
 
 	private IntentUtils() {
 		throw new AssertionError();
-	}
-
-	/**
-	 * Create intent with subject and body
-	 * 
-	 * @param subject
-	 * @param body
-	 * @return intent
-	 */
-	public static Intent create(final CharSequence subject,
-			final CharSequence body) {
-		Intent intent = new Intent(ACTION_SEND);
-		intent.setType("text/plain");
-		if (!TextUtils.isEmpty(subject))
-			intent.putExtra(EXTRA_SUBJECT, subject);
-		intent.putExtra(EXTRA_TEXT, body);
-		return intent;
-	}
-
-	/**
-	 * Get body from intent
-	 * 
-	 * @param intent
-	 * @return body
-	 */
-	public static String getBody(final Intent intent) {
-		return intent != null ? intent.getStringExtra(EXTRA_TEXT) : null;
-	}
-
-	/**
-	 * Get subject from intent
-	 * 
-	 * @param intent
-	 * @return subject
-	 */
-	public static String getSubject(final Intent intent) {
-		return intent != null ? intent.getStringExtra(EXTRA_SUBJECT) : null;
 	}
 
 	public static void startTest(Context context, String str) {
@@ -80,5 +45,206 @@ public class IntentUtils {
 		Intent intent = new Intent(context, cls);
 		intent.putExtra(name, data);
 		context.startActivity(intent);
+	}
+
+	public static IntentBuilder create(Context context, Class<?> cls) {
+		return new IntentBuilder().create(context, cls);
+	}
+
+	public static class IntentBuilder {
+		private Intent intent;
+		private Context context;
+
+		public IntentBuilder create(Context context, Class<?> cls) {
+			this.intent = new Intent(context, cls);
+			this.context = context;
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, boolean data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, boolean[] data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, Bundle data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, byte data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, byte[] data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, char data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, char[] data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, CharSequence data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, CharSequence[] data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, double data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, double[] data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, float data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, float[] data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, int data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, int[] data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, long data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, long[] data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, Parcelable data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, Parcelable[] data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, Serializable data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, short data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, short[] data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, String data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtra(String name, String[] data) {
+			if (intent != null) {
+				intent.putExtra(name, data);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtras(Bundle extras) {
+			if (intent != null) {
+				intent.putExtras(extras);
+			}
+			return this;
+		}
+
+		public IntentBuilder putExtras(Intent src) {
+			if (intent != null) {
+				intent.putExtras(src);
+			}
+			return this;
+		}
+
+		public void start() {
+			context.startActivity(intent);
+		}
 	}
 }

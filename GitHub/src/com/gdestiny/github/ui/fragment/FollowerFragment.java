@@ -2,10 +2,7 @@ package com.gdestiny.github.ui.fragment;
 
 import java.util.LinkedHashMap;
 
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,26 +22,14 @@ public class FollowerFragment extends BaseLoadFragment {
 	private StatusPopUpWindow.StatusPopUpWindowItemClickListener menuListener;
 
 	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater,
-			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		this.currentView = inflater.inflate(R.layout.frag_follower, null);
-		return this.currentView;
+	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		setContentView(inflater, R.layout.frag_follower,R.id.pull_refresh_layout);
 	}
 
 	@Override
 	protected void initView() {
 		// TODO Auto-generated method stub
-		this.pullToRefreshLayout = (PullToRefreshLayout) this.currentView
-				.findViewById(R.id.pull_refresh_layout);
-		ActionBarPullToRefresh.from(getActivity()).allChildrenArePullable()
-				.listener(this).setup(pullToRefreshLayout);
 		initStatusPopup(((BaseFragmentActivity) context).getTitlebar());
 	}
 
@@ -91,18 +76,19 @@ public class FollowerFragment extends BaseLoadFragment {
 				// TODO Auto-generated method stub
 				ToastUtils.show(context, "FollowerFragment onSuccess");
 				dismissProgress();
+				noData(true);
 			}
 
 			@Override
 			public void onPrev() {
 				// TODO Auto-generated method stub
-
+				showProgress();
 			}
 
 			@Override
 			public void onExcute() {
 				// TODO Auto-generated method stub
-				TestUtils.interrupt(9000);
+				TestUtils.interrupt(5000);
 			}
 		}).execute();
 	}

@@ -1,6 +1,5 @@
 package com.gdestiny.github.ui.fragment;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,8 +26,6 @@ import android.widget.TextView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.RepositoryAdapter;
 import com.gdestiny.github.app.GitHubApplication;
-import com.gdestiny.github.async.GitHubTask;
-import com.gdestiny.github.async.GitHubTask.TaskListener;
 import com.gdestiny.github.async.SimpleUpdateTask;
 import com.gdestiny.github.bean.comparator.RepositoryComparator;
 import com.gdestiny.github.ui.activity.BaseFragmentActivity;
@@ -41,7 +38,8 @@ import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
-public class RepositoryFragment extends BaseLoadFragment {
+public class RepositoryFragment extends
+		BaseLoadFragment<GitHubClient, Boolean> {
 
 	private ListView repositoryList;
 	private RepositoryAdapter repositoryAdapter;
@@ -68,7 +66,8 @@ public class RepositoryFragment extends BaseLoadFragment {
 	@Override
 	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		setContentView(inflater, R.layout.frag_repository,R.id.pull_refresh_layout);
+		setContentView(inflater, R.layout.frag_repository,
+				R.id.pull_refresh_layout);
 	}
 
 	@Override
@@ -126,7 +125,7 @@ public class RepositoryFragment extends BaseLoadFragment {
 							GLog.sysout("update is not complete");
 							return;
 						}
-						getRepository();
+						execute(GitHubApplication.getClient());
 						break;
 					case R.string.sort:
 						dismiss = false;
@@ -166,7 +165,7 @@ public class RepositoryFragment extends BaseLoadFragment {
 		repositoryList.setAdapter(repositoryAdapter);
 
 		initAlaphtSort();
-		getRepository();
+		execute(GitHubApplication.getClient());
 	}
 
 	private void initAlaphtSort() {
@@ -213,46 +212,25 @@ public class RepositoryFragment extends BaseLoadFragment {
 		});
 	}
 
-	private void getRepository() {
-		new GitHubTask<Boolean>(new TaskListener<Boolean>() {
+	@Override
+	public Boolean onBackground(GitHubClient params) throws Exception {
+		// TODO Auto-generated method stub
+		// TestUtils.interrupt(5000);
+		myRepository = new RepositoryService(GitHubApplication.getClient())
+				.getRepositories();
+		starRepository = new WatcherService(GitHubApplication.getClient())
+				.getWatched();
+		if (myRepository != null && starRepository != null)
+			return true;
+		return null;
+	}
 
-			@Override
-			public void onPrev() {
-				showProgress();
-			}
-
-			@Override
-			public Boolean onExcute(GitHubClient client) {
-				// TestUtils.interrupt(5000);
-				try {
-					myRepository = new RepositoryService(
-							GitHubApplication.getClient()).getRepositories();
-					starRepository = new WatcherService(
-							GitHubApplication.getClient()).getWatched();
-				} catch (IOException e) {
-					e.printStackTrace();
-					return null;
-				}
-				if (myRepository != null && starRepository != null)
-					return true;
-				return null;
-			}
-
-			@Override
-			public void onSuccess(Boolean result) {
-				sort(curSort, true);
-				repositoryAdapter.notifyDataSetChanged();
-				dismissProgress();
-			}
-
-			@Override
-			public void onError() {
-				dismissProgress();
-				ToastUtils.show(context,
-						getResources().getString(R.string.network_error));
-
-			}
-		}).execute(GitHubApplication.getClient());
+	@Override
+	public void onSuccess(Boolean result) {
+		// TODO Auto-generated method stub
+		super.onSuccess(result);
+		sort(curSort, true);
+		repositoryAdapter.notifyDataSetChanged();
 	}
 
 	@SuppressWarnings({ "unchecked" })
@@ -336,7 +314,7 @@ public class RepositoryFragment extends BaseLoadFragment {
 
 	@Override
 	public void onRefreshStarted(View view) {
-		getRepository();
+		execute(GitHubApplication.getClient());
 	}
 
 }

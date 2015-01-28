@@ -1,7 +1,5 @@
 package com.gdestiny.github.ui.fragment;
 
-import java.io.IOException;
-
 import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.Reference;
 import org.eclipse.egit.github.core.Repository;
@@ -20,7 +18,6 @@ import android.widget.ListView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.CodeTreeAdapter;
 import com.gdestiny.github.app.GitHubApplication;
-import com.gdestiny.github.async.GitHubTask;
 import com.gdestiny.github.bean.CodeTree;
 import com.gdestiny.github.ui.activity.CodeFileActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
@@ -28,9 +25,9 @@ import com.gdestiny.github.ui.view.PathView;
 import com.gdestiny.github.ui.view.PathView.PathClickListener;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
-import com.gdestiny.github.utils.ToastUtils;
 
-public class RepositoryCodeFragment extends BaseLoadFragment {
+public class RepositoryCodeFragment extends
+		BaseLoadFragment<GitHubClient, Tree> {
 
 	public static final String EXTRA_CODE = "codetree";
 
@@ -98,7 +95,7 @@ public class RepositoryCodeFragment extends BaseLoadFragment {
 		repository = (Repository) context.getIntent().getSerializableExtra(
 				RepositoryDetailActivity.EXTRA_REPOSITORY);
 		if (currCodeTree == null)
-			getCodeDetail();
+			execute(GitHubApplication.getClient());
 		else {
 			codeAdapter.setCodeTree(currCodeTree);
 			if (!currCodeTree.name.equals(CodeTree.ROOT))
@@ -112,47 +109,25 @@ public class RepositoryCodeFragment extends BaseLoadFragment {
 		outState.putSerializable(EXTRA_CODE, currCodeTree);
 	}
 
-	private void getCodeDetail() {
-		new GitHubTask<Tree>(new GitHubTask.TaskListener<Tree>() {
+	@Override
+	public Tree onBackground(GitHubClient params) throws Exception {
+		DataService dataService = new DataService(params);
+		GLog.sysout(repository.getMasterBranch());
+		Reference ref = dataService.getReference(repository, "heads/"
+				+ repository.getMasterBranch());
+		Commit commit = dataService.getCommit(repository, ref.getObject()
+				.getSha());
+		Tree tree = dataService.getTree(repository, commit.getTree().getSha(),
+				true);
+		return tree;
+	}
 
-			@Override
-			public void onPrev() {
-				showProgress();
-			}
-
-			@Override
-			public Tree onExcute(GitHubClient client) {
-				// TODO Auto-generated method stub
-				DataService dataService = new DataService(client);
-				Tree tree = null;
-				try {
-					GLog.sysout(repository.getMasterBranch());
-					Reference ref = dataService.getReference(repository,
-							"heads/" + repository.getMasterBranch());
-					Commit commit = dataService.getCommit(repository, ref
-							.getObject().getSha());
-					tree = dataService.getTree(repository, commit.getTree()
-							.getSha(), true);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return tree;
-			}
-
-			@Override
-			public void onSuccess(Tree result) {
-				dismissProgress();
-				currCodeTree = CodeTree.toCodeTree(result);
-				codeAdapter.setCodeTree(currCodeTree);
-			}
-
-			@Override
-			public void onError() {
-				dismissProgress();
-				ToastUtils.show(context,
-						getResources().getString(R.string.network_error));
-			}
-		}).execute(GitHubApplication.getClient());
+	@Override
+	public void onSuccess(Tree result) {
+		// TODO Auto-generated method stub
+		super.onSuccess(result);
+		currCodeTree = CodeTree.toCodeTree(result);
+		codeAdapter.setCodeTree(currCodeTree);
 	}
 
 	public boolean onBackPressed() {
@@ -175,7 +150,7 @@ public class RepositoryCodeFragment extends BaseLoadFragment {
 
 	@Override
 	public void onRefreshStarted(View view) {
-		getCodeDetail();
+		execute(GitHubApplication.getClient());
 	}
 
 }

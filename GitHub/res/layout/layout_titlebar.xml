@@ -10,16 +10,16 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/margin16"
-        android:layout_marginLeft="@dimen/margin16" >
+        android:layout_centerVertical="true" >
 
         <ImageButton
             android:id="@+id/titlebar_rignt_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/transparent"
+            android:background="@drawable/selector_on_click"
             android:contentDescription="@string/app_name"
+            android:paddingLeft="@dimen/margin16"
+            android:paddingRight="@dimen/margin16"
             android:src="@drawable/selector_common_btn_refresh"
             android:visibility="gone" />
 
@@ -29,6 +29,8 @@
             android:layout_height="match_parent"
             android:background="@color/transparent"
             android:contentDescription="@string/app_name"
+            android:paddingLeft="@dimen/margin16"
+            android:paddingRight="@dimen/margin16"
             android:src="@drawable/selector_common_btn_more" />
     </FrameLayout>
 

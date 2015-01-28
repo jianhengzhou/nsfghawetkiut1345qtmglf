@@ -10,7 +10,7 @@ import android.view.Window;
 import com.gdestiny.github.R;
 
 public class AndroidUtils {
-	
+
 	private static boolean isMiuiV6;
 
 	static {
@@ -79,11 +79,11 @@ public class AndroidUtils {
 		return px / context.getResources().getDisplayMetrics().density;
 	}
 
-	public static float dpToPxInt(Context context, float dp) {
+	public static int dpToPxInt(Context context, float dp) {
 		return (int) (dpToPx(context, dp) + 0.5f);
 	}
 
-	public static float pxToDpCeilInt(Context context, float px) {
+	public static int pxToDpCeilInt(Context context, float px) {
 		return (int) (pxToDp(context, px) + 0.5f);
 	}
 }

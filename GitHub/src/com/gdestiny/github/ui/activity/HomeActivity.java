@@ -28,7 +28,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 	private long keyTime; // again exit
 	public static final int exitLimit = 2000;
 	private ResideMenu resideMenu;
-	private BaseLoadFragment currentFragment;
+	private BaseLoadFragment<?,?> currentFragment;
 	private String currentFragmentTag;
 
 	@Override
@@ -90,7 +90,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 		});
 	}
 
-	private void hideHeaderView(BaseLoadFragment currentFragment) {
+	private void hideHeaderView(BaseLoadFragment<?,?> currentFragment) {
 		if (currentFragment != null) {
 			PullToRefreshLayout mPullToRefreshLayout = currentFragment
 					.getPullToRefreshLayout();
@@ -101,7 +101,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 		}
 	}
 
-	private void showRefreshHeader(BaseLoadFragment currentFragment) {
+	private void showRefreshHeader(BaseLoadFragment<?,?> currentFragment) {
 		if (currentFragment != null && currentFragment.isLoading()) {
 			PullToRefreshLayout mPullToRefreshLayout = currentFragment
 					.getPullToRefreshLayout();
@@ -170,7 +170,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 		} else if (v instanceof ImageView) {
 			tag = "user";
 		}
-		BaseLoadFragment newFragment = (BaseLoadFragment) getFragment(tag);
+		BaseLoadFragment<?,?> newFragment = (BaseLoadFragment<?,?>) getFragment(tag);
 		if (currentFragment != null && currentFragment == newFragment) {
 			currentFragment.onShowRepeat(context);
 			GLog.sysout("currentFragment.onShowRepeat(context);");

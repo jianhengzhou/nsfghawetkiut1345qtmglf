@@ -2,6 +2,9 @@
 <lint>
     <issue id="ClickableViewAccessibility" severity="ignore" />
     <issue id="DefaultLocale" severity="ignore" />
+    <issue id="DrawAllocation">
+        <ignore path="src/com/gdestiny/github/ui/view/IndicatorView.java" />
+    </issue>
     <issue id="HandlerLeak" severity="ignore">
         <ignore path="src/com/gdestiny/github/ui/activity/SplashActivity.java" />
     </issue>

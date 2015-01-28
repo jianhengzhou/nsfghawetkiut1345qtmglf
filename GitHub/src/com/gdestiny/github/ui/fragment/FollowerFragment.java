@@ -2,6 +2,8 @@ package com.gdestiny.github.ui.fragment;
 
 import java.util.LinkedHashMap;
 
+import org.eclipse.egit.github.core.client.GitHubClient;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,7 @@ import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
-public class FollowerFragment extends BaseLoadFragment {
+public class FollowerFragment extends BaseLoadFragment<GitHubClient,String> {
 
 	// menu
 	private LinkedHashMap<Integer, Integer> itemmap;

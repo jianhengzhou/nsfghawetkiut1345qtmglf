@@ -10,6 +10,7 @@ import com.gdestiny.github.ui.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.fragment.FollowerFragment;
 import com.gdestiny.github.ui.fragment.FollowingFragment;
 import com.gdestiny.github.ui.fragment.RepositoryCodeFragment;
+import com.gdestiny.github.ui.view.IndicatorView;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,7 +26,9 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 	private ViewPager viewpager;
 	private RepositoryPageAdapter adapter;
 
-	private List<BaseLoadFragment> fragments = new ArrayList<BaseLoadFragment>();
+	private IndicatorView indicatorView;
+
+	private List<BaseLoadFragment<?, ?>> fragments = new ArrayList<BaseLoadFragment<?, ?>>();
 
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
@@ -36,6 +39,17 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 	protected void initView() {
 		viewpager = (ViewPager) findViewById(R.id.viewpager);
 		viewpager.setOffscreenPageLimit(3);
+
+		indicatorView = (IndicatorView) findViewById(R.id.indicator);
+
+		indicatorView.add("code", R.drawable.common_code_white)
+				.add("news", R.drawable.tab_news_white)
+				.add("commit", R.drawable.common_commit_white)
+				.add("issues", R.drawable.circle_issue_white);
+
+		indicatorView.bind(viewpager);
+		viewpager.setOnPageChangeListener(indicatorView);
+
 	}
 
 	@Override

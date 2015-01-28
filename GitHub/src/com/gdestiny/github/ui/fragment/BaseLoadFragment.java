@@ -1,6 +1,9 @@
 package com.gdestiny.github.ui.fragment;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.async.BaseAsyncTask;
+import com.gdestiny.github.async.LoadingTask;
+import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
 import android.view.LayoutInflater;
@@ -10,8 +13,8 @@ import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-public abstract class BaseLoadFragment extends BaseFragment implements
-		OnRefreshListener {
+public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
+		implements OnRefreshListener, LoadingTask<Params, Result> {
 
 	private PullToRefreshLayout pullToRefreshLayout;
 	private boolean isLoading = false;
@@ -70,6 +73,66 @@ public abstract class BaseLoadFragment extends BaseFragment implements
 		} else {
 			ViewUtils.setVisibility(noDataView, View.GONE, R.anim.alpha_in);
 		}
+	}
+
+	@Override
+	public void onPrev() {
+		showProgress();
+	}
+
+	@Override
+	public Result onBackground(Params params) throws Exception {
+		return null;
+	}
+
+	@Override
+	public void onSuccess(Result result) {
+		dismissProgress();
+	}
+
+	@Override
+	public void onException(Exception ex) {
+		dismissProgress();
+		ToastUtils.show(context, ex.getMessage());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void execute(Params params) {
+		new BaseAsyncTask<Params, Void, Result>() {
+
+			@Override
+			protected void onPostExecute(Result result) {
+				super.onPostExecute(result);
+				if (result != null)
+					BaseLoadFragment.this.onSuccess(result);
+				else {
+					noData(true);
+					BaseLoadFragment.this.onException(new Exception(
+							getResources().getString(R.string.network_error)));
+				}
+			}
+
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				BaseLoadFragment.this.onPrev();
+			}
+
+			@Override
+			protected void onProgressUpdate(Void... values) {
+				super.onProgressUpdate(values);
+			}
+
+			@Override
+			protected Result doInBackground(Params... params) {
+				try {
+					return BaseLoadFragment.this.onBackground(params[0]);
+				} catch (Exception e) {
+					return null;
+				}
+			}
+		}.execute(params);
 	}
 
 }

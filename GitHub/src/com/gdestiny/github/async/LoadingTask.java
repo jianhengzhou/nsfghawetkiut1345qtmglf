@@ -3,11 +3,11 @@ package com.gdestiny.github.async;
 public interface LoadingTask<Params, Result> {
 	public void onPrev();
 
-	public Result doInBackground(Params params);
+	public Result onBackground(Params params) throws Exception;
 
 	public void onSuccess(Result result);
 
-	public void onError();
+	public void onException(Exception ex);
 
 	public void execute(Params params);
 }

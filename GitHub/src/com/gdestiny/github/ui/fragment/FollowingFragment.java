@@ -1,5 +1,7 @@
 package com.gdestiny.github.ui.fragment;
 
+import org.eclipse.egit.github.core.client.GitHubClient;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +12,7 @@ import com.gdestiny.github.async.SimpleUpdateTask;
 import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
-public class FollowingFragment extends BaseLoadFragment {
+public class FollowingFragment extends BaseLoadFragment<GitHubClient, String> {
 
 	@Override
 	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
@@ -28,6 +30,19 @@ public class FollowingFragment extends BaseLoadFragment {
 	@Override
 	protected void initData() {
 		// TODO Auto-generated method stub
+		// execute(GitHubApplication.getClient());
+	}
+
+	@Override
+	public String onBackground(GitHubClient params) throws Exception {
+		// TODO Auto-generated method stub
+		return super.onBackground(params);
+	}
+
+	@Override
+	public void onSuccess(String result) {
+		// TODO Auto-generated method stub
+		super.onSuccess(result);
 	}
 
 	@Override

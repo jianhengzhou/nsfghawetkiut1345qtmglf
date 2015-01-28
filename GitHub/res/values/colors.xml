@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="common_background">#fafafa</color>
+
     <!-- materialdesign dialog -->
     <color name="card_background">#ffffff</color>
     <color name="card_shadow">#10000000</color>
@@ -18,6 +20,7 @@
     <color name="common_light_grey">#aab7b7</color>
     <color name="common_title_refresh_blue">#aa56abe4</color>
     <color name="common_title_back_layout">#55ffffff</color>
+    <color name="common_indicator_pressed">#9956abe4</color>
 
     <drawable name="common_blue_drawable_bk">#1a85ff</drawable>
     <drawable name="menu_item_normal">#00000000</drawable>

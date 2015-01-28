@@ -10,10 +10,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -520,7 +517,8 @@ public class ImageLoaderUtils {
 								loadedImage = BitmapFactory.decodeResource(
 										GitHubApplication.getContext()
 												.getResources(), defaultRid);
-								loadedImage = toRoundCorner(loadedImage, radix);
+								loadedImage = ImageUtils.toRoundCorner(
+										loadedImage, radix);
 							}
 							((ImageView) view).setImageBitmap(loadedImage);
 							ImageLoader.getInstance().getMemoryCache()
@@ -537,7 +535,8 @@ public class ImageLoaderUtils {
 								loadedImage = BitmapFactory.decodeResource(
 										GitHubApplication.getContext()
 												.getResources(), defaultRid);
-								loadedImage = toRoundCorner(loadedImage, radix);
+								loadedImage = ImageUtils.toRoundCorner(
+										loadedImage, radix);
 							}
 							((ImageView) view).setImageBitmap(loadedImage);
 							ImageLoader.getInstance().getMemoryCache()
@@ -552,7 +551,8 @@ public class ImageLoaderUtils {
 										GitHubApplication.getContext()
 												.getResources(), defaultRid);
 							}
-							loadedImage = toRoundCorner(loadedImage, radix);
+							loadedImage = ImageUtils.toRoundCorner(loadedImage,
+									radix);
 							if (isTran) {
 								@SuppressWarnings("deprecation")
 								final TransitionDrawable td = new TransitionDrawable(
@@ -646,7 +646,7 @@ public class ImageLoaderUtils {
 		File imgDir = new File(initImageDir());// make sure the dir exists
 		if (!imgDir.exists()) {
 			imgDir.mkdirs();
-			GLog.sysout("imgDir.mkdirs() : " +initImageDir() );
+			GLog.sysout("imgDir.mkdirs() : " + initImageDir());
 		}
 		int initSize;
 		if (android.os.Environment.getExternalStorageState().equals(
@@ -726,36 +726,4 @@ public class ImageLoaderUtils {
 				imageView, defaultRid, isTran);
 	}
 
-	/**
-	 * 圆角化图片处理，原图bitmap不会被释放，外部调用注意处理bitmap
-	 * 
-	 * @param bitmap
-	 * @param pixels
-	 * @return
-	 */
-	public static Bitmap toRoundCorner(Bitmap bitmap, int pixels) {
-		Bitmap output = null;
-		try {
-			output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
-					Config.ARGB_8888);
-			android.graphics.Canvas canvas = new android.graphics.Canvas(output);
-			final int color = 0xff424242;
-			final android.graphics.Paint paint = new android.graphics.Paint();
-			final Rect rect = new Rect(0, 0, bitmap.getWidth(),
-					bitmap.getHeight());
-			final android.graphics.RectF rectF = new android.graphics.RectF(
-					rect);
-			final float roundPx = pixels;
-			paint.setAntiAlias(true);
-			canvas.drawARGB(0, 0, 0, 0);
-			paint.setColor(color);
-			canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-			paint.setXfermode(new android.graphics.PorterDuffXfermode(
-					Mode.SRC_IN));
-			canvas.drawBitmap(bitmap, rect, rect, paint);
-		} catch (Exception e) {
-			// Log.e("", "", e);
-		}
-		return output;
-	}
 }

@@ -9,29 +9,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <WebView
-            android:id="@+id/webview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <ScrollView
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <TextView
-                android:id="@+id/text"
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollHorizontally="true"
+                    android:textColor="@color/common_icon_grey"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+            </ScrollView>
+
+            <com.gdestiny.github.ui.view.touchimageview.TouchImageView
+                android:id="@+id/imageview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollHorizontally="true"
-                android:textColor="@color/common_icon_grey"
-                android:textSize="12sp" />
-        </ScrollView>
+                android:background="@color/transparent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerInside" />
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/gif_imageview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:visibility="gone" />
+
+            <WebView
+                android:id="@+id/webview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+        </FrameLayout>
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
 
 </RelativeLayout>

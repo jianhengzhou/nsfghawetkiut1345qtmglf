@@ -58,24 +58,4 @@ public class CommonUtils {
 		}
 	}
 
-	public static boolean isImage(String name) {
-		int index = name.lastIndexOf('.');
-		if (index < 0) {
-			return false;
-		}
-		String ex = name.substring(index + 1);
-		return "png".equalsIgnoreCase(ex) || "jpg".equalsIgnoreCase(ex)
-				|| "gif".equalsIgnoreCase(ex) || "bmp".equalsIgnoreCase(ex);
-	}
-
-	public static boolean isImageFromPath(String path) {
-		String name = pathToName(path);
-		int index = name.lastIndexOf('.');
-		if (index < 0) {
-			return false;
-		}
-		String ex = name.substring(index + 1);
-		return "png".equalsIgnoreCase(ex) || "jpg".equalsIgnoreCase(ex)
-				|| "gif".equalsIgnoreCase(ex) || "bmp".equalsIgnoreCase(ex);
-	}
 }

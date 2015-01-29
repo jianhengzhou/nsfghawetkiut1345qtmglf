@@ -3,6 +3,7 @@ package com.gdestiny.github.ui.fragment;
 import com.gdestiny.github.R;
 import com.gdestiny.github.async.BaseAsyncTask;
 import com.gdestiny.github.async.LoadingTask;
+import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
@@ -82,16 +83,19 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 
 	@Override
 	public Result onBackground(Params params) throws Exception {
+		GLog.sysout("onBackground");
 		return null;
 	}
 
 	@Override
 	public void onSuccess(Result result) {
+		GLog.sysout("onSuccess");
 		dismissProgress();
 	}
 
 	@Override
 	public void onException(Exception ex) {
+		GLog.sysout("onException");
 		dismissProgress();
 		ToastUtils.show(context, ex.getMessage());
 	}
@@ -107,7 +111,6 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 				if (result != null)
 					BaseLoadFragment.this.onSuccess(result);
 				else {
-					noData(true);
 					BaseLoadFragment.this.onException(new Exception(
 							getResources().getString(R.string.network_error)));
 				}
@@ -128,7 +131,15 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 			protected Result doInBackground(Params... params) {
 				try {
 					return BaseLoadFragment.this.onBackground(params[0]);
-				} catch (Exception e) {
+				} catch (final Exception e) {
+					getCurrentView().post(new Runnable() {
+
+						@Override
+						public void run() {
+							BaseLoadFragment.this.onException(e);
+							GLog.sysout("Exception");
+						}
+					});
 					return null;
 				}
 			}

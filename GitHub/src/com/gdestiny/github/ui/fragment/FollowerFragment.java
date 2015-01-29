@@ -17,7 +17,7 @@ import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
-public class FollowerFragment extends BaseLoadFragment<GitHubClient,String> {
+public class FollowerFragment extends BaseLoadFragment<GitHubClient, String> {
 
 	// menu
 	private LinkedHashMap<Integer, Integer> itemmap;
@@ -26,7 +26,8 @@ public class FollowerFragment extends BaseLoadFragment<GitHubClient,String> {
 	@Override
 	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		setContentView(inflater, R.layout.frag_follower,R.id.pull_refresh_layout);
+		setContentView(inflater, R.layout.frag_follower,
+				R.id.pull_refresh_layout);
 	}
 
 	@Override
@@ -38,6 +39,20 @@ public class FollowerFragment extends BaseLoadFragment<GitHubClient,String> {
 	@Override
 	protected void initData() {
 		// TODO Auto-generated method stub
+		// execute(GitHubApplication.getClient());
+	}
+
+	@Override
+	public String onBackground(GitHubClient params) throws Exception {
+		// TODO Auto-generated method stub
+		TestUtils.interrupt(5000);
+		return super.onBackground(params);
+	}
+
+	@Override
+	public void onSuccess(String result) {
+		// TODO Auto-generated method stub
+		super.onSuccess(result);
 	}
 
 	private void initStatusPopup(final TitleBar title) {

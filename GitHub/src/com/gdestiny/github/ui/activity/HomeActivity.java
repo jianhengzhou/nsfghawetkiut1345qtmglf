@@ -1,6 +1,5 @@
 package com.gdestiny.github.ui.activity;
 
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -28,7 +27,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 	private long keyTime; // again exit
 	public static final int exitLimit = 2000;
 	private ResideMenu resideMenu;
-	private BaseLoadFragment<?,?> currentFragment;
+	private BaseLoadFragment<?, ?> currentFragment;
 	private String currentFragmentTag;
 
 	@Override
@@ -47,7 +46,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 	protected void initData() {
 		// TODO Auto-generated method stub
 		getTitlebar().setTitleIcon(GitHubApplication.getUser().getAvatarUrl());
-		
+
 		currentFragment = new RepositoryFragment();
 		currentFragmentTag = getResources().getString(R.string.repository);
 		changeFragment(R.id.home_frame, null, currentFragment,
@@ -88,28 +87,6 @@ public class HomeActivity extends BaseFragmentActivity implements
 				}
 			}
 		});
-	}
-
-	private void hideHeaderView(BaseLoadFragment<?,?> currentFragment) {
-		if (currentFragment != null) {
-			PullToRefreshLayout mPullToRefreshLayout = currentFragment
-					.getPullToRefreshLayout();
-			if (mPullToRefreshLayout != null) {
-				mPullToRefreshLayout.getHeaderTransformer()
-						.setProgressbarVisibility(View.GONE);
-			}
-		}
-	}
-
-	private void showRefreshHeader(BaseLoadFragment<?,?> currentFragment) {
-		if (currentFragment != null && currentFragment.isLoading()) {
-			PullToRefreshLayout mPullToRefreshLayout = currentFragment
-					.getPullToRefreshLayout();
-			if (mPullToRefreshLayout != null) {
-				mPullToRefreshLayout.getHeaderTransformer()
-						.setProgressbarVisibility(View.VISIBLE);
-			}
-		}
 	}
 
 	@Override
@@ -170,7 +147,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 		} else if (v instanceof ImageView) {
 			tag = "user";
 		}
-		BaseLoadFragment<?,?> newFragment = (BaseLoadFragment<?,?>) getFragment(tag);
+		BaseLoadFragment<?, ?> newFragment = (BaseLoadFragment<?, ?>) getFragment(tag);
 		if (currentFragment != null && currentFragment == newFragment) {
 			currentFragment.onShowRepeat(context);
 			GLog.sysout("currentFragment.onShowRepeat(context);");

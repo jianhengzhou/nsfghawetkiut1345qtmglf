@@ -5,18 +5,19 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
 
-import com.gdestiny.github.R;
-import com.gdestiny.github.ui.fragment.BaseLoadFragment;
-import com.gdestiny.github.ui.fragment.FollowerFragment;
-import com.gdestiny.github.ui.fragment.FollowingFragment;
-import com.gdestiny.github.ui.fragment.RepositoryCodeFragment;
-import com.gdestiny.github.ui.view.IndicatorView;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+
+import com.gdestiny.github.R;
+import com.gdestiny.github.ui.fragment.BaseLoadFragment;
+import com.gdestiny.github.ui.fragment.FollowerFragment;
+import com.gdestiny.github.ui.fragment.RepositoryCodeFragment;
+import com.gdestiny.github.ui.fragment.RepositoryCommitFragment;
+import com.gdestiny.github.ui.view.IndicatorView;
+import com.gdestiny.github.utils.GLog;
 
 public class RepositoryDetailActivity extends BaseFragmentActivity {
 
@@ -33,6 +34,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
 		setContentView(R.layout.act_repository_detail);
+		getSwipeBackLayout().setEdgeSize(10);
 	}
 
 	@Override
@@ -49,6 +51,34 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 
 		indicatorView.bind(viewpager);
 		viewpager.setOnPageChangeListener(indicatorView);
+		indicatorView
+				.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+					@Override
+					public void onPageSelected(int position) {
+						// TODO Auto-generated method stub
+						if (position != indicatorView.getCurrentPosition()) {
+							GLog.sysout("hide:"
+									+ indicatorView.getCurrentPosition()
+									+ ",show:" + position);
+							hideHeaderView(fragments.get(indicatorView
+									.getCurrentPosition()));
+							showRefreshHeader(fragments.get(position));
+						}
+					}
+
+					@Override
+					public void onPageScrolled(int arg0, float arg1, int arg2) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onPageScrollStateChanged(int arg0) {
+						// TODO Auto-generated method stub
+
+					}
+				});
 
 	}
 
@@ -62,7 +92,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 
 		fragments.add(new RepositoryCodeFragment());
 		fragments.add(new FollowerFragment());
-		fragments.add(new FollowingFragment());
+		fragments.add(new RepositoryCommitFragment());
 		fragments.add(new FollowerFragment());
 
 		adapter = new RepositoryPageAdapter(getSupportFragmentManager());

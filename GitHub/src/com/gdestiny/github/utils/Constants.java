@@ -7,6 +7,7 @@ public class Constants {
 	public static final String GlobalTag = "GitHub";
 	public static final String GIT_JOIN = "https://github.com/join";
 
+	public static final int DEFAULT_PAGE_SIZE = 5;
 	static {
 		GLog.setDebug(isDebug);
 	}

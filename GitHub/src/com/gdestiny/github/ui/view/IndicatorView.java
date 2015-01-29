@@ -122,7 +122,7 @@ public class IndicatorView extends LinearLayout implements OnPageChangeListener 
 		return listener;
 	}
 
-	public void setListener(OnPageChangeListener listener) {
+	public void setOnPageChangeListener(OnPageChangeListener listener) {
 		this.listener = listener;
 	}
 

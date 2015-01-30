@@ -12,6 +12,7 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
 import com.gdestiny.github.ui.fragment.BaseLoadFragment;
+import com.gdestiny.github.ui.fragment.EventsUserReceivedFragment;
 import com.gdestiny.github.ui.fragment.FollowerFragment;
 import com.gdestiny.github.ui.fragment.FollowingFragment;
 import com.gdestiny.github.ui.fragment.LeftMenuFragment;
@@ -94,6 +95,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 		return resideMenu.dispatchTouchEvent(ev);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -105,7 +107,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 			changeOrNewFragment(v);
 			break;
 		case R.id.menu_news:
-			close = false;
+			changeOrNewFragment(v);
 			final MaterialDialog mMaterialDialog = new MaterialDialog(this)
 					.setTitle("Repository")
 					.setMessage(
@@ -119,7 +121,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 						public void onClick(View v) {
 						}
 					}).setCanceledOnTouchOutside(true);
-			mMaterialDialog.show();
+			// mMaterialDialog.show();
 			break;
 		case R.id.menu_follower:
 			changeOrNewFragment(v);
@@ -162,6 +164,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 					newFragment = new RepositoryFragment();
 					break;
 				case R.id.menu_news:
+					newFragment = new EventsUserReceivedFragment();
 					break;
 				case R.id.menu_follower:
 					newFragment = new FollowerFragment();

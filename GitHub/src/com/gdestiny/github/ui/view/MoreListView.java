@@ -29,7 +29,7 @@ public class MoreListView extends ListView implements OnScrollListener {
 	private OnAutoLoadListener onAutoLoadListener;
 
 	public interface OnAutoLoadListener {
-		public void onLoad();
+		public void onAutoLoad();
 	}
 
 	public MoreListView(Context context) {
@@ -149,7 +149,7 @@ public class MoreListView extends ListView implements OnScrollListener {
 		if (total >= totalItemCount && firstVisibleItem != 0) {
 			if (autoLoad && !isLoading && onAutoLoadListener != null) {
 				requestLoad();
-				onAutoLoadListener.onLoad();
+				onAutoLoadListener.onAutoLoad();
 			}
 		}
 	}

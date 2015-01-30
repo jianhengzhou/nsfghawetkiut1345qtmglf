@@ -86,7 +86,7 @@
                 android:id="@+id/menu_news"
                 style="@style/common_menu_text_style"
                 android:drawableLeft="@drawable/selector_icon_news"
-                android:text="@string/news" />
+                android:text="@string/events" />
 
             <TextView
                 android:id="@+id/menu_follower"

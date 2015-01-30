@@ -3,7 +3,7 @@
 
     <!-- main menu -->
     <string name="repository">Repository</string>
-    <string name="news">News</string>
+    <string name="events">Events</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="gists">Gists</string>

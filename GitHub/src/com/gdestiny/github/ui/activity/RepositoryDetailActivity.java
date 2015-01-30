@@ -16,6 +16,7 @@ import com.gdestiny.github.ui.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.fragment.FollowerFragment;
 import com.gdestiny.github.ui.fragment.RepositoryCodeFragment;
 import com.gdestiny.github.ui.fragment.RepositoryCommitFragment;
+import com.gdestiny.github.ui.fragment.RepositoryEventFragment;
 import com.gdestiny.github.ui.view.IndicatorView;
 import com.gdestiny.github.utils.GLog;
 
@@ -34,7 +35,6 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
 		setContentView(R.layout.act_repository_detail);
-		getSwipeBackLayout().setEdgeSize(10);
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 		indicatorView = (IndicatorView) findViewById(R.id.indicator);
 
 		indicatorView.add("code", R.drawable.common_code_white)
-				.add("news", R.drawable.tab_news_white)
+				.add("events", R.drawable.tab_news_white)
 				.add("commit", R.drawable.common_commit_white)
 				.add("issues", R.drawable.circle_issue_white);
 
@@ -91,7 +91,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 				repository.getName(), repository.getOwner().getLogin());
 
 		fragments.add(new RepositoryCodeFragment());
-		fragments.add(new FollowerFragment());
+		fragments.add(new RepositoryEventFragment());
 		fragments.add(new RepositoryCommitFragment());
 		fragments.add(new FollowerFragment());
 

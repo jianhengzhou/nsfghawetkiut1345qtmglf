@@ -1,5 +1,7 @@
 package com.gdestiny.github.ui.fragment;
 
+import com.gdestiny.github.ui.activity.BaseFragmentActivity;
+import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 
@@ -21,12 +23,14 @@ public abstract class BaseFragment extends Fragment {
 	protected StringBuilder mBuffer = new StringBuilder();
 	private View currentView;
 
+	abstract protected void setCurrentView(LayoutInflater inflater,
+			ViewGroup container, Bundle savedInstanceState);
+
 	abstract protected void initView();
 
 	abstract protected void initData();
 
-	abstract protected void setCurrentView(LayoutInflater inflater,
-			ViewGroup container, Bundle savedInstanceState);
+	abstract protected void initStatusPopup(final TitleBar title);
 
 	public BaseFragment() {
 		mClassName = getClass().getSimpleName();
@@ -87,6 +91,7 @@ public abstract class BaseFragment extends Fragment {
 						.append(".onCreateView()").toString());
 		setCurrentView(inflater, container, savedInstanceState);
 		initView();
+		initStatusPopup(((BaseFragmentActivity) context).getTitlebar());
 		initData();
 		return this.currentView;
 	}

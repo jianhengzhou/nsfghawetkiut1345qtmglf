@@ -33,7 +33,6 @@ public class FollowerFragment extends BaseLoadFragment<GitHubClient, String> {
 	@Override
 	protected void initView() {
 		// TODO Auto-generated method stub
-		initStatusPopup(((BaseFragmentActivity) context).getTitlebar());
 	}
 
 	@Override
@@ -55,7 +54,8 @@ public class FollowerFragment extends BaseLoadFragment<GitHubClient, String> {
 		super.onSuccess(result);
 	}
 
-	private void initStatusPopup(final TitleBar title) {
+	@Override
+	protected void initStatusPopup(TitleBar title) {
 		if (itemmap == null) {
 			itemmap = new LinkedHashMap<Integer, Integer>();
 			itemmap.put(R.string.app_name, R.drawable.common_status_sort);

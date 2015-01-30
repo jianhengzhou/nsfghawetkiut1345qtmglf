@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.async.SimpleUpdateTask;
+import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
@@ -31,6 +32,12 @@ public class FollowingFragment extends BaseLoadFragment<GitHubClient, String> {
 	protected void initData() {
 		// TODO Auto-generated method stub
 		// execute(GitHubApplication.getClient());
+	}
+
+	@Override
+	protected void initStatusPopup(TitleBar title) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

@@ -38,8 +38,7 @@ import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
-public class RepositoryFragment extends
-		BaseLoadFragment<GitHubClient, Boolean> {
+public class RepositoryFragment extends BaseLoadFragment<GitHubClient, Boolean> {
 
 	private ListView repositoryList;
 	private RepositoryAdapter repositoryAdapter;
@@ -95,7 +94,8 @@ public class RepositoryFragment extends
 			initStatusPopup(((BaseFragmentActivity) context).getTitlebar());
 	}
 
-	private void initStatusPopup(final TitleBar title) {
+	@Override
+	protected void initStatusPopup(final TitleBar title) {
 		if (itemmap == null) {
 			itemmap = new LinkedHashMap<Integer, Integer>();
 			itemmap.put(R.string.sort, R.drawable.common_status_sort);

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.ui.view.ImageViewEx;
+import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 
 public class LeftMenuFragment extends BaseFragment implements OnClickListener {
@@ -63,6 +64,11 @@ public class LeftMenuFragment extends BaseFragment implements OnClickListener {
 	public void onClick(View v) {
 		if (clickListener != null)
 			clickListener.onClick(v);
+	}
+
+	@Override
+	protected void initStatusPopup(TitleBar title) {
+
 	}
 
 }

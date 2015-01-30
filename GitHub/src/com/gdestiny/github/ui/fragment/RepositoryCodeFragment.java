@@ -22,6 +22,7 @@ import com.gdestiny.github.bean.CodeTree;
 import com.gdestiny.github.ui.activity.CodeFileActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.view.PathView;
+import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.ui.view.PathView.PathClickListener;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
@@ -101,6 +102,12 @@ public class RepositoryCodeFragment extends
 			if (!currCodeTree.name.equals(CodeTree.ROOT))
 				pathView.resetView(currCodeTree.currEntry.getPath());
 		}
+	}
+
+	@Override
+	protected void initStatusPopup(TitleBar title) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

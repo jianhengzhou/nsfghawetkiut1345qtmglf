@@ -87,12 +87,12 @@ public class RepositoryFragment extends BaseLoadFragment<GitHubClient, Boolean> 
 
 	}
 
-	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-		if (!hidden)
-			initStatusPopup(((BaseFragmentActivity) context).getTitlebar());
-	}
+	// @Override
+	// public void onHiddenChanged(boolean hidden) {
+	// super.onHiddenChanged(hidden);
+	// if (!hidden)
+	// initStatusPopup(((BaseFragmentActivity) context).getTitlebar());
+	// }
 
 	@Override
 	protected void initStatusPopup(final TitleBar title) {

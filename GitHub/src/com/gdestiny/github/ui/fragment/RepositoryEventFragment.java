@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
+import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
 
 public class RepositoryEventFragment extends AbstractEventFragment {
@@ -33,6 +34,12 @@ public class RepositoryEventFragment extends AbstractEventFragment {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void initStatusPopup(TitleBar title) {
 		// TODO Auto-generated method stub
 
 	}

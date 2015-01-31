@@ -69,6 +69,7 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 	public void setStatusItem(Context context,
 			LinkedHashMap<Integer, Integer> itemmap,
 			StatusPopUpWindowItemClickListener mOnitemclicklistener) {
+		showStatusBtn();
 		if (menuPopup != null) {
 			menuPopup.setItem(context, itemmap, mOnitemclicklistener);
 		}

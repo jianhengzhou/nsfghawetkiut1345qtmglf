@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
+import com.gdestiny.github.utils.GLog;
 
 public class EventsUserReceivedFragment extends AbstractEventFragment {
 
@@ -23,6 +25,21 @@ public class EventsUserReceivedFragment extends AbstractEventFragment {
 			long id) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	protected void initStatusPopup(TitleBar title) {
+		title.showRightBtn();
+		title.getRightBtn().setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (!isLoading())
+					onRefreshStarted(v);
+				else
+					GLog.sysout("no need to refresh");
+			}
+		});
 	}
 
 }

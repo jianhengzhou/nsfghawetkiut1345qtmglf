@@ -157,6 +157,10 @@ public abstract class BaseFragment extends Fragment {
 				mBuffer.delete(0, mBuffer.length()).append(mClassName)
 						.append(".onHiddenChanged(").append(hidden).append(")")
 						.toString());
+		if (!hidden) {
+			initStatusPopup(((BaseFragmentActivity) context).getTitlebar());
+			GLog.d(Constants.GlobalTag, "initStatusPopup");
+		}
 	}
 
 	/**

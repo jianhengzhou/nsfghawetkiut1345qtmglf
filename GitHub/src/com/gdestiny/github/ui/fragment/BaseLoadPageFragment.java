@@ -12,11 +12,13 @@ import com.gdestiny.github.utils.IteratorUtils;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 
 public abstract class BaseLoadPageFragment<Elem, Params> extends
-		BaseLoadFragment<Params, List<Elem>> implements OnItemClickListener {
+		BaseLoadFragment<Params, List<Elem>> implements OnItemClickListener,
+		OnItemLongClickListener {
 
 	private MoreListView moreList;
 	private BaseAdapter baseAdapter;
@@ -43,6 +45,7 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 			}
 		});
 		moreList.setOnItemClickListener(this);
+		moreList.setOnItemLongClickListener(this);
 		moreList.setOnAutoLoadListener(new OnAutoLoadListener() {
 
 			@Override
@@ -74,6 +77,7 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 		moreList.requestLoadingFinish();
 		moreList.requestNoMore(result.size() < Constants.DEFAULT_PAGE_SIZE
 				|| !dataPage.hasNext());
+		noData(datas == null || datas.size() == 0);
 	}
 
 	@Override
@@ -81,6 +85,7 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 		super.onException(ex);
 		moreList.requestLoadingFinish();
 		moreList.requestNoMore(true);
+		noData(datas == null || datas.size() == 0);
 	}
 
 	@Override

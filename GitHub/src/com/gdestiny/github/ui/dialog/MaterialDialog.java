@@ -1,10 +1,14 @@
 package com.gdestiny.github.ui.dialog;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +16,19 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.utils.ImageLoaderUtils;
 
 /**
  * Created by drakeet on 9/28/14.
@@ -47,6 +55,7 @@ public class MaterialDialog {
 	private int mBackgroundResId;
 	private View mMessageContentView;
 	private DialogInterface.OnDismissListener mOnDismissListener;
+	private AdapterView.OnItemClickListener onItemClickListener;
 
 	public MaterialDialog(Context context) {
 		this.mContext = context;
@@ -153,8 +162,8 @@ public class MaterialDialog {
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
-		layoutParams
-				.setMargins(dip2px(2), dip2px(BUTTON_TOP), dip2px(12), dip2px(BUTTON_BOTTOM));
+		layoutParams.setMargins(dip2px(2), dip2px(BUTTON_TOP), dip2px(12),
+				dip2px(BUTTON_BOTTOM));
 		mPositiveButton.setLayoutParams(layoutParams);
 		mPositiveButton.setOnClickListener(listener);
 		if (isLollipop()) {
@@ -180,8 +189,8 @@ public class MaterialDialog {
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
-		layoutParams
-				.setMargins(dip2px(2), dip2px(BUTTON_TOP), dip2px(12), dip2px(BUTTON_BOTTOM));
+		layoutParams.setMargins(dip2px(2), dip2px(BUTTON_TOP), dip2px(12),
+				dip2px(BUTTON_BOTTOM));
 		mPositiveButton.setLayoutParams(layoutParams);
 		mPositiveButton.setOnClickListener(listener);
 		if (isLollipop()) {
@@ -525,4 +534,120 @@ public class MaterialDialog {
 		listView.setLayoutParams(params);
 	}
 
+	private ListView mListView;
+
+	/**
+	 * 
+	 * @param drawableId
+	 *            none .9.png
+	 * @param text
+	 * @return
+	 */
+	public MaterialDialog addItem(int drawableId, String text) {
+		return addItem("drawable://" + drawableId, text);
+	}
+
+	public MaterialDialog addItem(String drawableURL, String text) {
+		if (mListView == null) {
+			mListView = new ListView(new ContextThemeWrapper(mContext,
+					R.style.normal_listview));
+			DialogListAdapter listAdapter = new DialogListAdapter(mContext);
+			mListView.setAdapter(listAdapter);
+			mListView
+					.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+						@Override
+						public void onItemClick(AdapterView<?> parent,
+								View view, int position, long id) {
+							if (onItemClickListener != null)
+								onItemClickListener.onItemClick(parent, view,
+										position, id);
+						}
+					});
+			setContentView(mListView);
+		}
+		((DialogListAdapter) mListView.getAdapter()).addItem(drawableURL, text);
+		return this;
+	}
+
+	public AdapterView.OnItemClickListener getOnItemClickListener() {
+		return onItemClickListener;
+	}
+
+	public MaterialDialog setOnItemClickListener(
+			AdapterView.OnItemClickListener onItemClickListener) {
+		this.onItemClickListener = onItemClickListener;
+		return this;
+	}
+
+	public class DialogListAdapter extends BaseAdapter {
+
+		private Context context;
+		private List<ListItem> items;
+
+		public DialogListAdapter(Context context) {
+			this.context = context;
+		}
+
+		@Override
+		public int getCount() {
+			if (items == null)
+				return 0;
+			return items.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			Holder holder = null;
+			if (convertView == null) {
+				convertView = LayoutInflater.from(context).inflate(
+						R.layout.item_status_pop, null);
+				holder = new Holder(convertView);
+				convertView.setTag(holder);
+			} else {
+				holder = (Holder) convertView.getTag();
+			}
+			ImageLoaderUtils.displayImage(items.get(position).drawableURL,
+					holder.imageview, R.drawable.default_avatar, true);
+			holder.textview.setText(items.get(position).text);
+			return convertView;
+		}
+
+		public void addItem(String drawableURL, String text) {
+			if (items == null)
+				items = new ArrayList<ListItem>();
+			items.add(new ListItem(drawableURL, text));
+			notifyDataSetChanged();
+		}
+
+		public class Holder {
+			ImageView imageview;
+			TextView textview;
+
+			public Holder(View v) {
+				imageview = (ImageView) v.findViewById(R.id.status_icon);
+				textview = (TextView) v.findViewById(R.id.status_name);
+			}
+		}
+
+		public class ListItem {
+			public ListItem(String drawableURL, String text) {
+				this.drawableURL = drawableURL;
+				this.text = text;
+			}
+
+			public String drawableURL;
+			public String text;
+		}
+	}
 }

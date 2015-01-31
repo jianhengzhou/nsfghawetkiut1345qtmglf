@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
-import com.gdestiny.github.ui.dialog.MaterialDialog;
 import com.gdestiny.github.ui.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.fragment.EventsUserReceivedFragment;
 import com.gdestiny.github.ui.fragment.FollowerFragment;
@@ -95,7 +94,6 @@ public class HomeActivity extends BaseFragmentActivity implements
 		return resideMenu.dispatchTouchEvent(ev);
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -108,20 +106,6 @@ public class HomeActivity extends BaseFragmentActivity implements
 			break;
 		case R.id.menu_news:
 			changeOrNewFragment(v);
-			final MaterialDialog mMaterialDialog = new MaterialDialog(this)
-					.setTitle("Repository")
-					.setMessage(
-							"qwertyuiopasdfghjklzxcvbnm,qwertyuiopsdfghjkwertyuiopasdf")
-					.setPositiveButton("OK", new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-						}
-					}).setNegativeButton("CANCEL", new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-						}
-					}).setCanceledOnTouchOutside(true);
-			// mMaterialDialog.show();
 			break;
 		case R.id.menu_follower:
 			changeOrNewFragment(v);

@@ -24,4 +24,7 @@
     <string name="logining">Logining</string>
     <string name="registe">Registe</string>
 
+    <!-- loading -->
+    <string name="loading_branch">Loading Branch</string>
+
 </resources>

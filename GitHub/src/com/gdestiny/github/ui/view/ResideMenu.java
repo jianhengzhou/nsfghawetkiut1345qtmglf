@@ -11,8 +11,10 @@ import android.view.*;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.utils.AndroidUtils;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -75,6 +77,9 @@ public class ResideMenu extends FrameLayout {
 		rightMenuView = findViewById(R.id.sv_right_menu);
 		imageViewShadow = (ImageView) findViewById(R.id.iv_shadow);
 		imageViewBackground = (ImageView) findViewById(R.id.iv_background);
+		// °æ±¾ºÅ
+		TextView version = (TextView) findViewById(R.id.version);
+		version.setText("version" + AndroidUtils.getVersion(activity));
 	}
 
 	public void setLeftMenuFragment(FragmentActivity fa, Fragment fragment) {
@@ -438,7 +443,7 @@ public class ResideMenu extends FrameLayout {
 				}
 				if (xOffset < -50 || xOffset > 50) {
 					pressedState = PRESSED_MOVE_HORIZANTAL;
-					if(menuListener!= null)
+					if (menuListener != null)
 						menuListener.onMove();
 					ev.setAction(MotionEvent.ACTION_CANCEL);
 				}
@@ -521,7 +526,7 @@ public class ResideMenu extends FrameLayout {
 		 * .
 		 */
 		public void closeMenu();
-		
+
 		public void onMove();
 	}
 

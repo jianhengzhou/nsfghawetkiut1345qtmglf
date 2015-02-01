@@ -3,6 +3,7 @@ package com.gdestiny.github.utils;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.RepositoryBranch;
 import org.eclipse.egit.github.core.Tree;
 import org.eclipse.egit.github.core.TreeEntry;
 import org.eclipse.egit.github.core.User;
@@ -90,6 +91,15 @@ public class TestUtils {
 					.append(te.getSize()).append("\ngetType:")
 					.append(te.getType()).append("\ngetUrl:")
 					.append(te.getUrl()).append("\n----------------------\n");
+		}
+		return sb.toString();
+	}
+
+	public static String printBranch(List<RepositoryBranch> branch) {
+		StringBuilder sb = new StringBuilder();
+		for (RepositoryBranch rb : branch) {
+			sb.append("----------------------").append("\ngetName:")
+					.append(rb.getName());
 		}
 		return sb.toString();
 	}

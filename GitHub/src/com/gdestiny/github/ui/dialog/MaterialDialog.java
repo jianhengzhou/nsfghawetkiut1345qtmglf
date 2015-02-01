@@ -56,6 +56,7 @@ public class MaterialDialog {
 	private View mMessageContentView;
 	private DialogInterface.OnDismissListener mOnDismissListener;
 	private AdapterView.OnItemClickListener onItemClickListener;
+	private ListView mListView;
 
 	public MaterialDialog(Context context) {
 		this.mContext = context;
@@ -534,7 +535,14 @@ public class MaterialDialog {
 		listView.setLayoutParams(params);
 	}
 
-	private ListView mListView;
+	public MaterialDialog inProgress(String loadingText) {
+		View view = LayoutInflater.from(mContext).inflate(
+				R.layout.layout_material_loading, null);
+		TextView text = (TextView) view.findViewById(R.id.loading_text);
+		text.setText(loadingText);
+		setContentView(view);
+		return this;
+	}
 
 	/**
 	 * 
@@ -547,7 +555,7 @@ public class MaterialDialog {
 		return addItem("drawable://" + drawableId, text);
 	}
 
-	public MaterialDialog addItem(String drawableURL, String text) {
+	public void initListView() {
 		if (mListView == null) {
 			mListView = new ListView(new ContextThemeWrapper(mContext,
 					R.style.normal_listview));
@@ -564,8 +572,13 @@ public class MaterialDialog {
 										position, id);
 						}
 					});
+			mListView.setSelector(R.drawable.selector_listviewitem);
 			setContentView(mListView);
 		}
+	}
+
+	public MaterialDialog addItem(String drawableURL, String text) {
+		initListView();
 		((DialogListAdapter) mListView.getAdapter()).addItem(drawableURL, text);
 		return this;
 	}
@@ -578,6 +591,10 @@ public class MaterialDialog {
 			AdapterView.OnItemClickListener onItemClickListener) {
 		this.onItemClickListener = onItemClickListener;
 		return this;
+	}
+
+	public ListView getmListView() {
+		return mListView;
 	}
 
 	public class DialogListAdapter extends BaseAdapter {
@@ -611,7 +628,7 @@ public class MaterialDialog {
 			Holder holder = null;
 			if (convertView == null) {
 				convertView = LayoutInflater.from(context).inflate(
-						R.layout.item_status_pop, null);
+						R.layout.item_material_listitem, null);
 				holder = new Holder(convertView);
 				convertView.setTag(holder);
 			} else {
@@ -635,8 +652,8 @@ public class MaterialDialog {
 			TextView textview;
 
 			public Holder(View v) {
-				imageview = (ImageView) v.findViewById(R.id.status_icon);
-				textview = (TextView) v.findViewById(R.id.status_name);
+				imageview = (ImageView) v.findViewById(R.id.icon);
+				textview = (TextView) v.findViewById(R.id.name);
 			}
 		}
 

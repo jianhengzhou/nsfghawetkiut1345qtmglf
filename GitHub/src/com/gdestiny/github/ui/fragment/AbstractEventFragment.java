@@ -58,6 +58,7 @@ public abstract class AbstractEventFragment extends
 		final MaterialDialog mMaterialDialog = new MaterialDialog(context);
 		mMaterialDialog
 				.setTitle("Go To")
+				// .inProgress("loading")
 				.addItem(EventUtils.getAuthorAvatarUrl(event),
 						EventUtils.getAuthor(event))
 				.addItem(R.drawable.common_repository_item,

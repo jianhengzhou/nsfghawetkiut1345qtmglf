@@ -21,6 +21,7 @@ import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.bean.CodeTree;
 import com.gdestiny.github.ui.activity.CodeFileActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
+import com.gdestiny.github.ui.dialog.BranchDialog;
 import com.gdestiny.github.ui.view.PathView;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.ui.view.PathView.PathClickListener;
@@ -48,7 +49,6 @@ public class RepositoryCodeFragment extends
 		if (savedInstanceState != null) {
 			currCodeTree = (CodeTree) savedInstanceState
 					.getSerializable(EXTRA_CODE);
-
 		}
 	}
 
@@ -89,6 +89,16 @@ public class RepositoryCodeFragment extends
 				setCodeData(path);
 			}
 		});
+
+		findViewById(R.id.branch).setOnClickListener(
+				new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						new BranchDialog(context, repository).show();
+					}
+				});
 	}
 
 	@Override
@@ -138,7 +148,7 @@ public class RepositoryCodeFragment extends
 	}
 
 	public boolean onBackPressed() {
-		if (currCodeTree.name.equals(CodeTree.ROOT))
+		if (currCodeTree == null || currCodeTree.name.equals(CodeTree.ROOT))
 			return true;
 		setCodeData(currCodeTree.parent);
 		return false;

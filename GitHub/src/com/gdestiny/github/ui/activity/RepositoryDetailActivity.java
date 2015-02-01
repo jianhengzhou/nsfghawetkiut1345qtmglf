@@ -13,10 +13,10 @@ import android.support.v4.view.ViewPager;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.ui.fragment.BaseLoadFragment;
-import com.gdestiny.github.ui.fragment.FollowerFragment;
 import com.gdestiny.github.ui.fragment.RepositoryCodeFragment;
 import com.gdestiny.github.ui.fragment.RepositoryCommitFragment;
 import com.gdestiny.github.ui.fragment.RepositoryEventFragment;
+import com.gdestiny.github.ui.fragment.RepositoryIssuesFragment;
 import com.gdestiny.github.ui.view.IndicatorView;
 import com.gdestiny.github.utils.GLog;
 
@@ -93,7 +93,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 		fragments.add(new RepositoryCodeFragment());
 		fragments.add(new RepositoryEventFragment());
 		fragments.add(new RepositoryCommitFragment());
-		fragments.add(new FollowerFragment());
+		fragments.add(new RepositoryIssuesFragment());
 
 		adapter = new RepositoryPageAdapter(getSupportFragmentManager());
 		viewpager.setAdapter(adapter);

@@ -44,11 +44,11 @@ public class MoreListView extends ListView implements OnScrollListener {
 
 	private void init() {
 		footerView = LayoutInflater.from(getContext()).inflate(
-				R.layout.layout_list_footer, null);
+				R.layout.layout_loading, null);
 
 		progressBar = (CircularProgressBar) footerView
-				.findViewById(R.id.footer_progress);
-		loadText = (TextView) footerView.findViewById(R.id.footer_text);
+				.findViewById(R.id.loading_progress);
+		loadText = (TextView) footerView.findViewById(R.id.loading_text);
 
 		footerView.setOnClickListener(new View.OnClickListener() {
 

@@ -1,38 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/selector_listviewitem"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content" >
 
     <TextView
-        android:id="@+id/footer_text"
+        android:id="@+id/loading_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
         android:paddingBottom="@dimen/margin16"
         android:paddingTop="@dimen/margin16"
-        android:text="@string/press_to_load_more"
-        android:textColor="@color/common_icon_grey"
+        android:text="@string/loading"
+        android:textColor="@color/common_light_black"
         android:textSize="@dimen/text16" />
 
     <fr.castorflex.android.circularprogressbar.CircularProgressBar
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/footer_progress"
+        android:id="@+id/loading_progress"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/margin16"
-        android:layout_toLeftOf="@id/footer_text"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:cpb_color="@color/common_icon_blue"
-        app:cpb_max_sweep_angle="300"
-        app:cpb_min_sweep_angle="10"
-        app:cpb_rotation_speed="1.0"
-        app:cpb_stroke_width="4dp"
-        app:cpb_sweep_speed="1.0" />
+        android:layout_toLeftOf="@id/loading_text"
+        android:indeterminate="true" />
 
 </RelativeLayout>

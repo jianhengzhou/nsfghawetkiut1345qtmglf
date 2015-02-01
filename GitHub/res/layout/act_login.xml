@@ -97,26 +97,4 @@
         android:textColor="@drawable/selector_common_link_text"
         android:textSize="@dimen/text18" />
 
-    <com.gdestiny.github.ui.view.RippleView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/password_layout"
-        android:layout_marginRight="@dimen/margin32"
-        android:background="@drawable/drawable_button_blue" >
-
-        <TextView
-            android:id="@+id/login2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="@dimen/margin16"
-            android:paddingRight="@dimen/margin16"
-            android:paddingTop="10dp"
-            android:text="@string/login"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text18" />
-    </com.gdestiny.github.ui.view.RippleView>
-
 </RelativeLayout>

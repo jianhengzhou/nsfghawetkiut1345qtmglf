@@ -10,19 +10,14 @@
 
         <ImageView
             android:id="@+id/repository_icon"
+            style="@style/image_with_frame"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/margin16"
             android:layout_marginTop="@dimen/margin16"
-            android:contentDescription="@string/app_name"
-            android:cropToPadding="true"
-            android:paddingBottom="3dp"
-            android:paddingLeft="1px"
-            android:paddingRight="3dp"
-            android:paddingTop="1px"
-            android:scaleType="centerCrop"
             android:background="@drawable/common_image_bg"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/common_repository_item" />
 
         <TextView

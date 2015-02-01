@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
@@ -24,6 +25,11 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_splash);
 		AndroidUtils.initMiBar(this);
+
+		// version
+		TextView version = (TextView) findViewById(R.id.version);
+		version.setText("version " + AndroidUtils.getVersion(this));
+		
 		handler = new Handler() {
 
 			@Override
@@ -56,6 +62,10 @@ public class SplashActivity extends Activity {
 				handler.sendEmptyMessage(0);
 			}
 		});
+	}
+
+	@Override
+	public void onBackPressed() {
 	}
 
 }

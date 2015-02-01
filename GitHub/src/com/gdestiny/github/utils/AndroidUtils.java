@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.view.Window;
 
 import com.gdestiny.github.R;
@@ -12,6 +14,7 @@ import com.gdestiny.github.R;
 public class AndroidUtils {
 
 	private static boolean isMiuiV6;
+	private static String version;
 
 	static {
 		try {
@@ -85,5 +88,20 @@ public class AndroidUtils {
 
 	public static int pxToDpCeilInt(Context context, float px) {
 		return (int) (pxToDp(context, px) + 0.5f);
+	}
+
+	public static String getVersion(Context context) {
+		if (version == null) {
+			try {
+				PackageManager manager = context.getPackageManager();
+				PackageInfo info = manager.getPackageInfo(
+						context.getPackageName(), 0);
+				version = info.versionName;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "1.0";
+			}
+		}
+		return version;
 	}
 }

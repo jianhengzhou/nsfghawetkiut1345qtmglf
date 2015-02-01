@@ -2,7 +2,7 @@ package com.gdestiny.github.adapter;
 
 import java.util.List;
 
-import org.eclipse.egit.github.core.event.Event;
+import org.eclipse.egit.github.core.Issue;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,17 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.utils.EventUtils;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
-import com.gdestiny.github.utils.ViewUtils;
 
-public class EventAdapter extends BaseAdapter {
+public class IssueAdapter extends BaseAdapter {
 
 	private Context context;
-	private List<Event> datas;
+	private List<Issue> datas;
 
-	public EventAdapter(Context context) {
+	public IssueAdapter(Context context) {
 		this.context = context;
 	}
 
@@ -36,13 +34,11 @@ public class EventAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -51,52 +47,55 @@ public class EventAdapter extends BaseAdapter {
 		Holder holder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
-					R.layout.item_event, null);
+					R.layout.item_issue, null);
 			holder = new Holder(convertView);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
 
-		Event event = datas.get(position);
+		Issue issue = datas.get(position);
 
-		ImageLoaderUtils.displayImage(EventUtils.getAuthorAvatarUrl(event),
+		ImageLoaderUtils.displayImage(issue.getUser().getAvatarUrl(),
 				holder.icon, R.drawable.default_avatar,
 				R.drawable.default_avatar, true);
 
-		holder.title.setText(EventUtils.toSpannableString(event));
-		holder.date.setText(TimeUtils.getTime(event.getCreatedAt().getTime()));
-		String content = EventUtils.getEventPayload(event);
-		if (content.equals("")) {
-			ViewUtils.setVisibility(holder.content, View.GONE);
-		} else {
-			ViewUtils.setVisibility(holder.content, View.VISIBLE);
-			holder.content.setText(content);
-		}
+		holder.title.setText(issue.getTitle());
+		holder.date.setText(TimeUtils.getTime(issue.getCreatedAt().getTime()));
+		holder.number.setText(issue.getNumber() + "");
+		holder.name.setText(issue.getUser().getLogin());
+		holder.comment.setText(issue.getComments() + "");
+		holder.content.setText(issue.getBody());
 
 		return convertView;
 	}
 
-	public List<Event> getDatas() {
+	public List<Issue> getDatas() {
 		return datas;
 	}
 
-	public void setDatas(List<Event> datas) {
+	public void setDatas(List<Issue> datas) {
 		this.datas = datas;
 		notifyDataSetChanged();
 	}
 
 	private class Holder {
+		TextView number;
 		ImageView icon;
-		TextView content;
+		TextView name;
 		TextView title;
 		TextView date;
+		TextView comment;
+		TextView content;
 
 		public Holder(View v) {
 			icon = (ImageView) v.findViewById(R.id.icon);
-			content = (TextView) v.findViewById(R.id.content);
+			name = (TextView) v.findViewById(R.id.name);
+			number = (TextView) v.findViewById(R.id.number);
 			title = (TextView) v.findViewById(R.id.title);
 			date = (TextView) v.findViewById(R.id.date);
+			comment = (TextView) v.findViewById(R.id.comment);
+			content = (TextView) v.findViewById(R.id.content);
 		}
 	}
 }

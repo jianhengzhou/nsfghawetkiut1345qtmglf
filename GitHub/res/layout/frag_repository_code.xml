@@ -16,19 +16,11 @@
         android:layout_below="@id/pathview"
         android:background="#dddddd" />
 
-    <View
-        android:id="@+id/branch"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/common_icon_grey" />
-
     <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pull_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/branch"
         android:layout_below="@id/divi" >
 
         <ListView
@@ -38,5 +30,26 @@
             android:layout_height="match_parent" >
         </ListView>
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
+
+    <com.gdestiny.github.ui.view.ListPopupView
+        android:id="@+id/branch_popup"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/branch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_grey_to_white"
+            android:clickable="true"
+            android:drawableLeft="@drawable/common_branch_white"
+            android:drawablePadding="@dimen/margin8"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="@dimen/margin16"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text18" />
+    </com.gdestiny.github.ui.view.ListPopupView>
 
 </RelativeLayout>

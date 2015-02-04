@@ -567,6 +567,7 @@ public class MaterialDialog {
 						@Override
 						public void onItemClick(AdapterView<?> parent,
 								View view, int position, long id) {
+							dismiss();
 							if (onItemClickListener != null)
 								onItemClickListener.onItemClick(parent, view,
 										position, id);

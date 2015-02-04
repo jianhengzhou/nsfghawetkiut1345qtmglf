@@ -104,7 +104,7 @@ public class MoreListView extends ListView implements OnScrollListener {
 		isLoading = true;
 		loadText.setText(getContext().getResources()
 				.getString(R.string.loading));
-		progressBar.setIndeterminate(true);
+//		progressBar.setIndeterminate(true);
 		ViewUtils.setVisibility(progressBar, View.VISIBLE);
 		footerView.setEnabled(false);
 	}
@@ -115,7 +115,7 @@ public class MoreListView extends ListView implements OnScrollListener {
 			loadText.setText(getContext().getResources().getString(
 					R.string.press_to_load_more));
 			ViewUtils.setVisibility(progressBar, View.GONE);
-			progressBar.setIndeterminate(false);
+//			progressBar.setIndeterminate(false);
 		}
 	}
 

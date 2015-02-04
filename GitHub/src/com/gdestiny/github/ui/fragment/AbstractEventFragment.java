@@ -55,7 +55,7 @@ public abstract class AbstractEventFragment extends
 			int position, long id) {
 		// TODO Auto-generated method stub
 		Event event = getDatas().get(position);
-		final MaterialDialog mMaterialDialog = new MaterialDialog(context);
+		MaterialDialog mMaterialDialog = new MaterialDialog(context);
 		mMaterialDialog
 				.setTitle("Go To")
 				// .inProgress("loading")
@@ -70,7 +70,6 @@ public abstract class AbstractEventFragment extends
 							int position, long id) {
 						GLog.sysout(position + "");
 						ToastUtils.show(context, position + "");
-						mMaterialDialog.dismiss();
 					}
 				}).setCanceledOnTouchOutside(true);
 		mMaterialDialog.show();

@@ -14,9 +14,11 @@ import android.widget.AdapterView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.IssueAdapter;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.ui.activity.IssueDetailActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
+import com.gdestiny.github.utils.IntentUtils;
 
 public class RepositoryIssuesFragment extends
 		BaseLoadPageFragment<Issue, GitHubClient> {
@@ -55,7 +57,12 @@ public class RepositoryIssuesFragment extends
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
-
+		IntentUtils
+				.create(context, IssueDetailActivity.class)
+				.putExtra(IssueDetailActivity.EXTRA_ISSUE,
+						getDatas().get(position))
+				.putExtra(IssueDetailActivity.EXTRA_IREPOSITORY, repository)
+				.start();
 	}
 
 	@Override

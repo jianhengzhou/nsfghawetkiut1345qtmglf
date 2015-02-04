@@ -11,6 +11,7 @@
         android:gravity="center"
         android:paddingBottom="@dimen/margin16"
         android:paddingTop="@dimen/margin16"
+        android:enabled="false"
         android:text="@string/loading"
         android:textColor="@color/common_light_black"
         android:textSize="@dimen/text16" />

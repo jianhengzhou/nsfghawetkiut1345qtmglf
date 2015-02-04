@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.CodeTreeAdapter;
@@ -22,11 +23,13 @@ import com.gdestiny.github.bean.CodeTree;
 import com.gdestiny.github.ui.activity.CodeFileActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.dialog.BranchDialog;
+import com.gdestiny.github.ui.view.ListPopupView;
 import com.gdestiny.github.ui.view.PathView;
-import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.ui.view.PathView.PathClickListener;
+import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
+import com.gdestiny.github.utils.ViewUtils;
 
 public class RepositoryCodeFragment extends
 		BaseLoadFragment<GitHubClient, Tree> {
@@ -40,6 +43,10 @@ public class RepositoryCodeFragment extends
 
 	private CodeTree currCodeTree;
 	private PathView pathView;
+	private ListPopupView listPopup;
+	private TextView branch;
+	private String curBranch;
+	private BranchDialog branchDialog;
 
 	@Override
 	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
@@ -90,21 +97,44 @@ public class RepositoryCodeFragment extends
 			}
 		});
 
-		findViewById(R.id.branch).setOnClickListener(
-				new View.OnClickListener() {
+		branch = (TextView) findViewById(R.id.branch);
+		branch.setOnClickListener(new View.OnClickListener() {
 
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						new BranchDialog(context, repository).show();
-					}
-				});
+			@Override
+			public void onClick(View v) {
+				if (branchDialog == null) {
+					branchDialog = new BranchDialog(context, repository)
+							.setOnItemClickListener(new OnItemClickListener() {
+
+								@Override
+								public void onItemClick(AdapterView<?> parent,
+										View view, int position, long id) {
+									// TODO Auto-generated method stub
+									String branch = branchDialog
+											.getBranchList().get(position)
+											.getName();
+									if (!branch.equals(curBranch)) {
+										curBranch = branch;
+										execute(GitHubApplication.getClient());
+									}
+								}
+							});
+				}
+				branchDialog.show();
+			}
+		});
+		listPopup = (ListPopupView) findViewById(R.id.branch_popup);
+		listPopup.bind(codeList);
+
 	}
 
 	@Override
 	protected void initData() {
 		repository = (Repository) context.getIntent().getSerializableExtra(
 				RepositoryDetailActivity.EXTRA_REPOSITORY);
+
+		curBranch = repository.getMasterBranch();
+
 		if (currCodeTree == null)
 			execute(GitHubApplication.getClient());
 		else {
@@ -131,7 +161,7 @@ public class RepositoryCodeFragment extends
 		DataService dataService = new DataService(params);
 		GLog.sysout(repository.getMasterBranch());
 		Reference ref = dataService.getReference(repository, "heads/"
-				+ repository.getMasterBranch());
+				+ curBranch);
 		Commit commit = dataService.getCommit(repository, ref.getObject()
 				.getSha());
 		Tree tree = dataService.getTree(repository, commit.getTree().getSha(),
@@ -145,6 +175,8 @@ public class RepositoryCodeFragment extends
 		super.onSuccess(result);
 		currCodeTree = CodeTree.toCodeTree(result);
 		codeAdapter.setCodeTree(currCodeTree);
+		ViewUtils.setVisibility(listPopup, View.VISIBLE, R.anim.alpha_in);
+		branch.setText(curBranch);
 	}
 
 	public boolean onBackPressed() {

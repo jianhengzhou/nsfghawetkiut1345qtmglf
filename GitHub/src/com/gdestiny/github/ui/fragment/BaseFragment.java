@@ -1,6 +1,9 @@
 package com.gdestiny.github.ui.fragment;
 
+import java.util.LinkedHashMap;
+
 import com.gdestiny.github.ui.activity.BaseFragmentActivity;
+import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
@@ -23,6 +26,10 @@ public abstract class BaseFragment extends Fragment {
 	protected StringBuilder mBuffer = new StringBuilder();
 	private View currentView;
 
+	protected LinkedHashMap<Integer, Integer> itemmap;
+	protected LinkedHashMap<Integer, Integer> itemmapSecondly;
+	protected StatusPopUpWindow.StatusPopUpWindowItemClickListener menuListener;
+
 	abstract protected void setCurrentView(LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState);
 
@@ -30,7 +37,13 @@ public abstract class BaseFragment extends Fragment {
 
 	abstract protected void initData();
 
-	abstract protected void initStatusPopup(final TitleBar title);
+	public abstract void initStatusPopup(final TitleBar title);
+
+	public void refreshPopup() {
+		if (itemmap != null && menuListener != null)
+			((BaseFragmentActivity) context).getTitlebar().setStatusItem(
+					context, itemmap, menuListener);
+	}
 
 	public BaseFragment() {
 		mClassName = getClass().getSimpleName();

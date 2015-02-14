@@ -98,6 +98,16 @@ public class IndicatorView extends LinearLayout implements OnPageChangeListener 
 		return this;
 	}
 
+	public IndicatorView add(int id, int drawableId) {
+		if (indecators == null)
+			indecators = new ArrayList<View>();
+		View view = newView(getContext().getResources().getString(id),
+				drawableId);
+		indecators.add(view);
+		addView(view);
+		return this;
+	}
+
 	// public void changeState(View view, boolean pressed) {
 	// if (pressed) {
 	// // view.setBackgroundResource(R.drawable.selector_indicator_pressed);

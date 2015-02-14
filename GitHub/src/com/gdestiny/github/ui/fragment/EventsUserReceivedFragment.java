@@ -28,7 +28,7 @@ public class EventsUserReceivedFragment extends AbstractEventFragment {
 	}
 
 	@Override
-	protected void initStatusPopup(TitleBar title) {
+	public void initStatusPopup(TitleBar title) {
 		title.showRightBtn();
 		title.getRightBtn().setOnClickListener(new View.OnClickListener() {
 

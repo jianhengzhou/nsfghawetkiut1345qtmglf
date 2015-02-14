@@ -35,7 +35,7 @@ public class FollowingFragment extends BaseLoadFragment<GitHubClient, String> {
 	}
 
 	@Override
-	protected void initStatusPopup(TitleBar title) {
+	public void initStatusPopup(TitleBar title) {
 		// TODO Auto-generated method stub
 
 	}

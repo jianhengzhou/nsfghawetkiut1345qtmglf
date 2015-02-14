@@ -67,7 +67,7 @@ public class LeftMenuFragment extends BaseFragment implements OnClickListener {
 	}
 
 	@Override
-	protected void initStatusPopup(TitleBar title) {
+	public void initStatusPopup(TitleBar title) {
 
 	}
 

@@ -19,6 +19,7 @@ import com.gdestiny.github.ui.fragment.RepositoryEventFragment;
 import com.gdestiny.github.ui.fragment.RepositoryIssuesFragment;
 import com.gdestiny.github.ui.view.IndicatorView;
 import com.gdestiny.github.utils.GLog;
+import com.gdestiny.github.utils.ToastUtils;
 
 public class RepositoryDetailActivity extends BaseFragmentActivity {
 
@@ -32,6 +33,16 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 
 	private List<BaseLoadFragment<?, ?>> fragments = new ArrayList<BaseLoadFragment<?, ?>>();
 
+	private boolean isStarred;
+
+	public boolean isStarred() {
+		return isStarred;
+	}
+
+	public void setStarred(boolean isStared) {
+		this.isStarred = isStared;
+	}
+
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
 		setContentView(R.layout.act_repository_detail);
@@ -44,10 +55,10 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 
 		indicatorView = (IndicatorView) findViewById(R.id.indicator);
 
-		indicatorView.add("code", R.drawable.common_code_white)
-				.add("events", R.drawable.tab_news_white)
-				.add("commit", R.drawable.common_commit_white)
-				.add("issues", R.drawable.circle_issue_white);
+		indicatorView.add(R.string.code, R.drawable.common_code_white)
+				.add(R.string.events_l, R.drawable.tab_news_white)
+				.add(R.string.commit, R.drawable.common_commit_white)
+				.add(R.string.issues, R.drawable.circle_issue_white);
 
 		indicatorView.bind(viewpager);
 		viewpager.setOnPageChangeListener(indicatorView);
@@ -64,6 +75,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 							hideHeaderView(fragments.get(indicatorView
 									.getCurrentPosition()));
 							showRefreshHeader(fragments.get(position));
+							fragments.get(position).refreshPopup();
 						}
 					}
 
@@ -79,6 +91,11 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 
 					}
 				});
+
+	}
+
+	public void onMenu(int id) {
+		ToastUtils.show(context, getResources().getString(id));
 
 	}
 

@@ -15,6 +15,11 @@
     <!-- repository menu -->
     <string name="sort">Sort</string>
     <string name="refresh">Refresh</string>
+    <!-- repository tab -->
+    <string name="code">code</string>
+    <string name="events_l">events</string>
+    <string name="commit">commit</string>
+    <string name="issues">issues</string>
 
     <!-- sort menu -->
     <string name="all">All</string>
@@ -24,5 +29,15 @@
     <string name="time">Time</string>
     <string name="user">User</string>
     <string name="name">Name</string>
+
+    <!-- repository -->
+    <string name="Unstar">Unstar</string>
+    <string name="fork">Fork</string>
+    <string name="share">Share</string>
+    <string name="contributors">Contributors</string>
+
+    <!-- repository issue -->
+    <string name="new_issue">New Issue</string>
+    <string name="filter">Filter</string>
 
 </resources>

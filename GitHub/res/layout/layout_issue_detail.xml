@@ -83,7 +83,7 @@
         android:background="@drawable/selector_event_content"
         android:ellipsize="end"
         android:padding="@dimen/margin8"
-        android:textColor="@color/common_icon_grey"
+        android:textColor="@color/common_light_grey"
         android:textSize="@dimen/text16" />
 
 </RelativeLayout>

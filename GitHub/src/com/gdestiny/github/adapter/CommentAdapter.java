@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.utils.CommitUtils;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
 
@@ -66,6 +65,23 @@ public class CommentAdapter extends BaseAdapter {
 		holder.date
 				.setText(TimeUtils.getTime(comment.getCreatedAt().getTime()));
 
+		holder.edit.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		holder.delete.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
 		return convertView;
 	}
 
@@ -80,9 +96,9 @@ public class CommentAdapter extends BaseAdapter {
 
 	@Override
 	public boolean isEnabled(int position) {
-		// TODO Auto-generated method stub
-		if (position == 0)
-			return false;
+		// // TODO Auto-generated method stub
+		// if (position == 0)
+		// return false;
 		return super.isEnabled(position);
 	}
 
@@ -91,14 +107,16 @@ public class CommentAdapter extends BaseAdapter {
 		TextView content;
 		TextView name;
 		TextView date;
-		TextView comment;
+		View edit;
+		View delete;
 
 		public Holder(View v) {
 			icon = (ImageView) v.findViewById(R.id.icon);
 			content = (TextView) v.findViewById(R.id.content);
 			name = (TextView) v.findViewById(R.id.name);
 			date = (TextView) v.findViewById(R.id.date);
-			comment = (TextView) v.findViewById(R.id.comment);
+			edit = v.findViewById(R.id.edit);
+			delete = v.findViewById(R.id.delete);
 		}
 	}
 }

@@ -1,11 +1,14 @@
 package com.gdestiny.github.ui.fragment;
 
+import java.util.LinkedHashMap;
+
 import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.Reference;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.Tree;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.DataService;
+import org.eclipse.egit.github.core.service.WatcherService;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +26,7 @@ import com.gdestiny.github.bean.CodeTree;
 import com.gdestiny.github.ui.activity.CodeFileActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.dialog.BranchDialog;
+import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.ListPopupView;
 import com.gdestiny.github.ui.view.PathView;
 import com.gdestiny.github.ui.view.PathView.PathClickListener;
@@ -145,9 +149,43 @@ public class RepositoryCodeFragment extends
 	}
 
 	@Override
-	protected void initStatusPopup(TitleBar title) {
+	public void initStatusPopup(final TitleBar title) {
 		// TODO Auto-generated method stub
+		if (itemmap == null) {
+			itemmap = new LinkedHashMap<Integer, Integer>();
+			itemmap.put(R.string.star, R.drawable.common_star_grey);
+			itemmap.put(R.string.fork, R.drawable.common_branch_grey);
+			itemmap.put(R.string.contributors,
+					R.drawable.common_own_people_grey);
+			itemmap.put(R.string.share, R.drawable.common_share_grey);
+			itemmap.put(R.string.refresh, R.drawable.common_status_refresh);
+			itemmap.put(R.string.code, R.drawable.common_status_refresh);
+		}
+		if (menuListener == null) {
+			menuListener = new StatusPopUpWindow.StatusPopUpWindowItemClickListener() {
 
+				@Override
+				public void onitemclick(int titleId) {
+					GLog.sysout(context.getResources().getString(titleId) + "");
+					boolean dismiss = true;
+					switch (titleId) {
+					case R.string.refresh:
+						if (isLoading()) {
+							GLog.sysout("update is not complete");
+							return;
+						}
+						onRefreshStarted(null);
+						break;
+					default:
+						((RepositoryDetailActivity) context).onMenu(titleId);
+						break;
+					}
+					if (dismiss)
+						title.dissmissStatus();
+				}
+			};
+		}
+		title.setStatusItem(context, itemmap, menuListener);
 	}
 
 	@Override
@@ -166,6 +204,11 @@ public class RepositoryCodeFragment extends
 				.getSha());
 		Tree tree = dataService.getTree(repository, commit.getTree().getSha(),
 				true);
+
+		WatcherService watchService = new WatcherService(params);
+		((RepositoryDetailActivity) context).setStarred(watchService
+				.isWatching(repository));
+
 		return tree;
 	}
 

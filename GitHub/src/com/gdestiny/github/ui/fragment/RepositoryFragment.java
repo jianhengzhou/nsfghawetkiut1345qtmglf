@@ -57,11 +57,6 @@ public class RepositoryFragment extends BaseLoadFragment<GitHubClient, Boolean> 
 	private Sort curSort = Sort.All;
 	private boolean isSorting = false;
 
-	// menu
-	private LinkedHashMap<Integer, Integer> itemmap;
-	private LinkedHashMap<Integer, Integer> itemmapSecondly;
-	private StatusPopUpWindow.StatusPopUpWindowItemClickListener menuListener;
-
 	@Override
 	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -95,7 +90,7 @@ public class RepositoryFragment extends BaseLoadFragment<GitHubClient, Boolean> 
 	// }
 
 	@Override
-	protected void initStatusPopup(final TitleBar title) {
+	public void initStatusPopup(final TitleBar title) {
 		if (itemmap == null) {
 			itemmap = new LinkedHashMap<Integer, Integer>();
 			itemmap.put(R.string.sort, R.drawable.common_status_sort);

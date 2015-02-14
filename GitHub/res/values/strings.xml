@@ -6,6 +6,9 @@
     <string name="root">root</string>
     <string name="press_to_load_more">Press To Load More</string>
     <string name="no_more_data">No More Data</string>
+    <string name="comment">Comment</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 
     <!-- test test test test test test -->
     <string name="name">gdestiny</string>

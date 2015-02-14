@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
     <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,4 +17,22 @@
         </com.gdestiny.github.ui.view.MoreListView>
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
 
-</LinearLayout>
+    <com.gdestiny.github.ui.view.ListPopupView
+        android:id="@+id/filter_popup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" >
+
+        <ImageButton
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:contentDescription="@string/app_name"
+            android:layout_marginRight="@dimen/margin16"
+            android:layout_marginBottom="@dimen/margin16"
+            android:src="@drawable/selector_filter_popup" />
+    </com.gdestiny.github.ui.view.ListPopupView>
+
+</RelativeLayout>

@@ -55,7 +55,7 @@ public class FollowerFragment extends BaseLoadFragment<GitHubClient, String> {
 	}
 
 	@Override
-	protected void initStatusPopup(TitleBar title) {
+	public void initStatusPopup(TitleBar title) {
 		if (itemmap == null) {
 			itemmap = new LinkedHashMap<Integer, Integer>();
 			itemmap.put(R.string.app_name, R.drawable.common_status_sort);

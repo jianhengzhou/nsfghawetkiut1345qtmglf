@@ -1,9 +1,11 @@
 package com.gdestiny.github.ui.activity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.service.WatcherService;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,10 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.BaseAsyncTask;
+import com.gdestiny.github.async.StarTask;
+import com.gdestiny.github.ui.dialog.StatusPopWindowItem;
 import com.gdestiny.github.ui.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.fragment.RepositoryCodeFragment;
 import com.gdestiny.github.ui.fragment.RepositoryCommitFragment;
@@ -19,6 +25,7 @@ import com.gdestiny.github.ui.fragment.RepositoryEventFragment;
 import com.gdestiny.github.ui.fragment.RepositoryIssuesFragment;
 import com.gdestiny.github.ui.view.IndicatorView;
 import com.gdestiny.github.utils.GLog;
+import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class RepositoryDetailActivity extends BaseFragmentActivity {
@@ -77,6 +84,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 							showRefreshHeader(fragments.get(position));
 							fragments.get(position).refreshPopup();
 						}
+						refreshStarPopup(position);
 					}
 
 					@Override
@@ -95,8 +103,19 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 	}
 
 	public void onMenu(int id) {
-		ToastUtils.show(context, getResources().getString(id));
-
+		switch (id) {
+		case R.string.contributors:
+			IntentUtils.create(context, ContributorsActivity.class)
+					.putExtra(EXTRA_REPOSITORY, repository).start();
+			break;
+		case R.string.star:
+			new StarTask(context, isStarred, repository)
+					.execute(GitHubApplication.getClient());
+			break;
+		default:
+			ToastUtils.show(context, getResources().getString(id));
+			break;
+		}
 	}
 
 	@Override
@@ -106,7 +125,6 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 				EXTRA_REPOSITORY);
 		titlebar.setLeftLayout(repository.getOwner().getAvatarUrl(),
 				repository.getName(), repository.getOwner().getLogin());
-
 		fragments.add(new RepositoryCodeFragment());
 		fragments.add(new RepositoryEventFragment());
 		fragments.add(new RepositoryCommitFragment());
@@ -114,6 +132,47 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 
 		adapter = new RepositoryPageAdapter(getSupportFragmentManager());
 		viewpager.setAdapter(adapter);
+		initStar();
+	}
+
+	private void refreshStarPopup(int position) {
+		StatusPopWindowItem item = null;
+		if (position == 3)
+			item = getTitlebar().getStatusPopup().getAction(2);
+		else
+			item = getTitlebar().getStatusPopup().getAction(0);
+		if (isStarred)
+			item.mTitle = getResources().getString(R.string.unstar);
+		else
+			item.mTitle = getResources().getString(R.string.star);
+	}
+
+	private void initStar() {
+		new BaseAsyncTask<Void, Void, Boolean>() {
+
+			@Override
+			protected Boolean doInBackground(Void... params) {
+				// TODO Auto-generated method stub
+				WatcherService service = new WatcherService(
+						GitHubApplication.getClient());
+				try {
+					return service.isWatching(repository);
+				} catch (IOException e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+
+			@Override
+			protected void onPostExecute(Boolean result) {
+				// TODO Auto-generated method stub
+				super.onPostExecute(result);
+				isStarred = result;
+				refreshStarPopup(indicatorView.getCurrentPosition());
+				GLog.sysout("isStarred = " + isStarred);
+			}
+
+		}.execute();
 	}
 
 	private class RepositoryPageAdapter extends FragmentStatePagerAdapter {

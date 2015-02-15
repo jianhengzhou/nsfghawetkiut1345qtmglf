@@ -24,15 +24,13 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true" >
 
-        <ImageButton
-            android:id="@+id/filter"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:contentDescription="@string/app_name"
-            android:layout_marginRight="@dimen/margin16"
             android:layout_marginBottom="@dimen/margin16"
-            android:src="@drawable/selector_filter_popup" />
+            android:layout_marginRight="@dimen/margin16"
+            android:background="@drawable/selector_filter_popup"
+            android:src="@drawable/common_filter_round" />
     </com.gdestiny.github.ui.view.ListPopupView>
 
 </RelativeLayout>

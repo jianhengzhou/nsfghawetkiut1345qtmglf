@@ -14,7 +14,7 @@
         android:enabled="false"
         android:text="@string/loading"
         android:textColor="@color/common_light_black"
-        android:textSize="@dimen/text16" />
+        android:textSize="@dimen/text18" />
 
     <fr.castorflex.android.circularprogressbar.CircularProgressBar
         xmlns:android="http://schemas.android.com/apk/res/android"

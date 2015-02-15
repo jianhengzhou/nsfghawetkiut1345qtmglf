@@ -42,7 +42,7 @@
             android:id="@+id/branch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/selector_grey_to_white"
+            android:background="@drawable/selector_grey_to_blue"
             android:clickable="true"
             android:drawableLeft="@drawable/common_branch_white"
             android:drawablePadding="@dimen/margin8"

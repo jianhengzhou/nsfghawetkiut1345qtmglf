@@ -535,12 +535,33 @@ public class MaterialDialog {
 		listView.setLayoutParams(params);
 	}
 
+	private TextView loadingTextView;
+
 	public MaterialDialog inProgress(String loadingText) {
 		View view = LayoutInflater.from(mContext).inflate(
 				R.layout.layout_material_loading, null);
-		TextView text = (TextView) view.findViewById(R.id.loading_text);
-		text.setText(loadingText);
+		loadingTextView = (TextView) view.findViewById(R.id.loading_text);
+		loadingTextView.setText(loadingText);
 		setContentView(view);
+		return this;
+	}
+
+	public MaterialDialog inProgress() {
+		View view = LayoutInflater.from(mContext).inflate(
+				R.layout.layout_material_loading, null);
+		loadingTextView = (TextView) view.findViewById(R.id.loading_text);
+		loadingTextView.setText("Loading");
+		setContentView(view);
+		return this;
+	}
+
+	public MaterialDialog setLoadingText(String loading) {
+		loadingTextView.setText(loading);
+		return this;
+	}
+
+	public MaterialDialog setLoadingText(int id) {
+		loadingTextView.setText(id);
 		return this;
 	}
 

@@ -8,7 +8,6 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.Tree;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.DataService;
-import org.eclipse.egit.github.core.service.WatcherService;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -205,10 +204,6 @@ public class RepositoryCodeFragment extends
 		Tree tree = dataService.getTree(repository, commit.getTree().getSha(),
 				true);
 
-		WatcherService watchService = new WatcherService(params);
-		((RepositoryDetailActivity) context).setStarred(watchService
-				.isWatching(repository));
-
 		return tree;
 	}
 
@@ -220,6 +215,8 @@ public class RepositoryCodeFragment extends
 		codeAdapter.setCodeTree(currCodeTree);
 		ViewUtils.setVisibility(listPopup, View.VISIBLE, R.anim.alpha_in);
 		branch.setText(curBranch);
+
+		// star
 	}
 
 	public boolean onBackPressed() {

@@ -79,8 +79,7 @@
         android:paddingRight="@dimen/margin16"
         android:text="@string/login"
         android:textColor="@color/white"
-        android:textSize="@dimen/text18"
-        android:visibility="gone" />
+        android:textSize="@dimen/text18" />
 
     <TextView
         android:id="@+id/registe"

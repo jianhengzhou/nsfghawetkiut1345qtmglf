@@ -41,7 +41,7 @@ public class RepositoryIssuesFragment extends
 	protected void initView() {
 		ListPopupView listPopup = (ListPopupView) findViewById(R.id.filter_popup);
 		listPopup.bind(getMoreList());
-		findViewById(R.id.filter).setOnClickListener(
+		listPopup.setOnClickListener(
 				new View.OnClickListener() {
 
 					@Override

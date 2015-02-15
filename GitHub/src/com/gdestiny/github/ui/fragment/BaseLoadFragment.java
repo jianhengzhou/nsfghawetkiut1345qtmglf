@@ -32,7 +32,7 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 		container.addView(content);
 
 		// Í¬²½ÑÕÉ«
-		getCurrentView().setBackground(content.getBackground());
+		//getCurrentView().setBackground(content.getBackground());
 
 		pullToRefreshLayout = (PullToRefreshLayout) findViewById(refreshId);
 		ActionBarPullToRefresh.from(context).allChildrenArePullable()

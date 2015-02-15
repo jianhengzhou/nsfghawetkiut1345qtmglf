@@ -49,8 +49,6 @@ public class IssueDetailActivity extends
 	protected void initView() {
 		// TODO Auto-generated method stub
 		commentList = (ListView) findViewById(R.id.list);
-		commentAdapter = new CommentAdapter(context);
-		commentList.setAdapter(commentAdapter);
 	}
 
 	@Override
@@ -69,6 +67,9 @@ public class IssueDetailActivity extends
 		detailView = LayoutInflater.from(context).inflate(
 				R.layout.layout_issue_detail, null);
 		commentList.addHeaderView(detailView);
+		commentAdapter = new CommentAdapter(context);
+		commentList.setAdapter(commentAdapter);
+		
 		execute(GitHubApplication.getClient());
 
 		ImageView icon = (ImageView) detailView.findViewById(R.id.icon);

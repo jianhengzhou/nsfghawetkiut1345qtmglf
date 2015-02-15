@@ -31,7 +31,7 @@
     <string name="name">Name</string>
 
     <!-- repository -->
-    <string name="Unstar">Unstar</string>
+    <string name="unstar">Unstar</string>
     <string name="fork">Fork</string>
     <string name="share">Share</string>
     <string name="contributors">Contributors</string>

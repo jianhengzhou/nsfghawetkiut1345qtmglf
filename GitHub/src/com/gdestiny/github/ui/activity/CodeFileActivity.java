@@ -28,6 +28,7 @@ import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.ui.view.touchimageview.TouchImageView;
 import com.gdestiny.github.utils.CommonUtils;
 import com.gdestiny.github.utils.GLog;
+import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.ImageUtils;
 import com.gdestiny.github.utils.MarkdownUtils;
 import com.gdestiny.github.utils.ViewUtils;
@@ -39,7 +40,7 @@ public class CodeFileActivity extends
 	public static final String EXTRA_CODE_REPOSITORY = "repository";
 
 	public static enum FILETYPE {
-		IMG, GIF, MD, OTHER, MD_HTML
+		IMG, GIF, MD, OTHER, PIC_IN_CACHE
 	};
 
 	private Repository repository;
@@ -91,6 +92,14 @@ public class CodeFileActivity extends
 
 	@Override
 	public Serializable onBackground(GitHubClient params) throws Exception {
+		//TODO Î´Íê³É
+		if(fileType == FILETYPE.IMG){
+			if(ImageLoaderUtils.isExistedInDiskCache(treeEntry.getUrl())){
+				GLog.sysout("Image From Cache");
+			}else{
+				GLog.sysout("Image From NET");
+			}
+		}
 		DataService dataService = new DataService(params);
 		Blob blob = dataService.getBlob(repository, treeEntry.getSha());
 
@@ -126,7 +135,7 @@ public class CodeFileActivity extends
 			case MD:
 				onMdHtml((String) result);
 				break;
-			case MD_HTML:
+			case PIC_IN_CACHE:
 				break;
 			default:
 				onOther(data);
@@ -144,6 +153,9 @@ public class CodeFileActivity extends
 		ViewUtils.setVisibility(normalImageView, View.VISIBLE);
 
 		Bitmap bm = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+		ImageLoaderUtils.putBitmapInMemoryCache(treeEntry.getUrl(), bm);
+
 		normalImageView.setImageBitmap(bm);
 	}
 

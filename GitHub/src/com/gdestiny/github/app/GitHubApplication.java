@@ -15,7 +15,7 @@ public class GitHubApplication extends Application {
 
 	private static Context context;
 	private static boolean isLogin;
-	private static GitHubClient client;
+	private static DefaultClient client;
 	private static User user;
 
 	@Override
@@ -31,8 +31,8 @@ public class GitHubApplication extends Application {
 		return context;
 	}
 
-	public static GitHubClient initClient(String str1, String str2) {
-		client = new GitHubClient();
+	public static DefaultClient initClient(String str1, String str2) {
+		client = new DefaultClient();
 		client.setCredentials(str1, str2);
 		return client;
 	}
@@ -59,7 +59,7 @@ public class GitHubApplication extends Application {
 		return client;
 	}
 
-	public static void setClient(GitHubClient client) {
+	public static void setClient(DefaultClient client) {
 		GitHubApplication.client = client;
 	}
 

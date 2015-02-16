@@ -676,6 +676,7 @@ public class ImageLoaderUtils {
 		List<String> keys = MemoryCacheUtils.findCacheKeysForImageUri(imageUri,
 				ImageLoader.getInstance().getMemoryCache());
 		if (keys != null && !keys.isEmpty()) {
+			GLog.sysout("putBitmapInMemoryCache");
 			ImageLoader.getInstance().getMemoryCache().put(keys.get(0), bmp);
 		}
 	}

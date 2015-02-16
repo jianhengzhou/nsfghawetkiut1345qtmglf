@@ -10,6 +10,7 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.IssueService;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -69,7 +70,7 @@ public class IssueDetailActivity extends
 		commentList.addHeaderView(detailView);
 		commentAdapter = new CommentAdapter(context);
 		commentList.setAdapter(commentAdapter);
-		
+
 		execute(GitHubApplication.getClient());
 
 		ImageView icon = (ImageView) detailView.findViewById(R.id.icon);
@@ -89,7 +90,7 @@ public class IssueDetailActivity extends
 		comment.setText(issue.getComments() + "");
 
 		content = (TextView) detailView.findViewById(R.id.content);
-		content.setText(issue.getBody());
+		content.setText(Html.fromHtml(issue.getBodyHtml()));
 		content.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -102,6 +103,7 @@ public class IssueDetailActivity extends
 					fold = false;
 					content.setMaxLines(Integer.MAX_VALUE);
 				}
+				commentList.setSelection(0);
 			}
 		});
 	}

@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.app.DefaultClient;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.GitHubTask;
 import com.gdestiny.github.utils.Constants;
@@ -92,7 +93,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			dialog = new ProgressDialog(this);
 		dialog.setMessage(account);
 		dialog.setCancelable(true);
-		final GitHubClient client = GitHubApplication.initClient(account,
+		final DefaultClient client = GitHubApplication.initClient(account,
 				password);
 		new GitHubTask<User>(new GitHubTask.TaskListener<User>() {
 

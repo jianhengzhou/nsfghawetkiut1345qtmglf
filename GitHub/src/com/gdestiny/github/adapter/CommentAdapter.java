@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.egit.github.core.Comment;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,7 @@ public class CommentAdapter extends BaseAdapter {
 				holder.icon, R.drawable.default_avatar,
 				R.drawable.default_avatar, true);
 		holder.name.setText(comment.getUser().getLogin());
-		holder.content.setText(comment.getBody());
+		holder.content.setText(Html.fromHtml(comment.getBodyHtml()));
 		holder.date
 				.setText(TimeUtils.getTime(comment.getCreatedAt().getTime()));
 
@@ -81,7 +82,6 @@ public class CommentAdapter extends BaseAdapter {
 
 			}
 		});
-
 		return convertView;
 	}
 

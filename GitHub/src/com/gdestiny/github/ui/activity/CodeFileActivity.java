@@ -1,6 +1,8 @@
 package com.gdestiny.github.ui.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -19,6 +21,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.ui.view.touchimageview.TouchImageView;
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.CommonUtils;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ImageLoaderUtils;
@@ -95,16 +99,15 @@ public class CodeFileActivity extends
 	public Serializable onBackground(GitHubClient params) throws Exception {
 		// TODO Î´Íê³É
 		if (fileType == FILETYPE.IMG) {
-			if (ImageLoaderUtils.isExistedInDiskCache(treeEntry.getUrl())) {
+			if (CacheUtils.isBitmapExistInDisk(treeEntry.getUrl())) {
 				GLog.sysout("Image From Cache");
-				File file = ImageLoaderUtils.getFileInDiskCache(treeEntry
-						.getUrl());
-				if (file != null && file.exists())
-					return file;
-			} else {
-				GLog.sysout("Image From NET");
+				String path = CacheUtils.getBitmapPath(treeEntry.getUrl());
+				if (!TextUtils.isEmpty(path))
+					return path;
 			}
+			GLog.sysout("Image From NET");
 		}
+		// from net
 		DataService dataService = new DataService(params);
 		Blob blob = dataService.getBlob(repository, treeEntry.getSha());
 
@@ -119,6 +122,12 @@ public class CodeFileActivity extends
 				return mdSerview.getHtml(mdText, MarkdownService.MODE_GFM);
 
 			}
+		} else if (fileType == FILETYPE.IMG) {
+			String result = CacheUtils.cache(treeEntry.getUrl(),
+					EncodingUtils.fromBase64((blob.getContent())));
+			if (!TextUtils.isEmpty(result)) {
+				return result;
+			}
 		}
 		return blob;
 	}
@@ -126,22 +135,19 @@ public class CodeFileActivity extends
 	@Override
 	public void onSuccess(Serializable result) {
 		super.onSuccess(result);
-		byte[] data = null;
-		if (result instanceof Blob)
-			data = EncodingUtils.fromBase64(((Blob) result).getContent());
-		else if (result instanceof File) {
-			try {
-				if (fileType == FILETYPE.GIF)
-					onGifImage((File) result);
-				else
-					onNormalImage((File) result);
-			} catch (IOException e) {
-				e.printStackTrace();
-				noData(true);
-			}
-			return;
-		}
 		try {
+			// cache
+			byte[] data = null;
+			if (result instanceof Blob)
+				data = EncodingUtils.fromBase64(((Blob) result).getContent());
+			else if (result instanceof String) {
+				if (fileType == FILETYPE.IMG)
+					onNormalImage((String) result);
+				else
+					onGifImage((String) result);
+				return;
+			}
+			// net
 			switch (fileType) {
 			case GIF:
 				onGifImage(data);
@@ -171,21 +177,16 @@ public class CodeFileActivity extends
 
 		Bitmap bm = BitmapFactory.decodeByteArray(data, 0, data.length);
 
-		ImageLoaderUtils.cacheBitmap(treeEntry.getUrl(), bm);
-
 		normalImageView.setImageBitmap(bm);
-		// ImageLoaderUtils.displayTransition(normalImageView, bm);
 	}
 
-	private void onNormalImage(File file) {
-		GLog.sysout("onNormalImage");
+	private void onNormalImage(String path) {
+		GLog.sysout("onNormalImage file");
 		normalImageView = (TouchImageView) findViewById(R.id.imageview);
 		ViewUtils.setVisibility(normalImageView, View.VISIBLE);
 
-		Bitmap bm = BitmapFactory.decodeFile(file.getPath());
-
-		normalImageView.setImageBitmap(bm);
-		// ImageLoaderUtils.displayTransition(normalImageView, bm);
+		ImageLoaderUtils.displayImage("file://" + path, normalImageView,
+				R.color.transparent, false);
 	}
 
 	private void onGifImage(byte[] data) throws IOException {
@@ -200,12 +201,23 @@ public class CodeFileActivity extends
 		gifImageView.setImageDrawable(gifDrawable);
 	}
 
-	private void onGifImage(File file) throws IOException {
+	private void onGifImage(String path) throws IOException {
 		GLog.sysout("onGifImage");
 		gifImageView = (GifImageView) findViewById(R.id.gif_imageview);
 		ViewUtils.setVisibility(gifImageView, View.VISIBLE);
 
-		GifDrawable gifDrawable = new GifDrawable(file);
+		File file = new File(path);
+		FileInputStream fis = new FileInputStream(file);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
+		byte[] b = new byte[1000];
+		int n;
+		while ((n = fis.read(b)) != -1) {
+			bos.write(b, 0, n);
+		}
+		fis.close();
+		bos.close();
+		byte[] data = bos.toByteArray();
+		GifDrawable gifDrawable = new GifDrawable(data);
 		gifImageView.setImageDrawable(gifDrawable);
 	}
 

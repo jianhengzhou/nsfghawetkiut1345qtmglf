@@ -38,7 +38,6 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.ImageDownloader.Scheme;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.nostra13.universalimageloader.utils.DiskCacheUtils;
 import com.nostra13.universalimageloader.utils.L;
 import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 
@@ -698,41 +697,6 @@ public class ImageLoaderUtils {
 
 	public static DiskCache getCurrenyDiskCache() {
 		return ImageLoader.getInstance().getDiskCache();
-	}
-
-	public static boolean isExistedInDiskCache(String keyUrl) {
-		File file = getFileInDiskCache(keyUrl);
-		if (file == null) {
-			return false;
-		}
-
-		return file.exists();
-	}
-
-	public static File getFileInDiskCache(String keyUrl) {
-		return DiskCacheUtils.findInCache(keyUrl, getCurrenyDiskCache());
-	}
-
-	// ////////////////自己定义的缓存
-	public static void cacheBitmap(String uri, Bitmap bm) {
-		if (isExistedInDiskCache(uri)) {
-			GLog.sysout("isExistedInDiskCache");
-		} else {
-			try {
-				getCurrenyDiskCache().save(uri, bm);
-			} catch (IOException e) {
-				e.printStackTrace();
-				GLog.sysout("save IOException");
-			}
-		}
-	}
-
-	public static Bitmap getBitmapFromCache(String uri) {
-		if (isExistedInDiskCache(uri)) {
-			File file = getCurrenyDiskCache().get(uri);
-			return BitmapFactory.decodeFile(file.getPath());
-		}
-		return null;
 	}
 
 	/**

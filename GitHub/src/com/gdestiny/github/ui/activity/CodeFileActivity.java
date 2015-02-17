@@ -1,5 +1,6 @@
 package com.gdestiny.github.ui.activity;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -92,11 +93,15 @@ public class CodeFileActivity extends
 
 	@Override
 	public Serializable onBackground(GitHubClient params) throws Exception {
-		//TODO 未完成
-		if(fileType == FILETYPE.IMG){
-			if(ImageLoaderUtils.isExistedInDiskCache(treeEntry.getUrl())){
+		// TODO 未完成
+		if (fileType == FILETYPE.IMG) {
+			if (ImageLoaderUtils.isExistedInDiskCache(treeEntry.getUrl())) {
 				GLog.sysout("Image From Cache");
-			}else{
+				File file = ImageLoaderUtils.getFileInDiskCache(treeEntry
+						.getUrl());
+				if (file != null && file.exists())
+					return file;
+			} else {
 				GLog.sysout("Image From NET");
 			}
 		}
@@ -124,6 +129,18 @@ public class CodeFileActivity extends
 		byte[] data = null;
 		if (result instanceof Blob)
 			data = EncodingUtils.fromBase64(((Blob) result).getContent());
+		else if (result instanceof File) {
+			try {
+				if (fileType == FILETYPE.GIF)
+					onGifImage((File) result);
+				else
+					onNormalImage((File) result);
+			} catch (IOException e) {
+				e.printStackTrace();
+				noData(true);
+			}
+			return;
+		}
 		try {
 			switch (fileType) {
 			case GIF:
@@ -154,9 +171,21 @@ public class CodeFileActivity extends
 
 		Bitmap bm = BitmapFactory.decodeByteArray(data, 0, data.length);
 
-		ImageLoaderUtils.putBitmapInMemoryCache(treeEntry.getUrl(), bm);
+		ImageLoaderUtils.cacheBitmap(treeEntry.getUrl(), bm);
 
 		normalImageView.setImageBitmap(bm);
+		// ImageLoaderUtils.displayTransition(normalImageView, bm);
+	}
+
+	private void onNormalImage(File file) {
+		GLog.sysout("onNormalImage");
+		normalImageView = (TouchImageView) findViewById(R.id.imageview);
+		ViewUtils.setVisibility(normalImageView, View.VISIBLE);
+
+		Bitmap bm = BitmapFactory.decodeFile(file.getPath());
+
+		normalImageView.setImageBitmap(bm);
+		// ImageLoaderUtils.displayTransition(normalImageView, bm);
 	}
 
 	private void onGifImage(byte[] data) throws IOException {
@@ -165,6 +194,18 @@ public class CodeFileActivity extends
 		ViewUtils.setVisibility(gifImageView, View.VISIBLE);
 
 		GifDrawable gifDrawable = new GifDrawable(data);
+
+		// ImageLoaderUtils.cacheBitmap(treeEntry.getUrl(), gifDrawable);
+
+		gifImageView.setImageDrawable(gifDrawable);
+	}
+
+	private void onGifImage(File file) throws IOException {
+		GLog.sysout("onGifImage");
+		gifImageView = (GifImageView) findViewById(R.id.gif_imageview);
+		ViewUtils.setVisibility(gifImageView, View.VISIBLE);
+
+		GifDrawable gifDrawable = new GifDrawable(file);
 		gifImageView.setImageDrawable(gifDrawable);
 	}
 

@@ -63,26 +63,10 @@
         android:textSize="@dimen/text16" />
 
     <TextView
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_marginLeft="@dimen/margin24"
-        android:layout_marginRight="@dimen/margin24"
-        android:layout_marginTop="@dimen/margin4"
-        android:layout_toRightOf="@id/icon"
-        android:background="@drawable/selector_event_content"
-        android:ellipsize="end"
-        android:maxLines="3"
-        android:padding="@dimen/margin8"
-        android:textColor="@color/common_icon_grey"
-        android:textSize="@dimen/text16" />
-
-    <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/content"
+        android:layout_below="@id/title"
         android:layout_marginLeft="@dimen/margin16"
         android:layout_marginRight="@dimen/margin16"
         android:layout_marginTop="@dimen/margin4"

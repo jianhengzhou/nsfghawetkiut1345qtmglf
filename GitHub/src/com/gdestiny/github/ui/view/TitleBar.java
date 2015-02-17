@@ -139,18 +139,21 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 		return titleBackText;
 	}
 
-	public void setLeftLayout(String url, String mainText) {
+	public TitleBar setLeftLayout(String url, String mainText) {
 		setTitleIcon(url);
 		setTitleText(mainText);
+		return this;
 	}
 
-	public void setLeftLayout(String url, String mainText, String textSecondly) {
+	public TitleBar setLeftLayout(String url, String mainText,
+			String textSecondly) {
 		setTitleIcon(url);
 		setTitleText(mainText);
 		setTitleTextSecondly(textSecondly);
+		return this;
 	}
 
-	public void setTitleIcon(String url) {
+	public TitleBar setTitleIcon(String url) {
 		if (TextUtils.isEmpty(url)) {
 			ViewUtils.setVisibility(titleBackIcon, View.GONE);
 		} else {
@@ -158,35 +161,40 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 			ImageLoaderUtils.displayImage(url, titleBackIcon,
 					R.drawable.default_avatar, R.drawable.ic_launcher, false);
 		}
+		return this;
 	}
 
-	public void setTitleText(String text) {
+	public TitleBar setTitleText(String text) {
 		if (TextUtils.isEmpty(text)) {
 			ViewUtils.setVisibility(titleBackText, View.GONE);
 		} else {
 			ViewUtils.setVisibility(titleBackText, View.VISIBLE);
 			titleBackText.setText(text);
 		}
+		return this;
 	}
 
-	public void setTitleText(int id) {
+	public TitleBar setTitleText(int id) {
 		titleBackText.setText(id);
+		return this;
 	}
 
-	public void setTitleTextSecondly(String text) {
+	public TitleBar setTitleTextSecondly(String text) {
 		if (TextUtils.isEmpty(text)) {
 			ViewUtils.setVisibility(titleBackTextSecondly, View.GONE);
 		} else {
 			ViewUtils.setVisibility(titleBackTextSecondly, View.VISIBLE);
 			titleBackTextSecondly.setText(text);
 		}
+		return this;
 	}
 
-	public void setTitleTextSecondly(int id) {
+	public TitleBar setTitleTextSecondly(int id) {
 		titleBackTextSecondly.setText(id);
+		return this;
 	}
 
-	public void setLeftVisibility(int which, int visibility) {
+	public TitleBar setLeftVisibility(int which, int visibility) {
 		switch (which) {
 		case ICON:
 			ViewUtils.setVisibility(titleBackIcon, visibility);
@@ -198,6 +206,7 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 			ViewUtils.setVisibility(titleBackTextSecondly, visibility);
 			break;
 		}
+		return this;
 	}
 
 	@Override

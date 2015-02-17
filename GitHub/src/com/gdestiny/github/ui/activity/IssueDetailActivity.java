@@ -20,8 +20,10 @@ import android.widget.TextView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.CommentAdapter;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.AsyncImageGetter;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
+import com.gdestiny.github.utils.ViewUtils;
 
 public class IssueDetailActivity extends
 		BaseLoadFragmentActivity<GitHubClient, List<Comment>> {
@@ -90,8 +92,12 @@ public class IssueDetailActivity extends
 		comment.setText(issue.getComments() + "");
 
 		content = (TextView) detailView.findViewById(R.id.content);
-		content.setText(Html.fromHtml(issue.getBodyHtml()));
-		content.setOnClickListener(new View.OnClickListener() {
+		content.setText(Html.fromHtml(issue.getBodyHtml(),
+				new AsyncImageGetter(context), null));
+		ViewUtils.handleLink(content);
+
+		final ImageView foldBtn = (ImageView) findViewById(R.id.more);
+		foldBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -99,11 +105,13 @@ public class IssueDetailActivity extends
 				if (!fold) {
 					fold = true;
 					content.setMaxLines(4);
+					commentList.setSelection(0);
+					foldBtn.setImageResource(R.drawable.common_up_more);
 				} else {
 					fold = false;
 					content.setMaxLines(Integer.MAX_VALUE);
+					foldBtn.setImageResource(R.drawable.common_down_more);
 				}
-				commentList.setSelection(0);
 			}
 		});
 	}

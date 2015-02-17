@@ -66,9 +66,9 @@ public class IssueAdapter extends BaseAdapter {
 		holder.name.setText(issue.getUser().getLogin());
 		holder.comment.setText(issue.getComments() + "");
 		// 遇到博客类issue，body过大时加载缓慢
-		String content = issue.getBody();
-		holder.content.setText(content.length() > 50 ? issue.getBody()
-				.substring(0, 50) + "...." : content);
+		// String content = issue.getBody();
+		// holder.content.setText(content.length() > 50 ? issue.getBody()
+		// .substring(0, 50) + "...." : content);
 
 		return convertView;
 	}
@@ -89,7 +89,8 @@ public class IssueAdapter extends BaseAdapter {
 		TextView title;
 		TextView date;
 		TextView comment;
-		TextView content;
+
+		// TextView content;
 
 		public Holder(View v) {
 			icon = (ImageView) v.findViewById(R.id.icon);
@@ -98,7 +99,7 @@ public class IssueAdapter extends BaseAdapter {
 			title = (TextView) v.findViewById(R.id.title);
 			date = (TextView) v.findViewById(R.id.date);
 			comment = (TextView) v.findViewById(R.id.comment);
-			content = (TextView) v.findViewById(R.id.content);
+			// content = (TextView) v.findViewById(R.id.content);
 		}
 	}
 }

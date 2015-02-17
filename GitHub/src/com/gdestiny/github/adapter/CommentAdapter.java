@@ -14,8 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.async.AsyncImageGetter;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
+import com.gdestiny.github.utils.ViewUtils;
 
 public class CommentAdapter extends BaseAdapter {
 
@@ -62,7 +64,10 @@ public class CommentAdapter extends BaseAdapter {
 				holder.icon, R.drawable.default_avatar,
 				R.drawable.default_avatar, true);
 		holder.name.setText(comment.getUser().getLogin());
-		holder.content.setText(Html.fromHtml(comment.getBodyHtml()));
+		holder.content.setText(Html.fromHtml(comment.getBodyHtml(),
+				new AsyncImageGetter(context), null));
+		ViewUtils.handleLink(holder.content);
+
 		holder.date
 				.setText(TimeUtils.getTime(comment.getCreatedAt().getTime()));
 

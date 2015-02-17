@@ -65,6 +65,7 @@ public class ImageDecodingInfo {
 		copyOptions(displayOptions.getDecodingOptions(), decodingOptions);
 	}
 
+	@SuppressWarnings("deprecation")
 	private void copyOptions(Options srcOptions, Options destOptions) {
 		destOptions.inDensity = srcOptions.inDensity;
 		destOptions.inDither = srcOptions.inDither;

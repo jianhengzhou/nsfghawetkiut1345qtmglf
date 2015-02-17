@@ -9,6 +9,7 @@
     <string name="comment">Comment</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="to_clipboard">Copied To Clipboard</string>
 
     <!-- test test test test test test -->
     <string name="name">gdestiny</string>

@@ -14,6 +14,7 @@ import android.content.Context;
 public class StarTask extends DialogTask<GitHubClient, Boolean> {
 
 	private boolean isStar;
+	@SuppressWarnings("unused")
 	private Repository repository;
 
 	public StarTask(Context context, boolean isStar, Repository repository) {
@@ -33,6 +34,7 @@ public class StarTask extends DialogTask<GitHubClient, Boolean> {
 
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public Boolean onBackground(GitHubClient params) throws Exception {
 		// TODO Auto-generated method stub

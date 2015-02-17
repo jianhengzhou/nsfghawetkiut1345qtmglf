@@ -713,6 +713,28 @@ public class ImageLoaderUtils {
 		return DiskCacheUtils.findInCache(keyUrl, getCurrenyDiskCache());
 	}
 
+	// ////////////////自己定义的缓存
+	public static void cacheBitmap(String uri, Bitmap bm) {
+		if (isExistedInDiskCache(uri)) {
+			GLog.sysout("isExistedInDiskCache");
+		} else {
+			try {
+				getCurrenyDiskCache().save(uri, bm);
+			} catch (IOException e) {
+				e.printStackTrace();
+				GLog.sysout("save IOException");
+			}
+		}
+	}
+
+	public static Bitmap getBitmapFromCache(String uri) {
+		if (isExistedInDiskCache(uri)) {
+			File file = getCurrenyDiskCache().get(uri);
+			return BitmapFactory.decodeFile(file.getPath());
+		}
+		return null;
+	}
+
 	/**
 	 * 异步加载drawable目录下的图片
 	 * 
@@ -727,4 +749,13 @@ public class ImageLoaderUtils {
 				imageView, defaultRid, isTran);
 	}
 
+	public static void displayTransition(ImageView imageview, Bitmap bm) {
+		@SuppressWarnings("deprecation")
+		final TransitionDrawable td = new TransitionDrawable(new Drawable[] {
+				new ColorDrawable(android.R.color.transparent),
+				new BitmapDrawable(bm) });
+		td.setCrossFadeEnabled(true);
+		imageview.setImageDrawable(td);
+		td.startTransition(300);
+	}
 }

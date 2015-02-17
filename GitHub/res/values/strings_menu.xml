@@ -39,5 +39,8 @@
     <!-- repository issue -->
     <string name="new_issue">New Issue</string>
     <string name="filter">Filter</string>
+    
+    <!-- webview activiy -->
+    <string name="open_with">Open With</string>
 
 </resources>

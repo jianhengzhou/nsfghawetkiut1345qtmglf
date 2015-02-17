@@ -1,2 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/com/gdestiny/github/ui/activity/IssueDetailActivity.java=UTF-8
 encoding//src/com/gdestiny/github/ui/dialog/MaterialDialog.java=UTF-8
+encoding//src/com/gdestiny/github/utils/AndroidUtils.java=UTF-8
+encoding//src/com/gdestiny/github/utils/ViewUtils.java=UTF-8

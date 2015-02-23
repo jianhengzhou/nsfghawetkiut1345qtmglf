@@ -27,7 +27,6 @@ import com.gdestiny.github.app.GitHubApplication;
 import com.nostra13.universalimageloader.cache.disc.DiskCache;
 import com.nostra13.universalimageloader.cache.disc.impl.ext.LruDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.FileNameGenerator;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.MemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LRULimitedMemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -608,8 +607,6 @@ public class ImageLoaderUtils {
 				.denyCacheImageMultipleSizesInMemory()
 				.diskCacheFileNameGenerator(diskCacheFileNameGenerator())
 				.tasksProcessingOrder(QueueProcessingType.FIFO)
-				// .imageDownloader(
-				// new com.kdweibo.android.image.KdImageDownloader(context))
 				.build();
 		ImageLoader.getInstance().init(config);
 		L.writeDebugLogs(Constants.isDebug);
@@ -617,7 +614,8 @@ public class ImageLoaderUtils {
 	}
 
 	public static FileNameGenerator diskCacheFileNameGenerator() {
-		return new Md5FileNameGenerator();
+//		return new Md5FileNameGenerator();
+		return CacheUtils.nameGenerator;
 	}
 
 	public static ImageLoader getImageLoader() {
@@ -697,6 +695,10 @@ public class ImageLoaderUtils {
 
 	public static DiskCache getCurrenyDiskCache() {
 		return ImageLoader.getInstance().getDiskCache();
+	}
+
+	public static MemoryCache getMemoryCache() {
+		return ImageLoader.getInstance().getMemoryCache();
 	}
 
 	/**

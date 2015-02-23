@@ -81,6 +81,7 @@
         android:layout_marginTop="@dimen/margin4"
         android:background="@drawable/drawable_event_content_normal"
         android:ellipsize="end"
+        android:maxLines="4"
         android:padding="@dimen/margin8"
         android:textColor="@color/common_light_black"
         android:textSize="@dimen/text16" />
@@ -98,6 +99,6 @@
         android:cropToPadding="true"
         android:paddingBottom="@dimen/margin8"
         android:paddingTop="@dimen/margin8"
-        android:src="@drawable/common_down_more" />
+        android:src="@drawable/common_up_more" />
 
 </RelativeLayout>

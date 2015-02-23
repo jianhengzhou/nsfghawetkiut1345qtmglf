@@ -40,7 +40,7 @@ public class IssueDetailActivity extends
 	private CommentAdapter commentAdapter;
 
 	private TextView content;
-	private boolean fold = false;
+	private boolean fold = true;
 
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
@@ -93,7 +93,7 @@ public class IssueDetailActivity extends
 
 		content = (TextView) detailView.findViewById(R.id.content);
 		content.setText(Html.fromHtml(issue.getBodyHtml(),
-				new AsyncImageGetter(context), null));
+				new AsyncImageGetter(context,content), null));
 		ViewUtils.handleLink(content);
 
 		final ImageView foldBtn = (ImageView) findViewById(R.id.more);

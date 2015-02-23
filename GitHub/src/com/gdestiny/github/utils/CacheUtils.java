@@ -2,11 +2,16 @@ package com.gdestiny.github.utils;
 
 import java.io.File;
 import java.io.IOException;
-
-import com.nostra13.universalimageloader.utils.DiskCacheUtils;
+import java.util.List;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import com.nostra13.universalimageloader.cache.disc.naming.FileNameGenerator;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.utils.DiskCacheUtils;
+import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 
 /**
  * 1¡¢Bitmap cacheºÍImageLoadµÄDiskCache
@@ -16,6 +21,8 @@ import android.graphics.BitmapFactory;
  */
 public class CacheUtils {
 
+	public static final String TAG = "CacheUtils";
+
 	public static final String SD_PATH = android.os.Environment
 			.getExternalStorageDirectory().getPath();
 	public static final String DATA_PATH = SD_PATH + File.separator + "GitHub";
@@ -23,13 +30,15 @@ public class CacheUtils {
 			+ "ImageCache";
 
 	static {
-		GLog.sysout("SD_PATH:" + SD_PATH + "\nDATA_PATH:" + DATA_PATH
+		GLog.d(TAG, "SD_PATH:" + SD_PATH + "\nDATA_PATH:" + DATA_PATH
 				+ "\nIMAGE_PATH:" + IMAGE_PATH);
 	}
 
 	public static final String SnappyDB_Internal = "CACHE_SNAPPYDB";
 	public static final String SnappyDB_External = DATA_PATH + File.separator
 			+ "SNAPPYDB_EXTERNAL";
+
+	public static FileNameGenerator nameGenerator = new Md5FileNameGenerator();
 
 	public static boolean isBitmapExistInDisk(String url) {
 		File file = DiskCacheUtils.findInCache(url,
@@ -39,7 +48,7 @@ public class CacheUtils {
 
 	public static String cache(String url, Bitmap bm) {
 		if (isBitmapExistInDisk(url)) {
-			GLog.sysout("isBitmapExistInDisk:" + url);
+			GLog.d(TAG, "isBitmapExistInDisk:" + url);
 			return null;
 		} else {
 			try {
@@ -48,7 +57,7 @@ public class CacheUtils {
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
-				GLog.sysout("cacheBitmap IOException:" + e.getMessage());
+				GLog.d(TAG, "cacheBitmap IOException:" + e.getMessage());
 				return null;
 			}
 		}
@@ -57,7 +66,7 @@ public class CacheUtils {
 
 	public static String cache(String url, byte[] data) {
 		if (isBitmapExistInDisk(url)) {
-			GLog.sysout("isBitmapExistInDisk:" + url);
+			GLog.d(TAG, "isBitmapExistInDisk:" + url);
 			return null;
 		} else {
 			try {
@@ -67,7 +76,7 @@ public class CacheUtils {
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
-				GLog.sysout("cacheBitmap IOException:" + e.getMessage());
+				GLog.d(TAG, "cacheBitmap IOException:" + e.getMessage());
 				return null;
 			}
 		}
@@ -77,6 +86,7 @@ public class CacheUtils {
 	public static Bitmap getBitmap(String url) {
 		if (isBitmapExistInDisk(url)) {
 			File file = ImageLoaderUtils.getCurrenyDiskCache().get(url);
+			GLog.d(TAG, "getBitmapFromDisk " + url);
 			return BitmapFactory.decodeFile(file.getPath());
 		}
 		return null;
@@ -87,6 +97,32 @@ public class CacheUtils {
 			File file = ImageLoaderUtils.getCurrenyDiskCache().get(url);
 			return file.getPath();
 		}
+		return null;
+	}
+
+	public static void cacheMemory(String url, Bitmap bitmap) {
+
+		String key = MemoryCacheUtils.generateKey(url,
+				new ImageSize(bitmap.getWidth(), bitmap.getHeight()));
+
+		if (!ImageLoaderUtils.getMemoryCache().keys().contains(bitmap)) {
+			ImageLoaderUtils.getMemoryCache().put(key, bitmap);
+			GLog.d(TAG, "cacheMemory " + url);
+		} else {
+			GLog.d(TAG, "exist in cacheMemory " + url);
+		}
+	}
+
+	public static Bitmap getBitmapFromMemory(String url) {
+
+		List<Bitmap> bitmaps = MemoryCacheUtils.findCachedBitmapsForImageUri(
+				url, ImageLoaderUtils.getMemoryCache());
+
+		if (bitmaps != null && !bitmaps.isEmpty()) {
+			GLog.d(TAG, "getBitmapFromMemory " + url);
+			return bitmaps.get(0);
+		}
+
 		return null;
 	}
 }

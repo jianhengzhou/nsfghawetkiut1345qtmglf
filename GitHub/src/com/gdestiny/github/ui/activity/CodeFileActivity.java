@@ -143,6 +143,8 @@ public class CodeFileActivity extends
 			else if (result instanceof String) {
 				if (fileType == FILETYPE.IMG)
 					onNormalImage((String) result);
+				else if (fileType == FILETYPE.MD)
+					onMdHtml((String) result);
 				else
 					onGifImage((String) result);
 				return;

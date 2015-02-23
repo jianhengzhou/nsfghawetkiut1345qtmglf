@@ -65,7 +65,7 @@ public class CommentAdapter extends BaseAdapter {
 				R.drawable.default_avatar, true);
 		holder.name.setText(comment.getUser().getLogin());
 		holder.content.setText(Html.fromHtml(comment.getBodyHtml(),
-				new AsyncImageGetter(context), null));
+				new AsyncImageGetter(context,holder.content), null));
 		ViewUtils.handleLink(holder.content);
 
 		holder.date

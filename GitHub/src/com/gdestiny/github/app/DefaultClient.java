@@ -19,6 +19,8 @@ import java.net.HttpURLConnection;
 
 import org.eclipse.egit.github.core.client.GitHubClient;
 
+import com.gdestiny.github.utils.Constants;
+
 public class DefaultClient extends GitHubClient {
 
 	public DefaultClient() {
@@ -33,7 +35,8 @@ public class DefaultClient extends GitHubClient {
 		// full html
 		request.setRequestProperty(HEADER_ACCEPT,
 				"application/vnd.github.beta.full+json");
-
+		request.setConnectTimeout(Constants.CONNECT_TIMEOUT);
+		request.setReadTimeout(Constants.READ_TIMEOUT);
 		return request;
 	}
 }

@@ -6,6 +6,8 @@ import com.gdestiny.github.async.LoadingTask;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -22,6 +24,16 @@ public abstract class BaseLoadFragmentActivity<Params, Result> extends
 
 	private View noDataView;
 	private boolean noData;
+
+	private boolean exception = false;
+	private Handler handler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			BaseLoadFragmentActivity.this.onException((Exception) msg.obj);
+		}
+
+	};
 
 	public void setContentView(int id, int refreshId) {
 
@@ -90,7 +102,10 @@ public abstract class BaseLoadFragmentActivity<Params, Result> extends
 	@Override
 	public void onException(Exception ex) {
 		dismissProgress();
-		ToastUtils.show(context, ex.getMessage());
+		if (exception) {
+			ToastUtils.show(context, ex.getMessage());
+			exception = false;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -114,6 +129,7 @@ public abstract class BaseLoadFragmentActivity<Params, Result> extends
 			protected void onPreExecute() {
 				super.onPreExecute();
 				BaseLoadFragmentActivity.this.onPrev();
+				exception = false;
 			}
 
 			@Override
@@ -127,7 +143,10 @@ public abstract class BaseLoadFragmentActivity<Params, Result> extends
 					return BaseLoadFragmentActivity.this
 							.onBackground(params[0]);
 				} catch (Exception e) {
-					BaseLoadFragmentActivity.this.onException(e);
+					exception = true;
+					Message msg = handler.obtainMessage();
+					msg.obj = e;
+					handler.sendMessage(msg);
 				}
 				return null;
 			}

@@ -54,10 +54,20 @@ public class AsyncImageGetter implements ImageGetter {
 
 		public void setDrawable(Drawable drawable) {
 			this.drawable = drawable;
-			drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
-					drawable.getIntrinsicHeight());
-			this.setBounds(0, 0, drawable.getIntrinsicWidth(),
-					drawable.getIntrinsicHeight());
+
+			int width = 0;
+			int height = 0;
+			if (width == 0) {
+				GLog.sysout("width == 0");
+				width = drawable.getIntrinsicWidth();
+				height = drawable.getIntrinsicHeight();
+			}
+			if (height == 0) {
+				height = width * drawable.getIntrinsicHeight()
+						/ drawable.getIntrinsicWidth();
+			}
+			drawable.setBounds(0, 0, width, height);
+			this.setBounds(0, 0, width, height);
 		}
 
 		@SuppressWarnings("deprecation")

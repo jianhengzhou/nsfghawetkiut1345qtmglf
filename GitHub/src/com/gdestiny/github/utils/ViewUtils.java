@@ -78,7 +78,7 @@ public class ViewUtils {
 				}
 			} else if (AndroidUtils.isEmail(url)) {
 				AndroidUtils.openEmail(widget.getContext(), url);
-			} else {
+			} else if(AndroidUtils.isHttpUrl(url)){
 				IntentUtils.create(widget.getContext(), WebViewActivity.class)
 						.putExtra(WebViewActivity.URL, url).start();
 			}

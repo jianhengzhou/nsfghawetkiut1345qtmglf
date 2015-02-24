@@ -62,6 +62,10 @@ public class MaterialDialog {
 		this.mContext = context;
 	}
 
+	public View getContentView(){
+		return mView;
+	}
+	
 	public void show() {
 		if (mHasShow == false)
 			mBuilder = new Builder();

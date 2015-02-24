@@ -24,6 +24,8 @@ public class CommentAdapter extends BaseAdapter {
 	private Context context;
 	private List<Comment> datas;
 
+	private OnListener listener;
+
 	public CommentAdapter(Context context) {
 		this.context = context;
 	}
@@ -59,34 +61,43 @@ public class CommentAdapter extends BaseAdapter {
 			holder = (Holder) convertView.getTag();
 		}
 
-		Comment comment = datas.get(position);
+		final Comment comment = datas.get(position);
 		ImageLoaderUtils.displayImage(comment.getUser().getAvatarUrl(),
 				holder.icon, R.drawable.default_avatar,
 				R.drawable.default_avatar, true);
-		holder.name.setText(comment.getUser().getLogin());
-		holder.content.setText(Html.fromHtml(comment.getBodyHtml(),
-				new AsyncImageGetter(context,holder.content), null));
-		ViewUtils.handleLink(holder.content);
 
-		holder.date
-				.setText(TimeUtils.getTime(comment.getCreatedAt().getTime()));
-
+		String name = comment.getUser().getLogin();
+		// if (CommonUtils.isAuthUser(name)) {
+		// ViewUtils.setVisibility(holder.btnLayout, View.VISIBLE);
+		// } else {
+		// ViewUtils.setVisibility(holder.btnLayout, View.GONE);
+		// }
 		holder.edit.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
+				if (listener != null) {
+					listener.onEdit(comment);
+				}
 			}
 		});
 		holder.delete.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
+				if (listener != null) {
+					listener.onDelete(comment);
+				}
 			}
 		});
+
+		holder.name.setText(name);
+		holder.content.setText(Html.fromHtml(comment.getBodyHtml(),
+				new AsyncImageGetter(context, holder.content), null));
+		ViewUtils.handleLink(holder.content);
+
+		holder.date
+				.setText(TimeUtils.getTime(comment.getCreatedAt().getTime()));
 		return convertView;
 	}
 
@@ -115,6 +126,8 @@ public class CommentAdapter extends BaseAdapter {
 		View edit;
 		View delete;
 
+		// View btnLayout;
+
 		public Holder(View v) {
 			icon = (ImageView) v.findViewById(R.id.icon);
 			content = (TextView) v.findViewById(R.id.content);
@@ -122,6 +135,22 @@ public class CommentAdapter extends BaseAdapter {
 			date = (TextView) v.findViewById(R.id.date);
 			edit = v.findViewById(R.id.edit);
 			delete = v.findViewById(R.id.delete);
+
+			// btnLayout = v.findViewById(R.id.comment_btn);
 		}
+	}
+
+	public OnListener getOnListener() {
+		return listener;
+	}
+
+	public void setOnListener(OnListener listener) {
+		this.listener = listener;
+	}
+
+	public interface OnListener {
+		public void onEdit(Comment comment);
+
+		public void onDelete(Comment comment);
 	}
 }

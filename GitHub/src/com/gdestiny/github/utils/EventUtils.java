@@ -166,9 +166,9 @@ public class EventUtils {
 
 		SpannableStringBuilder builder = new SpannableStringBuilder();
 		builder.append(author);
-		builder.append('\n');
+		builder.append(' ');
 		builder.append(type);
-		builder.append('\n');
+		builder.append(' ');
 		builder.append(repository);
 		return builder;
 	}

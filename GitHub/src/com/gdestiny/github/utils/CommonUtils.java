@@ -1,8 +1,11 @@
 package com.gdestiny.github.utils;
 
-import com.gdestiny.github.bean.CodeTree;
+import org.eclipse.egit.github.core.User;
 
 import android.text.TextUtils;
+
+import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.bean.CodeTree;
 
 public class CommonUtils {
 
@@ -58,4 +61,11 @@ public class CommonUtils {
 		}
 	}
 
+	public static boolean isAuthUser(String name) {
+		return GitHubApplication.getUser().getLogin().equals(name);
+	}
+
+	public static boolean isAuthUser(User user) {
+		return GitHubApplication.getUser().getLogin().equals(user.getLogin());
+	}
 }

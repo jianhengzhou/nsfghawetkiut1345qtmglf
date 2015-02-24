@@ -1,6 +1,7 @@
 package com.gdestiny.github.ui.activity;
 
 import java.io.File;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Comment;
@@ -21,6 +22,10 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.CommentAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.AsyncImageGetter;
+import com.gdestiny.github.async.DeleteTask;
+import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
+import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
 import com.gdestiny.github.utils.ViewUtils;
@@ -38,6 +43,7 @@ public class IssueDetailActivity extends
 
 	private ListView commentList;
 	private CommentAdapter commentAdapter;
+	private List<Comment> comments;
 
 	private TextView content;
 	private boolean fold = true;
@@ -52,6 +58,30 @@ public class IssueDetailActivity extends
 	protected void initView() {
 		// TODO Auto-generated method stub
 		commentList = (ListView) findViewById(R.id.list);
+	}
+
+	@Override
+	protected void initActionBar(TitleBar titleBar) {
+		super.initActionBar(titleBar);
+		LinkedHashMap<Integer, Integer> itemmap = new LinkedHashMap<Integer, Integer>();
+		itemmap.put(R.string.refresh, R.drawable.common_status_refresh);
+
+		StatusPopUpWindow.StatusPopUpWindowItemClickListener menuListener = new StatusPopUpWindow.StatusPopUpWindowItemClickListener() {
+
+			@Override
+			public void onitemclick(int titleId) {
+				GLog.sysout(context.getResources().getString(titleId) + "");
+				switch (titleId) {
+				case R.string.refresh:
+					if (!isLoading())
+						onRefreshStarted(null);
+					break;
+				}
+				titlebar.dissmissStatus();
+			}
+		};
+		titlebar.setStatusItem(context, itemmap, menuListener);
+
 	}
 
 	@Override
@@ -71,6 +101,29 @@ public class IssueDetailActivity extends
 				R.layout.layout_issue_detail, null);
 		commentList.addHeaderView(detailView);
 		commentAdapter = new CommentAdapter(context);
+		commentAdapter.setOnListener(new CommentAdapter.OnListener() {
+
+			@Override
+			public void onEdit(Comment comment) {
+				// TODO Auto-generated method stub
+				GLog.sysout("onEdit");
+			}
+
+			@Override
+			public void onDelete(final Comment comment) {
+				// TODO Auto-generated method stub
+				GLog.sysout("onDelete");
+				new DeleteTask(context, repository, comment) {
+
+					@Override
+					public void onSuccess(Boolean result) {
+						super.onSuccess(result);
+						comments.remove(comment);
+						commentAdapter.notifyDataSetChanged();
+					}
+				}.execute(GitHubApplication.getClient());
+			}
+		});
 		commentList.setAdapter(commentAdapter);
 
 		execute(GitHubApplication.getClient());
@@ -93,7 +146,7 @@ public class IssueDetailActivity extends
 
 		content = (TextView) detailView.findViewById(R.id.content);
 		content.setText(Html.fromHtml(issue.getBodyHtml(),
-				new AsyncImageGetter(context,content), null));
+				new AsyncImageGetter(context, content), null));
 		ViewUtils.handleLink(content);
 
 		final ImageView foldBtn = (ImageView) findViewById(R.id.more);
@@ -127,7 +180,8 @@ public class IssueDetailActivity extends
 	public void onSuccess(List<Comment> result) {
 		// TODO Auto-generated method stub
 		super.onSuccess(result);
-		commentAdapter.setDatas(result);
+		comments = result;
+		commentAdapter.setDatas(comments);
 	}
 
 	@Override
@@ -138,8 +192,7 @@ public class IssueDetailActivity extends
 
 	@Override
 	public void onRefreshStarted(View view) {
-		// TODO Auto-generated method stub
-
+		execute(GitHubApplication.getClient());
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.gdestiny.github.async;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
@@ -12,9 +14,22 @@ public abstract class DialogTask<Params, Result> implements
 	protected Context context;
 	private MaterialDialog dialog;
 
+	private Handler handler;
+
+	private boolean exception = false;
+
 	public DialogTask(Context context) {
 		this.context = context;
 		dialog = new MaterialDialog(context).inProgress();
+
+		handler = new Handler() {
+
+			@Override
+			public void handleMessage(Message msg) {
+				DialogTask.this.onException((Exception) msg.obj);
+			}
+
+		};
 	}
 
 	public DialogTask<Params, Result> setTitle(int resId) {
@@ -39,7 +54,10 @@ public abstract class DialogTask<Params, Result> implements
 
 	@Override
 	public void onException(Exception ex) {
-		ToastUtils.show(context, ex.getMessage());
+		if (exception) {
+			ToastUtils.show(context, ex.getMessage());
+			exception = false;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -64,14 +82,19 @@ public abstract class DialogTask<Params, Result> implements
 				super.onPreExecute();
 				dialog.show();
 				DialogTask.this.onPrev();
+				exception = false;
 			}
 
 			@Override
 			protected Result doInBackground(Params... params) {
 				try {
 					return DialogTask.this.onBackground(params[0]);
-				} catch (Exception e) {
-					DialogTask.this.onException(e);
+				} catch (final Exception e) {
+					e.printStackTrace();
+					exception = true;
+					Message msg = handler.obtainMessage();
+					msg.obj = e;
+					handler.sendMessage(msg);
 				}
 				return null;
 			}

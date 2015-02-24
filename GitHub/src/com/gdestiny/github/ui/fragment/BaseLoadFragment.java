@@ -22,6 +22,8 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 	private View noDataView;
 	private boolean noData;
 
+	private boolean exception = false;
+
 	public void setContentView(LayoutInflater inflater, int id, int refreshId) {
 		// nodata 界面
 		setContentView(inflater, R.layout.layout_nodata);
@@ -32,7 +34,7 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 		container.addView(content);
 
 		// 同步颜色
-		//getCurrentView().setBackground(content.getBackground());
+		// getCurrentView().setBackground(content.getBackground());
 
 		pullToRefreshLayout = (PullToRefreshLayout) findViewById(refreshId);
 		ActionBarPullToRefresh.from(context).allChildrenArePullable()
@@ -97,7 +99,10 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 	public void onException(Exception ex) {
 		GLog.sysout("onException");
 		dismissProgress();
-		ToastUtils.show(context, ex.getMessage());
+		if (exception) {
+			ToastUtils.show(context, ex.getMessage());
+			exception = false;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -132,6 +137,7 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 				try {
 					return BaseLoadFragment.this.onBackground(params[0]);
 				} catch (final Exception e) {
+					exception = true;
 					getCurrentView().post(new Runnable() {
 
 						@Override

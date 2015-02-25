@@ -6,6 +6,7 @@ import android.os.Message;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
+import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ToastUtils;
 
 public abstract class DialogTask<Params, Result> implements
@@ -53,6 +54,12 @@ public abstract class DialogTask<Params, Result> implements
 	}
 
 	@Override
+	public void onPrev() {
+		dialog.show();
+		GLog.sysout("onPrev");
+	}
+
+	@Override
 	public void onException(Exception ex) {
 		if (exception) {
 			ToastUtils.show(context, ex.getMessage());
@@ -80,8 +87,8 @@ public abstract class DialogTask<Params, Result> implements
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
+				// DialogTask.this.onPrev();
 				dialog.show();
-				DialogTask.this.onPrev();
 				exception = false;
 			}
 

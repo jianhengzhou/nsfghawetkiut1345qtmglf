@@ -1,5 +1,8 @@
 package com.gdestiny.github.utils;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
@@ -144,9 +147,35 @@ public class AndroidUtils {
 			ClipboardManager cmb = (ClipboardManager) context
 					.getSystemService(Context.CLIPBOARD_SERVICE);
 			cmb.setText(str);
-			android.os.Vibrator vibrator = (android.os.Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+			android.os.Vibrator vibrator = (android.os.Vibrator) context
+					.getSystemService(Context.VIBRATOR_SERVICE);
 			vibrator.vibrate(100);
 			ToastUtils.show(context, R.string.to_clipboard);
 		}
+	}
+
+	/**
+	 * Finish the given activity and start a home activity class.
+	 * <p>
+	 * This mirror the behavior of the home action bar button that clears the
+	 * current activity and starts or brings another activity to the top.
+	 * 
+	 * @param activity
+	 * @param homeActivityClass
+	 */
+	public static void goHome(Activity activity, Class<?> homeActivityClass) {
+		activity.finish();
+		Intent intent = new Intent(activity, homeActivityClass);
+		intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+		activity.startActivity(intent);
+	}
+
+	public static void share(Context context, String title,String content) {
+		Intent intent = new Intent(Intent.ACTION_SEND);
+
+		intent.setType("text/plain");
+		intent.putExtra(Intent.EXTRA_SUBJECT, "share");
+		intent.putExtra(Intent.EXTRA_TEXT,content);
+		context.startActivity(Intent.createChooser(intent, title));
 	}
 }

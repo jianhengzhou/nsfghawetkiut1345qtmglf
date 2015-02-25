@@ -146,6 +146,10 @@ public class HomeActivity extends BaseFragmentActivity implements
 			close = false;
 			IntentUtils.start(context, LoginActivity.class);
 			break;
+		case R.id.menu_gists:
+			close = false;
+			IntentUtils.start(context, IssueFilterActivity.class);
+			break;
 		}
 		if (close)
 			resideMenu.closeMenu();

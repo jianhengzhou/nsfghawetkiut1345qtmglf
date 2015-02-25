@@ -79,7 +79,7 @@
         android:layout_marginLeft="@dimen/margin16"
         android:layout_marginRight="@dimen/margin16"
         android:layout_marginTop="@dimen/margin4"
-        android:background="@drawable/drawable_event_content_normal"
+        android:background="@drawable/drawable_corner_ligth_blue"
         android:ellipsize="end"
         android:maxLines="4"
         android:padding="@dimen/margin8"

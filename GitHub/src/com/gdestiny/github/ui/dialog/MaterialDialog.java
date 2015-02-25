@@ -28,6 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 
 /**
@@ -277,7 +278,7 @@ public class MaterialDialog {
 
 			mAlertDialogWindow = mAlertDialog.getWindow();
 			View contv = LayoutInflater.from(mContext).inflate(
-					R.layout.layout_materialdialog, null);
+					R.layout.layout_material_dialog, null);
 			contv.setFocusable(true);
 			contv.setFocusableInTouchMode(true);
 
@@ -584,8 +585,6 @@ public class MaterialDialog {
 		if (mListView == null) {
 			mListView = new ListView(new ContextThemeWrapper(mContext,
 					R.style.normal_listview));
-			DialogListAdapter listAdapter = new DialogListAdapter(mContext);
-			mListView.setAdapter(listAdapter);
 			mListView
 					.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -605,6 +604,11 @@ public class MaterialDialog {
 
 	public MaterialDialog addItem(String drawableURL, String text) {
 		initListView();
+		if(mListView.getAdapter() == null){
+			DialogListAdapter listAdapter = new DialogListAdapter(mContext);
+			mListView.setAdapter(listAdapter);
+			GLog.sysout("setAdapter");
+		}
 		((DialogListAdapter) mListView.getAdapter()).addItem(drawableURL, text);
 		return this;
 	}

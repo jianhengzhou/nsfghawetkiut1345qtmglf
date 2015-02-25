@@ -17,6 +17,7 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.IssueAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.ui.activity.IssueDetailActivity;
+import com.gdestiny.github.ui.activity.IssueFilterActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.ListPopupView;
@@ -41,15 +42,16 @@ public class RepositoryIssuesFragment extends
 	protected void initView() {
 		ListPopupView listPopup = (ListPopupView) findViewById(R.id.filter_popup);
 		listPopup.bind(getMoreList());
-		listPopup.setOnClickListener(
-				new View.OnClickListener() {
+		listPopup.setOnClickListener(new View.OnClickListener() {
 
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-
-					}
-				});
+			@Override
+			public void onClick(View v) {
+				IntentUtils
+						.create(context, IssueFilterActivity.class)
+						.putExtra(RepositoryDetailActivity.EXTRA_REPOSITORY,
+								repository).start();
+			}
+		});
 	}
 
 	@Override

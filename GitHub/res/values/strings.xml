@@ -10,6 +10,13 @@
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="to_clipboard">Copied To Clipboard</string>
+    <string name="none_select">None, Tap To Select</string>
+    <string name="open">open</string>
+    <string name="closed">closed</string>
+    <string name="state_">State:</string>
+    <string name="assignee_">Assignee:</string>
+    <string name="milestones_">Milestones:</string>
+    <string name="labels_">Labels:</string>
 
     <!-- test test test test test test -->
     <string name="name">gdestiny</string>
@@ -33,6 +40,8 @@
     <string name="staring">staring repository</string>
     <string name="unstaring">unstaring repository</string>
     <string name="star_succeed">Star Succeed</string>
+    <string name="forking">forking repository</string>
+    <string name="fork_succeed">Fork Succeed</string>
     <string name="unstar_succeed">Unstar Succeed</string>
     <string name="deleting">deleting comment</string>
     <string name="delete_succeed">Delete Succeed</string>

@@ -64,7 +64,7 @@ public class ContributorsActivity extends
 	public List<Contributor> onBackground(GitHubClient params) throws Exception {
 		// TODO Auto-generated method stub
 		RepositoryService service = new RepositoryService(params);
-		return service.getContributors(repository, true);
+		return service.getContributors(repository, false);
 	}
 
 	@Override

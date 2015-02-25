@@ -28,12 +28,6 @@ public class StarTask extends DialogTask<GitHubClient, Boolean> {
 			this.setLoadingMessage(R.string.staring);
 	}
 
-	@Override
-	public void onPrev() {
-		// TODO Auto-generated method stub
-
-	}
-
 	@SuppressWarnings("unused")
 	@Override
 	public Boolean onBackground(GitHubClient params) throws Exception {

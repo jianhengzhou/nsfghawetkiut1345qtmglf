@@ -54,10 +54,17 @@ public class ContributorsAdapter extends BaseAdapter {
 		}
 
 		Contributor contributor = datas.get(position);
+		//
+		// System.out.println("getAvatarUrl:" + contributor.getAvatarUrl());
+		// System.out
+		// .println("getContributions:" + contributor.getContributions());
+		// System.out.println("getLogin:" + contributor.getLogin());
+		// System.out.println("getName:" + contributor.getName());
+		// System.out.println("getType:" + contributor.getType());
+		// System.out.println("getUrl:" + contributor.getUrl());
 
 		ImageLoaderUtils.displayImage(contributor.getAvatarUrl(), holder.icon,
 				R.drawable.default_avatar, R.drawable.default_avatar, true);
-
 		holder.name.setText(contributor.getLogin());
 		holder.commit.setText(contributor.getContributions() + " commits");
 		return convertView;

@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager;
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.BaseAsyncTask;
+import com.gdestiny.github.async.ForkTask;
 import com.gdestiny.github.async.StarTask;
 import com.gdestiny.github.ui.dialog.StatusPopWindowItem;
 import com.gdestiny.github.ui.fragment.BaseLoadFragment;
@@ -24,6 +25,7 @@ import com.gdestiny.github.ui.fragment.RepositoryCommitFragment;
 import com.gdestiny.github.ui.fragment.RepositoryEventFragment;
 import com.gdestiny.github.ui.fragment.RepositoryIssuesFragment;
 import com.gdestiny.github.ui.view.IndicatorView;
+import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ToastUtils;
@@ -112,8 +114,16 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 			new StarTask(context, isStarred, repository)
 					.execute(GitHubApplication.getClient());
 			break;
+		case R.string.fork:
+			new ForkTask(context, repository).execute(GitHubApplication
+					.getClient());
+			break;
+		case R.string.share:
+			AndroidUtils.share(context, repository.getName(),
+					repository.getHtmlUrl());
+			break;
 		default:
-			ToastUtils.show(context, getResources().getString(id));
+			ToastUtils.show(context, "TODO:" + getResources().getString(id));
 			break;
 		}
 	}

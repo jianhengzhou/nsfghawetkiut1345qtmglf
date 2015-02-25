@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="horizontal"
     android:layout_height="wrap_content" >
-
-    <TextView
-        android:id="@+id/loading_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:paddingBottom="@dimen/margin16"
-        android:paddingTop="@dimen/margin16"
-        android:enabled="false"
-        android:text="@string/loading"
-        android:textColor="@color/common_light_black"
-        android:textSize="@dimen/text18" />
 
     <fr.castorflex.android.circularprogressbar.CircularProgressBar
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,9 +10,21 @@
         android:id="@+id/loading_progress"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/margin16"
-        android:layout_toLeftOf="@id/loading_text"
+        android:layout_gravity="center_vertical"
         android:indeterminate="true" />
+    
+    <TextView
+        android:id="@+id/loading_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:paddingBottom="@dimen/margin16"
+        android:paddingTop="@dimen/margin16"
+        android:enabled="false"
+        android:text="@string/loading"
+        android:textColor="#8a000000"
+        android:textSize="@dimen/text18" />
 
-</RelativeLayout>
+</LinearLayout>

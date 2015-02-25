@@ -30,11 +30,11 @@
 
     <!-- loading -->
     <string name="loading_branch">Loading Branch</string>
-    <string name="staring">Staring</string>
-    <string name="unstaring">Unstaring</string>
+    <string name="staring">staring repository</string>
+    <string name="unstaring">unstaring repository</string>
     <string name="star_succeed">Star Succeed</string>
     <string name="unstar_succeed">Unstar Succeed</string>
-    <string name="deleting">deleting</string>
+    <string name="deleting">deleting comment</string>
     <string name="delete_succeed">Delete Succeed</string>
 
 </resources>

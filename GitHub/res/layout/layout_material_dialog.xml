@@ -11,18 +11,19 @@
         layout="@layout/includer_divider_h"
         android:visibility="gone" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/material_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/material_card"
-        android:orientation="vertical" >
+        android:background="@drawable/material_card" >
 
         <LinearLayout
             android:id="@+id/contentView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:paddingBottom="20dp" >
 
             <TextView
                 android:id="@+id/title"
@@ -61,9 +62,9 @@
         <LinearLayout
             android:id="@+id/buttonLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/contentView"
+            android:background="#0056abe4"
             android:orientation="horizontal" >
 
             <TextView
@@ -72,6 +73,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

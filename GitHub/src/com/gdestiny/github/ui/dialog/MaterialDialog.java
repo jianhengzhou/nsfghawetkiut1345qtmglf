@@ -48,9 +48,9 @@ public class MaterialDialog {
 	private CharSequence mTitle;
 	private int mMessageResId;
 	private CharSequence mMessage;
-	private Button mPositiveButton;
+	private TextView mPositiveButton;
 	private LinearLayout.LayoutParams mLayoutParams;
-	private Button mNegativeButton;
+	private TextView mNegativeButton;
 	private boolean mHasShow = false;
 	private Drawable mBackgroundDrawable;
 	private int mBackgroundResId;
@@ -155,7 +155,11 @@ public class MaterialDialog {
 
 	public MaterialDialog setPositiveButton(int resId,
 			final View.OnClickListener listener) {
-		mPositiveButton = new Button(mContext);
+		mPositiveButton = new TextView(mContext);
+		
+		int padding = dip2px(8);
+		mPositiveButton.setPadding(padding * 2, padding, padding * 2, padding);
+		
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -180,7 +184,11 @@ public class MaterialDialog {
 
 	public MaterialDialog setPositiveButton(String text,
 			final View.OnClickListener listener) {
-		mPositiveButton = new Button(mContext);
+		mPositiveButton = new TextView(mContext);
+		
+		int padding = dip2px(8);
+		mPositiveButton.setPadding(padding * 2, padding, padding * 2, padding);
+		
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.MATCH_PARENT);
@@ -207,7 +215,11 @@ public class MaterialDialog {
 
 	public MaterialDialog setNegativeButton(int resId,
 			final View.OnClickListener listener) {
-		mNegativeButton = new Button(mContext);
+		mNegativeButton = new TextView(mContext);
+		
+		int padding = dip2px(8);
+		mNegativeButton.setPadding(padding * 2, padding, padding * 2, padding);
+		
 		mLayoutParams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.MATCH_PARENT);
@@ -227,7 +239,11 @@ public class MaterialDialog {
 
 	public MaterialDialog setNegativeButton(String text,
 			final View.OnClickListener listener) {
-		mNegativeButton = new Button(mContext);
+		mNegativeButton = new TextView(mContext);
+		
+		int padding = dip2px(8);
+		mNegativeButton.setPadding(padding * 2, padding, padding * 2, padding);
+		
 		mLayoutParams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -318,6 +334,10 @@ public class MaterialDialog {
 			}
 			if (mPositiveButton != null) {
 				mButtonLayout.addView(mPositiveButton);
+				//fix
+				LinearLayout linearLayout = (LinearLayout) mAlertDialogWindow
+						.findViewById(R.id.contentView);
+				linearLayout.setPadding(0, 0, 0, dip2px(42));
 			}
 			if (mLayoutParams != null && mNegativeButton != null) {
 				if (mButtonLayout.getChildCount() > 0) {
@@ -328,6 +348,10 @@ public class MaterialDialog {
 				} else {
 					mNegativeButton.setLayoutParams(mLayoutParams);
 					mButtonLayout.addView(mNegativeButton);
+					//fix
+					LinearLayout linearLayout = (LinearLayout) mAlertDialogWindow
+							.findViewById(R.id.contentView);
+					linearLayout.setPadding(0, 0, 0, dip2px(42));
 				}
 			}
 			if (mBackgroundResId != 0) {

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/margin16" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -79,6 +80,7 @@
             android:padding="@dimen/margin16" >
 
             <TextView
+                android:id="@+id/assing_none"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -120,6 +122,7 @@
             android:padding="@dimen/margin16" >
 
             <TextView
+                android:id="@+id/milestone_none"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -127,6 +130,14 @@
                 android:text="@string/none_select"
                 android:textColor="@color/common_icon_grey"
                 android:textSize="@dimen/text14" />
+
+            <include
+                android:id="@+id/milestone_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                layout="@layout/item_milestone"
+                android:visibility="gone" />
         </FrameLayout>
 
         <!-- label -->
@@ -154,6 +165,7 @@
             android:padding="@dimen/margin16" >
 
             <TextView
+                android:id="@+id/label_none"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -161,6 +173,13 @@
                 android:text="@string/none_select"
                 android:textColor="@color/common_icon_grey"
                 android:textSize="@dimen/text14" />
+
+            <com.gdestiny.github.ui.view.LabelViewGroup
+                android:id="@+id/label_viewgroup"
+                android:layout_width="match_parent"
+                android:background="@drawable/selector_border_blue"
+                android:layout_height="wrap_content" >
+            </com.gdestiny.github.ui.view.LabelViewGroup>
         </FrameLayout>
     </LinearLayout>
 

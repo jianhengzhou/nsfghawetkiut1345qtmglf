@@ -1,26 +1,48 @@
 package com.gdestiny.github.ui.activity;
 
+import java.util.List;
+
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Label;
+import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.service.IssueService;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.LabelLoadTask;
+import com.gdestiny.github.async.MilestoneLoadTask;
+import com.gdestiny.github.ui.view.LabelViewGroup;
+import com.gdestiny.github.utils.AndroidUtils;
+import com.gdestiny.github.utils.ImageLoaderUtils;
+import com.gdestiny.github.utils.TimeUtils;
+import com.gdestiny.github.utils.ViewUtils;
 
 public class IssueFilterActivity extends BaseFragmentActivity implements
-		OnClickListener {
+		OnClickListener, OnLongClickListener {
 
 	@SuppressWarnings("unused")
 	private Issue issue;
 	private Repository repository;
 
 	private RadioGroup stateGroup;
+	private LabelViewGroup labelGroup;
+
+	// Tab
+	private View assigneeNone;
+	private View milestoneNone;
+	private View labelNone;
+
+	private View milestone;
 
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
@@ -37,9 +59,23 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 
 		stateGroup.check(R.id.state_open);
 
-		findViewById(R.id.assign_layout).setOnClickListener(this);
-		findViewById(R.id.milestone_layout).setOnClickListener(this);
-		findViewById(R.id.label_layout).setOnClickListener(this);
+		View assign = findViewById(R.id.assign_layout);
+		assign.setOnClickListener(this);
+		assign.setOnLongClickListener(this);
+		View ms = findViewById(R.id.milestone_layout);
+		ms.setOnClickListener(this);
+		ms.setOnLongClickListener(this);
+		View label = findViewById(R.id.label_layout);
+		label.setOnClickListener(this);
+		label.setOnLongClickListener(this);
+
+		assigneeNone = findViewById(R.id.assing_none);
+		milestoneNone = findViewById(R.id.milestone_none);
+		labelNone = findViewById(R.id.label_none);
+
+		milestone = findViewById(R.id.milestone_item);
+
+		labelGroup = (LabelViewGroup) findViewById(R.id.label_viewgroup);
 	}
 
 	@Override
@@ -54,23 +90,96 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 		finish();
 	}
 
+	public void onMilestone(Milestone selected) {
+		ViewUtils.setVisibility(milestoneNone, View.GONE);
+		ViewUtils.setVisibility(milestone, View.VISIBLE);
+		milestone.setBackgroundResource(R.drawable.selector_border_blue);
+
+		TextView title = (TextView) findViewById(R.id.title);
+		TextView createAt = (TextView) findViewById(R.id.date);
+		TextView creator = (TextView) findViewById(R.id.milestone_name);
+		ImageView createIcon = (ImageView) findViewById(R.id.milestone_icon);
+		TextView open = (TextView) findViewById(R.id.open);
+		TextView close = (TextView) findViewById(R.id.close);
+		// set data
+		title.setText(selected.getTitle());
+		if (selected.getState().equals(IssueService.STATE_CLOSED)) {
+			title.getPaint().setFlags(
+					android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+							| android.graphics.Paint.ANTI_ALIAS_FLAG);
+		} else {
+			title.getPaint().setFlags(android.graphics.Paint.ANTI_ALIAS_FLAG);
+		}
+
+		open.setText(selected.getOpenIssues() + "");
+		close.setText("  " + selected.getClosedIssues() + "  ");
+		close.getPaint().setFlags(
+				android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+						| android.graphics.Paint.ANTI_ALIAS_FLAG);
+
+		creator.setText(selected.getCreator().getLogin() + "gdestiny");
+		createAt.setText(TimeUtils.getTime(selected.getCreatedAt().getTime()));
+
+		ImageLoaderUtils.displayImage(selected.getCreator().getAvatarUrl(),
+				createIcon, R.drawable.default_avatar,
+				R.drawable.default_avatar, true);
+		milestone.invalidate();
+	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.assign_layout:
-
+			ViewUtils.setVisibility(assigneeNone, View.GONE);
 			break;
 		case R.id.milestone_layout:
+			new MilestoneLoadTask(context, repository) {
 
+				@Override
+				public void onMilestone(Milestone selected) {
+					IssueFilterActivity.this.onMilestone(selected);
+				}
+			}.execute(GitHubApplication.getClient());
 			break;
 		case R.id.label_layout:
-			new LabelLoadTask(context, repository).execute(GitHubApplication
-					.getClient());
+			new LabelLoadTask(context, repository) {
+
+				@Override
+				public void onLabels(List<Label> selected) {
+					if (selected != null && !selected.isEmpty()) {
+						ViewUtils.setVisibility(labelNone, View.GONE);
+						ViewUtils.setVisibility(labelGroup, View.VISIBLE);
+					}
+					labelGroup.setLabel(selected);
+				}
+			}.execute(GitHubApplication.getClient());
 			break;
 		default:
 			break;
 		}
 	}
 
+	@Override
+	public boolean onLongClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.assign_layout:
+			// ViewUtils.setVisibility(null, View.GONE);
+			ViewUtils.setVisibility(assigneeNone, View.VISIBLE);
+			break;
+		case R.id.milestone_layout:
+			ViewUtils.setVisibility(milestone, View.GONE);
+			ViewUtils.setVisibility(milestoneNone, View.VISIBLE);
+			break;
+		case R.id.label_layout:
+			ViewUtils.setVisibility(labelGroup, View.GONE);
+			ViewUtils.setVisibility(labelNone, View.VISIBLE);
+			break;
+		default:
+			break;
+		}
+		AndroidUtils.vibrate(context, 100);
+		return true;
+	}
 }

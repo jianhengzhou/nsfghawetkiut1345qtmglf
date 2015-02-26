@@ -1,5 +1,6 @@
 package com.gdestiny.github.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Label;
@@ -11,21 +12,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.utils.GLog;
 
 public class LabelAdapter extends BaseAdapter {
 
 	private Context context;
 	private List<Label> labels;
 
+	private ArrayList<Label> selectedLabel;
+
 	public LabelAdapter(Context context) {
 		this.context = context;
-
+		selectedLabel = new ArrayList<Label>();
 	}
 
 	public LabelAdapter(Context context, List<Label> labels) {
+		this(context);
 		this.context = context;
 		this.labels = labels;
 	}
@@ -58,20 +65,41 @@ public class LabelAdapter extends BaseAdapter {
 			convertView = LayoutInflater.from(context).inflate(
 					R.layout.item_label, null);
 			holder = new Holder(convertView);
-
-			Label label = labels.get(position);
-			holder.name.setText(label.getName());
-			
-			int color = Color.parseColor("#" + label.getColor());
-			// System.out.println("blue:"+Color.blue(color));
-			// System.out.println("green:"+Color.green(color));
-			// System.out.println("red:"+Color.red(color));
-			
-			holder.name.setBackgroundColor(color);
-			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
+
+		final Label label = labels.get(position);
+		holder.name.setText(label.getName());
+
+		int color = Color.parseColor("#" + label.getColor());
+		// System.out.println("blue:"+Color.blue(color));
+		// System.out.println("green:"+Color.green(color));
+		// System.out.println("red:"+Color.red(color));
+
+		holder.name.setBackgroundColor(color);
+		// holder.name.getPaint().setFlags(android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
+		convertView.setTag(holder);
+
+		holder.checkBox.setChecked(selectedLabel.contains(label));
+		holder.checkBox
+				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
+						// TODO Auto-generated method stub
+						if (isChecked) {
+							if (!selectedLabel.contains(label))
+								selectedLabel.add(label);
+						} else {
+							if (selectedLabel.contains(label))
+								selectedLabel.remove(label);
+						}
+						GLog.sysout(label.getName() + "," + isChecked);
+					}
+				});
+
 		return convertView;
 	}
 
@@ -79,8 +107,15 @@ public class LabelAdapter extends BaseAdapter {
 		this.labels = labels;
 	}
 
+	public ArrayList<Label> getSelectedLabel() {
+		return selectedLabel;
+	}
+
+	public void setSelectedLabel(ArrayList<Label> selectedLabel) {
+		this.selectedLabel = selectedLabel;
+	}
+
 	private class Holder {
-		@SuppressWarnings("unused")
 		CheckBox checkBox;
 		TextView name;
 

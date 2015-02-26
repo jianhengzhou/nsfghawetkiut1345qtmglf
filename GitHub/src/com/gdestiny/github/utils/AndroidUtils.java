@@ -154,6 +154,12 @@ public class AndroidUtils {
 		}
 	}
 
+	public static void vibrate(Context context, long milliseconds) {
+		android.os.Vibrator vibrator = (android.os.Vibrator) context
+				.getSystemService(Context.VIBRATOR_SERVICE);
+		vibrator.vibrate(milliseconds);
+	}
+
 	/**
 	 * Finish the given activity and start a home activity class.
 	 * <p>
@@ -170,12 +176,12 @@ public class AndroidUtils {
 		activity.startActivity(intent);
 	}
 
-	public static void share(Context context, String title,String content) {
+	public static void share(Context context, String title, String content) {
 		Intent intent = new Intent(Intent.ACTION_SEND);
 
 		intent.setType("text/plain");
 		intent.putExtra(Intent.EXTRA_SUBJECT, "share");
-		intent.putExtra(Intent.EXTRA_TEXT,content);
+		intent.putExtra(Intent.EXTRA_TEXT, content);
 		context.startActivity(Intent.createChooser(intent, title));
 	}
 }

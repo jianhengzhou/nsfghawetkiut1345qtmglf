@@ -2,6 +2,8 @@ package com.gdestiny.github.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
@@ -90,7 +92,29 @@ public class IssueFilter implements Serializable {
 		return this;
 	}
 
-	public void toMap() {
+	public Map<String, String> toHashMap() {
+		Map<String, String> filter = new HashMap<String, String>();
 
+		filter.put(IssueService.FILTER_STATE, state);
+		// filter.put(FIELD_SORT, SORT_CREATED);
+		// filter.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
+
+		if (isAssigneeValid()) {
+			filter.put(IssueService.FILTER_ASSIGNEE, assignee.getLogin());
+		}
+
+		if (isMilestoneValid()) {
+			filter.put(IssueService.FILTER_MILESTONE, milestone.getNumber()
+					+ "");
+		}
+
+		if (isLabelsValid()) {
+			StringBuilder sb = new StringBuilder();
+			for (Label l : labels) {
+				sb.append(l.getName()).append(',');
+			}
+			filter.put(IssueService.FILTER_LABELS, sb.toString());
+		}
+		return filter;
 	}
 }

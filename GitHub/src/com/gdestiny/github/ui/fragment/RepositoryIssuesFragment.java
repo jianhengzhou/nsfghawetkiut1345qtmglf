@@ -7,6 +7,8 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.IssueService;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.AdapterView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.IssueAdapter;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.bean.IssueFilter;
 import com.gdestiny.github.ui.activity.IssueDetailActivity;
 import com.gdestiny.github.ui.activity.IssueFilterActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
@@ -29,7 +32,10 @@ import com.gdestiny.github.utils.IntentUtils;
 public class RepositoryIssuesFragment extends
 		BaseLoadPageFragment<Issue, GitHubClient> {
 
+	private final int FILT = 1;
 	private Repository repository;
+	private IssueFilter issueFilter;
+	private IssueAdapter issueAdapter;
 
 	@Override
 	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +55,10 @@ public class RepositoryIssuesFragment extends
 				IntentUtils
 						.create(context, IssueFilterActivity.class)
 						.putExtra(RepositoryDetailActivity.EXTRA_REPOSITORY,
-								repository).start();
+								repository)
+						.putExtra(IssueFilterActivity.EXTRA_ISSUE_FILTER,
+								issueFilter)
+						.startForResult(RepositoryIssuesFragment.this, FILT);
 			}
 		});
 	}
@@ -105,6 +114,23 @@ public class RepositoryIssuesFragment extends
 	}
 
 	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == FILT) {
+			System.out.println("FILT");
+			if (resultCode == Activity.RESULT_OK) {
+				System.out.println("RESULT_OK");
+				issueFilter = (IssueFilter) data
+						.getSerializableExtra(IssueFilterActivity.EXTRA_ISSUE_FILTER);
+				issueAdapter.setOpen(issueFilter.getState().equals(
+						IssueService.STATE_OPEN));
+				onRefreshStarted(null);
+			}
+		}
+	}
+
+	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
@@ -125,7 +151,7 @@ public class RepositoryIssuesFragment extends
 
 	@Override
 	public void newListAdapter() {
-		IssueAdapter issueAdapter = new IssueAdapter(context);
+		issueAdapter = new IssueAdapter(context);
 		issueAdapter.setDatas(getDatas());
 		setBaseAdapter(issueAdapter);
 	}
@@ -133,8 +159,8 @@ public class RepositoryIssuesFragment extends
 	@Override
 	public void newPageData(GitHubClient params) {
 		IssueService service = new IssueService(params);
-		setDataPage(service.pageIssues(repository, null,
-				Constants.DEFAULT_PAGE_SIZE));
+		setDataPage(service.pageIssues(repository, issueFilter == null ? null
+				: issueFilter.toHashMap(), Constants.DEFAULT_PAGE_SIZE));
 	}
 
 	@Override

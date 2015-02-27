@@ -1,6 +1,5 @@
 package com.gdestiny.github.ui.activity;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import org.eclipse.egit.github.core.Issue;
@@ -10,13 +9,16 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.IssueService;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
@@ -26,6 +28,7 @@ import com.gdestiny.github.async.LabelLoadTask;
 import com.gdestiny.github.async.MilestoneLoadTask;
 import com.gdestiny.github.bean.IssueFilter;
 import com.gdestiny.github.ui.view.LabelViewGroup;
+import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
@@ -64,6 +67,17 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 		rb.setChecked(true);
 
 		stateGroup.check(R.id.state_open);
+		stateGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				// TODO Auto-generated method stub
+				if (checkedId == R.id.state_close)
+					filter.put(IssueService.STATE_CLOSED);
+				else
+					filter.put(IssueService.STATE_OPEN);
+			}
+		});
 
 		View assign = findViewById(R.id.assign_layout);
 		assign.setOnClickListener(this);
@@ -88,13 +102,13 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 	protected void initData() {
 		repository = (Repository) getIntent().getSerializableExtra(
 				RepositoryDetailActivity.EXTRA_REPOSITORY);
-		
-		getTitlebar().setLeftLayout(
-				repository.getOwner().getAvatarUrl(),
-				"issue filter",
-				repository.getOwner().getLogin() + File.separator
-						+ repository.getName());
 
+		getTitlebar().setLeftLayout(null
+		// repository.getOwner().getAvatarUrl()
+				, "Issue Filter", null
+		// repository.getOwner().getLogin() + File.separator
+		// + repository.getName()
+				);
 
 		// init filter data
 		filter = (IssueFilter) getIntent().getSerializableExtra(
@@ -111,7 +125,28 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 	}
 
 	@Override
+	protected void initActionBar(TitleBar titleBar) {
+		// TODO Auto-generated method stub
+		super.initActionBar(titleBar);
+		titleBar.showRightBtn();
+		ImageButton right = titleBar.getRightBtn();
+		right.setImageResource(R.drawable.common_btn_ok);
+		right.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent data = new Intent();
+				data.putExtra(EXTRA_ISSUE_FILTER, filter);
+				setResult(RESULT_OK, data);
+				finish();
+			}
+		});
+	}
+
+	@Override
 	protected void onleftLayout() {
+		setResult(RESULT_CANCELED);
 		finish();
 	}
 

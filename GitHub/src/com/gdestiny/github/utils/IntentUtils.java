@@ -4,10 +4,12 @@ import java.io.Serializable;
 
 import com.gdestiny.github.ui.activity.TestActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 
 /**
  * 2015.1.17
@@ -246,5 +248,18 @@ public class IntentUtils {
 		public void start() {
 			context.startActivity(intent);
 		}
+
+		public void startForResult(Object act_frag, int requestCode) {
+			if (act_frag instanceof Fragment)
+				((Fragment) act_frag)
+						.startActivityForResult(intent, requestCode);
+			else if (act_frag instanceof Activity)
+				((Activity) act_frag)
+						.startActivityForResult(intent, requestCode);
+			else
+				throw new IllegalArgumentException(
+						"the argument can only be fragment or fragment");
+		}
+
 	}
 }

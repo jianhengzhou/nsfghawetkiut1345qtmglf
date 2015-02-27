@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.ui.view.LabelColorView;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
 
@@ -20,6 +21,16 @@ public class IssueAdapter extends BaseAdapter {
 
 	private Context context;
 	private List<Issue> datas;
+
+	private boolean isOpen = true;
+
+	public boolean isOpen() {
+		return isOpen;
+	}
+
+	public void setOpen(boolean isOpen) {
+		this.isOpen = isOpen;
+	}
 
 	public IssueAdapter(Context context) {
 		this.context = context;
@@ -62,13 +73,23 @@ public class IssueAdapter extends BaseAdapter {
 
 		holder.title.setText(issue.getTitle());
 		holder.date.setText(TimeUtils.getTime(issue.getCreatedAt().getTime()));
-		holder.number.setText(issue.getNumber() + "");
+		holder.number.setText(" " + issue.getNumber() + " ");
+		if (isOpen) {
+			holder.number.getPaint().setFlags(
+					android.graphics.Paint.ANTI_ALIAS_FLAG);
+		} else {
+			holder.number.getPaint().setFlags(
+					android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+							| android.graphics.Paint.ANTI_ALIAS_FLAG);
+		}
+
 		holder.name.setText(issue.getUser().getLogin());
 		holder.comment.setText(issue.getComments() + "");
 		// 遇到博客类issue，body过大时加载缓慢
 		// String content = issue.getBody();
 		// holder.content.setText(content.length() > 50 ? issue.getBody()
 		// .substring(0, 50) + "...." : content);
+		holder.colorView.setLabels(issue.getLabels());
 
 		return convertView;
 	}
@@ -89,6 +110,7 @@ public class IssueAdapter extends BaseAdapter {
 		TextView title;
 		TextView date;
 		TextView comment;
+		LabelColorView colorView;
 
 		// TextView content;
 
@@ -99,6 +121,7 @@ public class IssueAdapter extends BaseAdapter {
 			title = (TextView) v.findViewById(R.id.title);
 			date = (TextView) v.findViewById(R.id.date);
 			comment = (TextView) v.findViewById(R.id.comment);
+			colorView = (LabelColorView) v.findViewById(R.id.color_view);
 			// content = (TextView) v.findViewById(R.id.content);
 		}
 	}

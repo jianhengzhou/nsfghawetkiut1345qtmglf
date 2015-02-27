@@ -25,11 +25,26 @@ public class LabelLoadTask extends DialogTask<GitHubClient, List<Label>> {
 	private Repository repository;
 	private Context context;
 
+	private ArrayList<Label> selected;
+
 	public LabelLoadTask(Context context, Repository repository) {
 		super(context);
 		this.repository = repository;
 		this.context = context;
 
+	}
+
+	public LabelLoadTask(Context context, Repository repository,
+			ArrayList<Label> selected) {
+		super(context);
+		this.repository = repository;
+		this.context = context;
+		this.selected = selected;
+	}
+
+	public LabelLoadTask putSelected(ArrayList<Label> selected) {
+		this.selected = selected;
+		return this;
 	}
 
 	@Override
@@ -45,28 +60,33 @@ public class LabelLoadTask extends DialogTask<GitHubClient, List<Label>> {
 	public void onSuccess(List<Label> result) {
 		// TODO Auto-generated method stub
 
-		final LabelAdapter adapter = new LabelAdapter(context, result);
+		final MaterialDialog dialog = new MaterialDialog(context).setTitle(
+				"Labels").setCanceledOnTouchOutside(true);
+		if (result == null || result.isEmpty()) {
+			dialog.setMessage("No Labels In This Repository!");
+			dialog.show();
+			return;
+		}
 
-		final MaterialDialog dialog = new MaterialDialog(context);
+		final LabelAdapter adapter = new LabelAdapter(context, result)
+				.setSelectedLabel(selected);
+		dialog.setPositiveButton("ok", new View.OnClickListener() {
 
-		dialog.setTitle("Labels")
-				.setPositiveButton("ok", new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				ArrayList<Label> ls = adapter.getSelectedLabel();
+				Collections.sort(ls, new LabelComparator());
+				onLabels(ls);
+				dialog.dismiss();
+			}
+		}).setNegativeButton("cancle", new View.OnClickListener() {
 
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						ArrayList<Label> ls = adapter.getSelectedLabel();
-						Collections.sort(ls, new LabelComparator());
-						onLabels(ls);
-						dialog.dismiss();
-					}
-				}).setNegativeButton("cancle", new View.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						dialog.dismiss();
-					}
-				});
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
 
 		dialog.initListView();
 		dialog.getmListView().setAdapter(adapter);
@@ -82,7 +102,7 @@ public class LabelLoadTask extends DialogTask<GitHubClient, List<Label>> {
 		dialog.show();
 	}
 
-	public void onLabels(List<Label> selected) {
+	public void onLabels(ArrayList<Label> selected) {
 
 	}
 }

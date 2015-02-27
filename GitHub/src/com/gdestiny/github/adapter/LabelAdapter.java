@@ -31,6 +31,13 @@ public class LabelAdapter extends BaseAdapter {
 		selectedLabel = new ArrayList<Label>();
 	}
 
+	public LabelAdapter(Context context, ArrayList<Label> selectedLabel) {
+		this.context = context;
+		this.selectedLabel = selectedLabel;
+		if (this.selectedLabel == null)
+			this.selectedLabel = new ArrayList<Label>();
+	}
+
 	public LabelAdapter(Context context, List<Label> labels) {
 		this(context);
 		this.context = context;
@@ -111,8 +118,11 @@ public class LabelAdapter extends BaseAdapter {
 		return selectedLabel;
 	}
 
-	public void setSelectedLabel(ArrayList<Label> selectedLabel) {
+	public LabelAdapter setSelectedLabel(ArrayList<Label> selectedLabel) {
 		this.selectedLabel = selectedLabel;
+		if (this.selectedLabel == null)
+			this.selectedLabel = new ArrayList<Label>();
+		return this;
 	}
 
 	private class Holder {

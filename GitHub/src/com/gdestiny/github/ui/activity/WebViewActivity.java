@@ -50,7 +50,7 @@ public class WebViewActivity extends BaseLoadFragmentActivity<Void, Void> {
 						if (!TextUtils.isEmpty(currUrl)) {
 							AndroidUtils.toClipboard(context, currUrl);
 						}
-						return false;
+						return true;
 					}
 				});
 		LinkedHashMap<Integer, Integer> itemmap = new LinkedHashMap<Integer, Integer>();

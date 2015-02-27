@@ -51,7 +51,7 @@ public class LabelViewGroup extends ViewGroup {
 			}
 		}
 
-		setMeasuredDimension(maxWidth, lengthY );
+		setMeasuredDimension(maxWidth, lengthY);
 		// super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
@@ -82,6 +82,8 @@ public class LabelViewGroup extends ViewGroup {
 
 	public void setLabel(List<Label> labels) {
 		removeAllViews();
+		if (labels == null || labels.isEmpty())
+			return;
 		for (int i = 0; i < labels.size(); i++) {
 			GLog.sysout("add label:" + labels.get(i).getName());
 			addView(newView(labels.get(i)));

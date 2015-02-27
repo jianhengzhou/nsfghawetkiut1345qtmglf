@@ -24,12 +24,25 @@ public class MilestoneLoadTask extends
 
 	private Repository repository;
 	private Context context;
+	private Milestone selected;
 
 	public MilestoneLoadTask(Context context, Repository repository) {
 		super(context);
 		this.repository = repository;
 		this.context = context;
+	}
 
+	public MilestoneLoadTask(Context context, Repository repository,
+			Milestone selected) {
+		super(context);
+		this.repository = repository;
+		this.context = context;
+		this.selected = selected;
+	}
+
+	public MilestoneLoadTask putSelected(Milestone selected) {
+		this.selected = selected;
+		return this;
 	}
 
 	@Override
@@ -50,9 +63,16 @@ public class MilestoneLoadTask extends
 		// TODO Auto-generated method stub
 
 		final MaterialDialog dialog = new MaterialDialog(context);
-		final MilestoneAdapter adapter = new MilestoneAdapter(context, result);
+		dialog.setTitle("Milestones").setCanceledOnTouchOutside(true);
+		if (result == null || result.isEmpty()) {
+			dialog.setMessage("No Milestones In This Repository!");
+			dialog.show();
+			return;
+		}
 
-		dialog.setTitle("Milestones").initListView();
+		final MilestoneAdapter adapter = new MilestoneAdapter(context, result)
+				.setSelectedMilestone(selected);
+		dialog.initListView();
 
 		dialog.getmListView().setAdapter(adapter);
 

@@ -63,10 +63,10 @@ public class MaterialDialog {
 		this.mContext = context;
 	}
 
-	public View getContentView(){
+	public View getContentView() {
 		return mView;
 	}
-	
+
 	public void show() {
 		if (mHasShow == false)
 			mBuilder = new Builder();
@@ -156,10 +156,10 @@ public class MaterialDialog {
 	public MaterialDialog setPositiveButton(int resId,
 			final View.OnClickListener listener) {
 		mPositiveButton = new TextView(mContext);
-		
+
 		int padding = dip2px(8);
 		mPositiveButton.setPadding(padding * 2, padding, padding * 2, padding);
-		
+
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -185,10 +185,10 @@ public class MaterialDialog {
 	public MaterialDialog setPositiveButton(String text,
 			final View.OnClickListener listener) {
 		mPositiveButton = new TextView(mContext);
-		
+
 		int padding = dip2px(8);
 		mPositiveButton.setPadding(padding * 2, padding, padding * 2, padding);
-		
+
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.MATCH_PARENT);
@@ -216,10 +216,10 @@ public class MaterialDialog {
 	public MaterialDialog setNegativeButton(int resId,
 			final View.OnClickListener listener) {
 		mNegativeButton = new TextView(mContext);
-		
+
 		int padding = dip2px(8);
 		mNegativeButton.setPadding(padding * 2, padding, padding * 2, padding);
-		
+
 		mLayoutParams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.MATCH_PARENT);
@@ -240,10 +240,10 @@ public class MaterialDialog {
 	public MaterialDialog setNegativeButton(String text,
 			final View.OnClickListener listener) {
 		mNegativeButton = new TextView(mContext);
-		
+
 		int padding = dip2px(8);
 		mNegativeButton.setPadding(padding * 2, padding, padding * 2, padding);
-		
+
 		mLayoutParams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -334,7 +334,7 @@ public class MaterialDialog {
 			}
 			if (mPositiveButton != null) {
 				mButtonLayout.addView(mPositiveButton);
-				//fix
+				// fix
 				LinearLayout linearLayout = (LinearLayout) mAlertDialogWindow
 						.findViewById(R.id.contentView);
 				linearLayout.setPadding(0, 0, 0, dip2px(42));
@@ -348,7 +348,7 @@ public class MaterialDialog {
 				} else {
 					mNegativeButton.setLayoutParams(mLayoutParams);
 					mButtonLayout.addView(mNegativeButton);
-					//fix
+					// fix
 					LinearLayout linearLayout = (LinearLayout) mAlertDialogWindow
 							.findViewById(R.id.contentView);
 					linearLayout.setPadding(0, 0, 0, dip2px(42));
@@ -594,17 +594,6 @@ public class MaterialDialog {
 		return this;
 	}
 
-	/**
-	 * 
-	 * @param drawableId
-	 *            none .9.png
-	 * @param text
-	 * @return
-	 */
-	public MaterialDialog addItem(int drawableId, String text) {
-		return addItem("drawable://" + drawableId, text);
-	}
-
 	public void initListView() {
 		if (mListView == null) {
 			mListView = new ListView(new ContextThemeWrapper(mContext,
@@ -626,14 +615,36 @@ public class MaterialDialog {
 		}
 	}
 
+	/**
+	 * 
+	 * @param drawableId
+	 *            none .9.png
+	 * @param text
+	 * @return
+	 */
+	public MaterialDialog addItem(int drawableId, String text) {
+		return addItem("drawable://" + drawableId, text, true);
+	}
+
+	public MaterialDialog addItem(int drawableId, String text, boolean hasborder) {
+		return addItem("drawable://" + drawableId, text, hasborder);
+	}
+
 	public MaterialDialog addItem(String drawableURL, String text) {
+		addItem(drawableURL, text, true);
+		return this;
+	}
+
+	public MaterialDialog addItem(String drawableURL, String text,
+			boolean hasborder) {
 		initListView();
-		if(mListView.getAdapter() == null){
+		if (mListView.getAdapter() == null) {
 			DialogListAdapter listAdapter = new DialogListAdapter(mContext);
 			mListView.setAdapter(listAdapter);
 			GLog.sysout("setAdapter");
 		}
-		((DialogListAdapter) mListView.getAdapter()).addItem(drawableURL, text);
+		((DialogListAdapter) mListView.getAdapter()).addItem(drawableURL, text,
+				hasborder);
 		return this;
 	}
 
@@ -688,6 +699,12 @@ public class MaterialDialog {
 			} else {
 				holder = (Holder) convertView.getTag();
 			}
+			if (items.get(position).hasborder) {
+				holder.imageview
+						.setBackgroundResource(R.drawable.common_image_bg);
+			} else {
+				holder.imageview.setBackgroundResource(R.color.transparent);
+			}
 			ImageLoaderUtils.displayImage(items.get(position).drawableURL,
 					holder.imageview, R.drawable.default_avatar, true);
 			holder.textview.setText(items.get(position).text);
@@ -698,6 +715,13 @@ public class MaterialDialog {
 			if (items == null)
 				items = new ArrayList<ListItem>();
 			items.add(new ListItem(drawableURL, text));
+			notifyDataSetChanged();
+		}
+
+		public void addItem(String drawableURL, String text, boolean hasborder) {
+			if (items == null)
+				items = new ArrayList<ListItem>();
+			items.add(new ListItem(drawableURL, text, hasborder));
 			notifyDataSetChanged();
 		}
 
@@ -715,10 +739,18 @@ public class MaterialDialog {
 			public ListItem(String drawableURL, String text) {
 				this.drawableURL = drawableURL;
 				this.text = text;
+				hasborder = true;
+			}
+
+			public ListItem(String drawableURL, String text, boolean hasborder) {
+				this.drawableURL = drawableURL;
+				this.text = text;
+				this.hasborder = hasborder;
 			}
 
 			public String drawableURL;
 			public String text;
+			public boolean hasborder = true;
 		}
 	}
 }

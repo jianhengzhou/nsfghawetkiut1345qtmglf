@@ -1,11 +1,13 @@
 package com.gdestiny.github.ui.activity;
 
-import java.util.List;
+import java.io.File;
+import java.util.ArrayList;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.IssueService;
 
 import android.os.Bundle;
@@ -19,8 +21,10 @@ import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.CollaboratorLoadTask;
 import com.gdestiny.github.async.LabelLoadTask;
 import com.gdestiny.github.async.MilestoneLoadTask;
+import com.gdestiny.github.bean.IssueFilter;
 import com.gdestiny.github.ui.view.LabelViewGroup;
 import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.ImageLoaderUtils;
@@ -30,9 +34,11 @@ import com.gdestiny.github.utils.ViewUtils;
 public class IssueFilterActivity extends BaseFragmentActivity implements
 		OnClickListener, OnLongClickListener {
 
+	public static final String EXTRA_ISSUE_FILTER = "issuefilter";
 	@SuppressWarnings("unused")
 	private Issue issue;
 	private Repository repository;
+	private IssueFilter filter;
 
 	private RadioGroup stateGroup;
 	private LabelViewGroup labelGroup;
@@ -80,9 +86,28 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 
 	@Override
 	protected void initData() {
-		getTitlebar().setLeftLayout(null, "issue filter", null);
 		repository = (Repository) getIntent().getSerializableExtra(
 				RepositoryDetailActivity.EXTRA_REPOSITORY);
+		
+		getTitlebar().setLeftLayout(
+				repository.getOwner().getAvatarUrl(),
+				"issue filter",
+				repository.getOwner().getLogin() + File.separator
+						+ repository.getName());
+
+
+		// init filter data
+		filter = (IssueFilter) getIntent().getSerializableExtra(
+				EXTRA_ISSUE_FILTER);
+		if (filter == null)
+			filter = new IssueFilter();
+		if (filter.getState().equals(IssueService.STATE_OPEN)) {
+			stateGroup.check(R.id.state_open);
+		} else {
+			stateGroup.check(R.id.state_close);
+		}
+		onMilestone(filter.getMilestone());
+		onLabels(filter.getLabels());
 	}
 
 	@Override
@@ -90,7 +115,27 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 		finish();
 	}
 
-	public void onMilestone(Milestone selected) {
+	private void onLabels(ArrayList<Label> selected) {
+		if (selected != null && !selected.isEmpty()) {
+			ViewUtils.setVisibility(labelNone, View.GONE);
+			ViewUtils.setVisibility(labelGroup, View.VISIBLE);
+			filter.put(selected);
+		} else {
+			ViewUtils.setVisibility(labelNone, View.VISIBLE);
+			ViewUtils.setVisibility(labelGroup, View.GONE);
+		}
+		labelGroup.setLabel(selected);
+	}
+
+	private void onMilestone(Milestone selected) {
+		if (selected == null) {
+			ViewUtils.setVisibility(milestoneNone, View.VISIBLE);
+			ViewUtils.setVisibility(milestone, View.GONE);
+			return;
+		}
+
+		filter.put(selected);
+
 		ViewUtils.setVisibility(milestoneNone, View.GONE);
 		ViewUtils.setVisibility(milestone, View.VISIBLE);
 		milestone.setBackgroundResource(R.drawable.selector_border_blue);
@@ -117,7 +162,7 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 				android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
 						| android.graphics.Paint.ANTI_ALIAS_FLAG);
 
-		creator.setText(selected.getCreator().getLogin() + "gdestiny");
+		creator.setText(selected.getCreator().getLogin());
 		createAt.setText(TimeUtils.getTime(selected.getCreatedAt().getTime()));
 
 		ImageLoaderUtils.displayImage(selected.getCreator().getAvatarUrl(),
@@ -131,7 +176,14 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.assign_layout:
-			ViewUtils.setVisibility(assigneeNone, View.GONE);
+			new CollaboratorLoadTask(context, repository) {
+
+				@Override
+				public void onCollaborator(User selected) {
+					// TODO Auto-generated method stub
+					super.onCollaborator(selected);
+				}
+			}.execute(GitHubApplication.getClient());
 			break;
 		case R.id.milestone_layout:
 			new MilestoneLoadTask(context, repository) {
@@ -140,20 +192,18 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 				public void onMilestone(Milestone selected) {
 					IssueFilterActivity.this.onMilestone(selected);
 				}
-			}.execute(GitHubApplication.getClient());
+			}.putSelected(filter.getMilestone()).execute(
+					GitHubApplication.getClient());
 			break;
 		case R.id.label_layout:
 			new LabelLoadTask(context, repository) {
 
 				@Override
-				public void onLabels(List<Label> selected) {
-					if (selected != null && !selected.isEmpty()) {
-						ViewUtils.setVisibility(labelNone, View.GONE);
-						ViewUtils.setVisibility(labelGroup, View.VISIBLE);
-					}
-					labelGroup.setLabel(selected);
+				public void onLabels(ArrayList<Label> selected) {
+					IssueFilterActivity.this.onLabels(selected);
 				}
-			}.execute(GitHubApplication.getClient());
+			}.putSelected(filter.getLabels()).execute(
+					GitHubApplication.getClient());
 			break;
 		default:
 			break;
@@ -165,14 +215,23 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.assign_layout:
+			if (!filter.isAssigneeValid())
+				return false;
 			// ViewUtils.setVisibility(null, View.GONE);
+			filter.clearAssignee();
 			ViewUtils.setVisibility(assigneeNone, View.VISIBLE);
 			break;
 		case R.id.milestone_layout:
+			if (!filter.isMilestoneValid())
+				return false;
+			filter.clearMilestone();
 			ViewUtils.setVisibility(milestone, View.GONE);
 			ViewUtils.setVisibility(milestoneNone, View.VISIBLE);
 			break;
 		case R.id.label_layout:
+			if (!filter.isLabelsValid())
+				return false;
+			filter.clearLabels();
 			ViewUtils.setVisibility(labelGroup, View.GONE);
 			ViewUtils.setVisibility(labelNone, View.VISIBLE);
 			break;

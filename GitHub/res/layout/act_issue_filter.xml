@@ -38,7 +38,7 @@
                 android:id="@+id/state_open"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin8"
+                android:layout_marginRight="@dimen/margin16"
                 android:button="@drawable/selector_radio"
                 android:paddingLeft="@dimen/margin8"
                 android:text="@string/open"
@@ -46,6 +46,7 @@
                 android:textSize="@dimen/text14" />
 
             <RadioButton
+                android:id="@+id/state_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/selector_radio"

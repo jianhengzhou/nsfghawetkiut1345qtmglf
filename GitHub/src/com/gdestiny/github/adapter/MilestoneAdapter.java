@@ -28,6 +28,13 @@ public class MilestoneAdapter extends BaseAdapter {
 		this.context = context;
 	}
 
+	public MilestoneAdapter(Context context, List<Milestone> milestones,
+			Milestone selectedMilestone) {
+		this.context = context;
+		this.milestones = milestones;
+		this.selectedMilestone = selectedMilestone;
+	}
+
 	public MilestoneAdapter(Context context, List<Milestone> milestones) {
 		this.context = context;
 		this.milestones = milestones;
@@ -96,7 +103,7 @@ public class MilestoneAdapter extends BaseAdapter {
 		// selectedMilestone = ms;
 		if (selectedMilestone == null) {
 			ViewUtils.setVisibility(holder.check, View.GONE);
-		} else if (selectedMilestone.equals(ms)) {
+		} else if (selectedMilestone.getNumber() == ms.getNumber()) {
 			ViewUtils.setVisibility(holder.check, View.VISIBLE);
 			holder.check.setImageResource(R.drawable.common_check);
 		} else {
@@ -118,8 +125,9 @@ public class MilestoneAdapter extends BaseAdapter {
 		return selectedMilestone;
 	}
 
-	public void setSelectedMilestone(Milestone selectedMilestone) {
+	public MilestoneAdapter setSelectedMilestone(Milestone selectedMilestone) {
 		this.selectedMilestone = selectedMilestone;
+		return this;
 	}
 
 	private class Holder {

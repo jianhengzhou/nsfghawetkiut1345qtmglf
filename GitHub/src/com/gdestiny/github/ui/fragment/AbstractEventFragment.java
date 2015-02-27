@@ -62,7 +62,7 @@ public abstract class AbstractEventFragment extends
 				.addItem(EventUtils.getAuthorAvatarUrl(event),
 						EventUtils.getAuthor(event))
 				.addItem(R.drawable.common_repository_item,
-						event.getRepo().getName())
+						event.getRepo().getName(), false)
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 					@Override

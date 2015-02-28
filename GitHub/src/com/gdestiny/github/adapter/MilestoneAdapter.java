@@ -147,8 +147,8 @@ public class MilestoneAdapter extends BaseAdapter {
 		public Holder(View v) {
 			check = (ImageView) v.findViewById(R.id.selected);
 
-			title = (TextView) v.findViewById(R.id.title);
-			createAt = (TextView) v.findViewById(R.id.date);
+			title = (TextView) v.findViewById(R.id.milestone_title);
+			createAt = (TextView) v.findViewById(R.id.milestone_date);
 			description = (TextView) v.findViewById(R.id.description);
 			creator = (TextView) v.findViewById(R.id.milestone_name);
 			createIcon = (ImageView) v.findViewById(R.id.milestone_icon);

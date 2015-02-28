@@ -18,7 +18,7 @@
         android:src="@drawable/common_check" />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/milestone_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -33,7 +33,7 @@
         android:id="@+id/open"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title"
+        android:layout_below="@id/milestone_title"
         android:layout_marginBottom="@dimen/margin2"
         android:layout_marginLeft="@dimen/margin16"
         android:layout_marginRight="@dimen/margin4"
@@ -48,7 +48,7 @@
         android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title"
+        android:layout_below="@id/milestone_title"
         android:layout_marginBottom="@dimen/margin2"
         android:layout_marginRight="@dimen/margin16"
         android:layout_marginTop="@dimen/margin2"
@@ -103,7 +103,7 @@
         android:textSize="@dimen/text12" />
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/milestone_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

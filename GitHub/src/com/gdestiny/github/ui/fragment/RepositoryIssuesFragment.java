@@ -52,15 +52,17 @@ public class RepositoryIssuesFragment extends
 
 			@Override
 			public void onClick(View v) {
-				IntentUtils
-						.create(context, IssueFilterActivity.class)
-						.putExtra(RepositoryDetailActivity.EXTRA_REPOSITORY,
-								repository)
-						.putExtra(IssueFilterActivity.EXTRA_ISSUE_FILTER,
-								issueFilter)
-						.startForResult(RepositoryIssuesFragment.this, FILT);
+				openFilter();
 			}
 		});
+	}
+
+	private void openFilter() {
+		IntentUtils
+				.create(context, IssueFilterActivity.class)
+				.putExtra(RepositoryDetailActivity.EXTRA_REPOSITORY, repository)
+				.putExtra(IssueFilterActivity.EXTRA_ISSUE_FILTER, issueFilter)
+				.startForResult(RepositoryIssuesFragment.this, FILT);
 	}
 
 	@Override
@@ -101,6 +103,9 @@ public class RepositoryIssuesFragment extends
 							return;
 						}
 						onRefreshStarted(null);
+						break;
+					case R.string.filter:
+						openFilter();
 						break;
 					default:
 						((RepositoryDetailActivity) context).onMenu(titleId);

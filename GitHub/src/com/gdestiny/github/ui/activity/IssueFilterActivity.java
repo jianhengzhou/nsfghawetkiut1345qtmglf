@@ -175,8 +175,8 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 		ViewUtils.setVisibility(milestone, View.VISIBLE);
 		milestone.setBackgroundResource(R.drawable.selector_border_blue);
 
-		TextView title = (TextView) findViewById(R.id.title);
-		TextView createAt = (TextView) findViewById(R.id.date);
+		TextView title = (TextView) findViewById(R.id.milestone_title);
+		TextView createAt = (TextView) findViewById(R.id.milestone_date);
 		TextView creator = (TextView) findViewById(R.id.milestone_name);
 		ImageView createIcon = (ImageView) findViewById(R.id.milestone_icon);
 		TextView open = (TextView) findViewById(R.id.open);

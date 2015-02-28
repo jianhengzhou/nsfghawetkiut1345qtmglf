@@ -33,6 +33,7 @@ public class LabelColorView extends View {
 		if (colors != null) {
 			height = colors.length * COLOR_WIDTH + (colors.length + 1) * MARGIN;
 		}
+		// height = 100;
 		setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), height);
 	}
 
@@ -54,6 +55,7 @@ public class LabelColorView extends View {
 
 	public void setColors(int[] colors) {
 		this.colors = colors;
+		requestLayout();
 		invalidate();
 	}
 
@@ -65,6 +67,7 @@ public class LabelColorView extends View {
 		for (int i = 0; i < labels.size(); i++) {
 			colors[i] = Color.parseColor("#" + labels.get(i).getColor());
 		}
-		invalidate();
+		requestLayout();
+		postInvalidate();
 	}
 }

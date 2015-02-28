@@ -17,6 +17,7 @@
     <string name="assignee_">Assignee:</string>
     <string name="milestones_">Milestones:</string>
     <string name="labels_">Labels:</string>
+    <string name="assigned_to">Assigned To:</string>
 
     <!-- test test test test test test -->
     <string name="name">gdestiny</string>

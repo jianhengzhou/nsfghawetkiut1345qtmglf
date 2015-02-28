@@ -28,16 +28,36 @@ public class LabelViewGroup extends ViewGroup {
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		int maxWidth = MeasureSpec.getSize(widthMeasureSpec);
+		int maxWidth = MeasureSpec.getSize(widthMeasureSpec)- getPaddingLeft() - getPaddingRight();
 
 		int row = 1;
 		int lengthX = 0;
 		int lengthY = 0;
 
+		int measureWidth = MeasureSpec.getSize(widthMeasureSpec); 
+        int measureHeigth = MeasureSpec.getSize(heightMeasureSpec); 
 		for (int index = 0; index < getChildCount(); index++) {
 			final View child = getChildAt(index);
 			// measure
-			child.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+			int widthSpec = 0; 
+            int heightSpec = 0; 
+            LayoutParams params = child.getLayoutParams(); 
+            if(params.width > 0){ 
+                widthSpec = MeasureSpec.makeMeasureSpec(params.width, MeasureSpec.EXACTLY); 
+            }else if (params.width == -1) { 
+                widthSpec = MeasureSpec.makeMeasureSpec(measureWidth, MeasureSpec.EXACTLY); 
+            } else if (params.width == -2) { 
+                widthSpec = MeasureSpec.makeMeasureSpec(measureWidth, MeasureSpec.AT_MOST); 
+            } 
+
+            if(params.height > 0){ 
+                heightSpec = MeasureSpec.makeMeasureSpec(params.height, MeasureSpec.EXACTLY); 
+            }else if (params.height == -1) { 
+                heightSpec = MeasureSpec.makeMeasureSpec(measureHeigth, MeasureSpec.EXACTLY); 
+            } else if (params.height == -2) { 
+                heightSpec = MeasureSpec.makeMeasureSpec(measureWidth, MeasureSpec.AT_MOST); 
+            } 
+			child.measure(widthSpec, heightSpec);
 			//
 			int width = child.getMeasuredWidth();
 			int height = child.getMeasuredHeight();

@@ -22,6 +22,7 @@
     <string name="description_">Description:</string>
     <string name="content">content</string>
     <string name="assigned_to">Assigned To:</string>
+    <string name="no_change">No Change</string>
 
     <!-- test test test test test test -->
     <string name="name">gdestiny</string>

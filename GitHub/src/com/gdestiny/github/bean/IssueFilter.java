@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
@@ -19,6 +20,22 @@ public class IssueFilter implements Serializable {
 	private User assignee;
 	private Milestone milestone;
 	private ArrayList<Label> labels;
+
+	public void bind(Issue issue) {
+		state = null;
+		assignee = issue.getAssignee();
+		milestone = issue.getMilestone();
+		labels = (ArrayList<Label>) issue.getLabels();
+	}
+
+	public void assign(Issue issue) {
+		if (!equals(assignee, issue.getAssignee()))
+			issue.setAssignee(assignee);
+		if (!equals(milestone, issue.getMilestone()))
+			issue.setMilestone(milestone);
+		if (!equals(labels, issue.getLabels()))
+			issue.setLabels(labels);
+	}
 
 	public IssueFilter put(String state) {
 		this.state = state;

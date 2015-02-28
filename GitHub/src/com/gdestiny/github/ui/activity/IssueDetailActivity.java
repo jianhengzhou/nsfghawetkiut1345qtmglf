@@ -12,6 +12,7 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.IssueService;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -52,6 +53,9 @@ public class IssueDetailActivity extends
 	private boolean fold = true;
 	private boolean isCollaborator;
 
+	private int position;
+	private boolean hasChange = false;
+
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -62,6 +66,7 @@ public class IssueDetailActivity extends
 	protected void initView() {
 		// TODO Auto-generated method stub
 		commentList = (ListView) findViewById(R.id.list);
+
 	}
 
 	@Override
@@ -81,10 +86,12 @@ public class IssueDetailActivity extends
 						onRefreshStarted(null);
 					break;
 				case R.string.edit_issue:
-					IntentUtils.create(context, NewEditIssueActivity.class)
+					IntentUtils
+							.create(context, NewEditIssueActivity.class)
 							.putExtra(Constants.Extra.ISSUE, issue)
 							.putExtra(Constants.Extra.REPOSITORY, repository)
-							.start();
+							.startForResult(IssueDetailActivity.this,
+									Constants.Request.EDIT_ISSUE);
 					break;
 				default:
 					ToastUtils.show(context, "TODO "
@@ -104,6 +111,7 @@ public class IssueDetailActivity extends
 		issue = (Issue) getIntent().getSerializableExtra(Constants.Extra.ISSUE);
 		repository = (Repository) getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
+		position = getIntent().getIntExtra(Constants.Extra.POSITION, -1);
 
 		getTitlebar().setLeftLayout(
 				repository.getOwner().getAvatarUrl(),
@@ -113,6 +121,26 @@ public class IssueDetailActivity extends
 
 		detailView = LayoutInflater.from(context).inflate(
 				R.layout.layout_issue_detail, null);
+		content = (TextView) detailView.findViewById(R.id.content);
+		final ImageView foldBtn = (ImageView) detailView
+				.findViewById(R.id.more);
+		foldBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (!fold) {
+					fold = true;
+					content.setMaxLines(4);
+					commentList.setSelection(0);
+					foldBtn.setImageResource(R.drawable.common_up_more);
+				} else {
+					fold = false;
+					content.setMaxLines(Integer.MAX_VALUE);
+					foldBtn.setImageResource(R.drawable.common_down_more);
+				}
+			}
+		});
+
 		commentList.addHeaderView(detailView);
 		commentAdapter = new CommentAdapter(context);
 		commentAdapter.setOnListener(new CommentAdapter.OnListener() {
@@ -132,6 +160,11 @@ public class IssueDetailActivity extends
 					@Override
 					public void onSuccess(Boolean result) {
 						super.onSuccess(result);
+						TextView commentText = (TextView) detailView
+								.findViewById(R.id.comment);
+						issue.setComments(issue.getComments() - 1);
+						commentText.setText(issue.getComments() + "");
+						hasChange = true;
 						comments.remove(comment);
 						commentAdapter.notifyDataSetChanged();
 					}
@@ -142,16 +175,13 @@ public class IssueDetailActivity extends
 
 		execute(GitHubApplication.getClient());
 
-		initDetail();
+		initDetail(issue);
 	}
 
-	private void initDetail() {
+	private void initDetail(Issue issue) {
 		ImageView icon = (ImageView) detailView.findViewById(R.id.detail_icon);
 		ImageLoaderUtils.displayImage(issue.getUser().getAvatarUrl(), icon,
 				R.drawable.default_avatar, R.drawable.default_avatar, true);
-
-		TextView title = (TextView) detailView.findViewById(R.id.title);
-		title.setText(issue.getTitle());
 
 		TextView name = (TextView) detailView.findViewById(R.id.detail_name);
 		name.setText(issue.getUser().getLogin());
@@ -162,29 +192,16 @@ public class IssueDetailActivity extends
 		TextView comment = (TextView) detailView.findViewById(R.id.comment);
 		comment.setText(issue.getComments() + "");
 
-		content = (TextView) detailView.findViewById(R.id.content);
+		refreshPartDetail(issue);
+	}
+
+	private void refreshPartDetail(Issue issue) {
+		TextView title = (TextView) detailView.findViewById(R.id.title);
+		title.setText(issue.getTitle());
+
 		content.setText(Html.fromHtml(issue.getBodyHtml(),
 				new AsyncImageGetter(context, content), null));
 		ViewUtils.handleLink(content);
-
-		final ImageView foldBtn = (ImageView) findViewById(R.id.more);
-		foldBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (!fold) {
-					fold = true;
-					content.setMaxLines(4);
-					commentList.setSelection(0);
-					foldBtn.setImageResource(R.drawable.common_up_more);
-				} else {
-					fold = false;
-					content.setMaxLines(Integer.MAX_VALUE);
-					foldBtn.setImageResource(R.drawable.common_down_more);
-				}
-			}
-		});
 
 		LabelViewGroup labelGroup = (LabelViewGroup) findViewById(R.id.label_viewgroup);
 		View labelLayout = findViewById(R.id.label_layout);
@@ -276,9 +293,34 @@ public class IssueDetailActivity extends
 	}
 
 	@Override
+	public void onResultOk(int requestCode, Intent data) {
+		super.onResultOk(requestCode, data);
+		if (requestCode == Constants.Request.EDIT_ISSUE) {
+			GLog.sysout("EDIT_ISSUE");
+			hasChange = true;
+			issue = (Issue) data.getSerializableExtra(Constants.Extra.ISSUE);
+			refreshPartDetail(issue);
+		}
+	}
+
+	private void onFinish() {
+		if (hasChange) {
+			IntentUtils.create(context).putExtra(Constants.Extra.ISSUE, issue)
+					.putExtra(Constants.Extra.POSITION, position).setResultOk()
+					.finish();
+		} else {
+			IntentUtils.setResultCancle(context);
+		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		onFinish();
+	}
+
+	@Override
 	protected void onleftLayout() {
-		// TODO Auto-generated method stub
-		finish();
+		onFinish();
 	}
 
 	@Override

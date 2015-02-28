@@ -28,6 +28,7 @@ import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
+import com.gdestiny.github.utils.IssueUtils;
 
 public class RepositoryIssuesFragment extends
 		BaseLoadPageFragment<Issue, GitHubClient> {
@@ -149,6 +150,16 @@ public class RepositoryIssuesFragment extends
 				GLog.sysout("notifyDataSetChanged");
 				getMoreList().setSelection(0);
 			}
+		} else if (requestCode == Constants.Request.ISSUE_DETAIL) {
+			GLog.sysout("ISSUE_DETAI");
+			Issue issue = (Issue) data
+					.getSerializableExtra(Constants.Extra.ISSUE);
+			int position = data.getIntExtra(Constants.Extra.POSITION, -1);
+			if (issue != null && position >= 0) {
+				IssueUtils.assignMain(issueAdapter.getDatas().get(position),
+						issue);
+				issueAdapter.notifyDataSetChanged();
+			}
 		}
 	}
 
@@ -158,7 +169,9 @@ public class RepositoryIssuesFragment extends
 		// TODO Auto-generated method stub
 		IntentUtils.create(context, IssueDetailActivity.class)
 				.putExtra(Constants.Extra.ISSUE, getDatas().get(position))
-				.putExtra(Constants.Extra.REPOSITORY, repository).start();
+				.putExtra(Constants.Extra.POSITION, position)
+				.putExtra(Constants.Extra.REPOSITORY, repository)
+				.startForResult(this, Constants.Request.ISSUE_DETAIL);
 	}
 
 	@Override

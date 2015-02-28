@@ -8,11 +8,14 @@ public class Constants {
 		public static final String CODE_ENTRY = "code_entry";
 		public static final String ISSUE_FILTER = "issuefilter";
 		public static final String URL = "url";
+		public static final String POSITION = "position";
 	}
 
 	public final static class Request {
 		public static final int FILTER = 0;
 		public static final int NEW_ISSUE = 1;
+		public static final int EDIT_ISSUE = 2;
+		public static final int ISSUE_DETAIL = 3;
 	}
 
 	public static final boolean isDebug = true;

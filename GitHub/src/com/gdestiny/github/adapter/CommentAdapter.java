@@ -25,6 +25,15 @@ public class CommentAdapter extends BaseAdapter {
 	private List<Comment> datas;
 
 	private OnListener listener;
+	private boolean isCollaborator;
+
+	public boolean isCollaborator() {
+		return isCollaborator;
+	}
+
+	public void setIsCollaborator(boolean isCollaborator) {
+		this.isCollaborator = isCollaborator;
+	}
 
 	public CommentAdapter(Context context) {
 		this.context = context;
@@ -67,11 +76,11 @@ public class CommentAdapter extends BaseAdapter {
 				R.drawable.default_avatar, true);
 
 		String name = comment.getUser().getLogin();
-		// if (CommonUtils.isAuthUser(name)) {
-		// ViewUtils.setVisibility(holder.btnLayout, View.VISIBLE);
-		// } else {
-		// ViewUtils.setVisibility(holder.btnLayout, View.GONE);
-		// }
+		if (isCollaborator) {
+			ViewUtils.setVisibility(holder.btnLayout, View.VISIBLE);
+		} else {
+			ViewUtils.setVisibility(holder.btnLayout, View.GONE);
+		}
 		holder.edit.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -126,7 +135,7 @@ public class CommentAdapter extends BaseAdapter {
 		View edit;
 		View delete;
 
-		// View btnLayout;
+		View btnLayout;
 
 		public Holder(View v) {
 			icon = (ImageView) v.findViewById(R.id.icon);
@@ -136,7 +145,7 @@ public class CommentAdapter extends BaseAdapter {
 			edit = v.findViewById(R.id.edit);
 			delete = v.findViewById(R.id.delete);
 
-			// btnLayout = v.findViewById(R.id.comment_btn);
+			btnLayout = v.findViewById(R.id.comment_btn);
 		}
 	}
 

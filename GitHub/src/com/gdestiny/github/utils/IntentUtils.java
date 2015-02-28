@@ -53,12 +53,27 @@ public class IntentUtils {
 		return new IntentBuilder().create(context, cls);
 	}
 
+	public static IntentBuilder create(Context context) {
+		return new IntentBuilder().create(context);
+	}
+
+	public static void setResultCancle(Activity context) {
+		context.setResult(Activity.RESULT_CANCELED);
+		context.finish();
+	}
+
 	public static class IntentBuilder {
 		private Intent intent;
 		private Context context;
 
 		public IntentBuilder create(Context context, Class<?> cls) {
 			this.intent = new Intent(context, cls);
+			this.context = context;
+			return this;
+		}
+
+		public IntentBuilder create(Context context) {
+			this.intent = new Intent();
 			this.context = context;
 			return this;
 		}
@@ -245,17 +260,26 @@ public class IntentUtils {
 			return this;
 		}
 
+		public IntentBuilder setResultOk() {
+			((Activity) context).setResult(Activity.RESULT_OK, intent);
+			return this;
+		}
+
 		public void start() {
 			context.startActivity(intent);
 		}
 
+		public void finish() {
+			((Activity) context).finish();
+		}
+
 		public void startForResult(Object act_frag, int requestCode) {
 			if (act_frag instanceof Fragment)
-				((Fragment) act_frag)
-						.startActivityForResult(intent, requestCode);
+				((Fragment) act_frag).startActivityForResult(intent,
+						requestCode);
 			else if (act_frag instanceof Activity)
-				((Activity) act_frag)
-						.startActivityForResult(intent, requestCode);
+				((Activity) act_frag).startActivityForResult(intent,
+						requestCode);
 			else
 				throw new IllegalArgumentException(
 						"the argument can only be fragment or fragment");

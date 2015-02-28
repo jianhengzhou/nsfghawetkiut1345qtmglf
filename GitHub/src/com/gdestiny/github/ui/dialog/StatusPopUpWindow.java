@@ -185,7 +185,7 @@ public class StatusPopUpWindow extends PopupWindow {
 			action = new StatusPopWindowItem(context, titleId);
 		else
 			action = new StatusPopWindowItem(context, titleId, drawableId);
-		if (action != null) {
+		if (action != null && !mActionItems.contains(action)) {
 			mActionItems.add(action);
 		}
 		mAdapter.notifyDataSetChanged();
@@ -202,7 +202,7 @@ public class StatusPopUpWindow extends PopupWindow {
 			action = new StatusPopWindowItem(context, titleId);
 		else
 			action = new StatusPopWindowItem(context, titleId, drawableId);
-		if (action != null) {
+		if (action != null && !mActionItems.contains(action)) {
 			mActionItems.add(position, action);
 		}
 		mAdapter.notifyDataSetChanged();

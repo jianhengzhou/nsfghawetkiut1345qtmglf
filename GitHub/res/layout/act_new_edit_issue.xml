@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/margin16" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin32"
+            android:layout_marginTop="@dimen/margin32"
+            android:background="@drawable/drawable_corner_top_ligth_blue"
+            android:paddingLeft="@dimen/margin8"
+            android:paddingRight="@dimen/margin8"
+            android:text="@string/title_"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text18" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:background="@drawable/drawable_corner_ligth_blue"
+            android:padding="@dimen/margin16" >
+
+            <EditText
+                android:id="@+id/issue_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin16"
+                android:layout_marginRight="@dimen/margin16"
+                android:background="@drawable/selector_common_edtitext_background"
+                android:hint="@string/title"
+                android:padding="@dimen/margin8"
+                android:text="@string/test_title"
+                android:textColor="@color/common_light_black"
+                android:textSize="@dimen/text18" />
+        </FrameLayout>
+
+        <!-- assign -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin32"
+            android:layout_marginTop="@dimen/margin16"
+            android:background="@drawable/drawable_corner_top_ligth_blue"
+            android:paddingLeft="@dimen/margin8"
+            android:paddingRight="@dimen/margin8"
+            android:text="@string/assignee_"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text18" />
+
+        <FrameLayout
+            android:id="@+id/assign_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:background="@drawable/drawable_corner_ligth_blue"
+            android:padding="@dimen/margin16" >
+
+            <TextView
+                android:id="@+id/assing_none"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/none_select"
+                android:textColor="@color/common_icon_grey"
+                android:textSize="@dimen/text14" />
+
+            <include
+                android:id="@+id/assing_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                layout="@layout/item_material_listitem"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- milestone -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin32"
+            android:layout_marginTop="@dimen/margin16"
+            android:background="@drawable/drawable_corner_top_ligth_blue"
+            android:paddingLeft="@dimen/margin8"
+            android:paddingRight="@dimen/margin8"
+            android:text="@string/milestones_"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text18" />
+
+        <FrameLayout
+            android:id="@+id/milestone_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:background="@drawable/drawable_corner_ligth_blue"
+            android:padding="@dimen/margin16" >
+
+            <TextView
+                android:id="@+id/milestone_none"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/none_select"
+                android:textColor="@color/common_icon_grey"
+                android:textSize="@dimen/text14" />
+
+            <include
+                android:id="@+id/milestone_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                layout="@layout/item_milestone"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- label -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin32"
+            android:layout_marginTop="@dimen/margin16"
+            android:background="@drawable/drawable_corner_top_ligth_blue"
+            android:paddingLeft="@dimen/margin8"
+            android:paddingRight="@dimen/margin8"
+            android:text="@string/labels_"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text18" />
+
+        <FrameLayout
+            android:id="@+id/label_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:background="@drawable/drawable_corner_ligth_blue"
+            android:padding="@dimen/margin16" >
+
+            <TextView
+                android:id="@+id/label_none"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/none_select"
+                android:textColor="@color/common_icon_grey"
+                android:textSize="@dimen/text14" />
+
+            <com.gdestiny.github.ui.view.LabelViewGroup
+                android:id="@+id/label_viewgroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_border_blue" >
+            </com.gdestiny.github.ui.view.LabelViewGroup>
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin32"
+            android:layout_marginTop="@dimen/margin32"
+            android:background="@drawable/drawable_corner_top_ligth_blue"
+            android:paddingLeft="@dimen/margin8"
+            android:paddingRight="@dimen/margin8"
+            android:text="@string/description_"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text18" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:background="@drawable/drawable_corner_ligth_blue"
+            android:padding="@dimen/margin16" >
+
+            <EditText
+                android:id="@+id/issue_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin16"
+                android:layout_marginRight="@dimen/margin16"
+                android:background="@drawable/selector_common_edtitext_background"
+                android:hint="@string/content"
+                android:padding="@dimen/margin8"
+                android:textColor="@color/common_light_black"
+                android:textSize="@dimen/text18" />
+        </FrameLayout>
+    </LinearLayout>
+
+</ScrollView>

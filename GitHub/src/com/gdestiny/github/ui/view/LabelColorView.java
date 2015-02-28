@@ -61,6 +61,9 @@ public class LabelColorView extends View {
 
 	public void setLabels(List<Label> labels) {
 		if (labels == null || labels.isEmpty()) {
+			colors = null;
+			requestLayout();
+			postInvalidate();
 			return;
 		}
 		colors = new int[labels.size()];

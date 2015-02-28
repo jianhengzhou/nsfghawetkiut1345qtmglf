@@ -93,7 +93,8 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 	protected void onRightBtn() {
 	}
 
-	public BaseLoadFragment<?, ?> hideHeaderView(BaseLoadFragment<?, ?> currentFragment) {
+	public BaseLoadFragment<?, ?> hideHeaderView(
+			BaseLoadFragment<?, ?> currentFragment) {
 		if (currentFragment != null) {
 			PullToRefreshLayout mPullToRefreshLayout = currentFragment
 					.getPullToRefreshLayout();
@@ -105,7 +106,8 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 		return currentFragment;
 	}
 
-	public BaseLoadFragment<?, ?> showRefreshHeader(BaseLoadFragment<?, ?> currentFragment) {
+	public BaseLoadFragment<?, ?> showRefreshHeader(
+			BaseLoadFragment<?, ?> currentFragment) {
 		if (currentFragment != null && currentFragment.isLoading()) {
 			PullToRefreshLayout mPullToRefreshLayout = currentFragment
 					.getPullToRefreshLayout();
@@ -308,5 +310,23 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 				mBuffer.delete(0, mBuffer.length()).append(mClassName)
 						.append(".onDestroy()").toString());
 		super.onDestroy();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == Activity.RESULT_OK) {
+			onResultOk(requestCode, data);
+		} else {
+			onResultCancle(requestCode, data);
+		}
+	}
+
+	public void onResultOk(int requestCode, Intent data) {
+
+	}
+
+	public void onResultCancle(int requestCode, Intent data) {
+
 	}
 }

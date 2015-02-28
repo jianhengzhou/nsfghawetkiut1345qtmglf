@@ -54,5 +54,7 @@
     <string name="is_collaborator">is collaborator?</string>
     <string name="newing_issue">newing issue</string>
     <string name="newing_issue_succeed">New Issue Succeed</string>
+    <string name="editing_issue">editing issue</string>
+    <string name="editing_issue_succeed">Edit Issue Succeed</string>
 
 </resources>

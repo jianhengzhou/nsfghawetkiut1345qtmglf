@@ -9,6 +9,7 @@ import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.IssueService;
 
 import android.os.Bundle;
@@ -30,7 +31,9 @@ import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ImageLoaderUtils;
+import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.TimeUtils;
+import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
 public class IssueDetailActivity extends
@@ -47,6 +50,7 @@ public class IssueDetailActivity extends
 
 	private TextView content;
 	private boolean fold = true;
+	private boolean isCollaborator;
 
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
@@ -76,6 +80,16 @@ public class IssueDetailActivity extends
 					if (!isLoading())
 						onRefreshStarted(null);
 					break;
+				case R.string.edit_issue:
+					IntentUtils.create(context, NewEditIssueActivity.class)
+							.putExtra(Constants.Extra.ISSUE, issue)
+							.putExtra(Constants.Extra.REPOSITORY, repository)
+							.start();
+					break;
+				default:
+					ToastUtils.show(context, "TODO "
+							+ context.getResources().getString(titleId));
+					break;
 				}
 				titlebar.dissmissStatus();
 			}
@@ -89,7 +103,7 @@ public class IssueDetailActivity extends
 		// TODO Auto-generated method stub
 		issue = (Issue) getIntent().getSerializableExtra(Constants.Extra.ISSUE);
 		repository = (Repository) getIntent().getSerializableExtra(
-				Constants.Extra.ISSUE);
+				Constants.Extra.REPOSITORY);
 
 		getTitlebar().setLeftLayout(
 				repository.getOwner().getAvatarUrl(),
@@ -128,6 +142,10 @@ public class IssueDetailActivity extends
 
 		execute(GitHubApplication.getClient());
 
+		initDetail();
+	}
+
+	private void initDetail() {
 		ImageView icon = (ImageView) detailView.findViewById(R.id.detail_icon);
 		ImageLoaderUtils.displayImage(issue.getUser().getAvatarUrl(), icon,
 				R.drawable.default_avatar, R.drawable.default_avatar, true);
@@ -228,8 +246,18 @@ public class IssueDetailActivity extends
 
 	@Override
 	public List<Comment> onBackground(GitHubClient params) throws Exception {
-		// TODO Auto-generated method stub
+		try {
+			CollaboratorService collaboratorService = new CollaboratorService(
+					params);
+			isCollaborator = collaboratorService.isCollaborator(repository,
+					GitHubApplication.getUser().getLogin());
+		} catch (Exception ex) {
+			isCollaborator = false;
+			ex.printStackTrace();
+		}
+
 		IssueService service = new IssueService(params);
+
 		return service.getComments(repository, issue.getNumber());
 	}
 
@@ -238,7 +266,13 @@ public class IssueDetailActivity extends
 		// TODO Auto-generated method stub
 		super.onSuccess(result);
 		comments = result;
+		commentAdapter.setIsCollaborator(isCollaborator);
 		commentAdapter.setDatas(comments);
+
+		if (isCollaborator) {
+			getTitlebar().getStatusPopup().addItem(context, 0,
+					R.string.edit_issue, R.drawable.common_edit);
+		}
 	}
 
 	@Override

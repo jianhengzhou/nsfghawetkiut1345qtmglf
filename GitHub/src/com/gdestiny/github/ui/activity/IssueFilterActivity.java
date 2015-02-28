@@ -1,5 +1,6 @@
 package com.gdestiny.github.ui.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.eclipse.egit.github.core.Issue;
@@ -9,7 +10,6 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.IssueService;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,6 +32,7 @@ import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.ImageLoaderUtils;
+import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.TimeUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
@@ -105,12 +106,11 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 		repository = (Repository) getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
 
-		getTitlebar().setLeftLayout(null
-		// repository.getOwner().getAvatarUrl()
-				, "Issue Filter", null
-		// repository.getOwner().getLogin() + File.separator
-		// + repository.getName()
-				);
+		getTitlebar().setLeftLayout(
+				repository.getOwner().getAvatarUrl(),
+				"Issue Filter",
+				repository.getOwner().getLogin() + File.separator
+						+ repository.getName());
 
 		// init filter data
 		filter = (IssueFilter) getIntent().getSerializableExtra(
@@ -138,19 +138,16 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent data = new Intent();
-				data.putExtra(Constants.Extra.ISSUE_FILTER, filter);
-				setResult(RESULT_OK, data);
-				finish();
+				IntentUtils.create(context)
+						.putExtra(Constants.Extra.ISSUE_FILTER, filter)
+						.setResultOk().finish();
 			}
 		});
 	}
 
 	@Override
 	protected void onleftLayout() {
-		setResult(RESULT_CANCELED);
-		finish();
+		IntentUtils.setResultCancle(context);
 	}
 
 	private void onLabels(ArrayList<Label> selected) {

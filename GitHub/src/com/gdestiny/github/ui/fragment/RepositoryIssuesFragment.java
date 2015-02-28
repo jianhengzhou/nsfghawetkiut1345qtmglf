@@ -7,7 +7,6 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.IssueService;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +20,7 @@ import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.bean.IssueFilter;
 import com.gdestiny.github.ui.activity.IssueDetailActivity;
 import com.gdestiny.github.ui.activity.IssueFilterActivity;
-import com.gdestiny.github.ui.activity.NewIssueActivity;
+import com.gdestiny.github.ui.activity.NewEditIssueActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.ListPopupView;
@@ -33,7 +32,6 @@ import com.gdestiny.github.utils.IntentUtils;
 public class RepositoryIssuesFragment extends
 		BaseLoadPageFragment<Issue, GitHubClient> {
 
-	private final int RESULT_FILT = 1;
 	private Repository repository;
 	private IssueFilter issueFilter = new IssueFilter();
 	private IssueAdapter issueAdapter;
@@ -59,10 +57,12 @@ public class RepositoryIssuesFragment extends
 	}
 
 	private void openFilter() {
-		IntentUtils.create(context, IssueFilterActivity.class)
+		IntentUtils
+				.create(context, IssueFilterActivity.class)
 				.putExtra(Constants.Extra.REPOSITORY, repository)
 				.putExtra(Constants.Extra.ISSUE_FILTER, issueFilter)
-				.startForResult(RepositoryIssuesFragment.this, RESULT_FILT);
+				.startForResult(RepositoryIssuesFragment.this,
+						Constants.Request.FILTER);
 	}
 
 	@Override
@@ -108,8 +108,12 @@ public class RepositoryIssuesFragment extends
 						openFilter();
 						break;
 					case R.string.new_issue:
-						IntentUtils.create(context, NewIssueActivity.class)
-								.start();
+						IntentUtils
+								.create(context, NewEditIssueActivity.class)
+								.putExtra(Constants.Extra.REPOSITORY,
+										repository)
+								.startForResult(RepositoryIssuesFragment.this,
+										Constants.Request.NEW_ISSUE);
 						break;
 					default:
 						((RepositoryDetailActivity) context).onMenu(titleId);
@@ -123,22 +127,27 @@ public class RepositoryIssuesFragment extends
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == RESULT_FILT) {
-			System.out.println("RESULT_FILT");
-			if (resultCode == Activity.RESULT_OK) {
-				System.out.println("RESULT_OK");
-				IssueFilter filter = (IssueFilter) data
-						.getSerializableExtra(Constants.Extra.ISSUE_FILTER);
+	public void onResultOk(int requestCode, Intent data) {
+		if (requestCode == Constants.Request.FILTER) {
+			GLog.sysout("FILTER");
+			IssueFilter filter = (IssueFilter) data
+					.getSerializableExtra(Constants.Extra.ISSUE_FILTER);
 
-				if (filter.equals(issueFilter))
-					return;
-				issueFilter = filter;
-				issueAdapter.setOpen(issueFilter.getState().equals(
-						IssueService.STATE_OPEN));
-				onRefreshStarted(null);
+			if (filter.equals(issueFilter))
+				return;
+			issueFilter = filter;
+			issueAdapter.setOpen(issueFilter.getState().equals(
+					IssueService.STATE_OPEN));
+			onRefreshStarted(null);
+		} else if (requestCode == Constants.Request.NEW_ISSUE) {
+			GLog.sysout("NEW_ISSUE");
+			Issue issue = (Issue) data
+					.getSerializableExtra(Constants.Extra.ISSUE);
+			if (issue != null && issue.getNumber() != 0) {
+				issueAdapter.getDatas().add(0, issue);
+				issueAdapter.notifyDataSetChanged();
+				GLog.sysout("notifyDataSetChanged");
+				getMoreList().setSelection(0);
 			}
 		}
 	}

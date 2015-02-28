@@ -2,12 +2,17 @@ package com.gdestiny.github.utils;
 
 public class Constants {
 
-	public static class Extra {
+	public final static class Extra {
 		public static final String REPOSITORY = "repository";
 		public static final String ISSUE = "issue";
 		public static final String CODE_ENTRY = "code_entry";
 		public static final String ISSUE_FILTER = "issuefilter";
 		public static final String URL = "url";
+	}
+
+	public final static class Request {
+		public static final int FILTER = 0;
+		public static final int NEW_ISSUE = 1;
 	}
 
 	public static final boolean isDebug = true;

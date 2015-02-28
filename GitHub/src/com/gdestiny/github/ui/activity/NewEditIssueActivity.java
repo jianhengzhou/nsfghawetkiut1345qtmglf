@@ -73,6 +73,7 @@ public class NewEditIssueActivity extends BaseFragmentActivity implements
 
 			@Override
 			public void onClick(View v) {
+				AndroidUtils.Keyboard.hideKeyboard(context);
 				if (!newOrRefreshIssue()) {
 					IntentUtils.setResultCancle(context);
 					ToastUtils.show(context, R.string.no_change);

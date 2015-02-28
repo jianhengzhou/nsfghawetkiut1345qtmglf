@@ -14,9 +14,15 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.provider.Browser;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.gdestiny.github.R;
 
@@ -44,6 +50,67 @@ public class AndroidUtils {
 
 	private AndroidUtils() {
 		throw new AssertionError();
+	}
+
+	public static class Keyboard {
+
+		// 显示或者隐藏输入键盘
+		public static void hideKeyboard(Activity context,
+				final Runnable afterHide) {
+
+			InputMethodManager imm = (InputMethodManager) context
+					.getSystemService(Activity.INPUT_METHOD_SERVICE);
+			View view = context.getCurrentFocus();
+			if (view != null) {
+				imm.hideSoftInputFromWindow(view.getWindowToken(), 0,
+						new ResultReceiver(new Handler()) {
+
+							protected void onReceiveResult(int resultCode,
+									Bundle resultData) {
+								afterHide.run();
+							}
+
+						});
+			}
+		}
+
+		// 隐藏软键盘
+		public static void hideKeyboard(Activity context) {
+			InputMethodManager imm = (InputMethodManager) context
+					.getSystemService(Activity.INPUT_METHOD_SERVICE);
+			View view = context.getCurrentFocus();
+			if (view != null && imm.isActive()) {
+				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);// 隐藏软键盘
+
+			}
+		}
+
+		// 键盘是否已经显示出来
+		public static boolean isKeybordShown(Activity context, View focusView) {
+			InputMethodManager imm = (InputMethodManager) context
+					.getSystemService(Activity.INPUT_METHOD_SERVICE);
+			return imm.isActive(focusView);
+
+		}
+
+		// 这个方法是可用的
+		public static void showKeyboard(Activity context, View focusView) {
+			InputMethodManager imm = (InputMethodManager) context
+					.getSystemService(Activity.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(focusView, 0);
+
+		}
+
+		/**
+		 * 默认不显示输入面板
+		 * 
+		 * @param context
+		 */
+		public static void noExplicityInputMethod(Activity context) {
+			context.getWindow().setSoftInputMode(
+					WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		}
+
 	}
 
 	@SuppressWarnings({ "rawtypes" })

@@ -12,6 +12,8 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.IssueService;
 
+import com.gdestiny.github.utils.GLog;
+
 public class IssueFilter implements Serializable {
 
 	private static final long serialVersionUID = -3763458067118922195L;
@@ -29,12 +31,18 @@ public class IssueFilter implements Serializable {
 	}
 
 	public void assign(Issue issue) {
-		if (!equals(assignee, issue.getAssignee()))
+		if (!equals(assignee, issue.getAssignee())) {
 			issue.setAssignee(assignee);
-		if (!equals(milestone, issue.getMilestone()))
+			GLog.sysout("assign assignee");
+		}
+		if (!equals(milestone, issue.getMilestone())) {
 			issue.setMilestone(milestone);
-		if (!equals(labels, issue.getLabels()))
+			GLog.sysout("assign milestone");
+		}
+		if (!equals(labels, issue.getLabels())) {
 			issue.setLabels(labels);
+			GLog.sysout("assign labels");
+		}
 	}
 
 	public IssueFilter put(String state) {

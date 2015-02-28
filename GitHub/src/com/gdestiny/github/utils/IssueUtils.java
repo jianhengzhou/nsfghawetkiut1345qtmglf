@@ -16,9 +16,9 @@ public class IssueUtils {
 		if (l == null || r == null)
 			return false;
 		return l.getNumber() == r.getNumber()
-				&& r.getTitle().equals(l.getTitle())
-				&& r.getBody().equals(l.getBody())
-				&& IssueFilter.equals(r.getAssignee(), l.getAssignee())
+				&& l.getTitle().equals(r.getTitle())
+				&& l.getBody().equals(r.getBody())
+				&& IssueFilter.equals(l.getAssignee(), r.getAssignee())
 				&& IssueFilter.equals(l.getMilestone(), r.getMilestone())
 				&& IssueFilter.equals(l.getLabels(), r.getLabels());
 	}

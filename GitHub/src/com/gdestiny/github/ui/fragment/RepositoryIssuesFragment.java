@@ -1,5 +1,6 @@
 package com.gdestiny.github.ui.fragment;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.eclipse.egit.github.core.Issue;
@@ -28,7 +29,6 @@ import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
-import com.gdestiny.github.utils.IssueUtils;
 
 public class RepositoryIssuesFragment extends
 		BaseLoadPageFragment<Issue, GitHubClient> {
@@ -145,6 +145,12 @@ public class RepositoryIssuesFragment extends
 			Issue issue = (Issue) data
 					.getSerializableExtra(Constants.Extra.ISSUE);
 			if (issue != null && issue.getNumber() != 0) {
+				if (isNoData()) {
+					noData(false);
+				}
+				if (issueAdapter.getDatas() == null) {
+					issueAdapter.setDatas(new ArrayList<Issue>());
+				}
 				issueAdapter.getDatas().add(0, issue);
 				issueAdapter.notifyDataSetChanged();
 				GLog.sysout("notifyDataSetChanged");
@@ -156,8 +162,10 @@ public class RepositoryIssuesFragment extends
 					.getSerializableExtra(Constants.Extra.ISSUE);
 			int position = data.getIntExtra(Constants.Extra.POSITION, -1);
 			if (issue != null && position >= 0) {
-				IssueUtils.assignMain(issueAdapter.getDatas().get(position),
-						issue);
+				// IssueUtils.assignMain(issueAdapter.getDatas().get(position),
+				// issue);
+				issueAdapter.getDatas().remove(position);
+				issueAdapter.getDatas().add(position, issue);
 				issueAdapter.notifyDataSetChanged();
 			}
 		}
@@ -166,7 +174,6 @@ public class RepositoryIssuesFragment extends
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO Auto-generated method stub
 		IntentUtils.create(context, IssueDetailActivity.class)
 				.putExtra(Constants.Extra.ISSUE, getDatas().get(position))
 				.putExtra(Constants.Extra.POSITION, position)

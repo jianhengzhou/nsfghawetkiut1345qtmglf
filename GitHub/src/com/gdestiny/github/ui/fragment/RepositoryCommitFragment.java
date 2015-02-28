@@ -41,7 +41,7 @@ public class RepositoryCommitFragment extends
 	@Override
 	protected void initData() {
 		repository = (Repository) context.getIntent().getSerializableExtra(
-				RepositoryDetailActivity.EXTRA_REPOSITORY);
+				Constants.Extra.REPOSITORY);
 		execute(GitHubApplication.getClient());
 		// 防止与其他页面重叠
 		getPullToRefreshLayout().getHeaderTransformer()

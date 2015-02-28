@@ -2,6 +2,14 @@ package com.gdestiny.github.utils;
 
 public class Constants {
 
+	public static class Extra {
+		public static final String REPOSITORY = "repository";
+		public static final String ISSUE = "issue";
+		public static final String CODE_ENTRY = "code_entry";
+		public static final String ISSUE_FILTER = "issuefilter";
+		public static final String URL = "url";
+	}
+
 	public static final boolean isDebug = true;
 
 	public static final String GlobalTag = "GitHub";
@@ -14,7 +22,7 @@ public class Constants {
 
 	public static final int CONNECT_TIMEOUT = 15000;
 	public static final int READ_TIMEOUT = 15000;
-	
+
 	// ≈≈–Ú¿‡–Õ
 	public enum Sort {
 		All, Star, Own, Name, User, Time

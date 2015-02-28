@@ -91,6 +91,7 @@
                 android:textSize="@dimen/text14" />
 
             <include
+                android:id="@+id/assing_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -178,8 +179,8 @@
             <com.gdestiny.github.ui.view.LabelViewGroup
                 android:id="@+id/label_viewgroup"
                 android:layout_width="match_parent"
-                android:background="@drawable/selector_border_blue"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_border_blue" >
             </com.gdestiny.github.ui.view.LabelViewGroup>
         </FrameLayout>
     </LinearLayout>

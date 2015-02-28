@@ -26,13 +26,12 @@ import com.gdestiny.github.ui.fragment.RepositoryEventFragment;
 import com.gdestiny.github.ui.fragment.RepositoryIssuesFragment;
 import com.gdestiny.github.ui.view.IndicatorView;
 import com.gdestiny.github.utils.AndroidUtils;
+import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class RepositoryDetailActivity extends BaseFragmentActivity {
-
-	public static final String EXTRA_REPOSITORY = "repository";
 
 	private Repository repository;
 	private ViewPager viewpager;
@@ -108,7 +107,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 		switch (id) {
 		case R.string.contributors:
 			IntentUtils.create(context, ContributorsActivity.class)
-					.putExtra(EXTRA_REPOSITORY, repository).start();
+					.putExtra(Constants.Extra.REPOSITORY, repository).start();
 			break;
 		case R.string.star:
 			new StarTask(context, isStarred, repository)
@@ -132,7 +131,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 	protected void initData() {
 		// TODO Auto-generated method stub
 		repository = (Repository) getIntent().getSerializableExtra(
-				EXTRA_REPOSITORY);
+				Constants.Extra.REPOSITORY);
 		titlebar.setLeftLayout(repository.getOwner().getAvatarUrl(),
 				repository.getName(), repository.getOwner().getLogin());
 		fragments.add(new RepositoryCodeFragment());

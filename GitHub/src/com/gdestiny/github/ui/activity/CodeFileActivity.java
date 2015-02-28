@@ -32,6 +32,7 @@ import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.ui.view.touchimageview.TouchImageView;
 import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.CommonUtils;
+import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.ImageUtils;
@@ -40,9 +41,6 @@ import com.gdestiny.github.utils.ViewUtils;
 
 public class CodeFileActivity extends
 		BaseLoadFragmentActivity<GitHubClient, Serializable> {
-
-	public static final String EXTRA_CODE_ENTRY = "code_entry";
-	public static final String EXTRA_CODE_REPOSITORY = "repository";
 
 	public static enum FILETYPE {
 		IMG, GIF, MD, OTHER, PIC_IN_CACHE
@@ -72,9 +70,9 @@ public class CodeFileActivity extends
 	protected void initData() {
 		// TODO Auto-generated method stub
 		treeEntry = (TreeEntry) getIntent().getSerializableExtra(
-				EXTRA_CODE_ENTRY);
+				Constants.Extra.CODE_ENTRY);
 		repository = (Repository) getIntent().getSerializableExtra(
-				EXTRA_CODE_REPOSITORY);
+				Constants.Extra.REPOSITORY);
 
 		String path = treeEntry.getPath();
 		if (ImageUtils.isImageFromPath(path)) {

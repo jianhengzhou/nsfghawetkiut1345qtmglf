@@ -42,6 +42,9 @@
         <activity android:name="com.gdestiny.github.ui.activity.ContributorsActivity" />
         <activity android:name="com.gdestiny.github.ui.activity.WebViewActivity" />
         <activity android:name="com.gdestiny.github.ui.activity.IssueFilterActivity" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.NewIssueActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>
 
 </manifest>

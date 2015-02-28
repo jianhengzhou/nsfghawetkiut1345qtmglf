@@ -27,6 +27,7 @@ import com.gdestiny.github.async.DeleteTask;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.LabelViewGroup;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
@@ -34,9 +35,6 @@ import com.gdestiny.github.utils.ViewUtils;
 
 public class IssueDetailActivity extends
 		BaseLoadFragmentActivity<GitHubClient, List<Comment>> {
-
-	public static final String EXTRA_ISSUE = "issue";
-	public static final String EXTRA_IREPOSITORY = "irepository";
 
 	private Issue issue;
 	private Repository repository;
@@ -89,9 +87,9 @@ public class IssueDetailActivity extends
 	@Override
 	protected void initData() {
 		// TODO Auto-generated method stub
-		issue = (Issue) getIntent().getSerializableExtra(EXTRA_ISSUE);
+		issue = (Issue) getIntent().getSerializableExtra(Constants.Extra.ISSUE);
 		repository = (Repository) getIntent().getSerializableExtra(
-				EXTRA_IREPOSITORY);
+				Constants.Extra.ISSUE);
 
 		getTitlebar().setLeftLayout(
 				repository.getOwner().getAvatarUrl(),

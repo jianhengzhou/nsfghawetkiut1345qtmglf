@@ -30,6 +30,7 @@ import com.gdestiny.github.ui.view.ListPopupView;
 import com.gdestiny.github.ui.view.PathView;
 import com.gdestiny.github.ui.view.PathView.PathClickListener;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ViewUtils;
@@ -82,11 +83,11 @@ public class RepositoryCodeFragment extends
 					IntentUtils
 							.create(context, CodeFileActivity.class)
 							.putExtra(
-									CodeFileActivity.EXTRA_CODE_ENTRY,
+									Constants.Extra.CODE_ENTRY,
 									currCodeTree.subEntry.get(position
 											- currCodeTree.getTreeCount()))
-							.putExtra(CodeFileActivity.EXTRA_CODE_REPOSITORY,
-									repository).start();
+							.putExtra(Constants.Extra.REPOSITORY, repository)
+							.start();
 				}
 			}
 		});
@@ -134,7 +135,7 @@ public class RepositoryCodeFragment extends
 	@Override
 	protected void initData() {
 		repository = (Repository) context.getIntent().getSerializableExtra(
-				RepositoryDetailActivity.EXTRA_REPOSITORY);
+				Constants.Extra.REPOSITORY);
 
 		curBranch = repository.getMasterBranch();
 

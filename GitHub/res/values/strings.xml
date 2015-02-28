@@ -9,6 +9,7 @@
     <string name="comment">Comment</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="title">title</string>
     <string name="to_clipboard">Copied To Clipboard</string>
     <string name="none_select">None, Tap To Select</string>
     <string name="open">open</string>
@@ -17,10 +18,14 @@
     <string name="assignee_">Assignee:</string>
     <string name="milestones_">Milestones:</string>
     <string name="labels_">Labels:</string>
+    <string name="title_">Title:</string>
+    <string name="description_">Description:</string>
+    <string name="content">content</string>
     <string name="assigned_to">Assigned To:</string>
 
     <!-- test test test test test test -->
     <string name="name">gdestiny</string>
+    <string name="test_title">test title int new issue</string>
 
     <!-- error -->
     <string name="login_error">The account or password cannot be empty</string>
@@ -46,5 +51,8 @@
     <string name="unstar_succeed">Unstar Succeed</string>
     <string name="deleting">deleting comment</string>
     <string name="delete_succeed">Delete Succeed</string>
+    <string name="is_collaborator">is collaborator?</string>
+    <string name="newing_issue">newing issue</string>
+    <string name="newing_issue_succeed">New Issue Succeed</string>
 
 </resources>

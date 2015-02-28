@@ -23,7 +23,7 @@ public class RepositoryEventFragment extends AbstractEventFragment {
 	@Override
 	protected void initData() {
 		repository = (Repository) context.getIntent().getSerializableExtra(
-				RepositoryDetailActivity.EXTRA_REPOSITORY);
+				Constants.Extra.REPOSITORY);
 		super.initData();
 		// 防止与其他页面重叠
 		getPullToRefreshLayout().getHeaderTransformer()

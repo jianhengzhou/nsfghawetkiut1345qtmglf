@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Milestone;
+import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.IssueService;
 
@@ -116,5 +117,44 @@ public class IssueFilter implements Serializable {
 			filter.put(IssueService.FILTER_LABELS, sb.toString());
 		}
 		return filter;
+	}
+
+	// 比较，是否更新
+	public static boolean equals(Object a, Object b) {
+		if (a == null && b == null)
+			return true;
+		return a != null && a.equals(b);
+	}
+
+	public static boolean equals(Milestone a, Milestone b) {
+		if (a == null && b == null)
+			return true;
+		return a != null && b != null && a.getNumber() == b.getNumber();
+	}
+
+	public static boolean equals(User a, User b) {
+		if (a == null && b == null)
+			return true;
+		return a != null && b != null && a.getId() == b.getId();
+	}
+
+	public static boolean equals(Repository a, Repository b) {
+		return a != null && b != null && a.getId() == b.getId();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null)
+			return false;
+		if (o == this)
+			return true;
+		if (!(o instanceof IssueFilter))
+			return false;
+
+		IssueFilter other = (IssueFilter) o;
+		return state.equals(other.getState())
+				&& equals(milestone, other.milestone)
+				&& equals(assignee, other.assignee)
+				&& equals(labels, other.labels);
 	}
 }

@@ -30,6 +30,7 @@ import com.gdestiny.github.bean.IssueFilter;
 import com.gdestiny.github.ui.view.LabelViewGroup;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
+import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
 import com.gdestiny.github.utils.ViewUtils;
@@ -37,7 +38,6 @@ import com.gdestiny.github.utils.ViewUtils;
 public class IssueFilterActivity extends BaseFragmentActivity implements
 		OnClickListener, OnLongClickListener {
 
-	public static final String EXTRA_ISSUE_FILTER = "issuefilter";
 	@SuppressWarnings("unused")
 	private Issue issue;
 	private Repository repository;
@@ -52,6 +52,7 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 	private View labelNone;
 
 	private View milestone;
+	private View assignee;
 
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 		labelNone = findViewById(R.id.label_none);
 
 		milestone = findViewById(R.id.milestone_item);
+		assignee = findViewById(R.id.assing_item);
 
 		labelGroup = (LabelViewGroup) findViewById(R.id.label_viewgroup);
 	}
@@ -101,7 +103,7 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 	@Override
 	protected void initData() {
 		repository = (Repository) getIntent().getSerializableExtra(
-				RepositoryDetailActivity.EXTRA_REPOSITORY);
+				Constants.Extra.REPOSITORY);
 
 		getTitlebar().setLeftLayout(null
 		// repository.getOwner().getAvatarUrl()
@@ -112,7 +114,7 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 
 		// init filter data
 		filter = (IssueFilter) getIntent().getSerializableExtra(
-				EXTRA_ISSUE_FILTER);
+				Constants.Extra.ISSUE_FILTER);
 		if (filter == null)
 			filter = new IssueFilter();
 		if (filter.getState().equals(IssueService.STATE_OPEN)) {
@@ -122,6 +124,7 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 		}
 		onMilestone(filter.getMilestone());
 		onLabels(filter.getLabels());
+		onAssignee(filter.getAssignee());
 	}
 
 	@Override
@@ -137,7 +140,7 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent data = new Intent();
-				data.putExtra(EXTRA_ISSUE_FILTER, filter);
+				data.putExtra(Constants.Extra.ISSUE_FILTER, filter);
 				setResult(RESULT_OK, data);
 				finish();
 			}
@@ -206,6 +209,25 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 		milestone.invalidate();
 	}
 
+	private void onAssignee(User selected) {
+		if (selected == null) {
+			ViewUtils.setVisibility(assigneeNone, View.VISIBLE);
+			ViewUtils.setVisibility(assignee, View.GONE);
+			return;
+		}
+		filter.put(selected);
+
+		ViewUtils.setVisibility(assigneeNone, View.GONE);
+		ViewUtils.setVisibility(assignee, View.VISIBLE);
+
+		TextView name = (TextView) findViewById(R.id.name);
+		ImageView icon = (ImageView) findViewById(R.id.icon);
+
+		name.setText(selected.getLogin());
+		ImageLoaderUtils.displayImage(selected.getAvatarUrl(), icon,
+				R.drawable.default_avatar, R.drawable.default_avatar, true);
+	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -215,8 +237,7 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 
 				@Override
 				public void onCollaborator(User selected) {
-					// TODO Auto-generated method stub
-					super.onCollaborator(selected);
+					onAssignee(selected);
 				}
 			}.execute(GitHubApplication.getClient());
 			break;
@@ -252,8 +273,8 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 		case R.id.assign_layout:
 			if (!filter.isAssigneeValid())
 				return false;
-			// ViewUtils.setVisibility(null, View.GONE);
 			filter.clearAssignee();
+			ViewUtils.setVisibility(assignee, View.GONE);
 			ViewUtils.setVisibility(assigneeNone, View.VISIBLE);
 			break;
 		case R.id.milestone_layout:

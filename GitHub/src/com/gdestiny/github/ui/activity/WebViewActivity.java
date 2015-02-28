@@ -18,11 +18,10 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
+import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 
 public class WebViewActivity extends BaseLoadFragmentActivity<Void, Void> {
-
-	public static final String URL = "url";
 
 	private String url = "";
 	private String currUrl;
@@ -141,7 +140,7 @@ public class WebViewActivity extends BaseLoadFragmentActivity<Void, Void> {
 	@Override
 	protected void initData() {
 		// TODO Auto-generated method stub
-		url = getIntent().getStringExtra(URL);
+		url = getIntent().getStringExtra(Constants.Extra.URL);
 		if (TextUtils.isEmpty(url)) {
 			finish();
 		} else {

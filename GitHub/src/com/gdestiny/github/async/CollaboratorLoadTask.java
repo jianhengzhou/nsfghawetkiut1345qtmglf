@@ -18,6 +18,7 @@ public class CollaboratorLoadTask extends DialogTask<GitHubClient, List<User>> {
 
 	private Repository repository;
 	private Context context;
+	@SuppressWarnings("unused")
 	private User selected;
 
 	public CollaboratorLoadTask(Context context, Repository repository) {
@@ -48,7 +49,7 @@ public class CollaboratorLoadTask extends DialogTask<GitHubClient, List<User>> {
 	}
 
 	@Override
-	public void onSuccess(List<User> result) {
+	public void onSuccess(final List<User> result) {
 		// TODO Auto-generated method stub
 
 		final MaterialDialog dialog = new MaterialDialog(context);
@@ -70,6 +71,7 @@ public class CollaboratorLoadTask extends DialogTask<GitHubClient, List<User>> {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				onCollaborator(result.get(position));
 				dialog.dismiss();
 			}
 		});

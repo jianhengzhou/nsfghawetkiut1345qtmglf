@@ -75,7 +75,7 @@ public abstract class AbstractCommentActivity extends BaseFragmentActivity {
 
 	private void preview() {
 		AndroidUtils.Keyboard.hideKeyboard(context);
-		new PreviewTask(context, content.getText().toString()) {
+		new PreviewTask(context, repository, content.getText().toString()) {
 
 			@Override
 			public void onSend() {

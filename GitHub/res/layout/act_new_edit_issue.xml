@@ -47,6 +47,7 @@
         <!-- assign -->
 
         <TextView
+            android:id="@+id/assign_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin32"
@@ -90,6 +91,7 @@
         <!-- milestone -->
 
         <TextView
+            android:id="@+id/milestone_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin32"
@@ -133,6 +135,7 @@
         <!-- label -->
 
         <TextView
+            android:id="@+id/label_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin32"

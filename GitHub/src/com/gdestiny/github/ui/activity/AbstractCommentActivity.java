@@ -116,14 +116,11 @@ public abstract class AbstractCommentActivity extends BaseFragmentActivity {
 		// TODO Auto-generated method stub
 		repository = (Repository) getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
-
-		getTitlebar().setLeftLayout(null, "issue #" + 1, "Comment");
 	}
 
 	@Override
 	protected void onleftLayout() {
-		// TODO Auto-generated method stub
-
+		finish();
 	}
 
 }

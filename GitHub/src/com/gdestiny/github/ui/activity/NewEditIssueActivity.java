@@ -13,6 +13,7 @@ import org.eclipse.egit.github.core.service.IssueService;
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.CollaboratorLoadTask;
+import com.gdestiny.github.async.IsCollaboratorTask;
 import com.gdestiny.github.async.LabelLoadTask;
 import com.gdestiny.github.async.MilestoneLoadTask;
 import com.gdestiny.github.async.NewEditIssueTask;
@@ -162,6 +163,18 @@ public class NewEditIssueActivity extends BaseFragmentActivity implements
 			onLabels((ArrayList<Label>) issue.getLabels());
 
 			actTitle = "issue #" + issue.getNumber();
+		} else {
+			new IsCollaboratorTask(context, repository,
+					GitHubApplication.getUser()) {
+
+				@Override
+				public void onSuccess(Boolean result) {
+					// TODO Auto-generated method stub
+					if (!result)
+						hideAML();
+				}
+
+			}.execute(GitHubApplication.getClient());
 		}
 
 		getTitlebar().setLeftLayout(
@@ -169,6 +182,15 @@ public class NewEditIssueActivity extends BaseFragmentActivity implements
 				actTitle,
 				repository.getOwner().getLogin() + File.separator
 						+ repository.getName());
+	}
+
+	private void hideAML() {
+		ViewUtils.setVisibility(findViewById(R.id.assign_tab), View.GONE);
+		ViewUtils.setVisibility(findViewById(R.id.milestone_tab), View.GONE);
+		ViewUtils.setVisibility(findViewById(R.id.label_tab), View.GONE);
+		ViewUtils.setVisibility(findViewById(R.id.assign_layout), View.GONE);
+		ViewUtils.setVisibility(findViewById(R.id.milestone_layout), View.GONE);
+		ViewUtils.setVisibility(findViewById(R.id.label_layout), View.GONE);
 	}
 
 	private void onLabels(ArrayList<Label> selected) {

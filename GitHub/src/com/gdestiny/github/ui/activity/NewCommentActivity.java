@@ -17,6 +17,8 @@ public class NewCommentActivity extends AbstractCommentActivity {
 	protected void initData() {
 		super.initData();
 		issue = (Issue) getIntent().getSerializableExtra(Constants.Extra.ISSUE);
+		getTitlebar().setLeftLayout(null, "issue #" + issue.getNumber(),
+				"Comment");
 	}
 
 	@Override

@@ -26,7 +26,11 @@ public abstract class IsCollaboratorTask extends
 	@Override
 	public Boolean onBackground(GitHubClient params) throws Exception {
 		CollaboratorService service = new CollaboratorService(params);
-		return service.isCollaborator(repository, user.getLogin());
+		try {
+			return service.isCollaborator(repository, user.getLogin());
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }

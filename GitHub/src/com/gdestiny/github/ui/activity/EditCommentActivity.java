@@ -20,6 +20,8 @@ public class EditCommentActivity extends AbstractCommentActivity {
 				Constants.Extra.COMMENT);
 		position = getIntent().getIntExtra(Constants.Extra.POSITION, -1);
 		setContent(comment.getBodyText());
+
+		getTitlebar().setLeftLayout(null, "issue", "Comment");
 	}
 
 	@Override

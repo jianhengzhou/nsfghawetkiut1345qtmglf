@@ -35,7 +35,6 @@ import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.IntentUtils;
-import com.gdestiny.github.utils.IntentUtils.IntentBuilder;
 import com.gdestiny.github.utils.TimeUtils;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
@@ -56,7 +55,6 @@ public class IssueDetailActivity extends
 	private boolean fold = true;
 	private boolean isCollaborator;
 
-	private IntentBuilder intent;
 	private int position;
 	private boolean hasChange = false;
 
@@ -159,8 +157,6 @@ public class IssueDetailActivity extends
 		repository = (Repository) getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
 		position = getIntent().getIntExtra(Constants.Extra.POSITION, -1);
-		intent = IntentUtils.create(context).putExtra(Constants.Extra.POSITION,
-				position);
 
 		getTitlebar().setLeftLayout(
 				repository.getOwner().getAvatarUrl(),
@@ -218,7 +214,7 @@ public class IssueDetailActivity extends
 						issue.setComments(issue.getComments() - 1);
 						commentText.setText(issue.getComments() + "");
 
-						onHasChange(issue);
+						hasChange = true;
 
 						comments.remove(comment);
 						commentAdapter.notifyDataSetChanged();
@@ -360,14 +356,14 @@ public class IssueDetailActivity extends
 		if (requestCode == Constants.Request.EDIT_ISSUE) {
 			GLog.sysout("EDIT_ISSUE");
 			issue = (Issue) data.getSerializableExtra(Constants.Extra.ISSUE);
-			onHasChange(issue);
+			hasChange = true;
 			refreshPartDetail(issue);
 		} else if (requestCode == Constants.Request.ISSUE_COMMENT) {
 			issue.setComments(issue.getComments() + 1);
 			TextView commentText = (TextView) detailView
 					.findViewById(R.id.comment);
 			commentText.setText(issue.getComments() + "");
-			onHasChange(issue);
+			hasChange = true;
 
 			Comment comment = (Comment) data
 					.getSerializableExtra(Constants.Extra.COMMENT);
@@ -389,34 +385,22 @@ public class IssueDetailActivity extends
 		}
 	}
 
-	/**
-	 * 适配滑动返回
-	 * 
-	 * @param issue
-	 */
-	private void onHasChange(Issue issue) {
-		hasChange = true;
-		intent.putExtra(Constants.Extra.ISSUE, issue).setResultOk();
-	}
-
-	private void onFinish() {
+	@Override
+	public void finish() {
 		if (hasChange) {
 			IntentUtils.create(context).putExtra(Constants.Extra.ISSUE, issue)
-					.putExtra(Constants.Extra.POSITION, position).setResultOk()
-					.finish();
-		} else {
-			IntentUtils.setResultCancle(context);
+					.putExtra(Constants.Extra.POSITION, position).setResultOk();
 		}
+		super.finish();
 	}
 
 	@Override
 	public void onBackPressed() {
-		onFinish();
+		finish();
 	}
 
 	@Override
 	protected void onleftLayout() {
-		// onFinish();
 		finish();
 	}
 

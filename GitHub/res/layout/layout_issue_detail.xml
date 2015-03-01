@@ -165,4 +165,11 @@
         android:paddingTop="@dimen/margin8"
         android:src="@drawable/common_up_more" />
 
+    <include
+        android:id="@+id/btn_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/more"
+        layout="@layout/layout_comment" />
+
 </RelativeLayout>

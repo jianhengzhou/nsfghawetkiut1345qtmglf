@@ -45,5 +45,6 @@
 
     <!-- issue detail activiy -->
     <string name="edit_issue">Edit Issue</string>
+    <string name="comment">Comment</string>
 
 </resources>

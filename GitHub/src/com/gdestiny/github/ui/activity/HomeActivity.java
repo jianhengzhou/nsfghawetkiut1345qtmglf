@@ -148,7 +148,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 			break;
 		case R.id.menu_gists:
 			close = false;
-			IntentUtils.start(context, NewEditIssueActivity.class);
+			IntentUtils.start(context, CommentActivity.class);
 			break;
 		}
 		if (close)

@@ -16,6 +16,7 @@ public class Constants {
 		public static final int NEW_ISSUE = 1;
 		public static final int EDIT_ISSUE = 2;
 		public static final int ISSUE_DETAIL = 3;
+		public static final int ISSUE_COMMENT = 4;
 	}
 
 	public static final boolean isDebug = true;

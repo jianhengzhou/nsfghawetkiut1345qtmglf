@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -58,6 +60,8 @@ public class IssueDetailActivity extends
 	private int position;
 	private boolean hasChange = false;
 
+	private View stickComment;
+
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -69,12 +73,50 @@ public class IssueDetailActivity extends
 		// TODO Auto-generated method stub
 		commentList = (ListView) findViewById(R.id.list);
 
+		detailView = LayoutInflater.from(context).inflate(
+				R.layout.layout_issue_detail, null);
+		content = (TextView) detailView.findViewById(R.id.content);
+
+		stickComment = findViewById(R.id.layout_comment);
+		stickComment
+				.setBackgroundResource(R.drawable.selector_item_grey_to_blue);
+		View.OnClickListener stickListener = new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				openComment();
+			}
+		};
+		stickComment.setOnClickListener(stickListener);
+		detailView.findViewById(R.id.btn_comment).setOnClickListener(
+				stickListener);
+
+		commentList.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				if (firstVisibleItem == 0) {
+					ViewUtils.setVisibility(stickComment, View.GONE);
+				} else {
+					ViewUtils.setVisibility(stickComment, View.VISIBLE);
+				}
+			}
+		});
 	}
 
 	@Override
 	protected void initActionBar(TitleBar titleBar) {
 		super.initActionBar(titleBar);
 		LinkedHashMap<Integer, Integer> itemmap = new LinkedHashMap<Integer, Integer>();
+		itemmap.put(R.string.comment, R.drawable.common_comment);
 		itemmap.put(R.string.refresh, R.drawable.common_status_refresh);
 
 		StatusPopUpWindow.StatusPopUpWindowItemClickListener menuListener = new StatusPopUpWindow.StatusPopUpWindowItemClickListener() {
@@ -94,6 +136,9 @@ public class IssueDetailActivity extends
 							.putExtra(Constants.Extra.REPOSITORY, repository)
 							.startForResult(IssueDetailActivity.this,
 									Constants.Request.EDIT_ISSUE);
+					break;
+				case R.string.comment:
+					openComment();
 					break;
 				default:
 					ToastUtils.show(context, "TODO "
@@ -123,9 +168,6 @@ public class IssueDetailActivity extends
 				repository.getOwner().getLogin() + File.separator
 						+ repository.getName());
 
-		detailView = LayoutInflater.from(context).inflate(
-				R.layout.layout_issue_detail, null);
-		content = (TextView) detailView.findViewById(R.id.content);
 		final ImageView foldBtn = (ImageView) detailView
 				.findViewById(R.id.more);
 		foldBtn.setOnClickListener(new View.OnClickListener() {
@@ -182,6 +224,12 @@ public class IssueDetailActivity extends
 		execute(GitHubApplication.getClient());
 
 		initDetail(issue);
+	}
+
+	private void openComment() {
+		IntentUtils.create(context, CommentActivity.class)
+				.putExtra(Constants.Extra.ISSUE, issue)
+				.startForResult(this, Constants.Request.ISSUE_COMMENT);
 	}
 
 	private void initDetail(Issue issue) {

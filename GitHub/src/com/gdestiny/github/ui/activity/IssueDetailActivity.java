@@ -192,9 +192,16 @@ public class IssueDetailActivity extends
 		commentAdapter.setOnListener(new CommentAdapter.OnListener() {
 
 			@Override
-			public void onEdit(Comment comment) {
+			public void onEdit(int position, Comment comment) {
 				// TODO Auto-generated method stub
 				GLog.sysout("onEdit");
+				IntentUtils
+						.create(context, EditCommentActivity.class)
+						.putExtra(Constants.Extra.COMMENT, comment)
+						.putExtra(Constants.Extra.POSITION, position)
+						.putExtra(Constants.Extra.REPOSITORY, repository)
+						.startForResult(IssueDetailActivity.this,
+								Constants.Request.EDIT_COMMENT);
 			}
 
 			@Override
@@ -227,8 +234,9 @@ public class IssueDetailActivity extends
 	}
 
 	private void openComment() {
-		IntentUtils.create(context, CommentActivity.class)
+		IntentUtils.create(context, NewCommentActivity.class)
 				.putExtra(Constants.Extra.ISSUE, issue)
+				.putExtra(Constants.Extra.REPOSITORY, repository)
 				.startForResult(this, Constants.Request.ISSUE_COMMENT);
 	}
 
@@ -354,9 +362,38 @@ public class IssueDetailActivity extends
 			issue = (Issue) data.getSerializableExtra(Constants.Extra.ISSUE);
 			onHasChange(issue);
 			refreshPartDetail(issue);
+		} else if (requestCode == Constants.Request.ISSUE_COMMENT) {
+			issue.setComments(issue.getComments() + 1);
+			TextView commentText = (TextView) detailView
+					.findViewById(R.id.comment);
+			commentText.setText(issue.getComments() + "");
+			onHasChange(issue);
+
+			Comment comment = (Comment) data
+					.getSerializableExtra(Constants.Extra.COMMENT);
+			commentAdapter.getDatas().add(comment);
+			commentAdapter.notifyDataSetChanged();
+			commentList.setSelection(commentAdapter.getCount());
+		} else if (requestCode == Constants.Request.EDIT_COMMENT) {
+			Comment comment = (Comment) data
+					.getSerializableExtra(Constants.Extra.COMMENT);
+			int position = data.getIntExtra(Constants.Extra.POSITION, -1);
+			if (comment != null && position != -1) {
+				commentAdapter.getDatas().get(position)
+						.setBodyHtml(comment.getBodyHtml());
+				commentAdapter.notifyDataSetChanged();
+				// commentAdapter.getDatas().remove(position);
+				// commentAdapter.getDatas().add(position, comment);
+				// commentAdapter.notifyDataSetChanged();
+			}
 		}
 	}
 
+	/**
+	 * 适配滑动返回
+	 * 
+	 * @param issue
+	 */
 	private void onHasChange(Issue issue) {
 		hasChange = true;
 		intent.putExtra(Constants.Extra.ISSUE, issue).setResultOk();

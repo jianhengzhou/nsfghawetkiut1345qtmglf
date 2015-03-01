@@ -17,13 +17,22 @@ public class CommentTask extends DialogTask<GitHubClient, Comment> {
 	private Repository repository;
 	private Issue issue;
 
-	private String comment;
+	private String commentContent;
+	private Comment comment;
 
 	public CommentTask(Context context, Repository repository, Issue issue,
 			String comment) {
 		super(context);
 		this.repository = repository;
 		this.issue = issue;
+		this.commentContent = comment;
+		// this.setTitle(repository.getName());
+		this.setLoadingMessage(R.string.committing_comment);
+	}
+
+	public CommentTask(Context context, Repository repository, Comment comment) {
+		super(context);
+		this.repository = repository;
 		this.comment = comment;
 		// this.setTitle(repository.getName());
 		this.setLoadingMessage(R.string.committing_comment);
@@ -33,18 +42,27 @@ public class CommentTask extends DialogTask<GitHubClient, Comment> {
 	public Comment onBackground(GitHubClient params) throws Exception {
 		IssueService service = new IssueService(params);
 
-		if (TextUtils.isEmpty(comment.trim())) {
-			throw new IllegalAccessException("the content is empty");
+		if (comment != null) {
+			if (repository == null) {
+				throw new IllegalArgumentException(
+						"the repository  can not be null");
+			}
+			return service.editComment(repository, comment);
+		} else {
+			if (TextUtils.isEmpty(commentContent.trim())) {
+				throw new IllegalAccessException("the content is empty");
+			}
+			if (repository == null || issue == null) {
+				throw new IllegalArgumentException(
+						"the repository and issue can not be null");
+			}
+			return service.createComment(repository, issue.getNumber(),
+					commentContent);
 		}
-		if (repository == null || issue == null) {
-			throw new IllegalArgumentException(
-					"the repository and issue can not be null");
-		}
-		return service.createComment(repository, issue.getNumber(), comment);
 	}
 
 	@Override
-	public void onSuccess(Comment Comment) {
+	public void onSuccess(Comment comment) {
 		ToastUtils.show(context, R.string.commen_succeed);
 	}
 

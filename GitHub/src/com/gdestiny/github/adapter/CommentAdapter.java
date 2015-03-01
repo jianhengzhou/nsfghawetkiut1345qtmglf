@@ -61,7 +61,7 @@ public class CommentAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		Holder holder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
@@ -89,7 +89,7 @@ public class CommentAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				if (listener != null) {
-					listener.onEdit(comment);
+					listener.onEdit(position, comment);
 				}
 			}
 		});
@@ -161,7 +161,7 @@ public class CommentAdapter extends BaseAdapter {
 	}
 
 	public interface OnListener {
-		public void onEdit(Comment comment);
+		public void onEdit(int position, Comment comment);
 
 		public void onDelete(Comment comment);
 	}

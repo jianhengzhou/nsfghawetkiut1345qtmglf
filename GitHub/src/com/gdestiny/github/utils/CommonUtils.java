@@ -1,5 +1,7 @@
 package com.gdestiny.github.utils;
 
+import java.io.File;
+
 import org.eclipse.egit.github.core.User;
 
 import android.text.TextUtils;
@@ -22,6 +24,16 @@ public class CommonUtils {
 			return path.substring(lastSlash + 1);
 		else
 			return path;
+	}
+
+	public static String getPath(String pathName) {
+		if (TextUtils.isEmpty(pathName))
+			return pathName;
+
+		if (!pathName.contains(File.separator)) {
+			return null;
+		}
+		return pathName.substring(0, pathName.lastIndexOf(File.separatorChar));
 	}
 
 	public static String pathToParentName(String path) {

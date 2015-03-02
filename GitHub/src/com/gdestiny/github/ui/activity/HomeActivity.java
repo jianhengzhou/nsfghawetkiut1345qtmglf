@@ -132,8 +132,8 @@ public class HomeActivity extends BaseFragmentActivity implements
 					// TODO Auto-generated method stub
 
 				}
-			}.setTitle("lodaing test")
-					.setLoadingMessage("test message").execute(null);
+			}.setTitle("lodaing test").setLoadingMessage("test message")
+					.execute(null);
 			break;
 		case R.id.menu_following:
 			changeOrNewFragment(v);
@@ -148,7 +148,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 			break;
 		case R.id.menu_gists:
 			close = false;
-			IntentUtils.start(context, AbstractCommentActivity.class);
+			IntentUtils.start(context, CommitDetailActivity.class);
 			break;
 		}
 		if (close)

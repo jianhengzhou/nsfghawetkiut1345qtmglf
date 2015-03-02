@@ -54,6 +54,7 @@
         <activity
             android:name="com.gdestiny.github.ui.activity.EditCommentActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name="com.gdestiny.github.ui.activity.CommitDetailActivity" />
     </application>
 
 </manifest>

@@ -1,6 +1,5 @@
 package com.gdestiny.github.ui.activity;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import org.eclipse.egit.github.core.Issue;
@@ -109,8 +108,7 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 		getTitlebar().setLeftLayout(
 				repository.getOwner().getAvatarUrl(),
 				"Issue Filter",
-				repository.getOwner().getLogin() + File.separator
-						+ repository.getName());
+				repository.generateId());
 
 		// init filter data
 		filter = (IssueFilter) getIntent().getSerializableExtra(

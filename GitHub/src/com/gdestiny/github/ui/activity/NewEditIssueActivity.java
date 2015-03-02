@@ -1,6 +1,5 @@
 package com.gdestiny.github.ui.activity;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import org.eclipse.egit.github.core.Issue;
@@ -180,8 +179,7 @@ public class NewEditIssueActivity extends BaseFragmentActivity implements
 		getTitlebar().setLeftLayout(
 				repository.getOwner().getAvatarUrl(),
 				actTitle,
-				repository.getOwner().getLogin() + File.separator
-						+ repository.getName());
+				repository.generateId());
 	}
 
 	private void hideAML() {

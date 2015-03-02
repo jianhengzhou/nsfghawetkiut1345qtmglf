@@ -1,6 +1,5 @@
 package com.gdestiny.github.ui.activity;
 
-import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -158,11 +157,8 @@ public class IssueDetailActivity extends
 				Constants.Extra.REPOSITORY);
 		position = getIntent().getIntExtra(Constants.Extra.POSITION, -1);
 
-		getTitlebar().setLeftLayout(
-				repository.getOwner().getAvatarUrl(),
-				"issue #" + issue.getNumber(),
-				repository.getOwner().getLogin() + File.separator
-						+ repository.getName());
+		getTitlebar().setLeftLayout(repository.getOwner().getAvatarUrl(),
+				"issue #" + issue.getNumber(), repository.generateId());
 
 		final ImageView foldBtn = (ImageView) detailView
 				.findViewById(R.id.more);

@@ -97,6 +97,7 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 
 	@Override
 	public void onException(Exception ex) {
+		ex.printStackTrace();
 		GLog.sysout("onException");
 		dismissProgress();
 		if (exception) {

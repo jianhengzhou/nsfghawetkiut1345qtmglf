@@ -10,6 +10,8 @@ public class Constants {
 		public static final String URL = "url";
 		public static final String POSITION = "position";
 		public static final String COMMENT = "comment";
+		public static final String REPOSITORY_COMMIT = "repository_commit";
+		public static final String COMMIT = "commit";
 	}
 
 	public final static class Request {

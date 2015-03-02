@@ -1,6 +1,5 @@
 package com.gdestiny.github.ui.activity;
 
-import java.io.File;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Contributor;
@@ -49,10 +48,8 @@ public class ContributorsActivity extends
 				Constants.Extra.REPOSITORY);
 
 		getTitlebar().hideRight();
-		getTitlebar().setLeftLayout(
-				repository.getOwner().getAvatarUrl(),
-				repository.getOwner().getLogin() + File.separator
-						+ repository.getName(), "contributors");
+		getTitlebar().setLeftLayout(repository.getOwner().getAvatarUrl(),
+				repository.generateId());
 
 		contributorList = (ListView) findViewById(R.id.list);
 		contributorsAdapter = new ContributorsAdapter(context);

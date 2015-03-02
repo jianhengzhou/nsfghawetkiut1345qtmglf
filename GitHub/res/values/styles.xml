@@ -1,6 +1,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item name="tag_imageloader" type="id"></item>
+    <item name="tag_group" type="id"></item>
+    <item name="tag_child" type="id"></item>
 
     <style name="SwipeBackLayout">
         <item name="edge_size">10dip</item>

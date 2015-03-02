@@ -3,7 +3,6 @@ package com.gdestiny.github.ui.activity;
 import java.util.List;
 
 import org.eclipse.egit.github.core.CommitComment;
-import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.client.GitHubClient;
@@ -16,12 +15,18 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.CommitExpandAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.bean.CommitTree;
+import com.gdestiny.github.utils.CommitUtils;
 import com.gdestiny.github.utils.Constants;
+import com.gdestiny.github.utils.ImageLoaderUtils;
+import com.gdestiny.github.utils.IntentUtils;
+import com.gdestiny.github.utils.TimeUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class CommitDetailActivity extends
@@ -30,6 +35,7 @@ public class CommitDetailActivity extends
 	private Repository repository;
 	private RepositoryCommit commit;
 
+	private View detailLayout;
 	private ExpandableListView commitExpandList;
 	private CommitExpandAdapter commitAdapter;
 
@@ -45,8 +51,10 @@ public class CommitDetailActivity extends
 
 		commitAdapter = new CommitExpandAdapter(context);
 		commitExpandList.setAdapter(commitAdapter);
-		commitExpandList.addHeaderView(LayoutInflater.from(context).inflate(
-				R.layout.layout_issue_detail, null));
+
+		detailLayout = LayoutInflater.from(context).inflate(
+				R.layout.layout_commit_detail, null);
+		commitExpandList.addHeaderView(detailLayout);
 		commitExpandList.setOnChildClickListener(new OnChildClickListener() {
 
 			@Override
@@ -63,13 +71,28 @@ public class CommitDetailActivity extends
 					@Override
 					public boolean onItemLongClick(AdapterView<?> parent,
 							View view, int position, long id) {
-						// TODO Auto-generated method stub
+						if (position == 0)
+							return false;
 						int groupPosition = (Integer) view
 								.getTag(R.id.tag_group); // 参数值是在setTag时使用的对应资源id号
 						int childPosition = (Integer) view
 								.getTag(R.id.tag_child);
 						ToastUtils.show(context, groupPosition + ":"
 								+ childPosition);
+						if (childPosition == -1) {
+							IntentUtils
+									.create(context, CodeFileActivity.class)
+									.putExtra(Constants.Extra.REPOSITORY,
+											repository)
+									.putExtra(
+											Constants.Extra.COMMIT_FILE,
+											commitAdapter.getCommitTree()
+													.getCommitFile(
+															groupPosition))
+									.start();
+						} else {
+
+						}
 						return true;
 					}
 				});
@@ -83,6 +106,29 @@ public class CommitDetailActivity extends
 		commit = (RepositoryCommit) getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY_COMMIT);
 		execute(GitHubApplication.getClient());
+		updataDetail(commit);
+	}
+
+	private void updataDetail(RepositoryCommit commit) {
+		ImageView icon = (ImageView) detailLayout
+				.findViewById(R.id.detail_icon);
+
+		ImageLoaderUtils.displayImage(CommitUtils.getAuthorAvatarUrl(commit),
+				icon, R.drawable.default_avatar, R.drawable.default_avatar,
+				true);
+
+		TextView name = (TextView) findViewById(R.id.detail_name);
+		name.setText(CommitUtils.getAuthor(commit));
+
+		TextView date = (TextView) findViewById(R.id.date);
+		date.setText(TimeUtils.getTime(CommitUtils.getAuthorDate(commit)
+				.getTime()));
+
+		TextView comment = (TextView) findViewById(R.id.comment);
+		comment.setText(commit.getCommit().getCommentCount() + "");
+
+		TextView content = (TextView) findViewById(R.id.content);
+		content.setText(commit.getCommit().getMessage());
 	}
 
 	@Override
@@ -92,11 +138,19 @@ public class CommitDetailActivity extends
 		commit = service.getCommit(repository, commit.getSha());
 		List<CommitComment> comments = service.getComments(repository,
 				commit.getSha());
-		for (@SuppressWarnings("unused")
-		CommitComment c : comments) {
-			// System.out.println(c.getLine());
+		for (CommitComment c : comments) {
+			System.out.println("----------------------------------------");
+			System.out.println("getBody:" + c.getBody());
+			System.out.println("getBodyHtml:" + c.getBodyHtml());
+			System.out.println("getBodyText:" + c.getBodyText());
+			System.out.println("getCommitId:" + c.getCommitId());
+			System.out.println("getId:" + c.getId());
+			System.out.println("getLine:" + c.getLine());
+			System.out.println("getPath:" + c.getPath());
+			System.out.println("getPosition:" + c.getPosition());
+			System.out.println("getUrl:" + c.getUrl());
 		}
-		CommitTree commitTree = new CommitTree(commit);
+		CommitTree commitTree = new CommitTree(commit, comments);
 		return commitTree;
 	}
 
@@ -104,18 +158,6 @@ public class CommitDetailActivity extends
 	public void onSuccess(CommitTree result) {
 		// TODO Auto-generated method stub
 		super.onSuccess(result);
-		for (CommitFile cf : result.getCommitFiles()) {
-			System.out.println("-----------------------");
-			System.out.println("getAdditions:" + cf.getAdditions());
-			System.out.println("getBlobUrl:" + cf.getBlobUrl());
-			System.out.println("getChanges:" + cf.getChanges());
-			System.out.println("getDeletions:" + cf.getDeletions());
-			System.out.println("getFilename:" + cf.getFilename());
-			System.out.println("getPatch:" + cf.getPatch());
-			System.out.println("getRawUrl:" + cf.getRawUrl());
-			System.out.println("getSha:" + cf.getSha());
-			System.out.println("getStatus:" + cf.getStatus());
-		}
 		commitAdapter.setCommitTree(result);
 	}
 

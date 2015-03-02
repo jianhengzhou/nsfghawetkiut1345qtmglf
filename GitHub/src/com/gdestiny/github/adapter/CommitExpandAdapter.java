@@ -2,18 +2,19 @@ package com.gdestiny.github.adapter;
 
 import org.eclipse.egit.github.core.CommitFile;
 
-import com.gdestiny.github.R;
-import com.gdestiny.github.bean.CommitTree;
-import com.gdestiny.github.utils.CommonUtils;
-import com.gdestiny.github.utils.ViewUtils;
-
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.gdestiny.github.R;
+import com.gdestiny.github.bean.CommitTree;
+import com.gdestiny.github.utils.CommonUtils;
+import com.gdestiny.github.utils.ViewUtils;
 
 public class CommitExpandAdapter extends BaseExpandableListAdapter {
 
@@ -103,6 +104,11 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 		}
 		holder.addition.setText("+" + commitFile.getAdditions());
 		holder.deletion.setText("-" + commitFile.getDeletions());
+		if (isExpanded) {
+			holder.icon.setImageResource(R.drawable.common_triangle_down);
+		} else {
+			holder.icon.setImageResource(R.drawable.common_triangle_right);
+		}
 
 		convertView.setTag(R.id.tag_group, groupPosition);
 		convertView.setTag(R.id.tag_child, -1);
@@ -125,19 +131,23 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 
 		String line = commitTree.getLines(groupPosition, childPosition);
 		holder.line.setText(line);
+
+		int bkcolor = context.getResources().getColor(R.color.transparent);
+		int textcolor = context.getResources().getColor(
+				R.color.common_light_black);
 		if (line.startsWith("+")) {
-			convertView.setBackgroundColor(context.getResources().getColor(
-					R.color.addition));
+			bkcolor = context.getResources().getColor(R.color.light_addition);
 		} else if (line.startsWith("-")) {
-			convertView.setBackgroundColor(context.getResources().getColor(
-					R.color.deletion));
-		} else if (line.startsWith("@")) {
-			convertView.setBackgroundColor(context.getResources().getColor(
-					R.color.common_listitem_blue));
+			bkcolor = context.getResources().getColor(R.color.light_deletion);
+		} else if (line.startsWith("@") || line.startsWith("\\")) {
+			bkcolor = context.getResources().getColor(R.color.common_icon_grey);
+			textcolor = context.getResources().getColor(R.color.white);
 		} else {
 			convertView.setBackgroundColor(context.getResources().getColor(
 					R.color.transparent));
 		}
+		holder.line.setTextColor(textcolor);
+		convertView.setBackgroundColor(bkcolor);
 
 		convertView.setTag(R.id.tag_group, groupPosition);
 		convertView.setTag(R.id.tag_child, childPosition);
@@ -147,7 +157,7 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		// TODO Auto-generated method stub
-		return true;
+		return childPosition != 0;
 	}
 
 	private class GroupHolder {
@@ -155,12 +165,14 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 		TextView filePath;
 		TextView addition;
 		TextView deletion;
+		ImageView icon;
 
 		public GroupHolder(View v) {
 			fileName = (TextView) v.findViewById(R.id.file_name);
 			filePath = (TextView) v.findViewById(R.id.file_path);
 			addition = (TextView) v.findViewById(R.id.file_addition);
 			deletion = (TextView) v.findViewById(R.id.file_deletion);
+			icon = (ImageView) v.findViewById(R.id.icon);
 		}
 	}
 

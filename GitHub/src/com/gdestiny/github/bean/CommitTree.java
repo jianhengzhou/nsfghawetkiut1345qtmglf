@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.eclipse.egit.github.core.CommitComment;
 import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.RepositoryCommit;
 
@@ -18,10 +19,27 @@ public class CommitTree implements Serializable {
 
 	private List<CommitFile> commitFiles;
 	private LinkedHashMap<String, List<String>> linesMap;
+	private LinkedHashMap<String, List<CommitComment>> commentMap;
 
-	public CommitTree(RepositoryCommit commit) {
+	public CommitTree(RepositoryCommit commit, List<CommitComment> comments) {
 		commitFiles = commit.getFiles();
 		initLines();
+		for (CommitComment cc : comments) {
+			addComment(cc);
+		}
+	}
+
+	public void addComment(CommitComment cc) {
+		if (commentMap == null) {
+			commentMap = new LinkedHashMap<String, List<CommitComment>>();
+		}
+		String fileName = cc.getPath();
+		if (!commentMap.containsKey(fileName)) {
+			List<CommitComment> comments = new ArrayList<CommitComment>();
+			commentMap.put(fileName, comments);
+		}
+		commentMap.get(fileName).add(cc);
+
 	}
 
 	private void initLines() {
@@ -37,10 +55,9 @@ public class CommitTree implements Serializable {
 			int end = patch.indexOf("\n", start);
 			while (start < length) {
 				lines.add(patch.substring(start, end));
-				System.out.println(patch.substring(start, end));
 				start = end + 1;
 				end = patch.indexOf("\n", start);
-				if(end < 0)
+				if (end < 0)
 					end = length;
 			}
 

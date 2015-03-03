@@ -18,8 +18,9 @@ public class CommitTree implements Serializable {
 	private static final long serialVersionUID = 2384936695740654366L;
 
 	private List<CommitFile> commitFiles;
-	private LinkedHashMap<String, List<String>> linesMap;
+	private LinkedHashMap<String, List<CommitLine>> linesMap;
 	private LinkedHashMap<String, List<CommitComment>> commentMap;
+	private LinkedHashMap<String, Integer> maxDigit;
 
 	public CommitTree(RepositoryCommit commit, List<CommitComment> comments) {
 		commitFiles = commit.getFiles();
@@ -43,39 +44,88 @@ public class CommitTree implements Serializable {
 	}
 
 	private void initLines() {
-		linesMap = new LinkedHashMap<String, List<String>>(commitFiles.size());
+		linesMap = new LinkedHashMap<String, List<CommitLine>>(
+				commitFiles.size());
+		maxDigit = new LinkedHashMap<String, Integer>(commitFiles.size());
 		for (CommitFile cf : commitFiles) {
 			String patch = cf.getPatch();
 			if (TextUtils.isEmpty(patch))
 				continue;
+			System.out.println("status:"+cf.getStatus());
 
-			List<String> lines = new ArrayList<String>();
+			List<CommitLine> lines = new ArrayList<CommitLine>();
 			int length = patch.length();
 			int start = 0;
 			int end = patch.indexOf("\n", start);
+			if (end < 0)
+				end = length;
+			int oldLine = 0;
+			int newLine = 0;
 			while (start < length) {
-				lines.add(patch.substring(start, end));
+				CommitLine commitLine = new CommitLine();
+				String line = patch.substring(start, end);
+				commitLine.setLine(line);
+				// ´¦Àítag
+				try {
+					if (line.startsWith("@")) {
+						oldLine = getOld(line);
+						newLine = getNew(line);
+						commitLine.setNewLine(-1).setOldLine(-1);
+					} else if (line.startsWith("\\")) {
+						commitLine.setNewLine(-1).setOldLine(-1);
+					} else {
+						if (!line.startsWith("-")) {
+							commitLine.setNewLine(newLine);
+							newLine++;
+						}
+						if (!line.startsWith("+")) {
+							commitLine.setOldLine(oldLine);
+							oldLine++;
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				lines.add(commitLine);
 				start = end + 1;
 				end = patch.indexOf("\n", start);
 				if (end < 0)
 					end = length;
 			}
-
+			maxDigit.put(cf.getFilename(),
+					String.valueOf(Math.max(oldLine, newLine)).length());
 			linesMap.put(cf.getFilename(), lines);
 		}
 	}
 
-	public LinkedHashMap<String, List<String>> getLinesMap() {
+	private int getOld(String line) {
+		int start = line.indexOf("-") + 1;
+		int end = line.indexOf(",", start);
+		return Integer.parseInt(line.substring(start, end));
+	}
+
+	private int getNew(String line) {
+		int start = line.indexOf("+") + 1;
+		int end = line.indexOf(",", start);
+		return Integer.parseInt(line.substring(start, end));
+	}
+
+	public LinkedHashMap<String, List<CommitLine>> getLinesMap() {
 		return linesMap;
 	}
 
-	public void setLinesMap(LinkedHashMap<String, List<String>> linesMap) {
+	public void setLinesMap(LinkedHashMap<String, List<CommitLine>> linesMap) {
 		this.linesMap = linesMap;
 	}
 
-	public String getLines(int groupPosition, int childPosition) {
+	public CommitLine getLines(int groupPosition, int childPosition) {
 		return linesMap.get(commitFiles.get(groupPosition).getFilename()).get(
 				childPosition);
+	}
+
+	public int getMaxDigit(int groupPosition) {
+		return maxDigit.get(commitFiles.get(groupPosition).getFilename());
 	}
 
 	public List<CommitFile> getCommitFiles() {

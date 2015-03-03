@@ -3,6 +3,7 @@ package com.gdestiny.github.adapter;
 import org.eclipse.egit.github.core.CommitFile;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.bean.CommitLine;
 import com.gdestiny.github.bean.CommitTree;
 import com.gdestiny.github.utils.CommonUtils;
 import com.gdestiny.github.utils.ViewUtils;
@@ -129,25 +131,33 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 			holder = (ChildHolder) convertView.getTag();
 		}
 
-		String line = commitTree.getLines(groupPosition, childPosition);
-		holder.line.setText(line);
+		CommitLine line = commitTree.getLines(groupPosition, childPosition);
+		int maxDigit = commitTree.getMaxDigit(groupPosition);
+		holder.line.setText(line.getLine());
+		holder.oldLine.setText(line.getOldLine(maxDigit));
+		holder.newLine.setText(line.getNewLine(maxDigit));
 
-		int bkcolor = context.getResources().getColor(R.color.transparent);
-		int textcolor = context.getResources().getColor(
-				R.color.common_light_black);
-		if (line.startsWith("+")) {
-			bkcolor = context.getResources().getColor(R.color.light_addition);
-		} else if (line.startsWith("-")) {
-			bkcolor = context.getResources().getColor(R.color.light_deletion);
-		} else if (line.startsWith("@") || line.startsWith("\\")) {
-			bkcolor = context.getResources().getColor(R.color.common_icon_grey);
-			textcolor = context.getResources().getColor(R.color.white);
+		Resources res = context.getResources();
+		int bkcolor = res.getColor(R.color.transparent);
+		int textcolor = res.getColor(R.color.common_light_black);
+		int lineTextColor = res.getColor(R.color.common_icon_grey);
+		if (line.isAddition()) {
+			bkcolor = res.getColor(R.color.light_addition);
+		} else if (line.isDeletion()) {
+			bkcolor = res.getColor(R.color.light_deletion);
+		} else if (line.isMark()) {
+			lineTextColor = res.getColor(R.color.white);
+			bkcolor = res.getColor(R.color.common_icon_grey);
+			textcolor = res.getColor(R.color.white);
 		} else {
 			convertView.setBackgroundColor(context.getResources().getColor(
 					R.color.transparent));
 		}
 		holder.line.setTextColor(textcolor);
 		convertView.setBackgroundColor(bkcolor);
+
+		holder.oldLine.setTextColor(lineTextColor);
+		holder.newLine.setTextColor(lineTextColor);
 
 		convertView.setTag(R.id.tag_group, groupPosition);
 		convertView.setTag(R.id.tag_child, childPosition);
@@ -178,9 +188,13 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 
 	private class ChildHolder {
 		TextView line;
+		TextView oldLine;
+		TextView newLine;
 
 		public ChildHolder(View v) {
 			line = (TextView) v.findViewById(R.id.line);
+			oldLine = (TextView) v.findViewById(R.id.old_line);
+			newLine = (TextView) v.findViewById(R.id.new_line);
 		}
 	}
 }

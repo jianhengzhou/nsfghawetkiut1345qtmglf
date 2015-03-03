@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.AsyncImageGetter;
 import com.gdestiny.github.utils.CommonUtils;
 import com.gdestiny.github.utils.ImageLoaderUtils;
@@ -79,7 +78,7 @@ public class CommentAdapter extends BaseAdapter {
 
 		String name = comment.getUser().getLogin();
 		if (isCollaborator
-				|| CommonUtils.isAuthUser(GitHubApplication.getUser())) {
+				|| CommonUtils.isAuthUser(name)) {
 			ViewUtils.setVisibility(holder.btnLayout, View.VISIBLE);
 		} else {
 			ViewUtils.setVisibility(holder.btnLayout, View.GONE);

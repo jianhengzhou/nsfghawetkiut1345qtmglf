@@ -3,6 +3,7 @@ package com.gdestiny.github.ui.activity;
 import java.util.List;
 
 import org.eclipse.egit.github.core.CommitComment;
+import org.eclipse.egit.github.core.CommitStats;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.client.GitHubClient;
@@ -129,6 +130,16 @@ public class CommitDetailActivity extends
 
 		TextView content = (TextView) findViewById(R.id.content);
 		content.setText(commit.getCommit().getMessage());
+
+	}
+
+	private void updateStats() {
+		CommitStats stats = commit.getStats();
+		TextView detail = (TextView) findViewById(R.id.detail);
+		detail.setText(String.format(
+				"Total %d changed files, %d additions and %d deletions.", commit
+						.getFiles().size(), stats.getAdditions(), stats
+						.getDeletions()));
 	}
 
 	@Override
@@ -158,6 +169,7 @@ public class CommitDetailActivity extends
 	public void onSuccess(CommitTree result) {
 		// TODO Auto-generated method stub
 		super.onSuccess(result);
+		updateStats();
 		commitAdapter.setCommitTree(result);
 	}
 

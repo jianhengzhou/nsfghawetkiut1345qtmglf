@@ -26,10 +26,24 @@
         android:textSize="@dimen/text16" />
 
     <TextView
-        android:id="@+id/file_path"
+        android:id="@+id/file_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/file_name"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin2"
+        android:layout_toRightOf="@id/icon"
+        android:drawableLeft="@drawable/little_status"
+        android:drawablePadding="@dimen/margin4"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text12" />
+
+    <TextView
+        android:id="@+id/file_path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/file_status"
         android:layout_marginLeft="@dimen/margin16"
         android:layout_marginRight="@dimen/margin16"
         android:layout_marginTop="@dimen/margin2"

@@ -273,16 +273,24 @@ public class IntentUtils {
 			((Activity) context).finish();
 		}
 
-		public void startForResult(Object act_frag, int requestCode) {
-			if (act_frag instanceof Fragment)
-				((Fragment) act_frag).startActivityForResult(intent,
-						requestCode);
-			else if (act_frag instanceof Activity)
-				((Activity) act_frag).startActivityForResult(intent,
-						requestCode);
-			else
-				throw new IllegalArgumentException(
-						"the argument can only be fragment or fragment");
+		// public void startForResult(Object act_frag, int requestCode) {
+		// if (act_frag instanceof Fragment)
+		// ((Fragment) act_frag).startActivityForResult(intent,
+		// requestCode);
+		// else if (act_frag instanceof Activity)
+		// ((Activity) act_frag).startActivityForResult(intent,
+		// requestCode);
+		// else
+		// throw new IllegalArgumentException(
+		// "the argument can only be fragment or fragment");
+		// }
+
+		public void startForResult(Fragment fragment, int requestCode) {
+			fragment.startActivityForResult(intent, requestCode);
+		}
+
+		public void startForResult(Activity activity, int requestCode) {
+			activity.startActivityForResult(intent, requestCode);
 		}
 
 	}

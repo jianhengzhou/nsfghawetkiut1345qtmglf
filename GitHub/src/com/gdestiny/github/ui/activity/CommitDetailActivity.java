@@ -1,12 +1,15 @@
 package com.gdestiny.github.ui.activity;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.egit.github.core.CommitComment;
+import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.CommitStats;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.CommitService;
 
 import android.os.Bundle;
@@ -22,13 +25,15 @@ import android.widget.TextView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.CommitExpandAdapter;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.bean.CommitLine;
 import com.gdestiny.github.bean.CommitTree;
+import com.gdestiny.github.bean.comparator.CommitCommentComparator;
+import com.gdestiny.github.ui.dialog.CommitLineDialog;
 import com.gdestiny.github.utils.CommitUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.TimeUtils;
-import com.gdestiny.github.utils.ToastUtils;
 
 public class CommitDetailActivity extends
 		BaseLoadFragmentActivity<GitHubClient, CommitTree> {
@@ -39,6 +44,8 @@ public class CommitDetailActivity extends
 	private View detailLayout;
 	private ExpandableListView commitExpandList;
 	private CommitExpandAdapter commitAdapter;
+
+	private boolean isCollaborator;
 
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
@@ -61,8 +68,31 @@ public class CommitDetailActivity extends
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
-				// TODO Auto-generated method stub
-				ToastUtils.show(context, groupPosition + ":" + childPosition);
+				final CommitFile commitfile = commitAdapter.getCommitTree()
+						.getCommitFile(groupPosition);
+				new CommitLineDialog(context, commitfile.getFilename(),
+						(CommitLine) commitAdapter.getCommitTree().getChild(
+								groupPosition, childPosition)) {
+
+					@Override
+					protected void onItemClick(int position) {
+						if (position == 1) {
+							IntentUtils
+									.create(context, CodeFileActivity.class)
+									.putExtra(Constants.Extra.REPOSITORY,
+											repository)
+									.putExtra(Constants.Extra.COMMIT_FILE,
+											commitfile).start();
+						} else {
+							IntentUtils
+									.create(context,
+											NewCommitCommentActivity.class)
+									.putExtra(Constants.Extra.REPOSITORY,
+											repository).start();
+						}
+					}
+
+				}.show();
 				return true;
 			}
 		});
@@ -78,19 +108,16 @@ public class CommitDetailActivity extends
 								.getTag(R.id.tag_group); // 参数值是在setTag时使用的对应资源id号
 						int childPosition = (Integer) view
 								.getTag(R.id.tag_child);
-						ToastUtils.show(context, groupPosition + ":"
-								+ childPosition);
+
+						CommitFile commitfile = commitAdapter.getCommitTree()
+								.getCommitFile(groupPosition);
 						if (childPosition == -1) {
 							IntentUtils
 									.create(context, CodeFileActivity.class)
 									.putExtra(Constants.Extra.REPOSITORY,
 											repository)
-									.putExtra(
-											Constants.Extra.COMMIT_FILE,
-											commitAdapter.getCommitTree()
-													.getCommitFile(
-															groupPosition))
-									.start();
+									.putExtra(Constants.Extra.COMMIT_FILE,
+											commitfile).start();
 						} else {
 
 						}
@@ -134,33 +161,35 @@ public class CommitDetailActivity extends
 	}
 
 	private void updateStats() {
+		TextView comment = (TextView) findViewById(R.id.comment);
+		comment.setText(commit.getCommit().getCommentCount() + "");
+
 		CommitStats stats = commit.getStats();
 		TextView detail = (TextView) findViewById(R.id.detail);
 		detail.setText(String.format(
-				"Total %d changed files, %d additions and %d deletions.", commit
-						.getFiles().size(), stats.getAdditions(), stats
-						.getDeletions()));
+				"Total %d changed files, %d additions and %d deletions.",
+				commit.getFiles().size(), stats.getAdditions(),
+				stats.getDeletions()));
 	}
 
 	@Override
 	public CommitTree onBackground(GitHubClient params) throws Exception {
 		// TODO Auto-generated method stub
+		try {
+			CollaboratorService collaboratorService = new CollaboratorService(
+					params);
+			isCollaborator = collaboratorService.isCollaborator(repository,
+					GitHubApplication.getUser().getLogin());
+		} catch (Exception ex) {
+			isCollaborator = false;
+			ex.printStackTrace();
+		}
+
 		CommitService service = new CommitService(params);
 		commit = service.getCommit(repository, commit.getSha());
 		List<CommitComment> comments = service.getComments(repository,
 				commit.getSha());
-		for (CommitComment c : comments) {
-			System.out.println("----------------------------------------");
-			System.out.println("getBody:" + c.getBody());
-			System.out.println("getBodyHtml:" + c.getBodyHtml());
-			System.out.println("getBodyText:" + c.getBodyText());
-			System.out.println("getCommitId:" + c.getCommitId());
-			System.out.println("getId:" + c.getId());
-			System.out.println("getLine:" + c.getLine());
-			System.out.println("getPath:" + c.getPath());
-			System.out.println("getPosition:" + c.getPosition());
-			System.out.println("getUrl:" + c.getUrl());
-		}
+		Collections.sort(comments, new CommitCommentComparator());
 		CommitTree commitTree = new CommitTree(commit, comments);
 		return commitTree;
 	}
@@ -170,7 +199,7 @@ public class CommitDetailActivity extends
 		// TODO Auto-generated method stub
 		super.onSuccess(result);
 		updateStats();
-		commitAdapter.setCommitTree(result);
+		commitAdapter.setIsCollaborator(isCollaborator).setCommitTree(result);
 	}
 
 	@Override

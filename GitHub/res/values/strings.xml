@@ -25,6 +25,8 @@
     <string name="no_change">No Change</string>
     <string name="write_">Write:</string>
     <string name="tips">Markdown supported, you can long press the OK button to preview</string>
+    <string name="comment_on_the_line">Comment On The Line</string>
+    <string name="view_entire_file">View Entire File</string>
 
     <!-- test test test test test test -->
     <string name="name">gdestiny</string>

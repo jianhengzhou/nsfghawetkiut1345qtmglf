@@ -13,6 +13,7 @@ public class Constants {
 		public static final String REPOSITORY_COMMIT = "repository_commit";
 		public static final String COMMIT = "commit";
 		public static final String COMMIT_FILE = "commitfile";
+		public static final String COMMIT_COMMENT = "commitComment";
 	}
 
 	public final static class Request {

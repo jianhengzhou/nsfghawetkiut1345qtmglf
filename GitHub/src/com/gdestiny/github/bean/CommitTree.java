@@ -18,15 +18,28 @@ public class CommitTree implements Serializable {
 	private static final long serialVersionUID = 2384936695740654366L;
 
 	private List<CommitFile> commitFiles;
-	private LinkedHashMap<String, List<CommitLine>> linesMap;
+	private LinkedHashMap<String, List<Serializable>> childMap;
 	private LinkedHashMap<String, List<CommitComment>> commentMap;
 	private LinkedHashMap<String, Integer> maxDigit;
 
 	public CommitTree(RepositoryCommit commit, List<CommitComment> comments) {
 		commitFiles = commit.getFiles();
 		initLines();
-		for (CommitComment cc : comments) {
-			addComment(cc);
+		try {
+			addComment(comments);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// for (CommitComment cc : comments) {
+		// addComment(cc);
+		// }
+	}
+
+	public void addComment(List<CommitComment> comments) {
+		for (int i = comments.size() - 1; i >= 0; i--) {
+			CommitComment cc = comments.get(i);
+			String fileName = cc.getPath();
+			childMap.get(fileName).add(cc.getPosition() + 1, cc);
 		}
 	}
 
@@ -44,16 +57,15 @@ public class CommitTree implements Serializable {
 	}
 
 	private void initLines() {
-		linesMap = new LinkedHashMap<String, List<CommitLine>>(
-				commitFiles.size());
+		childMap = new LinkedHashMap<String, List<Serializable>>();
+
 		maxDigit = new LinkedHashMap<String, Integer>(commitFiles.size());
 		for (CommitFile cf : commitFiles) {
 			String patch = cf.getPatch();
 			if (TextUtils.isEmpty(patch))
 				continue;
-			System.out.println("status:"+cf.getStatus());
 
-			List<CommitLine> lines = new ArrayList<CommitLine>();
+			List<Serializable> lines = new ArrayList<Serializable>();
 			int length = patch.length();
 			int start = 0;
 			int end = patch.indexOf("\n", start);
@@ -95,7 +107,8 @@ public class CommitTree implements Serializable {
 			}
 			maxDigit.put(cf.getFilename(),
 					String.valueOf(Math.max(oldLine, newLine)).length());
-			linesMap.put(cf.getFilename(), lines);
+			childMap.put(cf.getFilename(), lines);
+
 		}
 	}
 
@@ -111,16 +124,16 @@ public class CommitTree implements Serializable {
 		return Integer.parseInt(line.substring(start, end));
 	}
 
-	public LinkedHashMap<String, List<CommitLine>> getLinesMap() {
-		return linesMap;
+	public LinkedHashMap<String, List<Serializable>> getChildMap() {
+		return childMap;
 	}
 
-	public void setLinesMap(LinkedHashMap<String, List<CommitLine>> linesMap) {
-		this.linesMap = linesMap;
+	public void setChildMap(LinkedHashMap<String, List<Serializable>> childMap) {
+		this.childMap = childMap;
 	}
 
-	public CommitLine getLines(int groupPosition, int childPosition) {
-		return linesMap.get(commitFiles.get(groupPosition).getFilename()).get(
+	public Serializable getChild(int groupPosition, int childPosition) {
+		return childMap.get(commitFiles.get(groupPosition).getFilename()).get(
 				childPosition);
 	}
 
@@ -144,7 +157,7 @@ public class CommitTree implements Serializable {
 
 	public int getChildCount(int groupPosition) {
 		try {
-			return linesMap.get(commitFiles.get(groupPosition).getFilename())
+			return childMap.get(commitFiles.get(groupPosition).getFilename())
 					.size();
 		} catch (Exception e) {
 			return 0;

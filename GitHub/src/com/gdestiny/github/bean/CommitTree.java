@@ -21,6 +21,7 @@ public class CommitTree implements Serializable {
 	private LinkedHashMap<String, List<Serializable>> childMap;
 	private LinkedHashMap<String, List<CommitComment>> commentMap;
 	private LinkedHashMap<String, Integer> maxDigit;
+	private List<CommitComment> rawComment;
 
 	public CommitTree(RepositoryCommit commit, List<CommitComment> comments) {
 		commitFiles = commit.getFiles();
@@ -38,9 +39,19 @@ public class CommitTree implements Serializable {
 	public void addComment(List<CommitComment> comments) {
 		for (int i = comments.size() - 1; i >= 0; i--) {
 			CommitComment cc = comments.get(i);
+			if (isRaw(cc)) {
+				if (rawComment == null)
+					rawComment = new ArrayList<CommitComment>();
+				rawComment.add(cc);
+				continue;
+			}
 			String fileName = cc.getPath();
 			childMap.get(fileName).add(cc.getPosition() + 1, cc);
 		}
+	}
+
+	public boolean isRaw(CommitComment comment) {
+		return TextUtils.isEmpty(comment.getPath()) && comment.getLine() == 0;
 	}
 
 	public void addComment(CommitComment cc) {
@@ -150,8 +161,18 @@ public class CommitTree implements Serializable {
 	}
 
 	public int getGroupCount() {
+		return getGroupCommentCount() + getGroupFileCount();
+	}
+
+	public int getGroupFileCount() {
 		if (commitFiles != null)
 			return commitFiles.size();
+		return 0;
+	}
+
+	public int getGroupCommentCount() {
+		if (rawComment != null)
+			return rawComment.size();
 		return 0;
 	}
 
@@ -167,6 +188,12 @@ public class CommitTree implements Serializable {
 	public CommitFile getCommitFile(int position) {
 		if (commitFiles != null)
 			return commitFiles.get(position);
+		return null;
+	}
+
+	public CommitComment getCommitComment(int position) {
+		if (rawComment != null)
+			return rawComment.get(position);
 		return null;
 	}
 

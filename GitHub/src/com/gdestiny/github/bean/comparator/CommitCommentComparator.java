@@ -8,6 +8,12 @@ public class CommitCommentComparator implements Comparator<CommitComment> {
 
 	@Override
 	public int compare(CommitComment c1, CommitComment c2) {
+		if (c1.getPath() == null && c2.getPath() == null)
+			return c1.getCreatedAt().compareTo(c2.getCreatedAt());
+		if (c1.getPath() == null)
+			return -1;
+		if (c2.getPath() == null)
+			return 1;
 		if (c1.getPath().equals(c2.getPath())) {
 			return c1.getPosition() - c2.getPosition();
 		}

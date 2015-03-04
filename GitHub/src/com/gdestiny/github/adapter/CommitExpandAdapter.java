@@ -113,24 +113,15 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 		} else {
 			holder = (GroupHolder) convertView.getTag();
 		}
-		CommitFile commitFile = commitTree.getCommitFile(groupPosition);
-		String path = commitFile.getFilename();
 
-		holder.fileName.setText(CommonUtils.pathToName(path));
-		holder.status.setText(commitFile.getStatus());
-		String filepath = CommonUtils.getPath(path);
-		if (TextUtils.isEmpty(filepath))
-			ViewUtils.setVisibility(holder.filePath, View.GONE);
-		else {
-			ViewUtils.setVisibility(holder.filePath, View.VISIBLE);
-			holder.filePath.setText(path);
-		}
-		holder.addition.setText("+" + commitFile.getAdditions());
-		holder.deletion.setText("-" + commitFile.getDeletions());
-		if (isExpanded) {
-			holder.icon.setImageResource(R.drawable.common_triangle_down);
+		int fileCount = commitTree.getGroupFileCount();
+		if (groupPosition < fileCount) {
+			CommitFile commitFile = commitTree.getCommitFile(groupPosition);
+			holder.bindFile(commitFile, isExpanded);
 		} else {
-			holder.icon.setImageResource(R.drawable.common_triangle_right);
+			holder.bindComment(
+					commitTree.getCommitComment(groupPosition - fileCount),
+					groupPosition, -1);
 		}
 
 		convertView.setTag(R.id.tag_group, groupPosition);
@@ -156,10 +147,10 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 		if (obj instanceof CommitLine) {
 			CommitLine line = (CommitLine) obj;
 			int maxDigit = commitTree.getMaxDigit(groupPosition);
-			holder.bindFile(line, maxDigit);
+			holder.bindLine(line, maxDigit);
 		} else if (obj instanceof CommitComment) {
 			CommitComment cc = (CommitComment) obj;
-			holder.bindComment(cc, childPosition);
+			holder.bindComment(cc, groupPosition, childPosition);
 		}
 
 		convertView.setTag(R.id.tag_group, groupPosition);
@@ -184,6 +175,10 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 		TextView deletion;
 		ImageView icon;
 		TextView status;
+		// comment
+		CommentHoder commentHolder;
+		View fileLayout;
+		View commentLayout;
 
 		public GroupHolder(View v) {
 			fileName = (TextView) v.findViewById(R.id.file_name);
@@ -191,7 +186,41 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 			addition = (TextView) v.findViewById(R.id.file_addition);
 			deletion = (TextView) v.findViewById(R.id.file_deletion);
 			status = (TextView) v.findViewById(R.id.file_status);
-			icon = (ImageView) v.findViewById(R.id.icon);
+			icon = (ImageView) v.findViewById(R.id.indicator_icon);
+			// comment
+			commentHolder = new CommentHoder(v);
+			fileLayout = v.findViewById(R.id.file_layout);
+			commentLayout = v.findViewById(R.id.comment_layout);
+		}
+
+		public void bindFile(CommitFile commitFile, boolean isExpanded) {
+			ViewUtils.setVisibility(fileLayout, View.VISIBLE);
+			ViewUtils.setVisibility(commentLayout, View.GONE);
+			String path = commitFile.getFilename();
+
+			this.fileName.setText(CommonUtils.pathToName(path));
+			this.status.setText(commitFile.getStatus());
+			String filepath = CommonUtils.getPath(path);
+			if (TextUtils.isEmpty(filepath))
+				ViewUtils.setVisibility(this.filePath, View.GONE);
+			else {
+				ViewUtils.setVisibility(this.filePath, View.VISIBLE);
+				this.filePath.setText(path);
+			}
+			this.addition.setText("+" + commitFile.getAdditions());
+			this.deletion.setText("-" + commitFile.getDeletions());
+			if (isExpanded) {
+				this.icon.setImageResource(R.drawable.common_triangle_down);
+			} else {
+				this.icon.setImageResource(R.drawable.common_triangle_right);
+			}
+		}
+
+		public void bindComment(final CommitComment comment,
+				final int groupPosition, final int childPosition) {
+			ViewUtils.setVisibility(fileLayout, View.GONE);
+			ViewUtils.setVisibility(commentLayout, View.VISIBLE);
+			commentHolder.bindComment(comment, groupPosition, childPosition);
 		}
 	}
 
@@ -204,13 +233,7 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 		TextView oldLine;
 		TextView newLine;
 		// comment
-		ImageView icon;
-		TextView content;
-		TextView name;
-		TextView date;
-		View edit;
-		View delete;
-		View btnLayout;
+		CommentHoder commentHolder;
 
 		public ChildHolder(View v) {
 			line = (TextView) v.findViewById(R.id.line);
@@ -219,16 +242,10 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 			lineLayout = v.findViewById(R.id.line_layout);
 			commentLayout = v.findViewById(R.id.comment_layout);
 			// comment
-			icon = (ImageView) v.findViewById(R.id.icon);
-			content = (TextView) v.findViewById(R.id.content);
-			name = (TextView) v.findViewById(R.id.name);
-			date = (TextView) v.findViewById(R.id.date);
-			edit = v.findViewById(R.id.edit);
-			delete = v.findViewById(R.id.delete);
-			btnLayout = v.findViewById(R.id.comment_btn);
+			commentHolder = new CommentHoder(v);
 		}
 
-		public void bindFile(CommitLine line, int maxDigit) {
+		public void bindLine(CommitLine line, int maxDigit) {
 			ViewUtils.setVisibility(lineLayout, View.VISIBLE);
 			ViewUtils.setVisibility(commentLayout, View.GONE);
 
@@ -257,9 +274,34 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 		}
 
 		public void bindComment(final CommitComment comment,
-				final int childPosition) {
+				final int groupPosition, final int childPosition) {
 			ViewUtils.setVisibility(lineLayout, View.GONE);
 			ViewUtils.setVisibility(commentLayout, View.VISIBLE);
+			commentHolder.bindComment(comment, groupPosition, childPosition);
+		}
+	}
+
+	private class CommentHoder {
+		ImageView icon;
+		TextView content;
+		TextView name;
+		TextView date;
+		View edit;
+		View delete;
+		View btnLayout;
+
+		public CommentHoder(View v) {
+			icon = (ImageView) v.findViewById(R.id.icon);
+			content = (TextView) v.findViewById(R.id.content);
+			name = (TextView) v.findViewById(R.id.name);
+			date = (TextView) v.findViewById(R.id.date);
+			edit = v.findViewById(R.id.edit);
+			delete = v.findViewById(R.id.delete);
+			btnLayout = v.findViewById(R.id.comment_btn);
+		}
+
+		public void bindComment(final CommitComment comment,
+				final int groupPosition, final int childPosition) {
 
 			ImageLoaderUtils.displayImage(comment.getUser().getAvatarUrl(),
 					this.icon, R.drawable.default_avatar,
@@ -276,7 +318,7 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 				@Override
 				public void onClick(View v) {
 					if (listener != null) {
-						listener.onEdit(childPosition, comment);
+						listener.onEdit(groupPosition, childPosition, comment);
 					}
 				}
 			});
@@ -309,7 +351,8 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 	}
 
 	public interface OnCommitCommentListener {
-		public void onEdit(int position, CommitComment comment);
+		public void onEdit(int groupPosition, int childPosition,
+				CommitComment comment);
 
 		public void onDelete(CommitComment comment);
 	}

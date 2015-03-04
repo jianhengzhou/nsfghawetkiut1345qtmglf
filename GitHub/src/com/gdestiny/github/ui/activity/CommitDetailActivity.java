@@ -16,9 +16,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +36,7 @@ import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.TimeUtils;
+import com.gdestiny.github.utils.ViewUtils;
 
 public class CommitDetailActivity extends
 		BaseLoadFragmentActivity<GitHubClient, CommitTree> {
@@ -46,6 +49,8 @@ public class CommitDetailActivity extends
 	private CommitExpandAdapter commitAdapter;
 
 	private boolean isCollaborator;
+
+	private View stickComment;
 
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
@@ -62,6 +67,11 @@ public class CommitDetailActivity extends
 
 		detailLayout = LayoutInflater.from(context).inflate(
 				R.layout.layout_commit_detail, null);
+
+		stickComment = findViewById(R.id.layout_comment);
+		stickComment
+				.setBackgroundResource(R.drawable.selector_item_grey_to_blue);
+
 		commitExpandList.addHeaderView(detailLayout);
 		commitExpandList.setOnChildClickListener(new OnChildClickListener() {
 
@@ -102,7 +112,9 @@ public class CommitDetailActivity extends
 					@Override
 					public boolean onItemLongClick(AdapterView<?> parent,
 							View view, int position, long id) {
-						if (position == 0)
+						if (position == 0
+								|| position >= commitAdapter.getCommitTree()
+										.getGroupFileCount())
 							return false;
 						int groupPosition = (Integer) view
 								.getTag(R.id.tag_group); // 参数值是在setTag时使用的对应资源id号
@@ -124,6 +136,25 @@ public class CommitDetailActivity extends
 						return true;
 					}
 				});
+		commitExpandList.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				if (firstVisibleItem == 0) {
+					ViewUtils.setVisibility(stickComment, View.GONE);
+				} else {
+					ViewUtils.setVisibility(stickComment, View.VISIBLE);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -189,6 +220,15 @@ public class CommitDetailActivity extends
 		commit = service.getCommit(repository, commit.getSha());
 		List<CommitComment> comments = service.getComments(repository,
 				commit.getSha());
+
+		for (CommitComment c : comments) {
+			System.out.println("----------------------------------------");
+			System.out.println("getBody:" + c.getBody());
+			System.out.println("getLine:" + c.getLine());
+			System.out.println("getPath:" + c.getPath());
+			System.out.println("getPosition:" + c.getPosition());
+		}
+
 		Collections.sort(comments, new CommitCommentComparator());
 		CommitTree commitTree = new CommitTree(commit, comments);
 		return commitTree;

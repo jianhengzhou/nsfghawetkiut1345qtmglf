@@ -34,7 +34,10 @@ public abstract class CommitLineDialog implements View.OnClickListener {
 		TextView oldLine = (TextView) v.findViewById(R.id.old_line);
 		TextView newLine = (TextView) v.findViewById(R.id.new_line);
 		View lineLayout = v.findViewById(R.id.line_layout);
-		lineTv.setText(line.getLine());
+		
+		String lineStr = line.getLine();
+		lineStr = lineStr.charAt(0) + lineStr.substring(1).trim();
+		lineTv.setText(lineStr);
 		oldLine.setText(line.getOldLine(1));
 		newLine.setText(line.getNewLine(1));
 

@@ -327,7 +327,7 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 				@Override
 				public void onClick(View v) {
 					if (listener != null) {
-						listener.onDelete(comment);
+						listener.onDelete(groupPosition, childPosition, comment);
 					}
 				}
 			});
@@ -354,6 +354,7 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 		public void onEdit(int groupPosition, int childPosition,
 				CommitComment comment);
 
-		public void onDelete(CommitComment comment);
+		public void onDelete(int groupPosition, int childPosition,
+				CommitComment comment);
 	}
 }

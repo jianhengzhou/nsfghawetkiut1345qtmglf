@@ -19,7 +19,7 @@ public class CommitTree implements Serializable {
 
 	private List<CommitFile> commitFiles;
 	private LinkedHashMap<String, List<Serializable>> childMap;
-	private LinkedHashMap<String, List<CommitComment>> commentMap;
+	// private LinkedHashMap<String, List<CommitComment>> commentMap;
 	private LinkedHashMap<String, Integer> maxDigit;
 	private List<CommitComment> rawComment;
 
@@ -37,12 +37,14 @@ public class CommitTree implements Serializable {
 	}
 
 	public void addComment(List<CommitComment> comments) {
+		if (rawComment == null)
+			rawComment = new ArrayList<CommitComment>();
+		if (comments == null)
+			return;
 		for (int i = comments.size() - 1; i >= 0; i--) {
 			CommitComment cc = comments.get(i);
 			if (isRaw(cc)) {
-				if (rawComment == null)
-					rawComment = new ArrayList<CommitComment>();
-				rawComment.add(cc);
+				rawComment.add(0, cc);
 				continue;
 			}
 			String fileName = cc.getPath();
@@ -54,18 +56,19 @@ public class CommitTree implements Serializable {
 		return TextUtils.isEmpty(comment.getPath()) && comment.getLine() == 0;
 	}
 
-	public void addComment(CommitComment cc) {
-		if (commentMap == null) {
-			commentMap = new LinkedHashMap<String, List<CommitComment>>();
-		}
-		String fileName = cc.getPath();
-		if (!commentMap.containsKey(fileName)) {
-			List<CommitComment> comments = new ArrayList<CommitComment>();
-			commentMap.put(fileName, comments);
-		}
-		commentMap.get(fileName).add(cc);
-
-	}
+	//
+	// public void addComment(CommitComment cc) {
+	// if (commentMap == null) {
+	// commentMap = new LinkedHashMap<String, List<CommitComment>>();
+	// }
+	// String fileName = cc.getPath();
+	// if (!commentMap.containsKey(fileName)) {
+	// List<CommitComment> comments = new ArrayList<CommitComment>();
+	// commentMap.put(fileName, comments);
+	// }
+	// commentMap.get(fileName).add(cc);
+	//
+	// }
 
 	private void initLines() {
 		childMap = new LinkedHashMap<String, List<Serializable>>();
@@ -84,6 +87,7 @@ public class CommitTree implements Serializable {
 				end = length;
 			int oldLine = 0;
 			int newLine = 0;
+			int position = 0;
 			while (start < length) {
 				CommitLine commitLine = new CommitLine();
 				String line = patch.substring(start, end);
@@ -105,11 +109,14 @@ public class CommitTree implements Serializable {
 							commitLine.setOldLine(oldLine);
 							oldLine++;
 						}
+						commitLine.setPosition(position++);
+
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
+				// System.out.println(commitLine.getPosition() + ":"+
+				// commitLine.getLine());
 				lines.add(commitLine);
 				start = end + 1;
 				end = patch.indexOf("\n", start);
@@ -135,6 +142,14 @@ public class CommitTree implements Serializable {
 		return Integer.parseInt(line.substring(start, end));
 	}
 
+	public List<CommitComment> getRawComment() {
+		return rawComment;
+	}
+
+	public void setRawComment(List<CommitComment> rawComment) {
+		this.rawComment = rawComment;
+	}
+
 	public LinkedHashMap<String, List<Serializable>> getChildMap() {
 		return childMap;
 	}
@@ -146,6 +161,10 @@ public class CommitTree implements Serializable {
 	public Serializable getChild(int groupPosition, int childPosition) {
 		return childMap.get(commitFiles.get(groupPosition).getFilename()).get(
 				childPosition);
+	}
+
+	public List<Serializable> getChildList(int groupPosition) {
+		return childMap.get(commitFiles.get(groupPosition).getFilename());
 	}
 
 	public int getMaxDigit(int groupPosition) {

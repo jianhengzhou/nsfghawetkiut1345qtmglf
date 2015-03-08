@@ -74,7 +74,6 @@
                 android:layout_marginTop="@dimen/margin4"
                 android:paddingBottom="@dimen/margin4"
                 android:paddingTop="@dimen/margin4"
-                android:singleLine="true"
                 android:textColor="@color/common_light_black"
                 android:textSize="@dimen/text12" />
         </LinearLayout>

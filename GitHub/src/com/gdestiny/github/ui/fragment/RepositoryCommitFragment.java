@@ -10,6 +10,7 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.CommitService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -174,6 +175,20 @@ public class RepositoryCommitFragment extends
 	}
 
 	@Override
+	public void onResultOk(int requestCode, Intent data) {
+		super.onResultOk(requestCode, data);
+		if (requestCode == Constants.Request.COMMIT_DETAIL) {
+			int count = data.getIntExtra(Constants.Extra.COMMENT_COUNT, -1);
+			int position = data.getIntExtra(Constants.Extra.POSITION, -1);
+			if (count >= 0 && position >= 0) {
+				commitAdapter.getDatas().get(position).getCommit()
+						.setCommentCount(count);
+				commitAdapter.notifyDataSetChanged();
+			}
+		}
+	}
+
+	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
@@ -181,7 +196,10 @@ public class RepositoryCommitFragment extends
 				.create(context, CommitDetailActivity.class)
 				.putExtra(Constants.Extra.REPOSITORY_COMMIT,
 						getDatas().get(position))
-				.putExtra(Constants.Extra.REPOSITORY, repository).start();
+				.putExtra(Constants.Extra.POSITION, position)
+				.putExtra(Constants.Extra.REPOSITORY, repository)
+				.startForResult(RepositoryCommitFragment.this,
+						Constants.Request.COMMIT_DETAIL);
 	}
 
 	@Override

@@ -54,4 +54,11 @@ public class CommitUtils {
 					.size(Gravatar.MAX_IMAGE_SIZE_PIXEL).build();
 		return null;
 	}
+
+	public static String getSubSha(RepositoryCommit repositoryCommit) {
+		String sha = repositoryCommit.getSha();
+		if (sha.length() > 10)
+			return sha.substring(0, 10);
+		return sha;
+	}
 }

@@ -11,6 +11,7 @@ public class CommitLine implements Serializable {
 
 	private int oldLine;
 	private int newLine;
+	private int position;
 	private String line;
 
 	public boolean isAddition() {
@@ -25,6 +26,14 @@ public class CommitLine implements Serializable {
 		return line.startsWith("@") || line.startsWith("\\");
 	}
 
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
 	public CommitLine setOldLine(int oldLine) {
 		this.oldLine = oldLine;
 		return this;
@@ -36,6 +45,14 @@ public class CommitLine implements Serializable {
 
 	public SpannableString getNewLine(int maxlength) {
 		return format(maxlength, newLine);
+	}
+
+	public int getOldLine() {
+		return oldLine;
+	}
+
+	public int getNewLine() {
+		return newLine;
 	}
 
 	private SpannableString format(int maxlength, int num) {

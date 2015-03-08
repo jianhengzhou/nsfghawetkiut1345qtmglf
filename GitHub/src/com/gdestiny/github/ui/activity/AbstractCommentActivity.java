@@ -41,6 +41,10 @@ public abstract class AbstractCommentActivity extends BaseFragmentActivity {
 		this.content.setText(content);
 	}
 
+	public EditText getEditText() {
+		return content;
+	}
+
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
 		setContentView(R.layout.act_comment);

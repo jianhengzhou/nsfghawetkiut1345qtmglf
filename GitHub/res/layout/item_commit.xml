@@ -28,17 +28,6 @@
         android:textSize="@dimen/text14" />
 
     <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignTop="@id/name"
-        android:layout_marginTop="@dimen/margin8"
-        android:layout_toRightOf="@id/name"
-        android:textColor="@color/common_icon_grey"
-        android:textSize="@dimen/text12" />
-
-    <TextView
         android:id="@+id/comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,6 +37,20 @@
         android:layout_marginRight="@dimen/margin16"
         android:layout_marginTop="@dimen/margin8"
         android:drawableLeft="@drawable/little_comment"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text12" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignTop="@id/name"
+        android:layout_marginTop="@dimen/margin8"
+        android:layout_toLeftOf="@id/comment"
+        android:layout_toRightOf="@id/name"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textColor="@color/common_icon_grey"
         android:textSize="@dimen/text12" />
 

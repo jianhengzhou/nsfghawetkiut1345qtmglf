@@ -1,6 +1,5 @@
 package com.gdestiny.github.ui.dialog;
 
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -20,6 +19,7 @@ public abstract class CommitLineDialog implements View.OnClickListener {
 		this.context = context;
 		dialog = new MaterialDialog(context);
 		dialog.setTitle(CommonUtils.pathToName(path));
+		dialog.setCanceledOnTouchOutside(true);
 
 		View view = LayoutInflater.from(context).inflate(
 				R.layout.layout_commitline_dialog, null);
@@ -34,7 +34,7 @@ public abstract class CommitLineDialog implements View.OnClickListener {
 		TextView oldLine = (TextView) v.findViewById(R.id.old_line);
 		TextView newLine = (TextView) v.findViewById(R.id.new_line);
 		View lineLayout = v.findViewById(R.id.line_layout);
-		
+
 		String lineStr = line.getLine();
 		lineStr = lineStr.charAt(0) + lineStr.substring(1).trim();
 		lineTv.setText(lineStr);

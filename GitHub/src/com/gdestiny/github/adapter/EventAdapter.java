@@ -5,6 +5,8 @@ import java.util.List;
 import org.eclipse.egit.github.core.event.Event;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.async.AsyncImageGetter;
 import com.gdestiny.github.utils.EventUtils;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
@@ -67,11 +70,12 @@ public class EventAdapter extends BaseAdapter {
 		holder.title.setText(EventUtils.toSpannableString(event));
 		holder.date.setText(TimeUtils.getTime(event.getCreatedAt().getTime()));
 		String content = EventUtils.getEventPayload(event);
-		if (content.equals("")) {
+		if (TextUtils.isEmpty(content)) {
 			ViewUtils.setVisibility(holder.content, View.GONE);
 		} else {
 			ViewUtils.setVisibility(holder.content, View.VISIBLE);
-			holder.content.setText(content);
+			holder.content.setText(Html.fromHtml(content, new AsyncImageGetter(
+					context, holder.content), null));
 		}
 
 		return convertView;

@@ -86,6 +86,8 @@ public class CommitTree implements Serializable {
 	}
 
 	public int getFileCommentCount(String fileName) {
+		if (commentCount == null)
+			return 0;
 		if (!commentCount.containsKey(fileName)
 				|| commentCount.get(fileName) == null)
 			return 0;

@@ -19,6 +19,19 @@
             android:src="@drawable/common_triangle_right" />
 
         <TextView
+            android:id="@+id/group_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:layout_marginTop="@dimen/margin4"
+            android:drawableLeft="@drawable/little_comment"
+            android:textColor="@color/common_icon_grey"
+            android:textSize="@dimen/text12" />
+
+        <TextView
             android:id="@+id/file_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,6 +39,7 @@
             android:layout_marginLeft="@dimen/margin16"
             android:layout_marginRight="@dimen/margin16"
             android:layout_marginTop="@dimen/margin4"
+            android:layout_toLeftOf="@id/group_comment"
             android:layout_toRightOf="@id/indicator_icon"
             android:textColor="@color/common_light_black"
             android:textSize="@dimen/text16" />
@@ -95,4 +109,5 @@
             android:layout_height="match_parent"
             layout="@layout/item_comment" />
     </FrameLayout>
-</FrameLayout>
+
+</FrameLayout>

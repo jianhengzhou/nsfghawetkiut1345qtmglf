@@ -19,7 +19,7 @@ public class CommitTree implements Serializable {
 
 	private List<CommitFile> commitFiles;
 	private LinkedHashMap<String, List<Serializable>> childMap;
-	// private LinkedHashMap<String, List<CommitComment>> commentMap;
+	private LinkedHashMap<String, Integer> commentCount;
 	private LinkedHashMap<String, Integer> maxDigit;
 	private List<CommitComment> rawComment;
 
@@ -48,8 +48,53 @@ public class CommitTree implements Serializable {
 				continue;
 			}
 			String fileName = cc.getPath();
+			commentCountIncrement(fileName);
 			childMap.get(fileName).add(cc.getPosition() + 1, cc);
 		}
+	}
+
+	public void commentCountIncrement(String fileName) {
+		if (commentCount == null)
+			commentCount = new LinkedHashMap<String, Integer>();
+		if (commentCount.containsKey(fileName)) {
+			commentCount.put(fileName, commentCount.get(fileName) + 1);
+		} else {
+			commentCount.put(fileName, 1);
+		}
+	}
+
+	public void commentCountDescrement(String fileName) {
+		if (commentCount == null)
+			commentCount = new LinkedHashMap<String, Integer>();
+		if (commentCount.containsKey(fileName)) {
+			if (commentCount.get(fileName) == 0)
+				return;
+			commentCount.put(fileName, commentCount.get(fileName) - 1);
+		} else {
+			commentCount.put(fileName, 1);
+		}
+	}
+
+	public void commentCountIncrement(int position) {
+		String fileName = commitFiles.get(position).getFilename();
+		commentCountIncrement(fileName);
+	}
+
+	public void commentCountDescrement(int position) {
+		String fileName = commitFiles.get(position).getFilename();
+		commentCountDescrement(fileName);
+	}
+
+	public int getFileCommentCount(String fileName) {
+		if (!commentCount.containsKey(fileName)
+				|| commentCount.get(fileName) == null)
+			return 0;
+		return commentCount.get(fileName);
+	}
+
+	public int getFileCommentCount(int position) {
+		String fileName = commitFiles.get(position).getFilename();
+		return getFileCommentCount(fileName);
 	}
 
 	public boolean isRaw(CommitComment comment) {

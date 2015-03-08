@@ -116,6 +116,8 @@ public class CommitDetailActivity extends
 							commitAdapter.getCommitTree()
 									.getChildList(groupPosition)
 									.remove(comment);
+							commitAdapter.getCommitTree()
+									.commentCountDescrement(groupPosition);
 						}
 						commitAdapter.notifyDataSetChanged();
 						hasChange = true;
@@ -412,6 +414,7 @@ public class CommitDetailActivity extends
 			}
 			list.add(insert + 1, cc);
 
+			commitAdapter.getCommitTree().commentCountIncrement(cc.getPath());
 			commitAdapter.notifyDataSetChanged();
 
 			commit.getCommit().setCommentCount(

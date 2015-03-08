@@ -117,7 +117,8 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 		int fileCount = commitTree.getGroupFileCount();
 		if (groupPosition < fileCount) {
 			CommitFile commitFile = commitTree.getCommitFile(groupPosition);
-			holder.bindFile(commitFile, isExpanded);
+			holder.bindFile(commitFile,
+					commitTree.getFileCommentCount(groupPosition), isExpanded);
 		} else {
 			holder.bindComment(
 					commitTree.getCommitComment(groupPosition - fileCount),
@@ -175,6 +176,7 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 		TextView deletion;
 		ImageView icon;
 		TextView status;
+		TextView comment;
 		// comment
 		CommentHoder commentHolder;
 		View fileLayout;
@@ -186,6 +188,7 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 			addition = (TextView) v.findViewById(R.id.file_addition);
 			deletion = (TextView) v.findViewById(R.id.file_deletion);
 			status = (TextView) v.findViewById(R.id.file_status);
+			comment = (TextView) v.findViewById(R.id.group_comment);
 			icon = (ImageView) v.findViewById(R.id.indicator_icon);
 			// comment
 			commentHolder = new CommentHoder(v);
@@ -193,7 +196,8 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 			commentLayout = v.findViewById(R.id.comment_layout);
 		}
 
-		public void bindFile(CommitFile commitFile, boolean isExpanded) {
+		public void bindFile(CommitFile commitFile, int count,
+				boolean isExpanded) {
 			ViewUtils.setVisibility(fileLayout, View.VISIBLE);
 			ViewUtils.setVisibility(commentLayout, View.GONE);
 			String path = commitFile.getFilename();
@@ -214,6 +218,7 @@ public class CommitExpandAdapter extends BaseExpandableListAdapter {
 			} else {
 				this.icon.setImageResource(R.drawable.common_triangle_right);
 			}
+			this.comment.setText(count + "");
 		}
 
 		public void bindComment(final CommitComment comment,

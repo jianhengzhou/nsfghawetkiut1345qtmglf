@@ -8,6 +8,7 @@
     <string name="following">Following</string>
     <string name="gists">Gists</string>
     <string name="issue">Issue</string>
+    <string name="issue_dashboard">Issue Dashboard</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="setting">Setting</string>
     <string name="exit">Exit</string>
@@ -52,5 +53,11 @@
     <string name="comment">Comment</string>
     <string name="follow">follow</string>
     <string name="unfollow">unfollow</string>
+
+    <!-- issue dashboard -->
+    <string name="watched">watched</string>
+    <string name="created">created</string>
+    <string name="assigned">assigned</string>
+    <string name="mentioned">mentioned</string>
 
 </resources>

@@ -38,7 +38,7 @@
         android:layout_marginRight="@dimen/margin24"
         android:layout_marginTop="@dimen/margin4"
         android:layout_toRightOf="@id/icon"
-        android:background="@drawable/selector_event_content"
+        android:background="@drawable/drawable_corner_ligth_blue"
         android:clickable="true"
         android:ellipsize="end"
         android:maxLines="3"

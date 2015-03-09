@@ -1,0 +1,117 @@
+package com.gdestiny.github.ui.fragment;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.egit.github.core.service.IssueService;
+
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
+import com.gdestiny.github.R;
+import com.gdestiny.github.adapter.SimplePageAdapter;
+import com.gdestiny.github.ui.activity.BaseFragmentActivity;
+import com.gdestiny.github.ui.activity.HomeActivity;
+import com.gdestiny.github.ui.view.IndicatorView;
+import com.gdestiny.github.ui.view.ResideMenu;
+import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.GLog;
+
+public class IssueDashboardFragment extends BaseFragment {
+
+	private ResideMenu resideMenu;
+	private ViewPager viewpager;
+	private IndicatorView indicatorView;
+	private List<BaseLoadFragment<?, ?>> fragments = new ArrayList<BaseLoadFragment<?, ?>>();
+
+	private SimplePageAdapter adapter;
+
+	public BaseLoadFragment<?, ?> getCurrentFragment() {
+		return fragments.get(indicatorView.getCurrentPosition());
+	}
+
+	@Override
+	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		setContentView(inflater, R.layout.frag_issue_dashboard);
+	}
+
+	@Override
+	protected void initView() {
+		// TODO Auto-generated method stub
+		viewpager = (ViewPager) findViewById(R.id.viewpager);
+		viewpager.setOffscreenPageLimit(3);
+
+		indicatorView = (IndicatorView) findViewById(R.id.indicator);
+
+		indicatorView.bind(viewpager);
+		viewpager.setOnPageChangeListener(indicatorView);
+		indicatorView
+				.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+					@Override
+					public void onPageSelected(int position) {
+						// TODO Auto-generated method stub
+						if (position == 0) {
+							// resideMenu.clearIgnoredViewList();
+							resideMenu.removeIgnoredView(viewpager);
+						} else {
+							if (resideMenu.getIgnoredViews() != null
+									&& resideMenu.getIgnoredViews().size() == 0)
+								resideMenu.addIgnoredView(viewpager);
+						}
+						if (position != indicatorView.getCurrentPosition()) {
+							GLog.sysout("hide:"
+									+ indicatorView.getCurrentPosition()
+									+ ",show:" + position);
+							BaseFragmentActivity.hideHeaderView(fragments
+									.get(indicatorView.getCurrentPosition()));
+							BaseFragmentActivity.showRefreshHeader(fragments
+									.get(position));
+						}
+					}
+
+					@Override
+					public void onPageScrolled(int arg0, float arg1, int arg2) {
+					}
+
+					@Override
+					public void onPageScrollStateChanged(int arg0) {
+					}
+				});
+	}
+
+	@Override
+	protected void initData() {
+		// TODO Auto-generated method stub
+		indicatorView.add(R.string.watched, R.drawable.common_news_normal)
+				.add(R.string.created, R.drawable.common_follower_normal)
+				.add(R.string.assigned, R.drawable.common_following_normal)
+				.add(R.string.mentioned, R.drawable.common_following_normal);
+
+		fragments.add(new IssueDashboardIssueFragment(
+				IssueService.FILTER_SUBSCRIBED));
+		fragments.add(new IssueDashboardIssueFragment(
+				IssueService.FILTER_CREATED));
+		fragments.add(new IssueDashboardIssueFragment(
+				IssueService.FILTER_ASSIGNED));
+		fragments.add(new IssueDashboardIssueFragment(
+				IssueService.FILTER_MENTIONED));
+
+		adapter = new SimplePageAdapter(
+				((BaseFragmentActivity) context).getSupportFragmentManager(),
+				fragments);
+		viewpager.setAdapter(adapter);
+
+		resideMenu = ((HomeActivity) context).getResideMenu();
+	}
+
+	@Override
+	public void initStatusPopup(TitleBar title) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

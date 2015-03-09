@@ -93,7 +93,7 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 	protected void onRightBtn() {
 	}
 
-	public BaseLoadFragment<?, ?> hideHeaderView(
+	public static BaseLoadFragment<?, ?> hideHeaderView(
 			BaseLoadFragment<?, ?> currentFragment) {
 		if (currentFragment != null) {
 			PullToRefreshLayout mPullToRefreshLayout = currentFragment
@@ -106,7 +106,7 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 		return currentFragment;
 	}
 
-	public BaseLoadFragment<?, ?> showRefreshHeader(
+	public static BaseLoadFragment<?, ?> showRefreshHeader(
 			BaseLoadFragment<?, ?> currentFragment) {
 		if (currentFragment != null && currentFragment.isLoading()) {
 			PullToRefreshLayout mPullToRefreshLayout = currentFragment

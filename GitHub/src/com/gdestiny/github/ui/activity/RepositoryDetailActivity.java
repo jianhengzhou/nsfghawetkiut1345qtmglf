@@ -8,12 +8,10 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.service.WatcherService;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.adapter.SimplePageAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.BaseAsyncTask;
 import com.gdestiny.github.async.ForkTask;
@@ -35,7 +33,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 
 	private Repository repository;
 	private ViewPager viewpager;
-	private RepositoryPageAdapter adapter;
+	private SimplePageAdapter adapter;
 
 	private IndicatorView indicatorView;
 
@@ -141,7 +139,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 			indicatorView.add(R.string.issues, R.drawable.circle_issue_white);
 		}
 
-		adapter = new RepositoryPageAdapter(getSupportFragmentManager());
+		adapter = new SimplePageAdapter(getSupportFragmentManager(), fragments);
 		viewpager.setAdapter(adapter);
 		initStar();
 	}
@@ -184,30 +182,6 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 			}
 
 		}.execute();
-	}
-
-	private class RepositoryPageAdapter extends FragmentStatePagerAdapter {
-
-		public RepositoryPageAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			return fragments.get(position);
-		}
-
-		@Override
-		public int getCount() {
-			if (fragments == null)
-				return 1;
-			return fragments.size();
-		}
-
-		@Override
-		public int getItemPosition(Object object) {
-			return FragmentStatePagerAdapter.POSITION_NONE;
-		}
 	}
 
 	@Override

@@ -9,20 +9,19 @@ import android.widget.AdapterView;
 
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
-import com.gdestiny.github.utils.GLog;
 
-public class EventsUserReceivedFragment extends AbstractEventFragment {
+public class EventsUserFragment extends AbstractEventFragment {
 
 	private String user;
 
-	public EventsUserReceivedFragment(String user) {
+	public EventsUserFragment(String user) {
 		this.user = user;
 	}
 
 	@Override
 	public void newPageData(GitHubClient params) {
 		EventService service = new EventService(params);
-		setDataPage(service.pageUserReceivedEvents(user, false,
+		setDataPage(service.pageUserEvents(user, false,
 				Constants.DEFAULT_PAGE_SIZE));
 	}
 
@@ -44,17 +43,18 @@ public class EventsUserReceivedFragment extends AbstractEventFragment {
 
 	@Override
 	public void initStatusPopup(TitleBar title) {
-		title.showRightBtn();
-		title.getRightBtn().setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (!isLoading())
-					onRefreshStarted(v);
-				else
-					GLog.sysout("no need to refresh");
-			}
-		});
+		// if(TextUtils.)
+		// title.showRightBtn();
+		// title.getRightBtn().setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// if (!isLoading())
+		// onRefreshStarted(v);
+		// else
+		// GLog.sysout("no need to refresh");
+		// }
+		// });
 	}
 
 }

@@ -9,18 +9,16 @@ import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.UserService;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.adapter.SimplePageAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.BaseAsyncTask;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.dialog.StatusPopWindowItem;
 import com.gdestiny.github.ui.fragment.BaseLoadFragment;
-import com.gdestiny.github.ui.fragment.EventsUserReceivedFragment;
+import com.gdestiny.github.ui.fragment.EventsUserFragment;
 import com.gdestiny.github.ui.fragment.FollowerFragment;
 import com.gdestiny.github.ui.fragment.FollowingFragment;
 import com.gdestiny.github.ui.fragment.RepositoryPageFragment;
@@ -36,7 +34,7 @@ public class UserNavigationActivity extends BaseFragmentActivity {
 	private IndicatorView indicatorView;
 	private List<BaseLoadFragment<?, ?>> fragments = new ArrayList<BaseLoadFragment<?, ?>>();
 
-	private NavigatrionAdapter adapter;
+	private SimplePageAdapter adapter;
 
 	private User user;
 
@@ -104,11 +102,11 @@ public class UserNavigationActivity extends BaseFragmentActivity {
 				.add(R.string.tab_following, R.drawable.common_following_normal);
 
 		fragments.add(new RepositoryPageFragment());
-		fragments.add(new EventsUserReceivedFragment(user.getLogin()));
+		fragments.add(new EventsUserFragment(user.getLogin()));
 		fragments.add(new FollowerFragment(user.getLogin()));
 		fragments.add(new FollowingFragment(user.getLogin()));
 
-		adapter = new NavigatrionAdapter(getSupportFragmentManager());
+		adapter = new SimplePageAdapter(getSupportFragmentManager(), fragments);
 		viewpager.setAdapter(adapter);
 	}
 
@@ -176,29 +174,5 @@ public class UserNavigationActivity extends BaseFragmentActivity {
 	@Override
 	protected void onleftLayout() {
 		finish();
-	}
-
-	private class NavigatrionAdapter extends FragmentStatePagerAdapter {
-
-		public NavigatrionAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			return fragments.get(position);
-		}
-
-		@Override
-		public int getCount() {
-			if (fragments == null)
-				return 1;
-			return fragments.size();
-		}
-
-		@Override
-		public int getItemPosition(Object object) {
-			return FragmentStatePagerAdapter.POSITION_NONE;
-		}
 	}
 }

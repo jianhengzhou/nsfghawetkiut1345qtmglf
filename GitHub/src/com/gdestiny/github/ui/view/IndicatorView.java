@@ -172,8 +172,10 @@ public class IndicatorView extends LinearLayout implements OnPageChangeListener 
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
+		if (indecators == null)
+			return;
 		float left = scrollPosition * getWidth() / indecators.size()
-				+ positionOffsetPixels / 4;
+				+ positionOffsetPixels / indecators.size();
 		canvas.drawRect(left, 0, left + getWidth() / indecators.size(),
 				getHeight(), paint);
 	}

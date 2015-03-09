@@ -63,6 +63,7 @@
         <item name="android:textColor">@drawable/selector_common_menu_text</item>
         <item name="android:textSize">@dimen/text18</item>
         <item name="android:clickable">true</item>
+        <item name="android:singleLine">true</item>
         <item name="android:background">@drawable/selector_common_menu_item</item>
     </style>
 

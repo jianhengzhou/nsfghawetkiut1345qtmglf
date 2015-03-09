@@ -26,6 +26,7 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 	private List<Elem> datas = new ArrayList<Elem>();
 
 	private PageIterator<Elem> dataPage;
+	private boolean refresh = true;
 
 	public void setContentView(LayoutInflater inflater, int id, int refreshId,
 			int moreListId) {
@@ -57,8 +58,9 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 
 	@Override
 	public List<Elem> onBackground(Params params) throws Exception {
-		if (dataPage == null)
+		if (refresh) {
 			newPageData(params);
+		}
 		return IteratorUtils.iteratorNextPage(dataPage);
 	}
 
@@ -72,6 +74,10 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 	@Override
 	public void onSuccess(List<Elem> result) {
 		super.onSuccess(result);
+		if (refresh) {
+			datas.clear();
+			refresh = false;
+		}
 		datas.addAll(result);
 		baseAdapter.notifyDataSetChanged();
 		moreList.requestLoadingFinish();
@@ -92,8 +98,9 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 	public void onRefreshStarted(View view) {
 		if (datas == null)
 			datas = new ArrayList<Elem>();
-		datas.clear();
+		// datas.clear();
 		dataPage = null;// ¸³¿ÕÖµ¸üÐÂ
+		refresh = true;
 	}
 
 	public BaseAdapter getBaseAdapter() {

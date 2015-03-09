@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
-import com.gdestiny.github.async.DialogTask;
 import com.gdestiny.github.ui.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.fragment.EventsUserReceivedFragment;
 import com.gdestiny.github.ui.fragment.FollowerFragment;
@@ -20,7 +19,6 @@ import com.gdestiny.github.ui.fragment.RepositoryFragment;
 import com.gdestiny.github.ui.view.ResideMenu;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
-import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class HomeActivity extends BaseFragmentActivity implements
@@ -110,30 +108,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 			changeOrNewFragment(v);
 			break;
 		case R.id.menu_follower:
-			// changeOrNewFragment(v);
-			close = false;
-			new DialogTask<Void, Void>(context) {
-
-				@Override
-				public void onPrev() {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public Void onBackground(Void params) throws Exception {
-					// TODO Auto-generated method stub
-					TestUtils.interrupt(5000);
-					return null;
-				}
-
-				@Override
-				public void onSuccess(Void result) {
-					// TODO Auto-generated method stub
-
-				}
-			}.setTitle("lodaing test").setLoadingMessage("test message")
-					.execute(null);
+			changeOrNewFragment(v);
 			break;
 		case R.id.menu_following:
 			changeOrNewFragment(v);
@@ -148,7 +123,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 			break;
 		case R.id.menu_gists:
 			close = false;
-			IntentUtils.start(context, CommitDetailActivity.class);
+			IntentUtils.start(context, UserNavigationActivity.class);
 			break;
 		}
 		if (close)
@@ -177,7 +152,8 @@ public class HomeActivity extends BaseFragmentActivity implements
 					newFragment = new RepositoryFragment();
 					break;
 				case R.id.menu_news:
-					newFragment = new EventsUserReceivedFragment();
+					newFragment = new EventsUserReceivedFragment(
+							GitHubApplication.getUser().getLogin());
 					break;
 				case R.id.menu_follower:
 					newFragment = new FollowerFragment();

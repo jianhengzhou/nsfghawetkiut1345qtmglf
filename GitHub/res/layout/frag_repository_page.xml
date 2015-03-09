@@ -9,18 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/following"
-            android:textSize="25sp" />
-
-        <ListView
-            android:id="@+id/repository_list"
+        <com.gdestiny.github.ui.view.MoreListView
+            android:id="@+id/list"
             style="@style/normal_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
-        </ListView>
+        </com.gdestiny.github.ui.view.MoreListView>
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
 
 </RelativeLayout>

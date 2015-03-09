@@ -20,6 +20,10 @@
     <string name="events_l">events</string>
     <string name="commit">commit</string>
     <string name="issues">issues</string>
+    <!-- navigation tab -->
+    <string name="tab_repository">repositoty</string>
+    <string name="tab_follower">follower</string>
+    <string name="tab_following">following</string>
 
     <!-- sort menu -->
     <string name="all">All</string>
@@ -46,5 +50,7 @@
     <!-- issue detail activiy -->
     <string name="edit_issue">Edit Issue</string>
     <string name="comment">Comment</string>
+    <string name="follow">follow</string>
+    <string name="unfollow">unfollow</string>
 
 </resources>

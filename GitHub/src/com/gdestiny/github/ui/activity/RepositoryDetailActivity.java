@@ -130,12 +130,12 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 		titlebar.setLeftLayout(repository.getOwner().getAvatarUrl(),
 				repository.getName(), repository.getOwner().getLogin());
 		fragments.add(new RepositoryCodeFragment());
-		fragments.add(new RepositoryEventFragment());
 		fragments.add(new RepositoryCommitFragment());
+		fragments.add(new RepositoryEventFragment());
 
 		indicatorView.add(R.string.code, R.drawable.common_code_white)
-				.add(R.string.events_l, R.drawable.tab_news_white)
-				.add(R.string.commit, R.drawable.common_commit_white);
+				.add(R.string.commit, R.drawable.common_commit_white)
+				.add(R.string.events_l, R.drawable.tab_news_white);
 		if (repository.isHasIssues()) {
 			fragments.add(new RepositoryIssuesFragment());
 			indicatorView.add(R.string.issues, R.drawable.circle_issue_white);

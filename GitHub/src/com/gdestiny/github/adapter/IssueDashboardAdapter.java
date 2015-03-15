@@ -58,7 +58,7 @@ public class IssueDashboardAdapter extends BaseAdapter {
 		Holder holder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
-					R.layout.item_issue, null);
+					R.layout.item_issue_dashboard, null);
 			holder = new Holder(convertView);
 			convertView.setTag(holder);
 		} else {
@@ -85,6 +85,7 @@ public class IssueDashboardAdapter extends BaseAdapter {
 
 		holder.name.setText(issue.getUser().getLogin());
 		holder.comment.setText(issue.getComments() + "");
+		holder.repo.setText(issue.getRepository().generateId());
 		// 遇到博客类issue，body过大时加载缓慢
 		// String content = issue.getBody();
 		// holder.content.setText(content.length() > 50 ? issue.getBody()
@@ -110,6 +111,7 @@ public class IssueDashboardAdapter extends BaseAdapter {
 		TextView title;
 		TextView date;
 		TextView comment;
+		TextView repo;
 		LabelColorView colorView;
 
 		// TextView content;
@@ -121,6 +123,7 @@ public class IssueDashboardAdapter extends BaseAdapter {
 			title = (TextView) v.findViewById(R.id.title);
 			date = (TextView) v.findViewById(R.id.date);
 			comment = (TextView) v.findViewById(R.id.comment);
+			repo = (TextView) v.findViewById(R.id.repo);
 			colorView = (LabelColorView) v.findViewById(R.id.color_view);
 			// content = (TextView) v.findViewById(R.id.content);
 		}

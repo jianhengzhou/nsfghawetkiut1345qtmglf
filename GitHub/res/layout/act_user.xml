@@ -1,18 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.gdestiny.github.ui.view.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="true"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true" >
 
-    <ImageView
-        android:id="@+id/avatar"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/app_name"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin16"
-        android:src="@drawable/ic_launcher" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/common_user_background" >
 
-    
-</RelativeLayout>
+        <com.gdestiny.github.ui.view.ImageViewEx
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin16"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_avatar"
+            app:sriv_border_color="@drawable/selector_common_image_border"
+            app:sriv_border_width="3dp"
+            app:sriv_oval="true" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/avatar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin4"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text22"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/login_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/margin16"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text18" />
+    </RelativeLayout>
+
+</com.gdestiny.github.ui.view.ObservableScrollView>

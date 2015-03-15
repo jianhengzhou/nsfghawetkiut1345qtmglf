@@ -9,6 +9,7 @@ import static org.eclipse.egit.github.core.service.IssueService.SORT_UPDATED;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.IssueService;
@@ -89,16 +90,23 @@ public class IssueDashboardIssueFragment extends
 		super.onResultOk(requestCode, data);
 		if (requestCode == Constants.Request.ISSUE_DETAIL) {
 			GLog.sysout("ISSUE_DETAI");
-			RepositoryIssue issue = (RepositoryIssue) data
+			Issue issue = (Issue) data
 					.getSerializableExtra(Constants.Extra.ISSUE);
 			int position = data.getIntExtra(Constants.Extra.POSITION, -1);
 			if (issue != null && position >= 0) {
 				// IssueUtils.assignMain(issueAdapter.getDatas().get(position),
 				// issue);
-				issue.setRepository(issueAdapter.getDatas().get(position)
-						.getRepository());
+				RepositoryIssue repoIssue = issueAdapter.getDatas().get(
+						position);
+				repoIssue.setComments(issue.getComments());
+				repoIssue.setTitle(issue.getTitle());
+				repoIssue.setAssignee(issue.getAssignee());
+				repoIssue.setLabels(issue.getLabels());
+				repoIssue.setMilestone(issue.getMilestone());
+				repoIssue.setBodyHtml(issue.getBodyHtml());
+
 				issueAdapter.getDatas().remove(position);
-				issueAdapter.getDatas().add(position, issue);
+				issueAdapter.getDatas().add(position, repoIssue);
 				issueAdapter.notifyDataSetChanged();
 			}
 		}

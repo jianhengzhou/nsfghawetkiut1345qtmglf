@@ -15,6 +15,7 @@ import com.gdestiny.github.ui.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.fragment.EventsUserReceivedFragment;
 import com.gdestiny.github.ui.fragment.FollowerFragment;
 import com.gdestiny.github.ui.fragment.FollowingFragment;
+import com.gdestiny.github.ui.fragment.GistFragment;
 import com.gdestiny.github.ui.fragment.IssueDashboardFragment;
 import com.gdestiny.github.ui.fragment.LeftMenuFragment;
 import com.gdestiny.github.ui.fragment.RepositoryFragment;
@@ -55,6 +56,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 
 		currentFragment = new RepositoryFragment();
 		currentFragmentTag = getResources().getString(R.string.repository);
+		getTitlebar().setTitleText(currentFragmentTag);
 		changeFragment(R.id.home_frame, null, currentFragment,
 				currentFragmentTag);
 	}
@@ -101,6 +103,9 @@ public class HomeActivity extends BaseFragmentActivity implements
 		else if (currentFragment instanceof IssueDashboardFragment) {
 			hideHeaderView(((IssueDashboardFragment) currentFragment)
 					.getCurrentFragment());
+		} else if (currentFragment instanceof GistFragment) {
+			hideHeaderView(((GistFragment) currentFragment)
+					.getCurrentFragment());
 		}
 	}
 
@@ -109,6 +114,9 @@ public class HomeActivity extends BaseFragmentActivity implements
 			showRefreshHeader((BaseLoadFragment<?, ?>) currentFragment);
 		else if (currentFragment instanceof IssueDashboardFragment) {
 			showRefreshHeader(((IssueDashboardFragment) currentFragment)
+					.getCurrentFragment());
+		} else if (currentFragment instanceof GistFragment) {
+			showRefreshHeader(((GistFragment) currentFragment)
 					.getCurrentFragment());
 		}
 	}
@@ -124,6 +132,8 @@ public class HomeActivity extends BaseFragmentActivity implements
 		boolean close = true;
 		switch (v.getId()) {
 		case R.id.menu_avatar:
+			close = false;
+			IntentUtils.start(context, UserActivity.class);
 			break;
 		case R.id.menu_repository:
 			changeOrNewFragment(v);
@@ -149,8 +159,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 			IntentUtils.start(context, LoginActivity.class);
 			break;
 		case R.id.menu_gists:
-			close = false;
-			IntentUtils.start(context, UserNavigationActivity.class);
+			changeOrNewFragment(v);
 			break;
 		}
 		if (close)
@@ -190,6 +199,9 @@ public class HomeActivity extends BaseFragmentActivity implements
 					break;
 				case R.id.menu_issue:
 					newFragment = new IssueDashboardFragment();
+					break;
+				case R.id.menu_gists:
+					newFragment = new GistFragment();
 					break;
 				}
 			}

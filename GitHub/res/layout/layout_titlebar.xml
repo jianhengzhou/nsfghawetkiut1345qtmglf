@@ -87,7 +87,6 @@
                     android:layout_weight="1.0"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="@string/repository"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text18" />
 

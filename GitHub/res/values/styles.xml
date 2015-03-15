@@ -31,6 +31,9 @@
         <item name="ptrHeaderBackground">@color/common_icon_blue</item>
         <item name="ptrHeaderTitleTextAppearance">@style/TextAppearance.Custom.Pull_Text</item>
         <item name="ptrProgressBarColor">@color/common_title_refresh_blue</item>
+        <item name="ptrPullText">@string/pull_to_refresh_pull_label</item>
+        <item name="ptrRefreshingText">@string/pull_to_refresh_refreshing_label</item>
+        <item name="ptrReleaseText">@string/pull_to_refresh_release_label</item>
     </style>
 
     <style name="TextAppearance.Custom.Pull_Text" parent="android:TextAppearance.Large.Inverse">

@@ -19,7 +19,7 @@ import com.gdestiny.github.ui.view.ResideMenu;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.GLog;
 
-public class IssueDashboardFragment extends BaseFragment {
+public class GistFragment extends BaseFragment {
 
 	private ResideMenu resideMenu;
 	private ViewPager viewpager;
@@ -35,7 +35,7 @@ public class IssueDashboardFragment extends BaseFragment {
 	@Override
 	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		setContentView(inflater, R.layout.frag_issue_dashboard);
+		setContentView(inflater, R.layout.frag_gist);
 	}
 
 	@Override
@@ -83,9 +83,9 @@ public class IssueDashboardFragment extends BaseFragment {
 
 	@Override
 	protected void initData() {
-		indicatorView.add(R.string.created, R.drawable.common_created_white)
-				.add(R.string.assigned, R.drawable.common_assigned_white)
-				.add(R.string.mentioned, R.drawable.common_mention_white);
+		indicatorView.add(R.string.mine, R.drawable.common_people_white)
+				.add(R.string.star, R.drawable.common_star_white)
+				.add(R.string._all, R.drawable.common_all_white);
 
 		fragments.add(new IssueDashboardIssueFragment(
 				IssueService.FILTER_CREATED));

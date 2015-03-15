@@ -60,4 +60,8 @@
     <string name="assigned">assigned</string>
     <string name="mentioned">mentioned</string>
 
+    <!-- gist dashboard -->
+    <string name="mine">mine</string>
+    <string name="_all">all</string>
+
 </resources>

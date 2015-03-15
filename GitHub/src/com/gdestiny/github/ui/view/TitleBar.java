@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow.StatusPopUpWindowItemClickListener;
+import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
@@ -53,8 +54,8 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 	private void initStatusPopup() {
 		if (menuPopup != null)
 			return;
-		menuPopup = new StatusPopUpWindow(getContext(), 350,
-				ViewGroup.LayoutParams.WRAP_CONTENT,
+		menuPopup = new StatusPopUpWindow(getContext(), AndroidUtils.dpToPxInt(
+				getContext(), 180), ViewGroup.LayoutParams.WRAP_CONTENT,
 				R.style.titlebar_popupwindow_anim);
 		menuPopup.setOnDismissListener(new OnDismissListener() {
 
@@ -107,6 +108,12 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 	public void hideRight() {
 		ViewUtils.setVisibility(rightBtn, View.GONE);
 		ViewUtils.setVisibility(menuBtn, View.GONE);
+	}
+
+	public void hideLeft() {
+		ViewUtils.setVisibility(titleBackIcon, View.GONE);
+		ViewUtils.setVisibility(titleBackText, View.GONE);
+		ViewUtils.setVisibility(titleBackTextSecondly, View.GONE);
 	}
 
 	public void showStatusBtn() {

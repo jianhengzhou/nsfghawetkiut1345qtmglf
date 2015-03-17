@@ -29,6 +29,8 @@ public class IssueDashboardFragment extends BaseFragment {
 	private SimplePageAdapter adapter;
 
 	public BaseLoadFragment<?, ?> getCurrentFragment() {
+		if (indicatorView.getCurrentPosition() >= fragments.size())
+			return null;
 		return fragments.get(indicatorView.getCurrentPosition());
 	}
 

@@ -3,7 +3,6 @@ package com.gdestiny.github.ui.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.egit.github.core.service.IssueService;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -29,6 +28,8 @@ public class GistFragment extends BaseFragment {
 	private SimplePageAdapter adapter;
 
 	public BaseLoadFragment<?, ?> getCurrentFragment() {
+		if(indicatorView.getCurrentPosition() >= fragments.size())
+			return null;
 		return fragments.get(indicatorView.getCurrentPosition());
 	}
 
@@ -40,7 +41,7 @@ public class GistFragment extends BaseFragment {
 
 	@Override
 	protected void initView() {
-		viewpager = (ViewPager) findViewById(R.id.viewpager);
+		viewpager = (ViewPager) findViewById(R.id.gist_viewpager);
 		viewpager.setOffscreenPageLimit(3);
 
 		indicatorView = (IndicatorView) findViewById(R.id.indicator);
@@ -87,24 +88,21 @@ public class GistFragment extends BaseFragment {
 				.add(R.string.star, R.drawable.common_star_white)
 				.add(R.string._all, R.drawable.common_all_white);
 
-		fragments.add(new IssueDashboardIssueFragment(
-				IssueService.FILTER_CREATED));
-		fragments.add(new IssueDashboardIssueFragment(
-				IssueService.FILTER_ASSIGNED));
-		fragments.add(new IssueDashboardIssueFragment(
-				IssueService.FILTER_MENTIONED));
+		fragments.add(new _EmptyFragment());
+		fragments.add(new _EmptyFragment());
+		fragments.add(new _EmptyFragment());
 
 		adapter = new SimplePageAdapter(
 				((BaseFragmentActivity) context).getSupportFragmentManager(),
 				fragments);
 		viewpager.setAdapter(adapter);
+//		viewpager.setBackgroundColor(getResources().getColor(R.color.common_icon_blue));
 
 		resideMenu = ((HomeActivity) context).getResideMenu();
 	}
 
 	@Override
 	public void initStatusPopup(TitleBar title) {
-		title.hideRight();
 	}
 
 }

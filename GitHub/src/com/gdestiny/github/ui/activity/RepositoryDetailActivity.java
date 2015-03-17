@@ -15,6 +15,7 @@ import com.gdestiny.github.adapter.SimplePageAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.BaseAsyncTask;
 import com.gdestiny.github.async.ForkTask;
+import com.gdestiny.github.async.RepositoryRefreshTask;
 import com.gdestiny.github.async.StarTask;
 import com.gdestiny.github.ui.dialog.StatusPopWindowItem;
 import com.gdestiny.github.ui.fragment.BaseLoadFragment;
@@ -125,6 +126,21 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 		// TODO Auto-generated method stub
 		repository = (Repository) getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
+		if (repository.getOwner() != null) {
+			init();
+		} else {
+			new RepositoryRefreshTask(context, repository) {
+
+				@Override
+				public void onSuccess(Repository result) {
+					repository = result;
+					init();
+				}
+			}.execute(GitHubApplication.getClient());
+		}
+	}
+
+	private void init() {
 		titlebar.setLeftLayout(repository.getOwner().getAvatarUrl(),
 				repository.getName(), repository.getOwner().getLogin());
 		fragments.add(new RepositoryCodeFragment());

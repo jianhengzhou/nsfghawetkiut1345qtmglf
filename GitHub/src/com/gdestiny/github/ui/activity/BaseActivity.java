@@ -19,7 +19,6 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.gdestiny.github.R;
 import com.gdestiny.github.ui.view.TitleBar;
-import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 
@@ -93,7 +92,7 @@ public abstract class BaseActivity extends SherlockActivity implements
 				onRightBtn();
 			}
 		});
-		AndroidUtils.initMiBar(this);
+		//AndroidUtils.initMiBar(this);
 	}
 
 	@Override

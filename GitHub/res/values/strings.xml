@@ -34,6 +34,7 @@
     <!-- test test test test test test -->
     <string name="name">gdestiny</string>
     <string name="test_title">test title int new issue</string>
+    <string name="todo">TODO</string>
 
     <!-- error -->
     <string name="login_error">The account or password cannot be empty</string>

@@ -24,6 +24,7 @@ import com.gdestiny.github.app.DefaultClient;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.GitHubTask;
 import com.gdestiny.github.utils.Constants;
+import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.SnappyDBUtils;
 import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
@@ -53,7 +54,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		super.initActionBar();
 		titlebar.setTitleText(R.string.login);
 		titlebar.hideRight();
-		ViewUtils.setVisibility(titlebar.getTitleBackIcon(),View.GONE);
+		ViewUtils.setVisibility(titlebar.getTitleBackIcon(), View.GONE);
 	}
 
 	@Override
@@ -175,7 +176,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			Intent intent = new Intent();
 			intent.setAction("android.intent.action.VIEW");
 			intent.setData(Uri.parse(Constants.GIT_JOIN));
-			startActivity(intent);
+			// startActivity(intent);
+			IntentUtils.create(context, WebViewActivity.class)
+					.putExtra(Constants.Extra.URL, Constants.GIT_JOIN).start();
 			break;
 		case R.id.account_del:
 			if (!TextUtils.isEmpty(account.getText()))

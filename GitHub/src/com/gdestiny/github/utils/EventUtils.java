@@ -1,9 +1,11 @@
 package com.gdestiny.github.utils;
 
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.event.DeletePayload;
 import org.eclipse.egit.github.core.event.Event;
+import org.eclipse.egit.github.core.event.EventRepository;
 import org.eclipse.egit.github.core.event.IssueCommentPayload;
 import org.eclipse.egit.github.core.event.IssuesPayload;
 import org.eclipse.egit.github.core.event.MemberPayload;
@@ -18,6 +20,33 @@ public class EventUtils {
 
 	private EventUtils() {
 		throw new AssertionError();
+	}
+
+	public static Repository getRepository(Event event) {
+		EventRepository er = event.getRepo();
+
+		if (er == null)
+			return null;
+
+		String id = er.getName();
+		int slash = id.indexOf('/');
+		if (slash == -1 || slash + 1 >= id.length())
+			return null;
+
+		Repository result = new Repository();
+		result.setId(er.getId());
+		result.setName(id.substring(slash + 1));
+		String login = id.substring(0, slash);
+		// Use actor if it matches login parsed from repository id
+		User actor = event.getActor();
+		User org = event.getOrg();
+		if (actor != null && login.equals(actor.getLogin()))
+			result.setOwner(actor);
+		else if (org != null && login.equals(org.getLogin()))
+			result.setOwner(org);
+		else
+			result.setOwner(new User().setLogin(id.substring(0, slash)));
+		return result;
 	}
 
 	public static User getEventUser(Event event) {

@@ -21,6 +21,7 @@ public class Constants {
 		public static final String COMMIT_LINE = "commitLine";
 		public static final String COMMENT_COUNT = "comment_count";
 		public static final String USER = "user";
+		public static final String ID = "id";
 	}
 
 	public final static class Request {

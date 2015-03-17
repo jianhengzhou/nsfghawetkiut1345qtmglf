@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical" >
+
+    <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pull_refresh_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" >
+    </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/todo"
+        android:textSize="32sp"
+        android:textColor="@color/common_icon_blue" />
+
+</LinearLayout>

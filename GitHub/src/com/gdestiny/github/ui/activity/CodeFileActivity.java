@@ -26,6 +26,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
@@ -262,6 +263,10 @@ public class CodeFileActivity extends
 		String str = new String(data, "utf-8");
 		tv.setText(str);
 		tv.setHorizontallyScrolling(true);
+
+		ScrollView scroll = (ScrollView) findViewById(R.id.scrollview);
+		scroll.setFillViewport(true);
+		scroll.setHorizontalScrollBarEnabled(true);
 	}
 
 	@Override

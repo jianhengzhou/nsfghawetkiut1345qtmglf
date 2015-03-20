@@ -1,8 +1,8 @@
 package com.gdestiny.github.ui.fragment;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -13,6 +13,8 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.SimplePageAdapter;
 import com.gdestiny.github.ui.activity.BaseFragmentActivity;
 import com.gdestiny.github.ui.activity.HomeActivity;
+import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
+import com.gdestiny.github.ui.fragment.GistListFragment.GistType;
 import com.gdestiny.github.ui.view.IndicatorView;
 import com.gdestiny.github.ui.view.ResideMenu;
 import com.gdestiny.github.ui.view.TitleBar;
@@ -28,7 +30,7 @@ public class GistFragment extends BaseFragment {
 	private SimplePageAdapter adapter;
 
 	public BaseLoadFragment<?, ?> getCurrentFragment() {
-		if(indicatorView.getCurrentPosition() >= fragments.size())
+		if (indicatorView.getCurrentPosition() >= fragments.size())
 			return null;
 		return fragments.get(indicatorView.getCurrentPosition());
 	}
@@ -86,23 +88,57 @@ public class GistFragment extends BaseFragment {
 	protected void initData() {
 		indicatorView.add(R.string.mine, R.drawable.common_people_white)
 				.add(R.string.star, R.drawable.common_star_white)
-				.add(R.string._all, R.drawable.common_all_white);
+				.add(R.string._public, R.drawable.common_all_white);
 
-		fragments.add(new _EmptyFragment());
-		fragments.add(new _EmptyFragment());
-		fragments.add(new _EmptyFragment());
+		fragments.add(new GistListFragment(GistType.MINE));
+		fragments.add(new GistListFragment(GistType.STAR));
+		fragments.add(new GistListFragment(GistType.PUBLIC));
 
 		adapter = new SimplePageAdapter(
 				((BaseFragmentActivity) context).getSupportFragmentManager(),
 				fragments);
 		viewpager.setAdapter(adapter);
-//		viewpager.setBackgroundColor(getResources().getColor(R.color.common_icon_blue));
 
 		resideMenu = ((HomeActivity) context).getResideMenu();
 	}
 
 	@Override
-	public void initStatusPopup(TitleBar title) {
+	public void initStatusPopup(final TitleBar title) {
+		title.showStatusBtn();
+		if (itemmap == null) {
+			itemmap = new LinkedHashMap<Integer, Integer>();
+			itemmap.put(R.string.new_gist, R.drawable.common_add);
+			itemmap.put(R.string.random, R.drawable.common_random_grey);
+			itemmap.put(R.string.refresh, R.drawable.common_status_refresh);
+		}
+		if (menuListener == null) {
+			menuListener = new StatusPopUpWindow.StatusPopUpWindowItemClickListener() {
+
+				@Override
+				public void onitemclick(int titleId) {
+					GLog.sysout(context.getResources().getString(titleId) + "");
+					boolean dismiss = true;
+					switch (titleId) {
+					case R.string.refresh:
+						if (getCurrentFragment().isLoading()) {
+							GLog.sysout("update is not complete");
+							return;
+						}
+						getCurrentFragment().onRefreshStarted(null);
+						break;
+					case R.string.random:
+						break;
+					case R.string.new_gist:
+						break;
+					default:
+						break;
+					}
+					if (dismiss)
+						title.dissmissStatus();
+				}
+			};
+		}
+		title.setStatusItem(context, itemmap, menuListener);
 	}
 
 }

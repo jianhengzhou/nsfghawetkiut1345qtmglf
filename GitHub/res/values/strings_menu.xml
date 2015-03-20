@@ -62,6 +62,8 @@
 
     <!-- gist dashboard -->
     <string name="mine">mine</string>
-    <string name="_all">all</string>
+    <string name="_public">public</string>
+    <string name="new_gist">New Gist</string>
+    <string name="random">Random</string>
 
 </resources>

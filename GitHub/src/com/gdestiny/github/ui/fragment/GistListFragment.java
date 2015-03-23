@@ -14,8 +14,10 @@ import android.widget.AdapterView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.GistAdapter;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.ui.activity.GistDetailActivity;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
+import com.gdestiny.github.utils.IntentUtils;
 
 public class GistListFragment extends BaseLoadPageFragment<Gist, GitHubClient> {
 
@@ -90,13 +92,9 @@ public class GistListFragment extends BaseLoadPageFragment<Gist, GitHubClient> {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// IntentUtils
-		// .create(context, IssueDetailActivity.class)
-		// .putExtra(Constants.Extra.ISSUE, getDatas().get(position))
-		// .putExtra(Constants.Extra.POSITION, position)
-		// .putExtra(Constants.Extra.REPOSITORY,
-		// getDatas().get(position).getRepository())
-		// .startForResult(this, Constants.Request.ISSUE_DETAIL);
+		IntentUtils.create(context, GistDetailActivity.class)
+				.putExtra(Constants.Extra.GIST, getDatas().get(position))
+				.start();
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.User;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
+import com.gdestiny.github.utils.ViewUtils;
 
 public class GistAdapter extends BaseAdapter {
 
@@ -67,17 +69,28 @@ public class GistAdapter extends BaseAdapter {
 
 			holder.name.setText(gist.getUser().getLogin());
 		} else {
-			ImageLoaderUtils.displayImage("",
-					holder.icon, R.drawable.common_anonymous,
-					R.drawable.common_anonymous, true);
-			holder.name.setText("Anonymous");
+			ImageLoaderUtils.displayImage("", holder.icon,
+					R.drawable.common_anonymous, R.drawable.common_anonymous,
+					true);
+			holder.name.setText(R.string.anonymous);
 		}
 		holder.date.setText(TimeUtils.getTime(gist.getCreatedAt().getTime()));
-		holder.content.setText(gist.getDescription());
+
+		String description = gist.getDescription();
+		if (TextUtils.isEmpty(description)) {
+			holder.content.setText("No Description");
+		} else {
+			holder.content.setText(description);
+		}
 		holder.comment.setText(gist.getComments() + "");
 		holder.sha.setText(gist.getId());
 		holder.file.setText(gist.getFiles().size() + "");
 
+		if (gist.isPublic()) {
+			ViewUtils.setVisibility(holder.isPublic, View.GONE);
+		} else {
+			ViewUtils.setVisibility(holder.isPublic, View.VISIBLE);
+		}
 		return convertView;
 	}
 
@@ -98,6 +111,7 @@ public class GistAdapter extends BaseAdapter {
 		TextView comment;
 		TextView file;
 		TextView sha;
+		TextView isPublic;
 
 		public Holder(View v) {
 			icon = (ImageView) v.findViewById(R.id.icon);
@@ -107,6 +121,7 @@ public class GistAdapter extends BaseAdapter {
 			comment = (TextView) v.findViewById(R.id.comment);
 			file = (TextView) v.findViewById(R.id.file);
 			sha = (TextView) v.findViewById(R.id.sha);
+			isPublic = (TextView) v.findViewById(R.id.isPublic);
 		}
 	}
 }

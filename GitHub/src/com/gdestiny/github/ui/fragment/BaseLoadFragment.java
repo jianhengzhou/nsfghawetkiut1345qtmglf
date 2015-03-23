@@ -7,6 +7,7 @@ import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -72,9 +73,9 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 	public void noData(boolean noData) {
 		this.noData = noData;
 		if (noData) {
-			ViewUtils.setVisibility(noDataView, View.VISIBLE, R.anim.alpha_in);
+			ViewUtils.setVisibility(noDataView, View.VISIBLE);
 		} else {
-			ViewUtils.setVisibility(noDataView, View.GONE, R.anim.alpha_in);
+			ViewUtils.setVisibility(noDataView, View.GONE);
 		}
 	}
 
@@ -100,8 +101,12 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 		ex.printStackTrace();
 		GLog.sysout("onException");
 		dismissProgress();
+
+		String message = ex.getMessage();
+		if (TextUtils.isEmpty(message))
+			message = "Unknow Error";
 		if (exception) {
-			ToastUtils.show(context, ex.getMessage());
+			ToastUtils.show(context, message);
 			exception = false;
 		}
 	}

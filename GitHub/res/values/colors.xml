@@ -24,6 +24,7 @@
     <color name="common_icon_grey">#a9b7b7</color>
     <color name="common_light_grey">#aab7b7</color>
     <color name="common_light_blue">#aa56abe4</color>
+    <color name="common_light_orange">#f9efc7</color>
     <color name="common_title_refresh_blue">#aa56abe4</color>
     <color name="common_title_back_layout">#55ffffff</color>
     <color name="common_indicator_pressed">#9956abe4</color>

@@ -22,6 +22,8 @@ public class Constants {
 		public static final String COMMENT_COUNT = "comment_count";
 		public static final String USER = "user";
 		public static final String ID = "id";
+		public static final String GIST = "gist";
+		public static final String FILE_NAME = "file_name";
 	}
 
 	public final static class Request {
@@ -34,6 +36,7 @@ public class Constants {
 		public static final int COMMIT_COMMENT = 6;
 		public static final int RAW_COMMIT_COMMENT = 7;
 		public static final int COMMIT_DETAIL = 8;
+		public static final int NEW_GIST = 9;
 	}
 
 	public static final boolean isDebug = true;

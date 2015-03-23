@@ -171,6 +171,16 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 		return this;
 	}
 
+	public TitleBar setTitleIcon(int id) {
+		if (id <= 0) {
+			ViewUtils.setVisibility(titleBackIcon, View.GONE);
+		} else {
+			ViewUtils.setVisibility(titleBackIcon, View.VISIBLE);
+			titleBackIcon.setImageResource(id);
+		}
+		return this;
+	}
+
 	public TitleBar setTitleText(String text) {
 		if (TextUtils.isEmpty(text)) {
 			ViewUtils.setVisibility(titleBackText, View.GONE);
@@ -182,7 +192,12 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 	}
 
 	public TitleBar setTitleText(int id) {
-		titleBackText.setText(id);
+		if (id <= 0) {
+			ViewUtils.setVisibility(titleBackText, View.GONE);
+		} else {
+			ViewUtils.setVisibility(titleBackText, View.VISIBLE);
+			titleBackText.setText(id);
+		}
 		return this;
 	}
 
@@ -197,7 +212,12 @@ public class TitleBar extends LinearLayout implements View.OnClickListener {
 	}
 
 	public TitleBar setTitleTextSecondly(int id) {
-		titleBackTextSecondly.setText(id);
+		if (id <= 0) {
+			ViewUtils.setVisibility(titleBackTextSecondly, View.GONE);
+		} else {
+			ViewUtils.setVisibility(titleBackTextSecondly, View.VISIBLE);
+			titleBackTextSecondly.setText(id);
+		}
 		return this;
 	}
 

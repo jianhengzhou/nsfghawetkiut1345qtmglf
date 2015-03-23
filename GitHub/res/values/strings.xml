@@ -27,7 +27,12 @@
     <string name="tips">Markdown supported, you can long press the OK button to preview</string>
     <string name="comment_on_the_line">Comment On The Line</string>
     <string name="view_entire_file">View Entire File</string>
-    
+    <string name="warning">Warning</string>
+    <string name="warning_delete">Sure To Delete?</string>
+    <string name="file_name_">File Name:</string>
+    <string name="file_content_">File Content:</string>
+    <string name="anonymous">Anonymous</string>
+    <string name="add_file">Add File</string>
     <string name="pull_to_refresh_pull_label">Pull To Refresh</string>
     <string name="pull_to_refresh_release_label">Release To Refresh…</string>
     <string name="pull_to_refresh_refreshing_label">Loading…</string>
@@ -35,6 +40,10 @@
     <string name="name">gdestiny</string>
     <string name="test_title">test title int new issue</string>
     <string name="todo">TODO</string>
+    <string name="is_public">Is Public</string>
+    <string name="secret">SECRET</string>
+    <string name="gist_tips">When is private, no one can search, but can access it with a url given by you</string>
+    <string name="conflict_filename">Conflict In File Name</string>
 
     <!-- error -->
     <string name="login_error">The account or password cannot be empty</string>
@@ -68,5 +77,7 @@
     <string name="loading_preview">loading preview</string>
     <string name="committing_comment">committing comment</string>
     <string name="commen_succeed">Comment succeed</string>
+    <string name="newing_gist">creating gist</string>
+    <string name="new_gist_succeed">New Gist succeed</string>
 
 </resources>

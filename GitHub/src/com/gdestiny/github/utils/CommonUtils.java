@@ -78,6 +78,8 @@ public class CommonUtils {
 	}
 
 	public static boolean isAuthUser(User user) {
+		if (user == null)
+			return false;
 		return GitHubApplication.getUser().getLogin().equals(user.getLogin());
 	}
 }

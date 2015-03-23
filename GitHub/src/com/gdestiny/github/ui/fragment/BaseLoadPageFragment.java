@@ -90,8 +90,10 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 	public void onException(Exception ex) {
 		super.onException(ex);
 		moreList.requestLoadingFinish();
-		moreList.requestNoMore(true);
-		noData(datas == null || datas.size() == 0);
+		if (datas == null || datas.size() == 0) {
+			moreList.requestNoMore(true);
+			noData(true);
+		}
 	}
 
 	@Override

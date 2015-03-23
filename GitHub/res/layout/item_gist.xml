@@ -69,10 +69,24 @@
         android:textSize="@dimen/text12" />
 
     <TextView
+        android:id="@+id/sha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/date"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin4"
+        android:layout_toRightOf="@id/icon"
+        android:singleLine="true"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text14" />
+
+    <TextView
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name"
+        android:layout_below="@id/sha"
+        android:layout_marginBottom="@dimen/margin8"
         android:layout_marginLeft="@dimen/margin16"
         android:layout_marginRight="@dimen/margin16"
         android:layout_marginTop="@dimen/margin4"
@@ -83,17 +97,21 @@
         android:textSize="@dimen/text16" />
 
     <TextView
-        android:id="@+id/sha"
+        android:id="@+id/isPublic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/content"
         android:layout_marginBottom="@dimen/margin8"
         android:layout_marginLeft="@dimen/margin16"
         android:layout_marginRight="@dimen/margin16"
-        android:layout_marginTop="@dimen/margin4"
         android:layout_toRightOf="@id/icon"
-        android:singleLine="true"
-        android:textColor="@color/common_icon_grey"
-        android:textSize="@dimen/text14" />
+        android:background="@color/common_light_orange"
+        android:paddingBottom="@dimen/margin2"
+        android:paddingLeft="@dimen/margin4"
+        android:paddingRight="@dimen/margin4"
+        android:paddingTop="@dimen/margin2"
+        android:text="@string/secret"
+        android:textColor="#ad892a"
+        android:textSize="@dimen/text10" />
 
 </RelativeLayout>

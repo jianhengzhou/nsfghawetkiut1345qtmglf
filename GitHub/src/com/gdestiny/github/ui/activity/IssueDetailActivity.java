@@ -26,7 +26,7 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.CommentAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.AsyncImageGetter;
-import com.gdestiny.github.async.DeleteTask;
+import com.gdestiny.github.async.DeleteCommentTask;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.LabelViewGroup;
 import com.gdestiny.github.ui.view.TitleBar;
@@ -200,7 +200,7 @@ public class IssueDetailActivity extends
 			public void onDelete(final Comment comment) {
 				// TODO Auto-generated method stub
 				GLog.sysout("onDelete");
-				new DeleteTask(context, repository, comment) {
+				new DeleteCommentTask(context, repository, comment) {
 
 					@Override
 					public void onSuccess(Boolean result) {

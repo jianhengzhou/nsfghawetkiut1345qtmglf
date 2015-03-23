@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="afterDescendants"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dip"
+        android:background="#dddddd" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin32"
+        android:layout_marginRight="@dimen/margin32"
+        android:layout_marginTop="@dimen/margin16"
+        android:background="@drawable/drawable_corner_top_ligth_blue"
+        android:paddingBottom="@dimen/margin2"
+        android:paddingLeft="@dimen/margin8"
+        android:paddingRight="@dimen/margin8"
+        android:paddingTop="@dimen/margin8" >
+
+        <EditText
+            android:id="@+id/file_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_common_edtitext_background"
+            android:gravity="top|left"
+            android:hint="@string/file_name_"
+            android:padding="@dimen/margin4"
+            android:textColor="@color/common_icon_blue"
+            android:textSize="@dimen/text14" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/margin16"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:background="@drawable/drawable_corner_ligth_blue"
+        android:paddingBottom="@dimen/margin16"
+        android:paddingLeft="@dimen/margin8"
+        android:paddingRight="@dimen/margin8"
+        android:paddingTop="@dimen/margin16" >
+
+        <EditText
+            android:id="@+id/file_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:background="@drawable/selector_common_edtitext_background"
+            android:gravity="top|left"
+            android:hint="@string/content"
+            android:padding="@dimen/margin8"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text18" />
+    </FrameLayout>
+
+</LinearLayout>

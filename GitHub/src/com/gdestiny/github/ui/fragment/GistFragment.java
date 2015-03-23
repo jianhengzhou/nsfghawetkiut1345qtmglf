@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.eclipse.egit.github.core.Gist;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -13,12 +16,15 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.SimplePageAdapter;
 import com.gdestiny.github.ui.activity.BaseFragmentActivity;
 import com.gdestiny.github.ui.activity.HomeActivity;
+import com.gdestiny.github.ui.activity.NewGistActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.fragment.GistListFragment.GistType;
 import com.gdestiny.github.ui.view.IndicatorView;
 import com.gdestiny.github.ui.view.ResideMenu;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
+import com.gdestiny.github.utils.IntentUtils;
 
 public class GistFragment extends BaseFragment {
 
@@ -103,12 +109,26 @@ public class GistFragment extends BaseFragment {
 	}
 
 	@Override
+	public void onResultOk(int requestCode, Intent data) {
+		super.onResultOk(requestCode, data);
+		if (requestCode == Constants.Request.NEW_GIST) {
+			Gist gist = (Gist) data.getSerializableExtra(Constants.Extra.GIST);
+			if (gist != null) {
+				GistListFragment mineFragment = (GistListFragment) fragments
+						.get(0);
+				mineFragment.getDatas().add(0, gist);
+				mineFragment.noData(false);
+				mineFragment.getBaseAdapter().notifyDataSetChanged();
+			}
+		}
+	}
+
+	@Override
 	public void initStatusPopup(final TitleBar title) {
 		title.showStatusBtn();
 		if (itemmap == null) {
 			itemmap = new LinkedHashMap<Integer, Integer>();
 			itemmap.put(R.string.new_gist, R.drawable.common_add);
-			itemmap.put(R.string.random, R.drawable.common_random_grey);
 			itemmap.put(R.string.refresh, R.drawable.common_status_refresh);
 		}
 		if (menuListener == null) {
@@ -129,6 +149,9 @@ public class GistFragment extends BaseFragment {
 					case R.string.random:
 						break;
 					case R.string.new_gist:
+						IntentUtils.create(context, NewGistActivity.class)
+								.startForResult(GistFragment.this,
+										Constants.Request.NEW_GIST);
 						break;
 					default:
 						break;

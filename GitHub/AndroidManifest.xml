@@ -62,6 +62,52 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name="com.gdestiny.github.ui.activity.CommitDetailActivity" />
         <activity android:name="com.gdestiny.github.ui.activity.UserNavigationActivity" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.NewGistActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name="com.gdestiny.github.ui.activity.GistDetailActivity" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.UrlHandleActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:excludeFromRecents="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="github.com"
+                    android:scheme="http" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="github.com"
+                    android:scheme="https" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="gist.github.com"
+                    android:scheme="http" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="gist.github.com"
+                    android:scheme="https" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.gdestiny.github.ui.activity.GistFileActivity" />
     </application>
 
 </manifest>

@@ -85,7 +85,16 @@ public class GistListFragment extends BaseLoadPageFragment<Gist, GitHubClient> {
 	@Override
 	public void onResultOk(int requestCode, Intent data) {
 		super.onResultOk(requestCode, data);
-		if (requestCode == Constants.Request.ISSUE_DETAIL) {
+		if (requestCode == Constants.Request.GIST_DETAIL) {
+			Gist gist = (Gist) data.getSerializableExtra(Constants.Extra.GIST);
+			int position = data.getIntExtra(Constants.Extra.POSITION, -1);
+			if (gist == null) {
+				getDatas().remove(position);
+			} else {
+				getDatas().remove(position);
+				getDatas().add(position, gist);
+			}
+			getBaseAdapter().notifyDataSetChanged();
 		}
 	}
 
@@ -94,7 +103,8 @@ public class GistListFragment extends BaseLoadPageFragment<Gist, GitHubClient> {
 			long id) {
 		IntentUtils.create(context, GistDetailActivity.class)
 				.putExtra(Constants.Extra.GIST, getDatas().get(position))
-				.start();
+				.putExtra(Constants.Extra.POSITION, position)
+				.startForResult(this, Constants.Request.GIST_DETAIL);
 	}
 
 	@Override

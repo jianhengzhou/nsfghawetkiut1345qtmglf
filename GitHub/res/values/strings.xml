@@ -79,5 +79,9 @@
     <string name="commen_succeed">Comment succeed</string>
     <string name="newing_gist">creating gist</string>
     <string name="new_gist_succeed">New Gist succeed</string>
+    <string name="unstaring_gist">unstaring gist</string>
+    <string name="staring_gist">staring gist</string>
+    <string name="forking_gist">forking gist</string>
+    <string name="deleting_gist">deleting gist</string>
 
 </resources>

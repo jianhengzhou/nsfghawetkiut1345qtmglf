@@ -39,7 +39,6 @@ public class NewGistActivity extends BaseFragmentActivity {
 
 	@Override
 	protected void initActionBar(TitleBar titleBar) {
-		// TODO Auto-generated method stub
 		super.initActionBar(titleBar);
 		titleBar.showRightBtn();
 		ImageButton right = titleBar.getRightBtn();
@@ -78,7 +77,24 @@ public class NewGistActivity extends BaseFragmentActivity {
 	@Override
 	protected void initView() {
 		fileLayout = (LinearLayout) findViewById(R.id.file_layout);
-		addFile();
+		View init = findViewById(R.id.init_file);
+		SwipeDismissTouchListener dismissTouch = new SwipeDismissTouchListener(
+				init, null, new SwipeDismissTouchListener.DismissCallbacks() {
+
+					@Override
+					public void onDismiss(View view, Object token) {
+						fileLayout.removeView(view);
+					}
+
+					@Override
+					public boolean canDismiss(Object token) {
+						return fileLayout.getChildCount() > 8;
+					}
+				});
+		init.setOnTouchListener(dismissTouch);
+
+		isPublic = (CheckBox) findViewById(R.id.isPublic);
+		description = (EditText) findViewById(R.id.gist_description);
 		findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -86,8 +102,6 @@ public class NewGistActivity extends BaseFragmentActivity {
 				addFile();
 			}
 		});
-		isPublic = (CheckBox) findViewById(R.id.isPublic);
-		description = (EditText) findViewById(R.id.gist_description);
 	}
 
 	private Map<String, GistFile> getFiles() {

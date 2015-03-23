@@ -108,6 +108,12 @@
             </intent-filter>
         </activity>
         <activity android:name="com.gdestiny.github.ui.activity.GistFileActivity" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.NewGistCommentActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.EditGistCommentActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>

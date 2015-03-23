@@ -14,9 +14,9 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.SimplePageAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.BaseAsyncTask;
-import com.gdestiny.github.async.ForkTask;
+import com.gdestiny.github.async.ForkRepositoryTask;
 import com.gdestiny.github.async.RepositoryRefreshTask;
-import com.gdestiny.github.async.StarTask;
+import com.gdestiny.github.async.StarRepositoryTask;
 import com.gdestiny.github.ui.dialog.StatusPopWindowItem;
 import com.gdestiny.github.ui.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.fragment.RepositoryCodeFragment;
@@ -104,12 +104,19 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 					.putExtra(Constants.Extra.REPOSITORY, repository).start();
 			break;
 		case R.string.star:
-			new StarTask(context, isStarred, repository)
-					.execute(GitHubApplication.getClient());
+			new StarRepositoryTask(context, isStarred, repository) {
+
+				@Override
+				public void onSuccess(Boolean result) {
+					super.onSuccess(result);
+					isStarred = !isStarred;
+					refreshStarPopup(indicatorView.getCurrentPosition());
+				}
+			}.execute(GitHubApplication.getClient());
 			break;
 		case R.string.fork:
-			new ForkTask(context, repository).execute(GitHubApplication
-					.getClient());
+			new ForkRepositoryTask(context, repository)
+					.execute(GitHubApplication.getClient());
 			break;
 		case R.string.share:
 			AndroidUtils.share(context, repository.getName(),

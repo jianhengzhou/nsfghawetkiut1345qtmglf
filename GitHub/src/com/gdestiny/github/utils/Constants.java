@@ -37,6 +37,8 @@ public class Constants {
 		public static final int RAW_COMMIT_COMMENT = 7;
 		public static final int COMMIT_DETAIL = 8;
 		public static final int NEW_GIST = 9;
+		public static final int GIST_DETAIL = 10;
+		public static final int GIST_COMMENT = 11;
 	}
 
 	public static final boolean isDebug = true;

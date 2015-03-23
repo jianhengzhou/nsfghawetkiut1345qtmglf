@@ -81,6 +81,10 @@
                 android:textSize="@dimen/text18" />
         </FrameLayout>
 
+        <include
+            android:id="@+id/init_file"
+            layout="@layout/item_new_gist_file" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dip"

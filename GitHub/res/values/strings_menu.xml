@@ -31,6 +31,7 @@
     <string name="alphabet">alphabet</string>
     <string name="star">Star</string>
     <string name="own">Own</string>
+    <string name="delete">Delete</string>
     <string name="time">Time</string>
     <string name="user">User</string>
     <string name="name">Name</string>

@@ -10,12 +10,12 @@ import com.gdestiny.github.utils.ToastUtils;
 
 import android.content.Context;
 
-public class ForkTask extends DialogTask<GitHubClient, Boolean> {
+public class ForkRepositoryTask extends DialogTask<GitHubClient, Boolean> {
 
 	@SuppressWarnings("unused")
 	private Repository repository;
 
-	public ForkTask(Context context, Repository repository) {
+	public ForkRepositoryTask(Context context, Repository repository) {
 		super(context);
 		this.repository = repository;
 		this.setTitle(repository.getName());

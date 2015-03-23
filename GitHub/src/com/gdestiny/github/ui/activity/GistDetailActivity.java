@@ -1,6 +1,7 @@
 package com.gdestiny.github.ui.activity;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.GistService;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -26,6 +28,14 @@ import android.widget.TextView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.GistItemAdapter;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.DeleteGistCommentTask;
+import com.gdestiny.github.async.DeleteGistTask;
+import com.gdestiny.github.async.ForkGistTask;
+import com.gdestiny.github.async.StarGistTask;
+import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
+import com.gdestiny.github.ui.dialog.StatusPopWindowItem;
+import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.CommonUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
@@ -44,6 +54,10 @@ public class GistDetailActivity extends
 
 	private View stickComment;
 	private View detailLayout;
+	private boolean isStar = false;
+
+	private boolean hasChange = false;
+	private int position;
 
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
@@ -73,13 +87,33 @@ public class GistDetailActivity extends
 
 			@Override
 			public void onEdit(int position, Comment comment) {
-				// TODO Auto-generated method stub
+				IntentUtils
+						.create(context, EditGistCommentActivity.class)
+						.putExtra(Constants.Extra.COMMENT, comment)
+						.putExtra(Constants.Extra.POSITION, position)
+						.putExtra(Constants.Extra.GIST, gist)
+						.startForResult(GistDetailActivity.this,
+								Constants.Request.EDIT_COMMENT);
 			}
 
 			@Override
 			public void onDelete(final Comment comment) {
-				// TODO Auto-generated method stub
-				GLog.sysout("onDelete");
+				new DeleteGistCommentTask(context, gist.getId(), comment) {
+
+					@Override
+					public void onSuccess(Boolean result) {
+						super.onSuccess(result);
+						TextView commentText = (TextView) detailLayout
+								.findViewById(R.id.comment);
+						gist.setComments(gist.getComments() - 1);
+						commentText.setText(gist.getComments() + "");
+
+						hasChange = true;
+
+						comments.remove(comment);
+						gistItemAdapter.notifyDataSetChanged();
+					}
+				}.execute(GitHubApplication.getClient());
 			}
 		});
 		commentList.setAdapter(gistItemAdapter);
@@ -107,6 +141,8 @@ public class GistDetailActivity extends
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				if (position == 0)
+					return;
 				IntentUtils
 						.create(context, GistFileActivity.class)
 						.putExtra(Constants.Extra.GIST, gist)
@@ -169,6 +205,8 @@ public class GistDetailActivity extends
 	protected void initData() {
 		// TODO Auto-generated method stub
 		gist = (Gist) getIntent().getSerializableExtra(Constants.Extra.GIST);
+		position = getIntent().getIntExtra(Constants.Extra.POSITION, -1);
+
 		User user = gist.getUser();
 		if (user != null) {
 			getTitlebar().setLeftLayout(user.getAvatarUrl(), gist.getId(),
@@ -180,6 +218,11 @@ public class GistDetailActivity extends
 		}
 		updateFiles();
 		updateDetail(gist);
+
+		if (CommonUtils.isAuthUser(gist.getUser()))
+			getTitlebar().getStatusPopup().addItem(context, 0, R.string.delete,
+					R.drawable.common_delete);
+
 		execute(GitHubApplication.getClient());
 	}
 
@@ -194,19 +237,22 @@ public class GistDetailActivity extends
 	}
 
 	private void openComment() {
-		IntentUtils.create(context, NewCommentActivity.class)
-				.putExtra(Constants.Extra.GIST, gist).start();
+		IntentUtils.create(context, NewGistCommentActivity.class)
+				.putExtra(Constants.Extra.GIST, gist)
+				.startForResult(this, Constants.Request.GIST_COMMENT);
 	}
 
 	@Override
 	public List<Comment> onBackground(GitHubClient params) throws Exception {
 		GistService service = new GistService(params);
+		isStar = service.isStarred(gist.getId());
 		return service.getComments(gist.getId());
 	}
 
 	@Override
 	public void onSuccess(List<Comment> result) {
 		super.onSuccess(result);
+		refreshStarPopup();
 		comments = result;
 		gistItemAdapter
 				.setIsCollaborator(CommonUtils.isAuthUser(gist.getUser()));
@@ -216,8 +262,125 @@ public class GistDetailActivity extends
 
 	@Override
 	public void onRefreshStarted(View view) {
-		// TODO Auto-generated method stub
 		execute(GitHubApplication.getClient());
+	}
+
+	private void refreshStarPopup() {
+		StatusPopWindowItem item = null;
+		if (CommonUtils.isAuthUser(gist.getUser()))
+			item = getTitlebar().getStatusPopup().getAction(1);
+		else
+			item = getTitlebar().getStatusPopup().getAction(0);
+		if (isStar)
+			item.mTitle = getResources().getString(R.string.unstar);
+		else
+			item.mTitle = getResources().getString(R.string.star);
+	}
+
+	@Override
+	public void finish() {
+		if (hasChange) {
+			IntentUtils.create(context).putExtra(Constants.Extra.GIST, gist)
+					.putExtra(Constants.Extra.POSITION, position).setResultOk();
+		}
+		super.finish();
+	}
+
+	@Override
+	public void onResultOk(int requestCode, Intent data) {
+		super.onResultOk(requestCode, data);
+		if (requestCode == Constants.Request.EDIT_COMMENT) {
+			Comment comment = (Comment) data
+					.getSerializableExtra(Constants.Extra.COMMENT);
+			int position = data.getIntExtra(Constants.Extra.POSITION, -1);
+			if (comment != null && position != -1) {
+				gistItemAdapter.getDatas().get(position)
+						.setBodyHtml(comment.getBodyHtml());
+				gistItemAdapter.notifyDataSetChanged();
+				// commentAdapter.getDatas().remove(position);
+				// commentAdapter.getDatas().add(position, comment);
+				// commentAdapter.notifyDataSetChanged();
+			}
+		} else if (requestCode == Constants.Request.GIST_COMMENT) {
+			Comment comment = (Comment) data
+					.getSerializableExtra(Constants.Extra.COMMENT);
+			if (comment != null) {
+				gist.setComments(gist.getComments() + 1);
+				TextView commentText = (TextView) detailLayout
+						.findViewById(R.id.comment);
+				commentText.setText(gist.getComments() + "");
+				hasChange = true;
+
+				comments.add(comment);
+				gistItemAdapter.notifyDataSetChanged();
+			}
+		}
+	}
+
+	@Override
+	protected void initActionBar(final TitleBar titleBar) {
+		super.initActionBar(titleBar);
+		LinkedHashMap<Integer, Integer> itemmap = new LinkedHashMap<Integer, Integer>();
+
+		itemmap.put(R.string.star, R.drawable.common_star_grey);
+		itemmap.put(R.string.fork, R.drawable.common_branch_grey);
+		itemmap.put(R.string.share, R.drawable.common_share_grey);
+		itemmap.put(R.string.comment, R.drawable.common_comment);
+		itemmap.put(R.string.refresh, R.drawable.common_status_refresh);
+		StatusPopUpWindow.StatusPopUpWindowItemClickListener menuListener = new StatusPopUpWindow.StatusPopUpWindowItemClickListener() {
+
+			@Override
+			public void onitemclick(int titleId) {
+				switch (titleId) {
+				case R.string.delete:
+					new DeleteGistTask(context, gist.getId()) {
+
+						@Override
+						public void onSuccess(Boolean result) {
+							super.onSuccess(result);
+							IntentUtils
+									.create(context)
+									.putExtra(Constants.Extra.POSITION,
+											position).setResultOk().finish();
+						}
+					}.execute(GitHubApplication.getClient());
+					break;
+				case R.string.star:
+					new StarGistTask(context, isStar, gist.getId()) {
+
+						@Override
+						public void onSuccess(Boolean result) {
+							super.onSuccess(result);
+							isStar = !isStar;
+							refreshStarPopup();
+						}
+					}.execute(GitHubApplication.getClient());
+					break;
+				case R.string.fork:
+					new ForkGistTask(context, gist.getId())
+							.execute(GitHubApplication.getClient());
+					break;
+				case R.string.share:
+					AndroidUtils.share(context, "Gist",
+							"https://gist.github.com/" + gist.getId());
+					break;
+				case R.string.comment:
+					openComment();
+					break;
+				case R.string.refresh:
+					if (isLoading()) {
+						GLog.sysout("update is not complete");
+						return;
+					}
+					onRefreshStarted(null);
+					break;
+				default:
+					break;
+				}
+				titleBar.dissmissStatus();
+			}
+		};
+		titleBar.setStatusItem(context, itemmap, menuListener);
 	}
 
 	@Override

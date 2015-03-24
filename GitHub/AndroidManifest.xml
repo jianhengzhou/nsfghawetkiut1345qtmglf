@@ -32,10 +32,12 @@
         </activity>
         <activity
             android:name="com.gdestiny.github.ui.activity.LoginActivity"
-            android:windowSoftInputMode="stateVisible" >
+            android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity android:name="com.gdestiny.github.ui.activity.TestActivity" />
-        <activity android:name="com.gdestiny.github.ui.activity.UserActivity" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.UserActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name="com.gdestiny.github.ui.activity.RepositoryDetailActivity" />
         <activity android:name="com.gdestiny.github.ui.activity.CodeFileActivity" />
         <activity android:name="com.gdestiny.github.ui.activity.IssueDetailActivity" />

@@ -23,6 +23,8 @@
             android:layout_marginLeft="@dimen/margin32"
             android:layout_marginRight="@dimen/margin32"
             android:layout_marginTop="@dimen/margin32"
+            android:drawableLeft="@drawable/selector_account"
+            android:drawablePadding="@dimen/margin8"
             android:hint="@string/account" />
 
         <ImageView
@@ -33,7 +35,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin4"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/delete" />
+            android:paddingBottom="6dp"
+            android:src="@drawable/selector_icon_delete" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -52,6 +55,8 @@
             android:layout_marginBottom="@dimen/margin16"
             android:layout_marginLeft="@dimen/margin32"
             android:layout_marginRight="@dimen/margin32"
+            android:drawableLeft="@drawable/selector_password"
+            android:drawablePadding="@dimen/margin8"
             android:hint="@string/password"
             android:inputType="textPassword" />
 
@@ -63,7 +68,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin4"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/delete" />
+            android:paddingBottom="6dp"
+            android:src="@drawable/selector_icon_delete" />
     </RelativeLayout>
 
     <TextView
@@ -73,6 +79,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/password_layout"
         android:layout_marginRight="@dimen/margin32"
+        android:layout_marginTop="@dimen/margin16"
         android:background="@drawable/selector_login_btn_blue"
         android:gravity="center"
         android:paddingLeft="@dimen/margin16"
@@ -89,6 +96,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/password_layout"
         android:layout_marginLeft="@dimen/margin32"
+        android:layout_marginTop="@dimen/margin16"
         android:gravity="center"
         android:paddingLeft="@dimen/margin16"
         android:paddingRight="@dimen/margin16"

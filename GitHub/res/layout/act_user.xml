@@ -1,48 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.gdestiny.github.ui.view.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true" >
+    android:fitsSystemWindows="true"
+    android:orientation="vertical" >
 
-    <RelativeLayout
+    <com.gdestiny.github.ui.view.ObservableScrollView
+        android:id="@+id/scroll"
+        style="@style/scrollbar_style"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/common_user_background" >
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true" >
 
-        <com.gdestiny.github.ui.view.ImageViewEx
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/avatar"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/margin16"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/icon_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/common_user_background" >
+
+                <com.gdestiny.github.ui.view.ImageViewEx
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/avatar"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin16"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_avatar"
+                    app:sriv_border_color="@drawable/selector_common_image_border"
+                    app:sriv_border_width="3dp"
+                    app:sriv_oval="true" />
+
+                <EditText
+                    android:id="@+id/name"
+                    style="@style/user_editText_style"
+                    android:layout_width="wrap_content"
+                    android:layout_below="@id/avatar"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin4"
+                    android:enabled="false"
+                    android:hint="@string/name"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text22"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/login_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/name"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/margin16"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text18" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin8"
+                android:layout_marginTop="@dimen/margin8"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/followers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/common_icon_blue"
+                        android:textSize="@dimen/text22"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/followers"
+                        android:textColor="@color/common_icon_grey"
+                        android:textSize="@dimen/text14" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0.5dip"
+                    android:layout_height="match_parent"
+                    android:background="#dddddd" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/following"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/common_icon_blue"
+                        android:textSize="@dimen/text22"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/following"
+                        android:textColor="@color/common_icon_grey"
+                        android:textSize="@dimen/text14" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="@dimen/margin16"
+                android:layout_marginRight="@dimen/margin16"
+                android:background="#dddddd" />
+
+            <EditText
+                android:id="@+id/e_mail"
+                style="@style/user_editText_style"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/margin16"
+                android:layout_marginTop="@dimen/margin16"
+                android:drawableLeft="@drawable/common_email"
+                android:enabled="false"
+                android:textColor="@color/common_light_black"
+                android:textSize="@dimen/text18" />
+
+            <EditText
+                android:id="@+id/company"
+                style="@style/user_editText_style"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/margin16"
+                android:layout_marginTop="@dimen/margin16"
+                android:drawableLeft="@drawable/common_company"
+                android:enabled="false"
+                android:textColor="@color/common_light_black"
+                android:textSize="@dimen/text18" />
+
+            <EditText
+                android:id="@+id/location"
+                style="@style/user_editText_style"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/margin16"
+                android:layout_marginTop="@dimen/margin16"
+                android:drawableLeft="@drawable/common_location"
+                android:enabled="false"
+                android:textColor="@color/common_light_black"
+                android:textSize="@dimen/text18" />
+
+            <TextView
+                android:id="@+id/join"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="19dp"
+                android:layout_marginTop="@dimen/margin16"
+                android:drawableLeft="@drawable/common_time"
+                android:drawablePadding="@dimen/margin8"
+                android:textColor="@color/common_light_black"
+                android:textSize="@dimen/text18" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="@dimen/margin16"
+                android:layout_marginRight="@dimen/margin16"
+                android:layout_marginTop="@dimen/margin16"
+                android:background="#dddddd" />
+
+            <TextView
+                android:id="@+id/disk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="19dp"
+                android:layout_marginTop="@dimen/margin16"
+                android:drawableLeft="@drawable/common_disk"
+                android:drawablePadding="@dimen/margin8"
+                android:textColor="@color/common_light_black"
+                android:textSize="@dimen/text18" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="155dp"
+                android:layout_marginLeft="@dimen/margin16"
+                android:layout_marginRight="@dimen/margin16"
+                android:layout_marginTop="@dimen/margin16" >
+
+                <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/web_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    app:spb_color="@color/common_icon_blue"
+                    app:spb_mirror_mode="false"
+                    app:spb_progressiveStart_activated="true"
+                    app:spb_progressiveStart_speed="1.5"
+                    app:spb_progressiveStop_speed="3.4"
+                    app:spb_reversed="false"
+                    app:spb_sections_count="4"
+                    android:visibility="gone"
+                    app:spb_speed="2.0"
+                    app:spb_stroke_separator_length="4dp"
+                    app:spb_stroke_width="4dp" />
+
+                <WebView
+                    android:id="@+id/webview"
+                    style="@style/scrollbar_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_below="@+id/web_bar" >
+                </WebView>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1000dp" />
+        </LinearLayout>
+    </com.gdestiny.github.ui.view.ObservableScrollView>
+
+    <FrameLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="47dp" >
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="@drawable/selector_on_click"
             android:contentDescription="@string/app_name"
-            android:scaleType="centerCrop"
-            android:src="@drawable/default_avatar"
-            app:sriv_border_color="@drawable/selector_common_image_border"
-            app:sriv_border_width="3dp"
-            app:sriv_oval="true" />
+            android:padding="@dimen/margin16"
+            android:src="@drawable/common_back_arrow" />
 
-        <TextView
-            android:id="@+id/name"
+        <ImageButton
+            android:id="@+id/edit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/avatar"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/margin4"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text22"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:background="@drawable/selector_on_click"
+            android:contentDescription="@string/app_name"
+            android:padding="@dimen/margin16"
+            android:src="@drawable/common_edit_pen" />
+    </FrameLayout>
 
-        <TextView
-            android:id="@+id/login_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/name"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/margin16"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text18" />
-    </RelativeLayout>
-
-</com.gdestiny.github.ui.view.ObservableScrollView>
+</FrameLayout>

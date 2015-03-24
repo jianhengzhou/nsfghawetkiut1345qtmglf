@@ -44,6 +44,7 @@
     <string name="secret">SECRET</string>
     <string name="gist_tips">When is private, no one can search, but can access it with a url given by you</string>
     <string name="conflict_filename">Conflict In File Name</string>
+    <string name="discard_change">Discard Change?</string>
 
     <!-- error -->
     <string name="login_error">The account or password cannot be empty</string>

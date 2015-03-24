@@ -32,5 +32,6 @@
     <drawable name="common_blue_drawable_bk">#1a85ff</drawable>
     <drawable name="menu_item_normal">#00000000</drawable>
     <drawable name="menu_item_pressed">#55ffffff</drawable>
+    <drawable name="draw_transparent">#00000000</drawable>
 
 </resources>

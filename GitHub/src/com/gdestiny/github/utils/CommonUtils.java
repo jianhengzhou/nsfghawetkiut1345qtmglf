@@ -15,6 +15,12 @@ public class CommonUtils {
 		throw new AssertionError();
 	}
 
+	public static String nullToNA(String str) {
+		if (TextUtils.isEmpty(str))
+			return "N/A";
+		return str;
+	}
+
 	public static String pathToName(String path) {
 		if (TextUtils.isEmpty(path))
 			return path;

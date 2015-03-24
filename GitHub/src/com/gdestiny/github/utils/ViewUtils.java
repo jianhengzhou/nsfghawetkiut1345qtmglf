@@ -5,6 +5,7 @@ import com.gdestiny.github.ui.activity.WebViewActivity;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
@@ -60,6 +61,15 @@ public class ViewUtils {
 		params.height = totalHeight
 				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
+	}
+
+	public static void setText(TextView tv, String text) {
+		if (TextUtils.isEmpty(text)) {
+			setVisibility(tv, View.GONE);
+		} else {
+			setVisibility(tv, View.VISIBLE);
+			tv.setText(text);
+		}
 	}
 
 	public static void handleLink(TextView textview) {

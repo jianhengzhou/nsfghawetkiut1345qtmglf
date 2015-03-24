@@ -51,8 +51,13 @@
     </style>
 
     <style name="editText_style">
-        <item name="android:layout_height">50dp</item>
-        <item name="android:background">@drawable/selector_common_edtitext_background</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:background">@drawable/selector_common_edtitext_editable</item>
+    </style>
+
+    <style name="user_editText_style" parent="editText_style">
+        <item name="android:drawablePadding">@dimen/margin8</item>
     </style>
 
     <style name="common_menu_text_style">

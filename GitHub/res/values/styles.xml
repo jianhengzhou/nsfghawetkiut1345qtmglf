@@ -58,6 +58,7 @@
 
     <style name="user_editText_style" parent="editText_style">
         <item name="android:drawablePadding">@dimen/margin8</item>
+        <item name="android:textColorHint">@color/common_icon_grey</item>
     </style>
 
     <style name="common_menu_text_style">

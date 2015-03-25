@@ -45,6 +45,15 @@
     <string name="gist_tips">When is private, no one can search, but can access it with a url given by you</string>
     <string name="conflict_filename">Conflict In File Name</string>
     <string name="discard_change">Discard Change?</string>
+    <string name="__public">Public</string>
+    <string name="_private">Private</string>
+    <string name="private_own">Private&#160;(&#160;Own&#160;)</string>
+    <string name="load_contribution">Tab to load contribution.\nThis may cost lots of traffic!</string>
+    <string name="company">company</string>
+    <string name="location">location</string>
+    <string name="email">sample@github.com</string>
+    <string name="not_email">Not valid Email</string>
+    <string name="sure_to_update_profile">Sure To Update Profile?</string>
 
     <!-- error -->
     <string name="login_error">The account or password cannot be empty</string>
@@ -84,5 +93,7 @@
     <string name="staring_gist">staring gist</string>
     <string name="forking_gist">forking gist</string>
     <string name="deleting_gist">deleting gist</string>
+    <string name="edit_user">updating profile</string>
+    <string name="edit_succeed">Update Succeed</string>
 
 </resources>

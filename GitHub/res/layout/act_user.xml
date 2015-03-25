@@ -46,7 +46,10 @@
                     android:layout_marginTop="@dimen/margin4"
                     android:enabled="false"
                     android:hint="@string/name"
+                    android:paddingLeft="@dimen/margin16"
+                    android:paddingRight="@dimen/margin16"
                     android:textColor="@color/white"
+                    android:textColorHint="@color/common_indicator_pressed"
                     android:textSize="@dimen/text22"
                     android:textStyle="bold" />
 
@@ -65,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin8"
-                android:layout_marginTop="@dimen/margin8"
+                android:layout_marginTop="@dimen/margin16"
                 android:orientation="horizontal" >
 
                 <LinearLayout
@@ -132,33 +135,41 @@
             <EditText
                 android:id="@+id/e_mail"
                 style="@style/user_editText_style"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_marginLeft="@dimen/margin16"
+                android:layout_marginRight="@dimen/margin16"
                 android:layout_marginTop="@dimen/margin16"
+                android:autoLink="email"
                 android:drawableLeft="@drawable/common_email"
                 android:enabled="false"
+                android:hint="@string/email"
                 android:textColor="@color/common_light_black"
                 android:textSize="@dimen/text18" />
 
             <EditText
                 android:id="@+id/company"
                 style="@style/user_editText_style"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_marginLeft="@dimen/margin16"
+                android:layout_marginRight="@dimen/margin16"
                 android:layout_marginTop="@dimen/margin16"
                 android:drawableLeft="@drawable/common_company"
                 android:enabled="false"
+                android:hint="@string/company"
                 android:textColor="@color/common_light_black"
+                android:textColorHint="@color/common_icon_grey"
                 android:textSize="@dimen/text18" />
 
             <EditText
                 android:id="@+id/location"
                 style="@style/user_editText_style"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_marginLeft="@dimen/margin16"
+                android:layout_marginRight="@dimen/margin16"
                 android:layout_marginTop="@dimen/margin16"
                 android:drawableLeft="@drawable/common_location"
                 android:enabled="false"
+                android:hint="@string/location"
                 android:textColor="@color/common_light_black"
                 android:textSize="@dimen/text18" />
 
@@ -192,44 +203,243 @@
                 android:textColor="@color/common_light_black"
                 android:textSize="@dimen/text18" />
 
+            <!-- gist repo -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin8"
+                android:layout_marginLeft="19dp"
+                android:layout_marginTop="@dimen/margin16"
+                android:drawableLeft="@drawable/common_repository_grey"
+                android:drawablePadding="@dimen/margin8"
+                android:text="@string/repository"
+                android:textColor="@color/common_light_black"
+                android:textSize="@dimen/text18" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="@dimen/margin32"
+                android:layout_marginRight="@dimen/margin32"
+                android:background="#dddddd" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin8"
+                android:layout_marginTop="@dimen/margin8"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/repo_public"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/common_icon_blue"
+                        android:textSize="@dimen/text22"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/__public"
+                        android:textColor="@color/common_icon_grey"
+                        android:textSize="@dimen/text14" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0.5dip"
+                    android:layout_height="match_parent"
+                    android:background="#dddddd" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/repo_private"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/common_icon_blue"
+                        android:textSize="@dimen/text22"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/private_own"
+                        android:textColor="@color/common_icon_grey"
+                        android:textSize="@dimen/text14" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="@dimen/margin32"
+                android:layout_marginRight="@dimen/margin32"
+                android:background="#dddddd" />
+            <!-- gist -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin8"
+                android:layout_marginLeft="19dp"
+                android:layout_marginTop="@dimen/margin16"
+                android:drawableLeft="@drawable/common_gists_grey"
+                android:drawablePadding="@dimen/margin8"
+                android:text="@string/gists"
+                android:textColor="@color/common_light_black"
+                android:textSize="@dimen/text18" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="@dimen/margin32"
+                android:layout_marginRight="@dimen/margin32"
+                android:background="#dddddd" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin8"
+                android:layout_marginTop="@dimen/margin8"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/gist_public"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/common_icon_blue"
+                        android:textSize="@dimen/text22"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/__public"
+                        android:textColor="@color/common_icon_grey"
+                        android:textSize="@dimen/text14" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0.5dip"
+                    android:layout_height="match_parent"
+                    android:background="#dddddd" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/gist_private"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/common_icon_blue"
+                        android:textSize="@dimen/text22"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/_private"
+                        android:textColor="@color/common_icon_grey"
+                        android:textSize="@dimen/text14" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="@dimen/margin32"
+                android:layout_marginRight="@dimen/margin32"
+                android:background="#dddddd" />
+            <!-- end gist repo -->
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="155dp"
+                android:layout_height="150dp"
                 android:layout_marginLeft="@dimen/margin16"
                 android:layout_marginRight="@dimen/margin16"
-                android:layout_marginTop="@dimen/margin16" >
-
-                <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/web_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="true"
-                    app:spb_color="@color/common_icon_blue"
-                    app:spb_mirror_mode="false"
-                    app:spb_progressiveStart_activated="true"
-                    app:spb_progressiveStart_speed="1.5"
-                    app:spb_progressiveStop_speed="3.4"
-                    app:spb_reversed="false"
-                    app:spb_sections_count="4"
-                    android:visibility="gone"
-                    app:spb_speed="2.0"
-                    app:spb_stroke_separator_length="4dp"
-                    app:spb_stroke_width="4dp" />
+                android:layout_marginTop="@dimen/margin32"
+                android:background="@drawable/drawable_border_blue"
+                android:padding="@dimen/margin2" >
 
                 <WebView
                     android:id="@+id/webview"
                     style="@style/scrollbar_style"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_below="@+id/web_bar" >
+                    android:layout_height="150dp" >
                 </WebView>
+
+                <ProgressBar
+                    android:id="@+id/web_bar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_alignParentBottom="true"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progressDrawable="@drawable/common_progressbar"
+                    android:visibility="gone" />
+
+                <View
+                    android:id="@+id/block"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent" />
+
+                <fr.castorflex.android.circularprogressbar.CircularProgressBar
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/loading_progress"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="@dimen/margin16"
+                    android:layout_toLeftOf="@id/loading_text"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/load_contribution"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/common_background"
+                    android:gravity="center"
+                    android:text="@string/load_contribution"
+                    android:textColor="@color/common_icon_blue"
+                    android:textSize="@dimen/text18" />
             </RelativeLayout>
 
             <View
                 android:layout_width="wrap_content"
-                android:layout_height="1000dp" />
+                android:layout_height="100dp" />
         </LinearLayout>
     </com.gdestiny.github.ui.view.ObservableScrollView>
 

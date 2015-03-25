@@ -24,6 +24,7 @@ public class Constants {
 		public static final String ID = "id";
 		public static final String GIST = "gist";
 		public static final String FILE_NAME = "file_name";
+		public static final String DATA = "data";
 	}
 
 	public final static class Request {

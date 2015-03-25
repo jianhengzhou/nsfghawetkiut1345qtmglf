@@ -41,6 +41,8 @@ public abstract class ContributionWebTask {
 
 	public abstract void onPrev();
 
+	public abstract void onProgress(int progress);
+
 	public abstract void onSuccess(String result);
 
 	public void onException(Exception ex) {
@@ -69,7 +71,11 @@ public abstract class ContributionWebTask {
 			@Override
 			protected void onProgressUpdate(Integer... values) {
 				super.onProgressUpdate(values);
-				System.out.println("progress:" + values[0]);
+				int v = values[0];
+				if (v >= 100)
+					v = 99;
+				ContributionWebTask.this.onProgress(v);
+				// System.out.println("progress:" +v);
 			}
 
 			@Override
@@ -85,12 +91,26 @@ public abstract class ContributionWebTask {
 					HttpConnectionParams
 							.setSoTimeout(httpParameters, 30 * 1000);
 					HttpContext localContext = new BasicHttpContext();
-					// 相应
+					// 响应
 					HttpResponse response = client.execute(get, localContext);
 					HttpEntity entity = response.getEntity();
-					long totalLength = entity.getContentLength();
+					// long totalLength = entity.getContentLength();
+					long totalLength = 66666;// 未知，页面变化不大，设为一个大概值
 					InputStream is = entity.getContent();
 					System.out.println("totalLength:" + totalLength);
+					// other
+					// java.net.URL url = new java.net.URL("https://github.com/"
+					// + params[0]);
+					// java.net.HttpURLConnection connection =
+					// (java.net.HttpURLConnection) url
+					// .openConnection();
+					// connection
+					// .setRequestProperty("Accept-Encoding", "identity");
+					// connection.setRequestMethod("GET");
+					// connection.setReadTimeout(5000);
+					// connection.connect();
+					// totalLength = connection.getContentLength();
+					// System.out.println("totalLength2:" + totalLength);
 					// 读取数据
 					ByteArrayOutputStream data = new ByteArrayOutputStream();// 新建一字节数组输出流
 					byte[] buffer = new byte[1024];// 在内存中开辟一段缓冲区，接受网络输入流
@@ -102,7 +122,8 @@ public abstract class ContributionWebTask {
 						publishProgress((int) ((progress / (float) totalLength) * 100));
 						data.write(buffer, 0, len); // 缓冲区满了之后将缓冲区的内容写到输出流
 					}
-					System.out.println("len:" + len);
+					publishProgress(100);
+					System.out.println("progress:" + progress);
 					is.close();
 					// 结果parse
 					String result = new String(data.toByteArray(), "utf-8");
@@ -129,6 +150,6 @@ public abstract class ContributionWebTask {
 				}
 				return null;
 			}
-		};
+		}.execute(params);
 	}
 }

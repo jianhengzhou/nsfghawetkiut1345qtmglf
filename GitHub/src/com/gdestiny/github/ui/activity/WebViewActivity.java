@@ -1,5 +1,7 @@
 package com.gdestiny.github.ui.activity;
 
+import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
+
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 
@@ -26,6 +28,7 @@ public class WebViewActivity extends BaseLoadFragmentActivity<Void, Void> {
 	private String url = "";
 	private String currUrl;
 	private WebView webview;
+	private String data;
 
 	@Override
 	public void onRefreshStarted(View view) {
@@ -141,8 +144,14 @@ public class WebViewActivity extends BaseLoadFragmentActivity<Void, Void> {
 	protected void initData() {
 		// TODO Auto-generated method stub
 		url = getIntent().getStringExtra(Constants.Extra.URL);
+		data = getIntent().getStringExtra(Constants.Extra.DATA);
 		if (TextUtils.isEmpty(url)) {
-			finish();
+			if (TextUtils.isEmpty(data))
+				finish();
+			else {
+				webview.loadDataWithBaseURL(null, data, "text/html",
+						CHARSET_UTF8, null);
+			}
 		} else {
 			getTitlebar().setTitleIcon(null);
 			webview.loadUrl(url);

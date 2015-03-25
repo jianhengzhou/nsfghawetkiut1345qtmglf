@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.fragment.BaseFragment;
 import com.gdestiny.github.ui.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.fragment.EventsUserReceivedFragment;

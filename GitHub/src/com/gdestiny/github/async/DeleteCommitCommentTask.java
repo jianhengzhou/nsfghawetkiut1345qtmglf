@@ -8,6 +8,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
 import com.gdestiny.github.utils.ToastUtils;
 

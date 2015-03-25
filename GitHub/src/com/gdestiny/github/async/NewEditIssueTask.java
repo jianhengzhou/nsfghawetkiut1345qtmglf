@@ -8,6 +8,7 @@ import org.eclipse.egit.github.core.service.IssueService;
 import android.content.Context;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class NewEditIssueTask extends DialogTask<GitHubClient, Issue> {

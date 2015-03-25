@@ -17,6 +17,7 @@ import android.webkit.WebViewClient;
 import android.widget.ZoomButtonsController;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;

@@ -4,6 +4,7 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.GistService;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
 

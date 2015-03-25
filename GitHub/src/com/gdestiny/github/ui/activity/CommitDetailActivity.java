@@ -36,6 +36,7 @@ import com.gdestiny.github.async.DeleteCommitCommentTask;
 import com.gdestiny.github.bean.CommitLine;
 import com.gdestiny.github.bean.CommitTree;
 import com.gdestiny.github.bean.comparator.CommitCommentComparator;
+import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.dialog.CommitLineDialog;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;

@@ -1,9 +1,6 @@
-/**
- * 
- */
+package com.gdestiny.github.ui.activity.abstracts;
 
-package com.gdestiny.github.ui.activity;
-
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
@@ -12,28 +9,47 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageButton;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.gdestiny.github.R;
+import com.gdestiny.github.ui.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 
-/**
- * @author Lifeix
- * 
- */
-public abstract class BaseActivity extends SherlockActivity implements
-		SwipeBackActivityBase {
+public abstract class BaseFragmentActivity extends SherlockFragmentActivity
+		implements SwipeBackActivityBase {
 	private SwipeBackActivityHelper mHelper;
 	protected TitleBar titlebar;
-
-	protected Activity context;
 	protected String mClassName;
 	protected StringBuilder mBuffer = new StringBuilder();
+	protected Activity context;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		context = this;
+
+		mClassName = getClass().getSimpleName();
+		GLog.d(Constants.GlobalTag,
+				mBuffer.delete(0, mBuffer.length()).append(mClassName)
+						.append(".onCreate()").toString());
+
+		titlebar = new TitleBar(this);
+		initActionBar(titlebar);
+		mHelper = new SwipeBackActivityHelper(this);
+		mHelper.onActivityCreate();
+		setContentView(savedInstanceState);
+		initView();
+		initData();
+	}
+
+	abstract protected void setContentView(Bundle savedInstanceState);
 
 	abstract protected void initView();
 
@@ -41,77 +57,72 @@ public abstract class BaseActivity extends SherlockActivity implements
 
 	abstract protected void onleftLayout();
 
-	protected void onRightBtn() {
-	}
+	protected void initActionBar(TitleBar titleBar) {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		context = this;
-		mClassName = getClass().getSimpleName();
-		GLog.d(Constants.GlobalTag,
-				mBuffer.delete(0, mBuffer.length()).append(mClassName)
-						.append(".onCreate()").toString());
+		ActionBar actionbar = getSupportActionBar();
+		actionbar.setCustomView(titleBar);
+		actionbar.setDisplayShowCustomEnabled(true);
+		actionbar.setDisplayShowHomeEnabled(false);
+		actionbar.setDisplayShowTitleEnabled(false);
+		actionbar.setDisplayUseLogoEnabled(false);
+		// ¼àÌý
+		View backLayout = titleBar.findViewById(R.id.title_left_layout);
+		backLayout.setOnClickListener(new View.OnClickListener() {
 
-		initActionBar();
-		mHelper = new SwipeBackActivityHelper(this);
-		mHelper.onActivityCreate();
+			@Override
+			public void onClick(View v) {
+				onleftLayout();
+			}
+		});
+		ImageButton rightBtn = (ImageButton) titleBar
+				.findViewById(R.id.titlebar_rignt_btn);
+		rightBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				onRightBtn();
+			}
+		});
+		// com.gdestiny.github.utils.AndroidUtils.initMiBar(this);
 	}
 
 	public TitleBar getTitlebar() {
 		return titlebar;
 	}
 
-	protected void initActionBar() {
-		// initMiBar();
-		titlebar = new TitleBar(this);
+	protected void onRightBtn() {
+	}
 
-		ActionBar actionbar = getSupportActionBar();
-		actionbar.setCustomView(titlebar);
-		actionbar.setDisplayShowCustomEnabled(true);
-		actionbar.setDisplayShowHomeEnabled(false);
-		actionbar.setDisplayShowTitleEnabled(false);
-		actionbar.setDisplayUseLogoEnabled(false);
-		// ¼àÌý
-		View backLayout = titlebar.findViewById(R.id.title_left_layout);
-		backLayout.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				onleftLayout();
+	public static BaseLoadFragment<?, ?> hideHeaderView(
+			BaseLoadFragment<?, ?> currentFragment) {
+		if (currentFragment != null) {
+			PullToRefreshLayout mPullToRefreshLayout = currentFragment
+					.getPullToRefreshLayout();
+			if (mPullToRefreshLayout != null) {
+				mPullToRefreshLayout.getHeaderTransformer()
+						.setProgressbarVisibility(View.GONE);
 			}
-		});
-		ImageButton rightBtn = (ImageButton) titlebar
-				.findViewById(R.id.titlebar_rignt_btn);
-		rightBtn.setOnClickListener(new View.OnClickListener() {
+		}
+		return currentFragment;
+	}
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				onRightBtn();
+	public static BaseLoadFragment<?, ?> showRefreshHeader(
+			BaseLoadFragment<?, ?> currentFragment) {
+		if (currentFragment != null && currentFragment.isLoading()) {
+			PullToRefreshLayout mPullToRefreshLayout = currentFragment
+					.getPullToRefreshLayout();
+			if (mPullToRefreshLayout != null) {
+				mPullToRefreshLayout.getHeaderTransformer()
+						.setProgressbarVisibility(View.VISIBLE);
 			}
-		});
-		//AndroidUtils.initMiBar(this);
+		}
+		return currentFragment;
 	}
 
 	@Override
-	public SwipeBackLayout getSwipeBackLayout() {
+	public void onWindowFocusChanged(boolean hasFocus) {
 		// TODO Auto-generated method stub
-		return mHelper.getSwipeBackLayout();
-	}
-
-	@Override
-	public void setSwipeBackEnable(boolean enable) {
-		// TODO Auto-generated method stub
-		getSwipeBackLayout().setEnableGesture(enable);
-	}
-
-	@Override
-	public void scrollToFinishActivity() {
-		// TODO Auto-generated method stub
-		Utils.convertActivityToTranslucent(this);
-		getSwipeBackLayout().scrollToFinishActivity();
+		super.onWindowFocusChanged(hasFocus);
 	}
 
 	@Override
@@ -126,6 +137,66 @@ public abstract class BaseActivity extends SherlockActivity implements
 		if (v == null && mHelper != null)
 			return mHelper.findViewById(id);
 		return v;
+	}
+
+	public Fragment getFragment(String tag) {
+		return getSupportFragmentManager().findFragmentByTag(tag);
+	}
+
+	public void changeFragment(int replaceLayoutId, Fragment f, String tag,
+			boolean addToBackStack, boolean anim) {
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		// if(anim)
+		// ft.setCustomAnimations(R.anim.left_to_right_in,
+		// R.anim.left_to_right_out,
+		// R.anim.right_to_left_in,
+		// R.anim.right_to_left_out);
+		Fragment currentFragment = getFragment(tag);
+		if (currentFragment != null) {
+			ft.remove(currentFragment);
+		}
+		ft.add(replaceLayoutId, f, tag);
+
+		// ft.replace(replaceLayoutId, f,tag);
+		// if(addToBackStack)ft.addToBackStack(null);
+		ft.commit();
+	}
+
+	public void changeFragment(int replaceLayoutId, Fragment orgF,
+			Fragment newF, String newFTag) {
+		if (orgF == newF) {
+			return;
+		}
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		if (orgF != null) {
+			if (orgF.isAdded()) {
+				ft.hide(orgF);
+			}
+		}
+		if (newF != null) {
+			if (newF.isAdded()) {
+				ft.show(newF);
+			} else {
+				ft.add(replaceLayoutId, newF, newFTag);
+			}
+		}
+		ft.commitAllowingStateLoss();
+	}
+
+	@Override
+	public SwipeBackLayout getSwipeBackLayout() {
+		return mHelper.getSwipeBackLayout();
+	}
+
+	@Override
+	public void setSwipeBackEnable(boolean enable) {
+		getSwipeBackLayout().setEnableGesture(enable);
+	}
+
+	@Override
+	public void scrollToFinishActivity() {
+		Utils.convertActivityToTranslucent(this);
+		getSwipeBackLayout().scrollToFinishActivity();
 	}
 
 	@Override
@@ -241,4 +312,21 @@ public abstract class BaseActivity extends SherlockActivity implements
 		super.onDestroy();
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == Activity.RESULT_OK) {
+			onResultOk(requestCode, data);
+		} else {
+			onResultCancle(requestCode, data);
+		}
+	}
+
+	public void onResultOk(int requestCode, Intent data) {
+
+	}
+
+	public void onResultCancle(int requestCode, Intent data) {
+
+	}
 }

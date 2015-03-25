@@ -1,4 +1,4 @@
-package com.gdestiny.github.async;
+package com.gdestiny.github.async.abstracts;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.GitHubClient;

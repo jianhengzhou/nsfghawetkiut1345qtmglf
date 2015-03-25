@@ -10,6 +10,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class CommentTask extends DialogTask<GitHubClient, Comment> {

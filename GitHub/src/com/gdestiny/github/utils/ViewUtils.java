@@ -65,11 +65,13 @@ public class ViewUtils {
 
 	public static void setText(TextView tv, String text) {
 		if (TextUtils.isEmpty(text)) {
+			GLog.sysout("View.GONE");
 			setVisibility(tv, View.GONE);
 		} else {
+			GLog.sysout("View.VISIBLE");
 			setVisibility(tv, View.VISIBLE);
-			tv.setText(text);
 		}
+		tv.setText(text);
 	}
 
 	public static void handleLink(TextView textview) {

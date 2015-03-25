@@ -7,6 +7,7 @@ import org.eclipse.egit.github.core.User;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -22,8 +23,9 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
-import com.gdestiny.github.async.ContributionWebTask;
 import com.gdestiny.github.async.EditUserTask;
+import com.gdestiny.github.async.abstracts.ContributionWebTask;
+import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.dialog.ConfirmDialog;
 import com.gdestiny.github.ui.view.ImageViewEx;
 import com.gdestiny.github.ui.view.ObservableScrollView;
@@ -100,6 +102,7 @@ public class UserActivity extends BaseFragmentActivity implements
 		iconLayout = findViewById(R.id.icon_layout);
 		titleLayout = (FrameLayout) findViewById(R.id.title_layout);
 		titleLayout.addView(titlebar);
+
 		ViewUtils.setVisibility(titlebar, View.INVISIBLE);
 		findViewById(R.id.load_contribution).setOnClickListener(this);
 		findViewById(R.id.back).setOnClickListener(this);
@@ -162,6 +165,7 @@ public class UserActivity extends BaseFragmentActivity implements
 	CircularProgressBar lodingBar;
 	ProgressBar webBar;
 	WebView webview;
+	TextView webProgress;
 
 	@Override
 	protected void initData() {
@@ -191,6 +195,7 @@ public class UserActivity extends BaseFragmentActivity implements
 	@SuppressWarnings("deprecation")
 	@SuppressLint("SetJavaScriptEnabled")
 	private void initWebView() {
+		webProgress = (TextView) findViewById(R.id.web_progress);
 		lodingBar = (CircularProgressBar) findViewById(R.id.loading_progress);
 		webBar = (ProgressBar) findViewById(R.id.web_bar);
 		webview = (WebView) findViewById(R.id.webview);
@@ -217,6 +222,7 @@ public class UserActivity extends BaseFragmentActivity implements
 				webBar.setProgress(100);
 				ViewUtils.setVisibility(lodingBar, View.GONE);
 				ViewUtils.setVisibility(webBar, View.GONE);
+				ViewUtils.setVisibility(webProgress, View.GONE);
 			}
 
 			@Override
@@ -235,11 +241,13 @@ public class UserActivity extends BaseFragmentActivity implements
 			public void onPrev() {
 				ViewUtils.setVisibility(webBar, View.VISIBLE);
 				ViewUtils.setVisibility(lodingBar, View.VISIBLE);
+				ViewUtils.setVisibility(webProgress, View.VISIBLE);
 			}
 
 			@Override
 			public void onProgress(int progress) {
 				webBar.setProgress(progress);
+				webProgress.setText(progress + "");
 			}
 
 			@Override
@@ -294,8 +302,8 @@ public class UserActivity extends BaseFragmentActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.load_contribution:
-			loadContribution(user.getLogin());
 			ViewUtils.setVisibility(v, View.GONE, R.anim.alpha_out);
+			loadContribution(user.getLogin());
 			break;
 		case R.id.block:
 			// IntentUtils.create(context,WebViewActivity.class).putExtra(Constants.Extra.DATA,
@@ -322,6 +330,7 @@ public class UserActivity extends BaseFragmentActivity implements
 		if (isEditing()) {
 			if (!hasChange()) {
 				refreshEditState(true);
+				ViewUtils.setText(name, nameBackup);
 				return;
 			}
 			AndroidUtils.Keyboard.hideKeyboard(context);
@@ -329,8 +338,8 @@ public class UserActivity extends BaseFragmentActivity implements
 
 				@Override
 				public void onOk() {
-					loadBackup();
 					refreshEditState(true);
+					loadBackup();
 				}
 
 				@Override
@@ -350,9 +359,12 @@ public class UserActivity extends BaseFragmentActivity implements
 			if (!hasChange()) {
 				ToastUtils.show(context, R.string.no_change);
 				refreshEditState(true);
+				ViewUtils.setText(name, nameBackup);
 				return;
 			}
-			if (!AndroidUtils.isEmail(email.getText().toString().trim())) {
+			if (!TextUtils.isEmpty(CommonUtils.NAToNull(email.getText()
+					.toString()))
+					&& !AndroidUtils.isEmail(email.getText().toString().trim())) {
 				ToastUtils.show(context, R.string.not_email);
 				return;
 			}
@@ -373,8 +385,8 @@ public class UserActivity extends BaseFragmentActivity implements
 							} catch (SnappydbException e) {
 								e.printStackTrace();
 							}
-							bindUserEdit(result);
 							refreshEditState(true);
+							bindUserEdit(result);
 						}
 					}.execute(GitHubApplication.getClient());
 				}
@@ -423,13 +435,13 @@ public class UserActivity extends BaseFragmentActivity implements
 
 	private void editUser() {
 		user.setName(name.getText().toString());
-		user.setEmail(email.getText().toString());
-		user.setCompany(company.getText().toString());
-		user.setLocation(location.getText().toString());
+		user.setEmail(CommonUtils.NAToNull(email.getText().toString()));
+		user.setCompany(CommonUtils.NAToNull(company.getText().toString()));
+		user.setLocation(CommonUtils.NAToNull(location.getText().toString()));
 	}
 
 	private void loadBackup() {
-		user.setName(nameBackup);
+		ViewUtils.setText(name, nameBackup);
 		user.setEmail(emailBackup);
 		user.setCompany(companyBackup);
 		user.setLocation(locationBackup);
@@ -438,9 +450,9 @@ public class UserActivity extends BaseFragmentActivity implements
 
 	private void backup() {
 		nameBackup = user.getName();
-		emailBackup = user.getEmail();
-		companyBackup = user.getCompany();
-		locationBackup = user.getLocation();
+		emailBackup = CommonUtils.nullToNA(user.getEmail());
+		companyBackup = CommonUtils.nullToNA(user.getCompany());
+		locationBackup = CommonUtils.nullToNA(user.getLocation());
 	}
 
 	private boolean isEditing() {

@@ -32,6 +32,7 @@ import com.gdestiny.github.async.DeleteGistCommentTask;
 import com.gdestiny.github.async.DeleteGistTask;
 import com.gdestiny.github.async.ForkGistTask;
 import com.gdestiny.github.async.StarGistTask;
+import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.dialog.StatusPopWindowItem;
 import com.gdestiny.github.ui.view.TitleBar;

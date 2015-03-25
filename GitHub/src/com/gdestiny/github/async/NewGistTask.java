@@ -10,6 +10,7 @@ import org.eclipse.egit.github.core.service.GistService;
 import android.content.Context;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class NewGistTask extends DialogTask<GitHubClient, Gist> {

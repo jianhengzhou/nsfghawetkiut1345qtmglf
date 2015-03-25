@@ -1,8 +1,8 @@
 package com.gdestiny.github.ui.fragment;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.async.BaseAsyncTask;
-import com.gdestiny.github.async.LoadingTask;
+import com.gdestiny.github.async.abstracts.BaseAsyncTask;
+import com.gdestiny.github.async.abstracts.LoadingTask;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;

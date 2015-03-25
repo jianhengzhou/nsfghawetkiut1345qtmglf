@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.NewGistTask;
+import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.Constants;

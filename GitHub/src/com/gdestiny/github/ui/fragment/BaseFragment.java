@@ -2,7 +2,7 @@ package com.gdestiny.github.ui.fragment;
 
 import java.util.LinkedHashMap;
 
-import com.gdestiny.github.ui.activity.BaseFragmentActivity;
+import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;

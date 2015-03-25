@@ -1,4 +1,4 @@
-package com.gdestiny.github.async;
+package com.gdestiny.github.async.abstracts;
 
 import android.content.Context;
 import android.os.Handler;

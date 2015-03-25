@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.SimplePageAdapter;
-import com.gdestiny.github.ui.activity.BaseFragmentActivity;
 import com.gdestiny.github.ui.activity.HomeActivity;
+import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.view.IndicatorView;
 import com.gdestiny.github.ui.view.ResideMenu;
 import com.gdestiny.github.ui.view.TitleBar;

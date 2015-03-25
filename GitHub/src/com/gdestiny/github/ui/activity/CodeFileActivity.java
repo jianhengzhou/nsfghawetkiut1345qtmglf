@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.view.touchimageview.TouchImageView;
 import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.CommonUtils;

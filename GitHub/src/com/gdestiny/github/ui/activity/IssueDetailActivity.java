@@ -27,6 +27,7 @@ import com.gdestiny.github.adapter.CommentAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.AsyncImageGetter;
 import com.gdestiny.github.async.DeleteCommentTask;
+import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.LabelViewGroup;
 import com.gdestiny.github.ui.view.TitleBar;

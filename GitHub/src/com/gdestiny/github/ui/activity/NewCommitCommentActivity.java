@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.CommitCommentTask;
 import com.gdestiny.github.bean.CommitLine;
+import com.gdestiny.github.ui.activity.abstracts.AbstractCommentActivity;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.IntentUtils;
 

@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.ContributorsAdapter;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.utils.Constants;
 
 public class ContributorsActivity extends

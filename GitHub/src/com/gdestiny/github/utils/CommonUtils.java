@@ -21,6 +21,14 @@ public class CommonUtils {
 		return str;
 	}
 
+	public static String NAToNull(String str) {
+		if (TextUtils.isEmpty(str))
+			return str;
+		if (str.trim().equals("N/A"))
+			return "";
+		return str;
+	}
+
 	public static String pathToName(String path) {
 		if (TextUtils.isEmpty(path))
 			return path;

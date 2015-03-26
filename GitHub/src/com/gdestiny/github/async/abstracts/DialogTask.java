@@ -3,6 +3,7 @@ package com.gdestiny.github.async.abstracts;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
@@ -62,7 +63,10 @@ public abstract class DialogTask<Params, Result> implements
 	@Override
 	public void onException(Exception ex) {
 		if (exception) {
-			ToastUtils.show(context, ex.getMessage());
+			String message = ex.getMessage();
+			if (TextUtils.isEmpty(message))
+				message = "Unknow Error";
+			ToastUtils.show(context, message);
 			exception = false;
 		}
 	}

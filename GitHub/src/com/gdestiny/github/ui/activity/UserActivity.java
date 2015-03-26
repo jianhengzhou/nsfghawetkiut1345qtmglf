@@ -3,12 +3,18 @@ package com.gdestiny.github.ui.activity;
 import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
 
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.UserService;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.view.Gravity;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -17,6 +23,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -24,6 +31,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.EditUserTask;
+import com.gdestiny.github.async.GitHubTask;
 import com.gdestiny.github.async.abstracts.ContributionWebTask;
 import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.dialog.ConfirmDialog;
@@ -41,6 +49,7 @@ import com.gdestiny.github.utils.ViewUtils;
 import com.snappydb.SnappydbException;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressBar;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 public class UserActivity extends BaseFragmentActivity implements
 		View.OnClickListener {
@@ -49,6 +58,9 @@ public class UserActivity extends BaseFragmentActivity implements
 
 	private FrameLayout titleLayout;
 	private ImageButton edit;
+	private SmoothProgressBar refreshBar;
+
+	private ContributionWebTask contributionWebTask;
 
 	private View iconLayout;
 	private int iconHeight;
@@ -99,18 +111,40 @@ public class UserActivity extends BaseFragmentActivity implements
 	@Override
 	protected void initView() {
 		initTitleBar();
+		refreshBar = (SmoothProgressBar) findViewById(R.id.refresh_bar);
+		ShapeDrawable shape = new ShapeDrawable();
+		shape.setShape(new RectShape());
+		shape.getPaint().setColor(0xffffffff);
+		ClipDrawable clipDrawable = new ClipDrawable(shape, Gravity.CENTER,
+				ClipDrawable.HORIZONTAL);
+		refreshBar.setProgressDrawable(clipDrawable);
+
 		iconLayout = findViewById(R.id.icon_layout);
 		titleLayout = (FrameLayout) findViewById(R.id.title_layout);
 		titleLayout.addView(titlebar);
 
 		ViewUtils.setVisibility(titlebar, View.INVISIBLE);
 		findViewById(R.id.load_contribution).setOnClickListener(this);
+		cancle = findViewById(R.id.cancle_contribution);
+		cancle.setOnClickListener(this);
+		findViewById(R.id.refresh_contribution).setOnClickListener(this);
 		findViewById(R.id.back).setOnClickListener(this);
-		findViewById(R.id.block).setOnClickListener(this);
+		// findViewById(R.id.block).setOnClickListener(this);
+		findViewById(R.id.followers).setOnClickListener(
+				new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						refreshBar.setIndeterminate(false);
+						refreshBar.setProgress(0);
+					}
+				});
 		edit = (ImageButton) findViewById(R.id.edit);
 		edit.setOnClickListener(this);
 
 		scrollView = (ObservableScrollView) findViewById(R.id.scroll);
+		scrollView.setCanDrag(true);
 		scrollView
 				.setOnScrollChangedListener(new ObservableScrollView.OnScrollChangedListener() {
 
@@ -122,19 +156,46 @@ public class UserActivity extends BaseFragmentActivity implements
 							if (!firstShow) {
 								ViewUtils.setVisibility(titlebar, View.VISIBLE,
 										R.anim.alpha_in);
+								changeRefreshStyle(false);
 								firstShow = true;
 							}
 						} else {
 							if (firstShow) {
 								ViewUtils.setVisibility(titlebar,
 										View.INVISIBLE, R.anim.alpha_out);
+								changeRefreshStyle(true);
 								firstShow = false;
 							}
 						}
 
 					}
+
+					@Override
+					public void onDragDown(float percent) {
+						if (refreshBar.isIndeterminate())
+							return;
+						int progress = (int) (percent * 100);
+						refreshBar.setProgress(progress);
+						if (progress >= 100) {
+							onRefreshStarted();
+						}
+					}
 				});
 		initWebView();
+	}
+
+	private void changeRefreshStyle(boolean top) {
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.MATCH_PARENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		if (top) {
+			params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			refreshBar.setSmoothProgressDrawableColor(0xffffffff);
+		} else {
+			params.addRule(RelativeLayout.BELOW, R.id.title_layout);
+			refreshBar.setSmoothProgressDrawableColor(0xff56abe4);
+		}
+		refreshBar.setLayoutParams(params);
 	}
 
 	@Override
@@ -166,6 +227,7 @@ public class UserActivity extends BaseFragmentActivity implements
 	ProgressBar webBar;
 	WebView webview;
 	TextView webProgress;
+	View cancle;
 
 	@Override
 	protected void initData() {
@@ -235,29 +297,89 @@ public class UserActivity extends BaseFragmentActivity implements
 	}
 
 	private void loadContribution(final String name) {
-		new ContributionWebTask(context) {
+
+		if (contributionWebTask == null) {
+			contributionWebTask = new ContributionWebTask(context) {
+
+				@Override
+				public void onPrev() {
+					webProgress.setText(R.string.zero);
+					webBar.setProgress(0);
+					ViewUtils.setVisibility(webBar, View.VISIBLE);
+					ViewUtils.setVisibility(lodingBar, View.VISIBLE);
+					ViewUtils.setVisibility(webProgress, View.VISIBLE);
+					ViewUtils.setVisibility(cancle, View.VISIBLE);
+				}
+
+				@Override
+				public void onProgress(int progress) {
+					webBar.setProgress(progress);
+					webProgress.setText(progress + "");
+				}
+
+				@Override
+				public void onSuccess(String result) {
+					ViewUtils.setVisibility(cancle, View.GONE);
+					webview.loadDataWithBaseURL(null, result, "text/html",
+							CHARSET_UTF8, null);
+					// ToastUtils.show(context, "succeed");
+				}
+
+				@Override
+				public void onCancelled() {
+					ViewUtils.setVisibility(webBar, View.GONE);
+					ViewUtils.setVisibility(lodingBar, View.GONE);
+					ViewUtils.setVisibility(webProgress, View.GONE);
+					ViewUtils.setVisibility(cancle, View.GONE);
+				}
+
+			};
+		} else {
+			contributionWebTask.reload(name);
+		}
+		contributionWebTask.execute(name);
+	}
+
+	private void onRefreshStarted() {
+		new GitHubTask<User>(new GitHubTask.TaskListener<User>() {
 
 			@Override
 			public void onPrev() {
-				ViewUtils.setVisibility(webBar, View.VISIBLE);
-				ViewUtils.setVisibility(lodingBar, View.VISIBLE);
-				ViewUtils.setVisibility(webProgress, View.VISIBLE);
+				refreshBar.setIndeterminate(true);
 			}
 
 			@Override
-			public void onProgress(int progress) {
-				webBar.setProgress(progress);
-				webProgress.setText(progress + "");
+			public User onExcute(GitHubClient client) {
+				try {
+					UserService service = new UserService(client);
+					return service.getUser(user.getLogin());
+				} catch (Exception e) {
+					e.printStackTrace();
+					ToastUtils.showAsync(context, e.getMessage());
+				}
+				return null;
 			}
 
 			@Override
-			public void onSuccess(String result) {
-				webview.loadDataWithBaseURL(null, result, "text/html",
-						CHARSET_UTF8, null);
-				// ToastUtils.show(context, "succeed");
+			public void onSuccess(User result) {
+				user = result;
+				bindUser(result);
+				try {
+					SnappyDBUtils.putSerializable(context, "user", result);
+				} catch (SnappydbException e) {
+					e.printStackTrace();
+				}
+				refreshBar.setIndeterminate(false);
+				refreshBar.setProgress(0);
 			}
 
-		}.execute(name);
+			@Override
+			public void onError() {
+				refreshBar.setIndeterminate(false);
+				refreshBar.setProgress(0);
+
+			}
+		}).execute(GitHubApplication.getClient());
 	}
 
 	private void bindUserEdit(User user) {
@@ -303,6 +425,12 @@ public class UserActivity extends BaseFragmentActivity implements
 		switch (v.getId()) {
 		case R.id.load_contribution:
 			ViewUtils.setVisibility(v, View.GONE, R.anim.alpha_out);
+			loadContribution(user.getLogin());
+			break;
+		case R.id.cancle_contribution:
+			contributionWebTask.cancle();
+			break;
+		case R.id.refresh_contribution:
 			loadContribution(user.getLogin());
 			break;
 		case R.id.block:

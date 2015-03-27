@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/margin8"
+    android:paddingTop="@dimen/margin8" >
+
+    <TextView
+        android:id="@+id/fb_reply_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin8"
+        android:layout_marginTop="@dimen/margin8"
+        android:background="@drawable/common_time_backgound"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text12" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fb_reply_date" >
+
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/margin16"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/default_avatar" />
+
+        <TextView
+            android:id="@+id/fb_reply_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_marginRight="68dp"
+            android:layout_toRightOf="@id/user_icon"
+            android:autoLink="all"
+            android:background="@drawable/selector_common_bubble_left"
+            android:clickable="true"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text16" />
+
+        <FrameLayout
+            android:id="@+id/state_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="45dp" >
+
+            <fr.castorflex.android.circularprogressbar.CircularProgressBar
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/fb_reply_progressBar"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="left"
+                android:indeterminate="true"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/fb_reply_state_failed"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="left"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/common_fail" />
+        </FrameLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

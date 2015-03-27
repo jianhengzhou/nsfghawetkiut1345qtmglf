@@ -8,6 +8,7 @@ import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.dialog.MaterialUpdateDialog;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
+import com.gdestiny.github.utils.IntentUtils;
 import com.umeng.update.UmengUpdateAgent;
 
 public class SettingActivity extends BaseFragmentActivity implements
@@ -28,12 +29,16 @@ public class SettingActivity extends BaseFragmentActivity implements
 		findViewById(R.id.rate).setOnClickListener(this);
 		findViewById(R.id.share).setOnClickListener(this);
 		findViewById(R.id.check_for_update).setOnClickListener(this);
+		findViewById(R.id.feedback).setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
+		case R.id.feedback:
+			IntentUtils.create(context, FeedbackActivity.class).start();
+			break;
 		case R.id.rate:
 			AndroidUtils.market(context);
 			break;

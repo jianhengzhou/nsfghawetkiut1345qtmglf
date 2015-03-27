@@ -43,6 +43,7 @@
         android:background="#dddddd" />
 
     <TextView
+        android:id="@+id/feedback"
         style="@style/settingText_style"
         android:text="@string/feedback" />
 

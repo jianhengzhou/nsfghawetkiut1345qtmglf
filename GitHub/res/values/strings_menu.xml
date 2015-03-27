@@ -67,4 +67,18 @@
     <string name="new_gist">New Gist</string>
     <string name="random">Random</string>
 
+    <!-- setting -->
+    <string name="account">Account</string>
+    <string name="start_up">Startup View</string>
+    <string name="delete_cache">Clear Cache</string>
+    <string name="about">About</string>
+    <string name="logout">Logout</string>
+
+    <!-- setting about -->
+    <!-- <string name=""></string> -->
+    <string name="rate_github">Rate Github</string>
+    <string name="check_for_update">Check for Updates</string>
+    <string name="feedback">Feedback</string>
+    <string name="about_us">About US</string>
+
 </resources>

@@ -157,7 +157,7 @@ public class HomeActivity extends BaseFragmentActivity implements
 			break;
 		case R.id.menu_setting:
 			close = false;
-			IntentUtils.start(context, LoginActivity.class);
+			IntentUtils.start(context, SettingActivity.class);
 			break;
 		case R.id.menu_gists:
 			changeOrNewFragment(v);

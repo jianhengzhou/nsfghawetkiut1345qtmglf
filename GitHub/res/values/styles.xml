@@ -101,4 +101,20 @@
         <item name="android:windowExitAnimation">@anim/titlebar_popupwindow_out</item>
     </style>
 
+    <style name="settingText_style">
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">@dimen/margin16</item>
+        <item name="android:paddingRight">@dimen/margin16</item>
+        <item name="android:background">@drawable/selector_listviewitem</item>
+        <item name="android:layout_weight">1.0</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/common_light_black</item>
+        <item name="android:textSize">@dimen/text18</item>
+        <item name="android:drawableRight">@drawable/common_forward_grey</item>
+        <item name="android:paddingBottom">@dimen/margin16</item>
+        <item name="android:paddingTop">@dimen/margin16</item>
+        <item name="android:clickable">true</item>
+    </style>
+
 </resources>

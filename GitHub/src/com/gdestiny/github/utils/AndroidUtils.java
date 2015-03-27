@@ -251,4 +251,11 @@ public class AndroidUtils {
 		intent.putExtra(Intent.EXTRA_TEXT, content);
 		context.startActivity(Intent.createChooser(intent, title));
 	}
+
+	public static void market(Context context) {
+		Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
+		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
+	}
 }

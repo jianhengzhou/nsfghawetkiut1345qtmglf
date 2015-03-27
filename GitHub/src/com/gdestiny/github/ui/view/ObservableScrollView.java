@@ -19,10 +19,8 @@ package com.gdestiny.github.ui.view;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.widget.ScrollView;
 
 /**
@@ -30,8 +28,6 @@ import android.widget.ScrollView;
  */
 public class ObservableScrollView extends ScrollView {
 	private boolean mDisableEdgeEffects = true;
-
-	private GestureDetector mGestureDetector;
 
 	// pull
 	private boolean canDrag = false;
@@ -48,17 +44,6 @@ public class ObservableScrollView extends ScrollView {
 		this.canDrag = canDrag;
 	}
 
-	private class YScrollDetector extends SimpleOnGestureListener {
-		@Override
-		public boolean onScroll(MotionEvent e1, MotionEvent e2,
-				float distanceX, float distanceY) {
-			if (Math.abs(distanceY) > Math.abs(distanceX)) {
-				return true;
-			}
-			return false;
-		}
-	}
-
 	public interface OnScrollChangedListener {
 		void onScrollChanged(ScrollView who, int l, int t, int oldl, int oldt);
 
@@ -67,10 +52,8 @@ public class ObservableScrollView extends ScrollView {
 
 	private OnScrollChangedListener mOnScrollChangedListener;
 
-	@SuppressWarnings("deprecation")
 	public ObservableScrollView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		mGestureDetector = new GestureDetector(new YScrollDetector());
 		setFadingEdgeLength(0);
 		mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 	}
@@ -85,8 +68,7 @@ public class ObservableScrollView extends ScrollView {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
-		return super.onInterceptTouchEvent(ev)
-				&& mGestureDetector.onTouchEvent(ev);
+		return super.onInterceptTouchEvent(ev);
 	} // Return false if we're scrolling in the x direction
 
 	@Override

@@ -26,6 +26,7 @@ import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.SimpleUpdateTask;
 import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
+import com.gdestiny.github.ui.view.ListPopupView;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.CommonUtils;
@@ -72,6 +73,10 @@ public class FeedbackActivity extends BaseLoadFragmentActivity<Void, Void> {
 		mComversation = agent.getDefaultConversation();
 
 		list = (ListView) findViewById(R.id.fb_reply_list);
+		ListPopupView infoPopup = (ListPopupView) findViewById(R.id.fb_user_layout);
+		infoPopup.setLocation(ListPopupView.TOP);
+		infoPopup.bind(list);
+
 		adapter = new FeedbackAdapter(context);
 		adapter.setComversation(mComversation);
 		list.setAdapter(adapter);

@@ -1,5 +1,7 @@
 package com.gdestiny.github.ui.activity;
 
+import org.eclipse.egit.github.core.User;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
 import com.gdestiny.github.ui.view.TitleBar;
@@ -93,6 +96,11 @@ public class FeedbackInfoActivity extends BaseFragmentActivity implements
 				email.setText(CommonUtils.NAToNull(split[3]));
 				phone.setText(CommonUtils.NAToNull(split[4]));
 			}
+		}
+		User user = GitHubApplication.getUser();
+		if (user != null) {
+			getTitlebar().setLeftLayout(user.getAvatarUrl(), "Feedback",
+					user.getLogin());
 		}
 	}
 

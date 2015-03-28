@@ -384,6 +384,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
+                android:layout_marginBottom="@dimen/margin32"
                 android:layout_marginLeft="@dimen/margin16"
                 android:layout_marginRight="@dimen/margin16"
                 android:layout_marginTop="@dimen/margin32"
@@ -470,10 +471,6 @@
                     android:textColor="@color/common_icon_blue"
                     android:textSize="@dimen/text18" />
             </RelativeLayout>
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="200dp" />
         </LinearLayout>
     </com.gdestiny.github.ui.view.ObservableScrollView>
 

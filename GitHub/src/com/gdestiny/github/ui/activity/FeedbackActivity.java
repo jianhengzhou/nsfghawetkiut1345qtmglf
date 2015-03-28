@@ -15,7 +15,10 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,7 +29,6 @@ import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.SimpleUpdateTask;
 import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
-import com.gdestiny.github.ui.view.ListPopupView;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.CommonUtils;
@@ -73,9 +75,24 @@ public class FeedbackActivity extends BaseLoadFragmentActivity<Void, Void> {
 		mComversation = agent.getDefaultConversation();
 
 		list = (ListView) findViewById(R.id.fb_reply_list);
-		ListPopupView infoPopup = (ListPopupView) findViewById(R.id.fb_user_layout);
-		infoPopup.setLocation(ListPopupView.TOP);
-		infoPopup.bind(list);
+		View infoView = LayoutInflater.from(context).inflate(
+				R.layout.layout_feedback_header, null);
+		infoText = (TextView) infoView.findViewById(R.id.fb_userinfo);
+		list.addHeaderView(infoView);
+		list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				if (position == 0) {
+					IntentUtils
+							.create(context, FeedbackInfoActivity.class)
+							.putExtra(Constants.Extra.USER_INFO, infoString)
+							.startForResult(context,
+									Constants.Request.USER_INFO);
+				}
+			}
+		});
 
 		adapter = new FeedbackAdapter(context);
 		adapter.setComversation(mComversation);
@@ -83,17 +100,6 @@ public class FeedbackActivity extends BaseLoadFragmentActivity<Void, Void> {
 		scrollToBottom();
 
 		inputEdit = (EditText) findViewById(R.id.fb_send_content);
-		infoText = (TextView) findViewById(R.id.fb_userinfo);
-		infoText.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				IntentUtils.create(context, FeedbackInfoActivity.class)
-						.putExtra(Constants.Extra.USER_INFO, infoString)
-						.startForResult(context, Constants.Request.USER_INFO);
-			}
-		});
 		findViewById(R.id.fb_send_btn).setOnClickListener(
 				new View.OnClickListener() {
 

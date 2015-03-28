@@ -3,6 +3,8 @@ package com.gdestiny.github.utils;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
@@ -11,6 +13,7 @@ import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -111,6 +114,45 @@ public class AndroidUtils {
 					WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		}
 
+	}
+
+	public static class FileManager {
+		@SuppressWarnings("resource")
+		public static long getSize(File file) {
+			if (file.isDirectory()) {
+				File[] files = file.listFiles();
+				int size = 0;
+				for (File f : files) {
+					size += getSize(f);
+				}
+				return size;
+			} else {
+				FileInputStream fis = null;
+				try {
+					fis = new FileInputStream(file);
+					return fis.available();
+				} catch (Exception e) {
+					e.printStackTrace();
+					return 0;
+				}
+			}
+		}
+
+		public static long getSize(String path) {
+			File file = new File(path);
+			return getSize(file);
+		}
+
+		public static boolean clearPreference(Context context, String name) {
+			try {
+				SharedPreferences settings = context.getSharedPreferences(name,
+						0);
+				SharedPreferences.Editor localEditor = settings.edit();
+				return localEditor.clear().commit();
+			} catch (Exception ex) {
+				return false;
+			}
+		}
 	}
 
 	@SuppressWarnings({ "rawtypes" })

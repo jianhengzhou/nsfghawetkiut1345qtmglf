@@ -7,6 +7,7 @@
     <string name="press_to_load_more">Press To Load More</string>
     <string name="no_more_data">No More Data</string>
     <string name="comment">Comment</string>
+    <string name="clear">Clear</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="title">title</string>
@@ -51,11 +52,18 @@
     <string name="load_contribution">Tab to load contribution.\nThis may cost lots of traffic!</string>
     <string name="company">company</string>
     <string name="location">location</string>
+    <string name="email_">Email:</string>
+    <string name="phone_">Phone:</string>
     <string name="email">sample@github.com</string>
     <string name="not_email">Not valid Email</string>
     <string name="sure_to_update_profile">Sure To Update Profile?</string>
     <string name="zero">0</string>
-
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="gender_">Gender:</string>
+    <string name="age_">Age:</string>
+    <string name="age">Age</string>
+    
     <!-- error -->
     <string name="login_error">The account or password cannot be empty</string>
     <string name="auth_error">Check your account or password</string>

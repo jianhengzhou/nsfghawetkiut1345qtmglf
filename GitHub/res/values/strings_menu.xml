@@ -35,6 +35,7 @@
     <string name="time">Time</string>
     <string name="user">User</string>
     <string name="name">Name</string>
+    <string name="name_">Name:</string>
 
     <!-- repository -->
     <string name="unstar">Unstar</string>

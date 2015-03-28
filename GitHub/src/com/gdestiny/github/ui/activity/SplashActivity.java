@@ -56,6 +56,7 @@ public class SplashActivity extends Activity {
 		Intent intent = null;
 		if (GitHubApplication.isLogin()) {
 			intent = new Intent(SplashActivity.this, HomeActivity.class);
+			// intent = new Intent(SplashActivity.this, FeedbackActivity.class);
 		} else {
 			intent = new Intent(SplashActivity.this, LoginActivity.class);
 		}

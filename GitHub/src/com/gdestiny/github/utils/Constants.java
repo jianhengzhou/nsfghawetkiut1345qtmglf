@@ -25,6 +25,7 @@ public class Constants {
 		public static final String GIST = "gist";
 		public static final String FILE_NAME = "file_name";
 		public static final String DATA = "data";
+		public static final String USER_INFO = "userinfo";
 	}
 
 	public final static class Request {
@@ -40,6 +41,7 @@ public class Constants {
 		public static final int NEW_GIST = 9;
 		public static final int GIST_DETAIL = 10;
 		public static final int GIST_COMMENT = 11;
+		public static final int USER_INFO = 12;
 	}
 
 	public static final boolean isDebug = true;

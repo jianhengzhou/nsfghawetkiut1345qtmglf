@@ -22,6 +22,21 @@ public class MaterialUpdateDialog {
 
 	private MaterialDialog dialog;
 	private UpdateResponse updateInfo;
+	private UmengUpdateListener updateListener;
+
+	public interface UpdateListener {
+		public void onReturned();
+
+		public void onNew(String version);
+	}
+
+	public UmengUpdateListener getUpdateListener() {
+		return updateListener;
+	}
+
+	public void setOnUpdateListener(UmengUpdateListener updateListener) {
+		this.updateListener = updateListener;
+	}
 
 	public MaterialUpdateDialog(Context cxt) {
 		this.context = cxt;
@@ -31,6 +46,8 @@ public class MaterialUpdateDialog {
 			@Override
 			public void onUpdateReturned(int updateStatus,
 					final UpdateResponse updateInfo) {
+				if (updateListener != null)
+					updateListener.onUpdateReturned(updateStatus, updateInfo);
 				switch (updateStatus) {
 				case UpdateStatus.Yes: // has update
 					MaterialUpdateDialog.this.setInfoDetail(updateInfo).show();

@@ -6,8 +6,8 @@ import org.eclipse.egit.github.core.client.GitHubClient;
 import android.app.Application;
 import android.content.Context;
 
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.GLog;
-import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.SnappyDBUtils;
 import com.snappydb.SnappydbException;
 
@@ -24,7 +24,7 @@ public class GitHubApplication extends Application {
 		GLog.sysout("--------GitHub------------GitHub-------------GitHub--------");
 		context = getApplicationContext();
 		initLogin();
-		ImageLoaderUtils.initImageLoader(context);
+		CacheUtils.init(context);
 	}
 
 	public static Context getContext() {

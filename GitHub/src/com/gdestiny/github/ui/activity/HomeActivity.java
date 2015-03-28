@@ -23,6 +23,7 @@ import com.gdestiny.github.ui.fragment.RepositoryFragment;
 import com.gdestiny.github.ui.view.ResideMenu;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
+import com.gdestiny.github.utils.PreferencesUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class HomeActivity extends BaseFragmentActivity implements
@@ -55,8 +56,36 @@ public class HomeActivity extends BaseFragmentActivity implements
 		// TODO Auto-generated method stub
 		getTitlebar().setTitleIcon(GitHubApplication.getUser().getAvatarUrl());
 
-		currentFragment = new RepositoryFragment();
-		currentFragmentTag = getResources().getString(R.string.repository);
+		int startup = PreferencesUtils.getInt(context, "startup", 0);
+		switch (startup) {
+		case 0:
+			currentFragment = new RepositoryFragment();
+			currentFragmentTag = getResources().getString(R.string.repository);
+			break;
+		case 1:
+			currentFragment = new EventsUserReceivedFragment(GitHubApplication
+					.getUser().getLogin());
+			currentFragmentTag = getResources().getString(R.string.events);
+			break;
+		case 2:
+			currentFragment = new FollowerFragment();
+			currentFragmentTag = getResources().getString(R.string.followers);
+			break;
+		case 3:
+			currentFragment = new FollowingFragment();
+			currentFragmentTag = getResources().getString(R.string.following);
+			break;
+		case 4:
+			currentFragment = new GistFragment();
+			currentFragmentTag = getResources().getString(R.string.gists);
+			break;
+		case 5:
+			currentFragment = new IssueDashboardFragment();
+			currentFragmentTag = getResources().getString(
+					R.string.issue_dashboard);
+			break;
+
+		}
 		getTitlebar().setTitleText(currentFragmentTag);
 		changeFragment(R.id.home_frame, null, currentFragment,
 				currentFragmentTag);

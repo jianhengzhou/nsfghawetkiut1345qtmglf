@@ -61,7 +61,7 @@ public class IssueDashboardIssueFragment extends
 		filterData.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
 
 		execute(GitHubApplication.getClient());
-		if (!filterType.equals(IssueService.FILTER_SUBSCRIBED)) {
+		if (!filterType.equals(IssueService.FILTER_CREATED)) {
 			getPullToRefreshLayout().getHeaderTransformer()
 					.setProgressbarVisibility(View.GONE);
 		}

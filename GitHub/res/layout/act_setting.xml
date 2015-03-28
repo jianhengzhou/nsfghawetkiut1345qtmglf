@@ -24,7 +24,29 @@
                 android:layout_marginTop="@dimen/margin16"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/ic_launcher"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="left"
+                android:background="@drawable/selector_on_click"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/margin16"
+                android:src="@drawable/common_back_arrow" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/margin8"
+                android:text="@string/setting"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text18" />
         </RelativeLayout>
 
         <LinearLayout
@@ -34,9 +56,42 @@
             android:background="@drawable/drawable_border_blue"
             android:orientation="vertical" >
 
-            <TextView
-                style="@style/settingText_style"
-                android:text="@string/account" />
+            <RelativeLayout
+                android:id="@+id/account"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.0"
+                android:background="@drawable/selector_listviewitem"
+                android:padding="@dimen/margin16" >
+
+                <TextView
+                    android:id="@+id/account_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/account"
+                    android:textColor="@color/common_light_black"
+                    android:textSize="@dimen/text18" />
+
+                <TextView
+                    android:id="@+id/account_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin8"
+                    android:layout_toRightOf="@+id/account_text"
+                    android:textColor="@color/common_icon_blue"
+                    android:textSize="@dimen/text14" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/common_forward_grey" />
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -45,9 +100,42 @@
                 android:layout_marginRight="@dimen/margin8"
                 android:background="#dddddd" />
 
-            <TextView
-                style="@style/settingText_style"
-                android:text="@string/start_up" />
+            <RelativeLayout
+                android:id="@+id/start_up"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.0"
+                android:background="@drawable/selector_listviewitem"
+                android:padding="@dimen/margin16" >
+
+                <TextView
+                    android:id="@+id/start_up_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/start_up"
+                    android:textColor="@color/common_light_black"
+                    android:textSize="@dimen/text18" />
+
+                <TextView
+                    android:id="@+id/start_up_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin8"
+                    android:layout_toRightOf="@+id/start_up_text"
+                    android:textColor="@color/common_icon_blue"
+                    android:textSize="@dimen/text14" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/common_forward_grey" />
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -56,16 +144,49 @@
                 android:layout_marginRight="@dimen/margin8"
                 android:background="#dddddd" />
 
-            <TextView
-                style="@style/settingText_style"
-                android:text="@string/delete_cache" />
+            <RelativeLayout
+                android:id="@+id/delete_cache"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.0"
+                android:background="@drawable/selector_listviewitem"
+                android:padding="@dimen/margin16" >
+
+                <TextView
+                    android:id="@+id/cache_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/delete_cache"
+                    android:textColor="@color/common_light_black"
+                    android:textSize="@dimen/text18" />
+
+                <TextView
+                    android:id="@+id/size_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin8"
+                    android:layout_toRightOf="@+id/cache_text"
+                    android:textColor="@color/common_icon_blue"
+                    android:textSize="@dimen/text14" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/common_forward_grey" />
+            </RelativeLayout>
         </LinearLayout>
 
         <include layout="@layout/layout_about" />
 
         <View
             android:layout_width="wrap_content"
-            android:layout_height="1000dp" />
+            android:layout_height="200dp" />
     </LinearLayout>
 
 </com.gdestiny.github.ui.view.ObservableScrollView>

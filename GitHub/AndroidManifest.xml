@@ -124,6 +124,7 @@
         <activity
             android:name="com.gdestiny.github.ui.activity.FeedbackInfoActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name="com.gdestiny.github.ui.activity.AboutUSActivity" />
         <!-- umeng data -->
         <meta-data
             android:name="UMENG_APPKEY"

@@ -117,7 +117,33 @@ public class AndroidUtils {
 	}
 
 	public static class FileManager {
-		@SuppressWarnings("resource")
+
+		public static boolean delete(File file) {
+			try {
+				if (file.isFile()) {
+					return file.delete();
+				}
+				if (file.isDirectory()) {
+					File[] childFile = file.listFiles();
+					if (childFile == null || childFile.length == 0) {
+						return file.delete();
+					}
+					for (File f : childFile) {
+						delete(f);
+					}
+					return file.delete();
+				}
+			} catch (Exception ex) {
+				return false;
+			}
+			return false;
+		}
+
+		public static boolean delete(String path) {
+			File file = new File(path);
+			return delete(file);
+		}
+
 		public static long getSize(File file) {
 			if (file.isDirectory()) {
 				File[] files = file.listFiles();
@@ -130,7 +156,9 @@ public class AndroidUtils {
 				FileInputStream fis = null;
 				try {
 					fis = new FileInputStream(file);
-					return fis.available();
+					long size = fis.available();
+					fis.close();
+					return size;
 				} catch (Exception e) {
 					e.printStackTrace();
 					return 0;

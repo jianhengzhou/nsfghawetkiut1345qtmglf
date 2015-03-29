@@ -39,9 +39,9 @@
     <string name="file_content_">File Content:</string>
     <string name="anonymous">Anonymous</string>
     <string name="add_file">Add File</string>
-    <string name="pull_to_refresh_pull_label">Pull To Refresh</string>
-    <string name="pull_to_refresh_release_label">Release To Refresh…</string>
-    <string name="pull_to_refresh_refreshing_label">Loading…</string>
+    <string name="pull_to_refresh_pull">Pull To Refresh</string>
+    <string name="pull_to_refresh_release">Release To Refresh…</string>
+    <string name="pull_to_refresh_refreshing">Loading…</string>
     <string name="todo">TODO</string>
     <string name="is_public">Is Public</string>
     <string name="secret">SECRET</string>

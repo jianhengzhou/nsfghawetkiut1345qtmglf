@@ -30,7 +30,7 @@
     <style name="Widget.Custom.Pull_Style" parent="android:Widget">
         <item name="ptrHeaderBackground">@color/common_icon_blue</item>
         <item name="ptrHeaderTitleTextAppearance">@style/TextAppearance.Custom.Pull_Text</item>
-        <item name="ptrProgressBarColor">@color/common_title_refresh_blue</item>
+        <item name="ptrProgressBarColor">@color/common_icon_blue</item>
         <item name="ptrPullText">@string/pull_to_refresh_pull</item>
         <item name="ptrRefreshingText">@string/pull_to_refresh_refreshing</item>
         <item name="ptrReleaseText">@string/pull_to_refresh_release</item>

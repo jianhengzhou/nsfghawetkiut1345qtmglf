@@ -12,7 +12,9 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -23,7 +25,9 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.app.DefaultClient;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.GitHubTask;
+import com.gdestiny.github.ui.activity.abstracts.BaseActivity;
 import com.gdestiny.github.utils.Constants;
+import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.SnappyDBUtils;
 import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
@@ -34,6 +38,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	private EditText account;
 	private EditText password;
+	private View accountDel;
+	private View passwordDel;
 	private Context context;
 	private ProgressDialog dialog;
 
@@ -53,7 +59,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		super.initActionBar();
 		titlebar.setTitleText(R.string.login);
 		titlebar.hideRight();
-		ViewUtils.setVisibility(titlebar.getTitleBackIcon(),View.GONE);
+		ViewUtils.setVisibility(titlebar.getTitleBackIcon(), View.GONE);
 	}
 
 	@Override
@@ -62,6 +68,54 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		context = this;
 		account = (EditText) findViewById(R.id.account);
 		password = (EditText) findViewById(R.id.password);
+		passwordDel = findViewById(R.id.password_del);
+		accountDel = findViewById(R.id.account_del);
+
+		account.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (TextUtils.isEmpty(s))
+					ViewUtils.setVisibility(accountDel, View.INVISIBLE);
+				else
+					ViewUtils.setVisibility(accountDel, View.VISIBLE);
+			}
+		});
+		password.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (TextUtils.isEmpty(s))
+					ViewUtils.setVisibility(passwordDel, View.INVISIBLE);
+				else
+					ViewUtils.setVisibility(passwordDel, View.VISIBLE);
+			}
+		});
+
 		TextView registe = (TextView) findViewById(R.id.registe);
 		registe.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
@@ -72,8 +126,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 		registe.setOnClickListener(this);
 		findViewById(R.id.login).setOnClickListener(this);
-		findViewById(R.id.password_del).setOnClickListener(this);
-		findViewById(R.id.account_del).setOnClickListener(this);
+		passwordDel.setOnClickListener(this);
+		accountDel.setOnClickListener(this);
 	}
 
 	@Override
@@ -175,13 +229,17 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			Intent intent = new Intent();
 			intent.setAction("android.intent.action.VIEW");
 			intent.setData(Uri.parse(Constants.GIT_JOIN));
-			startActivity(intent);
+			// startActivity(intent);
+			IntentUtils.create(context, WebViewActivity.class)
+					.putExtra(Constants.Extra.URL, Constants.GIT_JOIN).start();
 			break;
 		case R.id.account_del:
+			account.requestFocus();
 			if (!TextUtils.isEmpty(account.getText()))
 				account.setText("");
 			break;
 		case R.id.password_del:
+			password.requestFocus();
 			if (!TextUtils.isEmpty(password.getText()))
 				password.setText("");
 			break;

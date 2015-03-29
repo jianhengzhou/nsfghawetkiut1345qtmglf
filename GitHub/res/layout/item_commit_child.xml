@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/line_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/old_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:paddingLeft="@dimen/margin4"
+            android:paddingRight="@dimen/margin4"
+            android:textColor="@color/common_icon_grey"
+            android:textSize="@dimen/text12" />
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="@dimen/divider_0.5"
+            android:layout_height="match_parent"
+            android:background="#dddddd" />
+
+        <TextView
+            android:id="@+id/new_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:paddingLeft="@dimen/margin4"
+            android:paddingRight="@dimen/margin4"
+            android:textColor="@color/common_icon_grey"
+            android:textSize="@dimen/text12" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="@dimen/divider_0.5"
+            android:layout_height="match_parent"
+            android:background="#dddddd" />
+
+        <TextView
+            android:id="@+id/line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin4"
+            android:layout_marginRight="@dimen/margin16"
+            android:layout_marginTop="@dimen/margin4"
+            android:paddingBottom="@dimen/margin4"
+            android:paddingTop="@dimen/margin4"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text12" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/comment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin16"
+        android:background="@drawable/drawable_border_blue"
+        android:padding="@dimen/margin2"
+        android:visibility="gone" >
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/item_comment" />
+    </FrameLayout>
+
+</FrameLayout>

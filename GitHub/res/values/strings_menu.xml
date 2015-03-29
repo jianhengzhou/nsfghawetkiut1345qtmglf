@@ -8,6 +8,7 @@
     <string name="following">Following</string>
     <string name="gists">Gists</string>
     <string name="issue">Issue</string>
+    <string name="issue_dashboard">Issue Dashboard</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="setting">Setting</string>
     <string name="exit">Exit</string>
@@ -20,15 +21,21 @@
     <string name="events_l">events</string>
     <string name="commit">commit</string>
     <string name="issues">issues</string>
+    <!-- navigation tab -->
+    <string name="tab_repository">repositoty</string>
+    <string name="tab_follower">follower</string>
+    <string name="tab_following">following</string>
 
     <!-- sort menu -->
     <string name="all">All</string>
     <string name="alphabet">alphabet</string>
     <string name="star">Star</string>
     <string name="own">Own</string>
+    <string name="delete">Delete</string>
     <string name="time">Time</string>
     <string name="user">User</string>
     <string name="name">Name</string>
+    <string name="name_">Name:</string>
 
     <!-- repository -->
     <string name="unstar">Unstar</string>
@@ -39,8 +46,40 @@
     <!-- repository issue -->
     <string name="new_issue">New Issue</string>
     <string name="filter">Filter</string>
-    
+
     <!-- webview activiy -->
     <string name="open_with">Open With</string>
+
+    <!-- issue detail activiy -->
+    <string name="edit_issue">Edit Issue</string>
+    <string name="comment">Comment</string>
+    <string name="follow">follow</string>
+    <string name="unfollow">unfollow</string>
+
+    <!-- issue dashboard -->
+    <string name="watched">watched</string>
+    <string name="created">created</string>
+    <string name="assigned">assigned</string>
+    <string name="mentioned">mentioned</string>
+
+    <!-- gist dashboard -->
+    <string name="mine">mine</string>
+    <string name="_public">public</string>
+    <string name="new_gist">New Gist</string>
+    <string name="random">Random</string>
+
+    <!-- setting -->
+    <string name="account">Account</string>
+    <string name="start_up">Startup View</string>
+    <string name="delete_cache">Clear Cache</string>
+    <string name="about">About</string>
+    <string name="logout">Logout</string>
+
+    <!-- setting about -->
+    <!-- <string name=""></string> -->
+    <string name="rate_github">Rate Github</string>
+    <string name="check_for_update">Check for Updates</string>
+    <string name="feedback">Feedback</string>
+    <string name="about_us">About US</string>
 
 </resources>

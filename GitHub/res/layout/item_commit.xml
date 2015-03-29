@@ -28,17 +28,6 @@
         android:textSize="@dimen/text14" />
 
     <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignTop="@id/name"
-        android:layout_marginTop="@dimen/margin8"
-        android:layout_toRightOf="@id/name"
-        android:textColor="@color/common_icon_grey"
-        android:textSize="@dimen/text12" />
-
-    <TextView
         android:id="@+id/comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,11 +41,24 @@
         android:textSize="@dimen/text12" />
 
     <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignTop="@id/name"
+        android:layout_marginTop="@dimen/margin8"
+        android:layout_toLeftOf="@id/comment"
+        android:layout_toRightOf="@id/name"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text12" />
+
+    <TextView
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/name"
-        android:layout_marginBottom="@dimen/margin8"
         android:layout_marginLeft="@dimen/margin16"
         android:layout_marginRight="@dimen/margin16"
         android:layout_marginTop="@dimen/margin4"
@@ -65,5 +67,19 @@
         android:maxLines="2"
         android:textColor="@color/common_light_black"
         android:textSize="@dimen/text16" />
+
+    <TextView
+        android:id="@+id/sha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/content"
+        android:layout_marginBottom="@dimen/margin8"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin4"
+        android:layout_toRightOf="@id/icon"
+        android:singleLine="true"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text14" />
 
 </RelativeLayout>

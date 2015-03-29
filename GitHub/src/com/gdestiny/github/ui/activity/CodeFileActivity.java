@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
 import org.eclipse.egit.github.core.Blob;
+import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.TreeEntry;
 import org.eclipse.egit.github.core.client.GitHubClient;
@@ -25,24 +26,25 @@ import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.view.touchimageview.TouchImageView;
 import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.CommonUtils;
+import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.ImageUtils;
 import com.gdestiny.github.utils.MarkdownUtils;
+import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
 public class CodeFileActivity extends
 		BaseLoadFragmentActivity<GitHubClient, Serializable> {
-
-	public static final String EXTRA_CODE_ENTRY = "code_entry";
-	public static final String EXTRA_CODE_REPOSITORY = "repository";
 
 	public static enum FILETYPE {
 		IMG, GIF, MD, OTHER, PIC_IN_CACHE
@@ -50,6 +52,8 @@ public class CodeFileActivity extends
 
 	private Repository repository;
 	private TreeEntry treeEntry;
+	private CommitFile commitFile;
+	private String sha;
 
 	private FILETYPE fileType;
 
@@ -72,11 +76,24 @@ public class CodeFileActivity extends
 	protected void initData() {
 		// TODO Auto-generated method stub
 		treeEntry = (TreeEntry) getIntent().getSerializableExtra(
-				EXTRA_CODE_ENTRY);
+				Constants.Extra.CODE_ENTRY);
 		repository = (Repository) getIntent().getSerializableExtra(
-				EXTRA_CODE_REPOSITORY);
+				Constants.Extra.REPOSITORY);
+		commitFile = (CommitFile) getIntent().getSerializableExtra(
+				Constants.Extra.COMMIT_FILE);
 
-		String path = treeEntry.getPath();
+		String path = null;
+		if (treeEntry != null) {
+			path = treeEntry.getPath();
+			sha = treeEntry.getSha();
+		} else if (commitFile != null) {
+			path = commitFile.getFilename();
+			sha = commitFile.getSha();
+		} else {
+			ToastUtils.show(context, "not fount(404)");
+			finish();
+		}
+
 		if (ImageUtils.isImageFromPath(path)) {
 			if (ImageUtils.isGifFromPath(path)) {
 				fileType = FILETYPE.GIF;
@@ -89,8 +106,10 @@ public class CodeFileActivity extends
 			fileType = FILETYPE.OTHER;
 		}
 
-		getTitlebar().setLeftLayout(null,
-				CommonUtils.pathToName(treeEntry.getPath()));
+		GLog.sysout(path);
+		GLog.sysout(sha);
+		GLog.sysout(fileType.toString());
+		getTitlebar().setLeftLayout(null, CommonUtils.pathToName(path));
 
 		execute(GitHubApplication.getClient());
 	}
@@ -99,9 +118,9 @@ public class CodeFileActivity extends
 	public Serializable onBackground(GitHubClient params) throws Exception {
 		// TODO Î´Íê³É
 		if (fileType == FILETYPE.IMG) {
-			if (CacheUtils.isBitmapExistInDisk(treeEntry.getUrl())) {
+			if (CacheUtils.isBitmapExistInDisk(sha)) {
 				GLog.sysout("Image From Cache");
-				String path = CacheUtils.getBitmapPath(treeEntry.getUrl());
+				String path = CacheUtils.getBitmapPath(sha);
 				if (!TextUtils.isEmpty(path))
 					return path;
 			}
@@ -109,7 +128,7 @@ public class CodeFileActivity extends
 		}
 		// from net
 		DataService dataService = new DataService(params);
-		Blob blob = dataService.getBlob(repository, treeEntry.getSha());
+		Blob blob = dataService.getBlob(repository, sha);
 
 		if (fileType == FILETYPE.MD) {
 			MarkdownService mdSerview = new MarkdownService(params);
@@ -123,7 +142,7 @@ public class CodeFileActivity extends
 
 			}
 		} else if (fileType == FILETYPE.IMG) {
-			String result = CacheUtils.cache(treeEntry.getUrl(),
+			String result = CacheUtils.cache(sha,
 					EncodingUtils.fromBase64((blob.getContent())));
 			if (!TextUtils.isEmpty(result)) {
 				return result;
@@ -245,6 +264,10 @@ public class CodeFileActivity extends
 		String str = new String(data, "utf-8");
 		tv.setText(str);
 		tv.setHorizontallyScrolling(true);
+
+		ScrollView scroll = (ScrollView) findViewById(R.id.scrollview);
+		scroll.setFillViewport(true);
+		scroll.setHorizontalScrollBarEnabled(true);
 	}
 
 	@Override

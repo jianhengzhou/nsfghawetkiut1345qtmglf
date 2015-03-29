@@ -86,7 +86,7 @@ public class BranchDialog {
 						;
 						for (RepositoryBranch branch : result) {
 							branchDialog.addItem(R.drawable.common_branch_grey,
-									branch.getName());
+									branch.getName(), false);
 						}
 						branchDialog.show();
 					}

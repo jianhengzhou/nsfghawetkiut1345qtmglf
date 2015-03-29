@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:id="@+id/file_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="@dimen/margin32"
+            android:layout_marginRight="@dimen/margin32"
+            android:layout_marginTop="@dimen/margin16"
+            android:drawableLeft="@drawable/common_tip"
+            android:drawablePadding="@dimen/margin8"
+            android:gravity="left"
+            android:paddingBottom="@dimen/margin8"
+            android:paddingTop="@dimen/margin8"
+            android:text="@string/gist_tips"
+            android:textColor="@color/common_light_grey"
+            android:textSize="@dimen/text16" />
+
+        <CheckBox
+            android:id="@+id/isPublic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="@dimen/margin32"
+            android:layout_marginRight="@dimen/margin32"
+            android:layout_marginTop="@dimen/margin16"
+            android:button="@drawable/selector_checkbox_rect"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:text="@string/is_public"
+            android:textColor="@color/common_icon_grey"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin32"
+            android:layout_marginTop="@dimen/margin16"
+            android:background="@drawable/drawable_corner_top_ligth_blue"
+            android:paddingLeft="@dimen/margin8"
+            android:paddingRight="@dimen/margin8"
+            android:paddingTop="@dimen/margin8"
+            android:text="@string/description_"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text18" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/margin16"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:background="@drawable/drawable_corner_ligth_blue"
+            android:paddingBottom="@dimen/margin16"
+            android:paddingLeft="@dimen/margin8"
+            android:paddingRight="@dimen/margin8"
+            android:paddingTop="@dimen/margin16" >
+
+            <EditText
+                android:id="@+id/gist_description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin16"
+                android:layout_marginRight="@dimen/margin16"
+                android:background="@drawable/selector_common_edtitext_background"
+                android:gravity="top|left"
+                android:hint="@string/description_"
+                android:padding="@dimen/margin8"
+                android:textColor="@color/common_light_black"
+                android:textSize="@dimen/text18" />
+        </FrameLayout>
+
+        <include
+            android:id="@+id/init_file"
+            layout="@layout/item_new_gist_file" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:background="#dddddd" />
+
+        <TextView
+            android:id="@+id/add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin16"
+            android:paddingTop="@dimen/margin16"
+            android:text="@string/add_file"
+            android:textColor="@color/common_light_grey"
+            android:textSize="@dimen/text16" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:background="#dddddd" />
+    </LinearLayout>
+
+</ScrollView>

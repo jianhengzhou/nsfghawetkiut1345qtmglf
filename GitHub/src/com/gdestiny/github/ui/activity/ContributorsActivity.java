@@ -1,6 +1,5 @@
 package com.gdestiny.github.ui.activity;
 
-import java.io.File;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Contributor;
@@ -15,6 +14,8 @@ import android.widget.ListView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.ContributorsAdapter;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
+import com.gdestiny.github.utils.Constants;
 
 public class ContributorsActivity extends
 		BaseLoadFragmentActivity<GitHubClient, List<Contributor>> {
@@ -45,13 +46,11 @@ public class ContributorsActivity extends
 	protected void initData() {
 		// TODO Auto-generated method stub
 		repository = (Repository) getIntent().getSerializableExtra(
-				RepositoryDetailActivity.EXTRA_REPOSITORY);
+				Constants.Extra.REPOSITORY);
 
 		getTitlebar().hideRight();
-		getTitlebar().setLeftLayout(
-				repository.getOwner().getAvatarUrl(),
-				repository.getOwner().getLogin() + File.separator
-						+ repository.getName(), "contributors");
+		getTitlebar().setLeftLayout(repository.getOwner().getAvatarUrl(),
+				repository.generateId());
 
 		contributorList = (ListView) findViewById(R.id.list);
 		contributorsAdapter = new ContributorsAdapter(context);

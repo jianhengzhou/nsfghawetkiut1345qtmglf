@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <!-- state -->
+
+        <RadioGroup
+            android:id="@+id/state_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:layout_marginTop="@dimen/margin16"
+            android:background="@drawable/drawable_corner_ligth_blue"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin16" >
+
+            <RadioButton
+                android:id="@+id/state_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin16"
+                android:button="@drawable/selector_radio"
+                android:paddingLeft="@dimen/margin8"
+                android:text="@string/male"
+                android:textColor="@color/common_icon_grey"
+                android:textSize="@dimen/text14" />
+
+            <RadioButton
+                android:id="@+id/state_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/selector_radio"
+                android:paddingLeft="@dimen/margin8"
+                android:text="@string/female"
+                android:textColor="@color/common_icon_grey"
+                android:textSize="@dimen/text14" />
+        </RadioGroup>
+
+        <!-- age -->
+
+        <TextView
+            android:id="@+id/age_spin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:layout_marginTop="@dimen/margin16"
+            android:background="@drawable/drawable_corner_ligth_blue"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin16"
+            android:paddingLeft="@dimen/margin16"
+            android:paddingTop="@dimen/margin16"
+            android:text="@string/age_"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text18" />
+        <!-- name -->
+
+        <EditText
+            android:id="@+id/name"
+            style="@style/user_editText_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:layout_marginTop="@dimen/margin32"
+            android:drawableLeft="@drawable/common_accout_grey"
+            android:gravity="left"
+            android:hint="@string/name_"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text18" />
+        <!-- email -->
+
+        <EditText
+            android:id="@+id/e_mail"
+            style="@style/user_editText_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:layout_marginTop="@dimen/margin32"
+            android:drawableLeft="@drawable/common_email"
+            android:hint="@string/email"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text18" />
+        <!-- phone -->
+
+        <EditText
+            android:id="@+id/p_hone"
+            style="@style/user_editText_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin16"
+            android:layout_marginRight="@dimen/margin16"
+            android:layout_marginTop="@dimen/margin32"
+            android:drawableLeft="@drawable/common_phone"
+            android:hint="@string/phone_"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text18" />
+    </LinearLayout>
+
+</ScrollView>

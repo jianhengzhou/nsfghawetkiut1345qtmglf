@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/margin16"
+    android:background="@drawable/drawable_border_blue"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/rate"
+        style="@style/settingText_style"
+        android:text="@string/rate_github" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dip"
+        android:layout_marginLeft="@dimen/margin8"
+        android:layout_marginRight="@dimen/margin8"
+        android:background="#dddddd" />
+
+    <TextView
+        android:id="@+id/share"
+        style="@style/settingText_style"
+        android:text="@string/share" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dip"
+        android:layout_marginLeft="@dimen/margin8"
+        android:layout_marginRight="@dimen/margin8"
+        android:background="#dddddd" />
+
+    <RelativeLayout
+        android:id="@+id/check_for_update"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0"
+        android:background="@drawable/selector_listviewitem"
+        android:padding="@dimen/margin16" >
+
+        <TextView
+            android:id="@+id/update_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/check_for_update"
+            android:textColor="@color/common_light_black"
+            android:textSize="@dimen/text18" />
+
+        <ImageView
+            android:id="@+id/update_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_toRightOf="@id/update_text"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/common_new"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/update_forword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/common_forward_grey" />
+
+        <fr.castorflex.android.circularprogressbar.CircularProgressBar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/update_progressBar"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="left"
+            android:indeterminate="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dip"
+        android:layout_marginLeft="@dimen/margin8"
+        android:layout_marginRight="@dimen/margin8"
+        android:background="#dddddd" />
+
+    <TextView
+        android:id="@+id/feedback"
+        style="@style/settingText_style"
+        android:text="@string/feedback" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dip"
+        android:layout_marginLeft="@dimen/margin8"
+        android:layout_marginRight="@dimen/margin8"
+        android:background="#dddddd" />
+
+    <TextView
+        android:id="@+id/about_us"
+        style="@style/settingText_style"
+        android:text="@string/about_us" />
+
+</LinearLayout>

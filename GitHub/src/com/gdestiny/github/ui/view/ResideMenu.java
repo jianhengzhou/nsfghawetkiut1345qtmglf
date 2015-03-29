@@ -358,6 +358,10 @@ public class ResideMenu extends FrameLayout {
 		ignoredViews.add(v);
 	}
 
+	public List<View> getIgnoredViews() {
+		return ignoredViews;
+	}
+
 	/**
 	 * remove the view from ignored view list;
 	 * 

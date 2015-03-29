@@ -10,17 +10,20 @@ import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
-import com.gdestiny.github.async.DialogTask;
+import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
+import com.gdestiny.github.ui.fragment.BaseFragment;
 import com.gdestiny.github.ui.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.fragment.EventsUserReceivedFragment;
 import com.gdestiny.github.ui.fragment.FollowerFragment;
 import com.gdestiny.github.ui.fragment.FollowingFragment;
+import com.gdestiny.github.ui.fragment.GistFragment;
+import com.gdestiny.github.ui.fragment.IssueDashboardFragment;
 import com.gdestiny.github.ui.fragment.LeftMenuFragment;
 import com.gdestiny.github.ui.fragment.RepositoryFragment;
 import com.gdestiny.github.ui.view.ResideMenu;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
-import com.gdestiny.github.utils.TestUtils;
+import com.gdestiny.github.utils.PreferencesUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class HomeActivity extends BaseFragmentActivity implements
@@ -29,8 +32,12 @@ public class HomeActivity extends BaseFragmentActivity implements
 	private long keyTime; // again exit
 	public static final int exitLimit = 2000;
 	private ResideMenu resideMenu;
-	private BaseLoadFragment<?, ?> currentFragment;
+	private BaseFragment currentFragment;
 	private String currentFragmentTag;
+
+	public ResideMenu getResideMenu() {
+		return resideMenu;
+	}
 
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
@@ -49,8 +56,37 @@ public class HomeActivity extends BaseFragmentActivity implements
 		// TODO Auto-generated method stub
 		getTitlebar().setTitleIcon(GitHubApplication.getUser().getAvatarUrl());
 
-		currentFragment = new RepositoryFragment();
-		currentFragmentTag = getResources().getString(R.string.repository);
+		int startup = PreferencesUtils.getInt(context, "startup", 0);
+		switch (startup) {
+		case 0:
+			currentFragment = new RepositoryFragment();
+			currentFragmentTag = getResources().getString(R.string.repository);
+			break;
+		case 1:
+			currentFragment = new EventsUserReceivedFragment(GitHubApplication
+					.getUser().getLogin());
+			currentFragmentTag = getResources().getString(R.string.events);
+			break;
+		case 2:
+			currentFragment = new FollowerFragment();
+			currentFragmentTag = getResources().getString(R.string.followers);
+			break;
+		case 3:
+			currentFragment = new FollowingFragment();
+			currentFragmentTag = getResources().getString(R.string.following);
+			break;
+		case 4:
+			currentFragment = new GistFragment();
+			currentFragmentTag = getResources().getString(R.string.gists);
+			break;
+		case 5:
+			currentFragment = new IssueDashboardFragment();
+			currentFragmentTag = getResources().getString(
+					R.string.issue_dashboard);
+			break;
+
+		}
+		getTitlebar().setTitleText(currentFragmentTag);
 		changeFragment(R.id.home_frame, null, currentFragment,
 				currentFragmentTag);
 	}
@@ -73,22 +109,46 @@ public class HomeActivity extends BaseFragmentActivity implements
 			@Override
 			public void openMenu() {
 				GLog.sysout("resideMenu openMenu");
-				hideHeaderView(currentFragment);
+				hideHeader();
 			}
 
 			@Override
 			public void closeMenu() {
 				GLog.sysout("resideMenu closeMenu");
-				showRefreshHeader(currentFragment);
+				showHeader();
 			}
 
 			@Override
 			public void onMove() {
 				if (!resideMenu.isOpened()) {
-					hideHeaderView(currentFragment);
+					hideHeader();
 				}
 			}
 		});
+	}
+
+	private void hideHeader() {
+		if (currentFragment instanceof BaseLoadFragment<?, ?>)
+			hideHeaderView((BaseLoadFragment<?, ?>) currentFragment);
+		else if (currentFragment instanceof IssueDashboardFragment) {
+			hideHeaderView(((IssueDashboardFragment) currentFragment)
+					.getCurrentFragment());
+		} else if (currentFragment instanceof GistFragment) {
+			hideHeaderView(((GistFragment) currentFragment)
+					.getCurrentFragment());
+		}
+	}
+
+	private void showHeader() {
+		if (currentFragment instanceof BaseLoadFragment<?, ?>)
+			showRefreshHeader((BaseLoadFragment<?, ?>) currentFragment);
+		else if (currentFragment instanceof IssueDashboardFragment) {
+			showRefreshHeader(((IssueDashboardFragment) currentFragment)
+					.getCurrentFragment());
+		} else if (currentFragment instanceof GistFragment) {
+			showRefreshHeader(((GistFragment) currentFragment)
+					.getCurrentFragment());
+		}
 	}
 
 	@Override
@@ -102,6 +162,8 @@ public class HomeActivity extends BaseFragmentActivity implements
 		boolean close = true;
 		switch (v.getId()) {
 		case R.id.menu_avatar:
+			close = false;
+			IntentUtils.start(context, UserActivity.class);
 			break;
 		case R.id.menu_repository:
 			changeOrNewFragment(v);
@@ -110,32 +172,12 @@ public class HomeActivity extends BaseFragmentActivity implements
 			changeOrNewFragment(v);
 			break;
 		case R.id.menu_follower:
-			// changeOrNewFragment(v);
-			close = false;
-			new DialogTask<Void, Void>(context) {
-
-				@Override
-				public void onPrev() {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public Void onBackground(Void params) throws Exception {
-					// TODO Auto-generated method stub
-					TestUtils.interrupt(5000);
-					return null;
-				}
-
-				@Override
-				public void onSuccess(Void result) {
-					// TODO Auto-generated method stub
-
-				}
-			}.setTitle("lodaing test")
-					.setLoadingMessage("test message").execute(null);
+			changeOrNewFragment(v);
 			break;
 		case R.id.menu_following:
+			changeOrNewFragment(v);
+			break;
+		case R.id.menu_issue:
 			changeOrNewFragment(v);
 			break;
 		case R.id.menu_exit:
@@ -144,11 +186,10 @@ public class HomeActivity extends BaseFragmentActivity implements
 			break;
 		case R.id.menu_setting:
 			close = false;
-			IntentUtils.start(context, LoginActivity.class);
+			IntentUtils.start(context, SettingActivity.class);
 			break;
 		case R.id.menu_gists:
-			close = false;
-			IntentUtils.start(context, IssueFilterActivity.class);
+			changeOrNewFragment(v);
 			break;
 		}
 		if (close)
@@ -162,12 +203,12 @@ public class HomeActivity extends BaseFragmentActivity implements
 		} else if (v instanceof ImageView) {
 			tag = "user";
 		}
-		BaseLoadFragment<?, ?> newFragment = (BaseLoadFragment<?, ?>) getFragment(tag);
+		BaseFragment newFragment = (BaseFragment) getFragment(tag);
 		if (currentFragment != null && currentFragment == newFragment) {
 			currentFragment.onShowRepeat(context);
 			GLog.sysout("currentFragment.onShowRepeat(context);");
 		} else {
-			hideHeaderView(currentFragment);
+			hideHeader();
 			if (newFragment == null) {
 				GLog.sysout("newFragment == null");
 				switch (v.getId()) {
@@ -177,13 +218,20 @@ public class HomeActivity extends BaseFragmentActivity implements
 					newFragment = new RepositoryFragment();
 					break;
 				case R.id.menu_news:
-					newFragment = new EventsUserReceivedFragment();
+					newFragment = new EventsUserReceivedFragment(
+							GitHubApplication.getUser().getLogin());
 					break;
 				case R.id.menu_follower:
 					newFragment = new FollowerFragment();
 					break;
 				case R.id.menu_following:
 					newFragment = new FollowingFragment();
+					break;
+				case R.id.menu_issue:
+					newFragment = new IssueDashboardFragment();
+					break;
+				case R.id.menu_gists:
+					newFragment = new GistFragment();
 					break;
 				}
 			}

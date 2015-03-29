@@ -13,19 +13,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <ScrollView
+            <com.gdestiny.github.ui.view.ObservableScrollView
+                android:id="@+id/scrollview"
+                style="@style/scrollbar_style"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:scrollbarAlwaysDrawVerticalTrack="false" >
 
-                <TextView
-                    android:id="@+id/text"
+                <HorizontalScrollView
+                    style="@style/scrollbar_style"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollHorizontally="true"
-                    android:textColor="@color/common_icon_grey"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-            </ScrollView>
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin8"
+                        android:scrollHorizontally="true"
+                        android:textColor="@color/common_light_black"
+                        android:textSize="16sp"
+                        android:visibility="gone" />
+                </HorizontalScrollView>
+            </com.gdestiny.github.ui.view.ObservableScrollView>
 
             <com.gdestiny.github.ui.view.touchimageview.TouchImageView
                 android:id="@+id/imageview"

@@ -1,6 +1,7 @@
 package com.gdestiny.github.ui.activity;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;

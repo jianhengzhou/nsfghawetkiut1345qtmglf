@@ -67,7 +67,9 @@ public class CommitAdapter extends BaseAdapter {
 		holder.date.setText(TimeUtils.getTime(CommitUtils.getAuthorDate(
 				repositoryCommit).getTime()));
 		holder.content.setText(repositoryCommit.getCommit().getMessage());
-		holder.comment.setText(repositoryCommit.getCommit().getCommentCount()+"");
+		holder.comment.setText(repositoryCommit.getCommit().getCommentCount()
+				+ "");
+		holder.sha.setText(CommitUtils.getSubSha(repositoryCommit));
 		return convertView;
 	}
 
@@ -86,6 +88,7 @@ public class CommitAdapter extends BaseAdapter {
 		TextView name;
 		TextView date;
 		TextView comment;
+		TextView sha;
 
 		public Holder(View v) {
 			icon = (ImageView) v.findViewById(R.id.icon);
@@ -93,6 +96,7 @@ public class CommitAdapter extends BaseAdapter {
 			name = (TextView) v.findViewById(R.id.name);
 			date = (TextView) v.findViewById(R.id.date);
 			comment = (TextView) v.findViewById(R.id.comment);
+			sha = (TextView) v.findViewById(R.id.sha);
 		}
 	}
 }

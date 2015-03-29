@@ -1,5 +1,6 @@
 package com.gdestiny.github.ui.fragment;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.eclipse.egit.github.core.Issue;
@@ -7,6 +8,7 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.IssueService;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +18,10 @@ import android.widget.AdapterView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.IssueAdapter;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.bean.IssueFilter;
 import com.gdestiny.github.ui.activity.IssueDetailActivity;
 import com.gdestiny.github.ui.activity.IssueFilterActivity;
+import com.gdestiny.github.ui.activity.NewEditIssueActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.ListPopupView;
@@ -30,6 +34,8 @@ public class RepositoryIssuesFragment extends
 		BaseLoadPageFragment<Issue, GitHubClient> {
 
 	private Repository repository;
+	private IssueFilter issueFilter = new IssueFilter();
+	private IssueAdapter issueAdapter;
 
 	@Override
 	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
@@ -46,18 +52,24 @@ public class RepositoryIssuesFragment extends
 
 			@Override
 			public void onClick(View v) {
-				IntentUtils
-						.create(context, IssueFilterActivity.class)
-						.putExtra(RepositoryDetailActivity.EXTRA_REPOSITORY,
-								repository).start();
+				openFilter();
 			}
 		});
+	}
+
+	private void openFilter() {
+		IntentUtils
+				.create(context, IssueFilterActivity.class)
+				.putExtra(Constants.Extra.REPOSITORY, repository)
+				.putExtra(Constants.Extra.ISSUE_FILTER, issueFilter)
+				.startForResult(RepositoryIssuesFragment.this,
+						Constants.Request.FILTER);
 	}
 
 	@Override
 	protected void initData() {
 		repository = (Repository) context.getIntent().getSerializableExtra(
-				RepositoryDetailActivity.EXTRA_REPOSITORY);
+				Constants.Extra.REPOSITORY);
 		execute(GitHubApplication.getClient());
 		// 防止与其他页面重叠
 		getPullToRefreshLayout().getHeaderTransformer()
@@ -93,6 +105,17 @@ public class RepositoryIssuesFragment extends
 						}
 						onRefreshStarted(null);
 						break;
+					case R.string.filter:
+						openFilter();
+						break;
+					case R.string.new_issue:
+						IntentUtils
+								.create(context, NewEditIssueActivity.class)
+								.putExtra(Constants.Extra.REPOSITORY,
+										repository)
+								.startForResult(RepositoryIssuesFragment.this,
+										Constants.Request.NEW_ISSUE);
+						break;
 					default:
 						((RepositoryDetailActivity) context).onMenu(titleId);
 						break;
@@ -105,15 +128,57 @@ public class RepositoryIssuesFragment extends
 	}
 
 	@Override
+	public void onResultOk(int requestCode, Intent data) {
+		if (requestCode == Constants.Request.FILTER) {
+			GLog.sysout("FILTER");
+			IssueFilter filter = (IssueFilter) data
+					.getSerializableExtra(Constants.Extra.ISSUE_FILTER);
+
+			if (filter.equals(issueFilter))
+				return;
+			issueFilter = filter;
+			issueAdapter.setOpen(issueFilter.getState().equals(
+					IssueService.STATE_OPEN));
+			onRefreshStarted(null);
+		} else if (requestCode == Constants.Request.NEW_ISSUE) {
+			GLog.sysout("NEW_ISSUE");
+			Issue issue = (Issue) data
+					.getSerializableExtra(Constants.Extra.ISSUE);
+			if (issue != null && issue.getNumber() != 0) {
+				if (isNoData()) {
+					noData(false);
+				}
+				if (issueAdapter.getDatas() == null) {
+					issueAdapter.setDatas(new ArrayList<Issue>());
+				}
+				issueAdapter.getDatas().add(0, issue);
+				issueAdapter.notifyDataSetChanged();
+				GLog.sysout("notifyDataSetChanged");
+				getMoreList().setSelection(0);
+			}
+		} else if (requestCode == Constants.Request.ISSUE_DETAIL) {
+			GLog.sysout("ISSUE_DETAI");
+			Issue issue = (Issue) data
+					.getSerializableExtra(Constants.Extra.ISSUE);
+			int position = data.getIntExtra(Constants.Extra.POSITION, -1);
+			if (issue != null && position >= 0) {
+				// IssueUtils.assignMain(issueAdapter.getDatas().get(position),
+				// issue);
+				issueAdapter.getDatas().remove(position);
+				issueAdapter.getDatas().add(position, issue);
+				issueAdapter.notifyDataSetChanged();
+			}
+		}
+	}
+
+	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO Auto-generated method stub
-		IntentUtils
-				.create(context, IssueDetailActivity.class)
-				.putExtra(IssueDetailActivity.EXTRA_ISSUE,
-						getDatas().get(position))
-				.putExtra(IssueDetailActivity.EXTRA_IREPOSITORY, repository)
-				.start();
+		IntentUtils.create(context, IssueDetailActivity.class)
+				.putExtra(Constants.Extra.ISSUE, getDatas().get(position))
+				.putExtra(Constants.Extra.POSITION, position)
+				.putExtra(Constants.Extra.REPOSITORY, repository)
+				.startForResult(this, Constants.Request.ISSUE_DETAIL);
 	}
 
 	@Override
@@ -125,7 +190,7 @@ public class RepositoryIssuesFragment extends
 
 	@Override
 	public void newListAdapter() {
-		IssueAdapter issueAdapter = new IssueAdapter(context);
+		issueAdapter = new IssueAdapter(context);
 		issueAdapter.setDatas(getDatas());
 		setBaseAdapter(issueAdapter);
 	}
@@ -133,8 +198,8 @@ public class RepositoryIssuesFragment extends
 	@Override
 	public void newPageData(GitHubClient params) {
 		IssueService service = new IssueService(params);
-		setDataPage(service.pageIssues(repository, null,
-				Constants.DEFAULT_PAGE_SIZE));
+		setDataPage(service.pageIssues(repository, issueFilter == null ? null
+				: issueFilter.toHashMap(), Constants.DEFAULT_PAGE_SIZE));
 	}
 
 	@Override

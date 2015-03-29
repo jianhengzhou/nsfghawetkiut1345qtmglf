@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="com.gdestiny.github.app.GitHubApplication"
@@ -32,16 +33,112 @@
         </activity>
         <activity
             android:name="com.gdestiny.github.ui.activity.LoginActivity"
-            android:windowSoftInputMode="stateVisible" >
+            android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity android:name="com.gdestiny.github.ui.activity.TestActivity" />
-        <activity android:name="com.gdestiny.github.ui.activity.UserActivity" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.UserActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name="com.gdestiny.github.ui.activity.RepositoryDetailActivity" />
         <activity android:name="com.gdestiny.github.ui.activity.CodeFileActivity" />
         <activity android:name="com.gdestiny.github.ui.activity.IssueDetailActivity" />
         <activity android:name="com.gdestiny.github.ui.activity.ContributorsActivity" />
         <activity android:name="com.gdestiny.github.ui.activity.WebViewActivity" />
         <activity android:name="com.gdestiny.github.ui.activity.IssueFilterActivity" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.NewEditIssueActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.abstracts.AbstractCommentActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.NewCommentActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.EditCommentActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.NewCommitCommentActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.EditCommitCommentActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name="com.gdestiny.github.ui.activity.CommitDetailActivity" />
+        <activity android:name="com.gdestiny.github.ui.activity.UserNavigationActivity" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.NewGistActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name="com.gdestiny.github.ui.activity.GistDetailActivity" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.UrlHandleActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:excludeFromRecents="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="github.com"
+                    android:scheme="http" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="github.com"
+                    android:scheme="https" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="gist.github.com"
+                    android:scheme="http" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="gist.github.com"
+                    android:scheme="https" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.gdestiny.github.ui.activity.GistFileActivity" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.NewGistCommentActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.EditGistCommentActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name="com.gdestiny.github.ui.activity.SettingActivity" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.FeedbackActivity"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
+        <activity
+            android:name="com.gdestiny.github.ui.activity.FeedbackInfoActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name="com.gdestiny.github.ui.activity.AboutUSActivity" />
+        <!-- umeng data -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="54ebcf02fd98c53e68000513" />
+
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
     </application>
 
 </manifest>

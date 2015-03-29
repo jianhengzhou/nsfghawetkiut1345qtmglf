@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/item_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_listviewitem"
+        android:clickable="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/comment_on_the_line"
+            android:textColor="#5d5d5d"
+            android:textSize="@dimen/text16" />
+
+        <LinearLayout
+            android:id="@+id/line_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/old_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|right"
+                android:paddingLeft="@dimen/margin4"
+                android:paddingRight="@dimen/margin4"
+                android:textColor="@color/common_icon_grey"
+                android:textSize="@dimen/text12" />
+
+            <View
+                android:id="@+id/divider1"
+                android:layout_width="@dimen/divider_0.5"
+                android:layout_height="match_parent"
+                android:background="#dddddd" />
+
+            <TextView
+                android:id="@+id/new_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|right"
+                android:paddingLeft="@dimen/margin4"
+                android:paddingRight="@dimen/margin4"
+                android:textColor="@color/common_icon_grey"
+                android:textSize="@dimen/text12" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="@dimen/divider_0.5"
+                android:layout_height="match_parent"
+                android:background="#dddddd" />
+
+            <TextView
+                android:id="@+id/line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin4"
+                android:layout_marginRight="@dimen/margin16"
+                android:layout_marginTop="@dimen/margin4"
+                android:paddingBottom="@dimen/margin4"
+                android:paddingTop="@dimen/margin4"
+                android:textColor="@color/common_light_black"
+                android:textSize="@dimen/text12" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_0.5"
+        android:background="#dddddd" />
+
+    <LinearLayout
+        android:id="@+id/item_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_listviewitem"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:padding="15dp" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/view_entire_file"
+            android:textColor="#5d5d5d"
+            android:textSize="@dimen/text16" />
+    </LinearLayout>
+
+</LinearLayout>

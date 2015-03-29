@@ -12,10 +12,15 @@
         <ListView
             android:id="@+id/list"
             style="@style/normal_listview"
-            android:dividerHeight="@dimen/margin16"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:dividerHeight="@dimen/margin16" >
         </ListView>
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/layout_comment" />
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
 
 </RelativeLayout>

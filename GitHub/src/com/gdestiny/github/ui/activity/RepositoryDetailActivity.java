@@ -8,16 +8,16 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.service.WatcherService;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.adapter.SimplePageAdapter;
 import com.gdestiny.github.app.GitHubApplication;
-import com.gdestiny.github.async.BaseAsyncTask;
-import com.gdestiny.github.async.ForkTask;
-import com.gdestiny.github.async.StarTask;
+import com.gdestiny.github.async.ForkRepositoryTask;
+import com.gdestiny.github.async.StarRepositoryTask;
+import com.gdestiny.github.async.abstracts.BaseAsyncTask;
+import com.gdestiny.github.async.abstracts.RepositoryRefreshTask;
+import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopWindowItem;
 import com.gdestiny.github.ui.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.fragment.RepositoryCodeFragment;
@@ -26,17 +26,16 @@ import com.gdestiny.github.ui.fragment.RepositoryEventFragment;
 import com.gdestiny.github.ui.fragment.RepositoryIssuesFragment;
 import com.gdestiny.github.ui.view.IndicatorView;
 import com.gdestiny.github.utils.AndroidUtils;
+import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class RepositoryDetailActivity extends BaseFragmentActivity {
 
-	public static final String EXTRA_REPOSITORY = "repository";
-
 	private Repository repository;
 	private ViewPager viewpager;
-	private RepositoryPageAdapter adapter;
+	private SimplePageAdapter adapter;
 
 	private IndicatorView indicatorView;
 
@@ -63,11 +62,6 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 		viewpager.setOffscreenPageLimit(3);
 
 		indicatorView = (IndicatorView) findViewById(R.id.indicator);
-
-		indicatorView.add(R.string.code, R.drawable.common_code_white)
-				.add(R.string.events_l, R.drawable.tab_news_white)
-				.add(R.string.commit, R.drawable.common_commit_white)
-				.add(R.string.issues, R.drawable.circle_issue_white);
 
 		indicatorView.bind(viewpager);
 		viewpager.setOnPageChangeListener(indicatorView);
@@ -108,15 +102,22 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 		switch (id) {
 		case R.string.contributors:
 			IntentUtils.create(context, ContributorsActivity.class)
-					.putExtra(EXTRA_REPOSITORY, repository).start();
+					.putExtra(Constants.Extra.REPOSITORY, repository).start();
 			break;
 		case R.string.star:
-			new StarTask(context, isStarred, repository)
-					.execute(GitHubApplication.getClient());
+			new StarRepositoryTask(context, isStarred, repository) {
+
+				@Override
+				public void onSuccess(Boolean result) {
+					super.onSuccess(result);
+					isStarred = !isStarred;
+					refreshStarPopup(indicatorView.getCurrentPosition());
+				}
+			}.execute(GitHubApplication.getClient());
 			break;
 		case R.string.fork:
-			new ForkTask(context, repository).execute(GitHubApplication
-					.getClient());
+			new ForkRepositoryTask(context, repository)
+					.execute(GitHubApplication.getClient());
 			break;
 		case R.string.share:
 			AndroidUtils.share(context, repository.getName(),
@@ -132,15 +133,37 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 	protected void initData() {
 		// TODO Auto-generated method stub
 		repository = (Repository) getIntent().getSerializableExtra(
-				EXTRA_REPOSITORY);
+				Constants.Extra.REPOSITORY);
+		if (repository.getOwner() != null) {
+			init();
+		} else {
+			new RepositoryRefreshTask(context, repository) {
+
+				@Override
+				public void onSuccess(Repository result) {
+					repository = result;
+					init();
+				}
+			}.execute(GitHubApplication.getClient());
+		}
+	}
+
+	private void init() {
 		titlebar.setLeftLayout(repository.getOwner().getAvatarUrl(),
 				repository.getName(), repository.getOwner().getLogin());
 		fragments.add(new RepositoryCodeFragment());
-		fragments.add(new RepositoryEventFragment());
 		fragments.add(new RepositoryCommitFragment());
-		fragments.add(new RepositoryIssuesFragment());
+		fragments.add(new RepositoryEventFragment());
 
-		adapter = new RepositoryPageAdapter(getSupportFragmentManager());
+		indicatorView.add(R.string.code, R.drawable.common_code_white)
+				.add(R.string.commit, R.drawable.common_commit_white)
+				.add(R.string.events_l, R.drawable.tab_news_white);
+		if (repository.isHasIssues()) {
+			fragments.add(new RepositoryIssuesFragment());
+			indicatorView.add(R.string.issues, R.drawable.circle_issue_white);
+		}
+
+		adapter = new SimplePageAdapter(getSupportFragmentManager(), fragments);
 		viewpager.setAdapter(adapter);
 		initStar();
 	}
@@ -183,30 +206,6 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 			}
 
 		}.execute();
-	}
-
-	private class RepositoryPageAdapter extends FragmentStatePagerAdapter {
-
-		public RepositoryPageAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			return fragments.get(position);
-		}
-
-		@Override
-		public int getCount() {
-			if (fragments == null)
-				return 1;
-			return fragments.size();
-		}
-
-		@Override
-		public int getItemPosition(Object object) {
-			return FragmentStatePagerAdapter.POSITION_NONE;
-		}
 	}
 
 	@Override

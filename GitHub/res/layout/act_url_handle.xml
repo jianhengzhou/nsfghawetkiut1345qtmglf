@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/normalview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center" >
+
+            <com.gdestiny.github.ui.view.ImageViewEx
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/avatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/app_name"
+                android:gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher"
+                app:sriv_oval="true" />
+
+            <fr.castorflex.android.circularprogressbar.CircularProgressBar
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/loading_progress"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:indeterminate="true"
+                app:cpb_color="@color/common_icon_blue"
+                app:cpb_rotation_speed="0.8"
+                app:cpb_stroke_width="4dp"
+                app:cpb_sweep_speed="0.8" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin16"
+            android:paddingTop="@dimen/margin16"
+            android:text="@string/loading"
+            android:textColor="#8a000000"
+            android:textSize="@dimen/text22" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/nodata"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/common_background"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerInside"
+        android:src="@drawable/error_nodata"
+        android:visibility="gone" />
+
+</FrameLayout>

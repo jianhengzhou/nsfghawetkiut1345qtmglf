@@ -21,10 +21,23 @@ public class ListPopupView extends LinearLayout implements OnScrollListener {
 
 	private OnScrollListener onScrollListener;
 
-	public static final int TO_TOP = 0;
-	public static final int TO_BOTTOM = 1;
+	public static final int TOP = 0;
+	public static final int BOTTOM = 1;
+
+	public static final int TO_TOP = 2;
+	public static final int TO_BOTTOM = 3;
 	private int lastScrollPosition;
 	private int currDirection = -1;
+
+	private int location = BOTTOM;
+
+	public int getLocation() {
+		return location;
+	}
+
+	public void setLocation(int location) {
+		this.location = location;
+	}
 
 	public ListPopupView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -33,8 +46,13 @@ public class ListPopupView extends LinearLayout implements OnScrollListener {
 	private void postTranslation() {
 		int translationY = 0;
 		GLog.sysout("--postTranslation--");
-		if (currDirection == TO_TOP)
-			translationY = getHeight();
+		if (location == BOTTOM) {
+			if (currDirection == TO_TOP)
+				translationY = getHeight();
+		} else {
+			if (currDirection == TO_TOP)
+				translationY = -getHeight();
+		}
 		ViewPropertyAnimator.animate(ListPopupView.this).setDuration(300)
 				.translationY(translationY);
 		// post(new Runnable() {

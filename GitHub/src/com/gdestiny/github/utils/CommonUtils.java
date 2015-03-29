@@ -1,5 +1,7 @@
 package com.gdestiny.github.utils;
 
+import java.io.File;
+
 import org.eclipse.egit.github.core.User;
 
 import android.text.TextUtils;
@@ -13,6 +15,20 @@ public class CommonUtils {
 		throw new AssertionError();
 	}
 
+	public static String nullToNA(String str) {
+		if (TextUtils.isEmpty(str))
+			return "N/A";
+		return str;
+	}
+
+	public static String NAToNull(String str) {
+		if (TextUtils.isEmpty(str))
+			return str;
+		if (str.trim().equals("N/A"))
+			return "";
+		return str;
+	}
+
 	public static String pathToName(String path) {
 		if (TextUtils.isEmpty(path))
 			return path;
@@ -22,6 +38,16 @@ public class CommonUtils {
 			return path.substring(lastSlash + 1);
 		else
 			return path;
+	}
+
+	public static String getPath(String pathName) {
+		if (TextUtils.isEmpty(pathName))
+			return pathName;
+
+		if (!pathName.contains(File.separator)) {
+			return null;
+		}
+		return pathName.substring(0, pathName.lastIndexOf(File.separatorChar));
 	}
 
 	public static String pathToParentName(String path) {
@@ -66,6 +92,8 @@ public class CommonUtils {
 	}
 
 	public static boolean isAuthUser(User user) {
+		if (user == null)
+			return false;
 		return GitHubApplication.getUser().getLogin().equals(user.getLogin());
 	}
 }

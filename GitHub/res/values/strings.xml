@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- test test test test test test -->
+    <string name="name">gdestiny</string>
+    <string name="gdc">gdestiny</string>
+    <string name="test_title">test title int new issue</string>
+    <!-- test test test test test test -->
     <string name="app_name">GitHub</string>
     <string name="again_exit">press again to exit</string>
     <string name="root">root</string>
     <string name="press_to_load_more">Press To Load More</string>
     <string name="no_more_data">No More Data</string>
     <string name="comment">Comment</string>
+    <string name="clear">Clear</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="title">title</string>
     <string name="to_clipboard">Copied To Clipboard</string>
     <string name="none_select">None, Tap To Select</string>
     <string name="open">open</string>
@@ -17,9 +24,48 @@
     <string name="assignee_">Assignee:</string>
     <string name="milestones_">Milestones:</string>
     <string name="labels_">Labels:</string>
-
-    <!-- test test test test test test -->
-    <string name="name">gdestiny</string>
+    <string name="title_">Title:</string>
+    <string name="description_">Description:</string>
+    <string name="content">content</string>
+    <string name="assigned_to">Assigned To:</string>
+    <string name="no_change">No Change</string>
+    <string name="write_">Write:</string>
+    <string name="tips">Markdown supported, you can long press the OK button to preview</string>
+    <string name="comment_on_the_line">Comment On The Line</string>
+    <string name="view_entire_file">View Entire File</string>
+    <string name="warning">Warning</string>
+    <string name="warning_delete">Sure To Delete?</string>
+    <string name="file_name_">File Name:</string>
+    <string name="file_content_">File Content:</string>
+    <string name="anonymous">Anonymous</string>
+    <string name="add_file">Add File</string>
+    <string name="pull_to_refresh_pull_label">Pull To Refresh</string>
+    <string name="pull_to_refresh_release_label">Release To Refresh…</string>
+    <string name="pull_to_refresh_refreshing_label">Loading…</string>
+    <string name="todo">TODO</string>
+    <string name="is_public">Is Public</string>
+    <string name="secret">SECRET</string>
+    <string name="gist_tips">When is private, no one can search, but can access it with a url given by you</string>
+    <string name="conflict_filename">Conflict In File Name</string>
+    <string name="discard_change">Discard Change?</string>
+    <string name="__public">Public</string>
+    <string name="_private">Private</string>
+    <string name="private_own">Private&#160;(&#160;Own&#160;)</string>
+    <string name="load_contribution">Tab to load contribution.\nThis may cost lots of traffic!</string>
+    <string name="company">company</string>
+    <string name="location">location</string>
+    <string name="email_">Email:</string>
+    <string name="phone_">Phone:</string>
+    <string name="email">sample@github.com</string>
+    <string name="not_email">Not valid Email</string>
+    <string name="sure_to_update_profile">Sure To Update Profile?</string>
+    <string name="zero">0</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="gender_">Gender:</string>
+    <string name="age_">Age:</string>
+    <string name="age">Age</string>
+    <string name="sure_to_delete_cache">Sure To Clear Cache?</string>
 
     <!-- error -->
     <string name="login_error">The account or password cannot be empty</string>
@@ -45,5 +91,24 @@
     <string name="unstar_succeed">Unstar Succeed</string>
     <string name="deleting">deleting comment</string>
     <string name="delete_succeed">Delete Succeed</string>
+    <string name="is_collaborator">is collaborator?</string>
+    <string name="newing_issue">newing issue</string>
+    <string name="newing_issue_succeed">New Issue Succeed</string>
+    <string name="editing_issue">editing issue</string>
+    <string name="editing_issue_succeed">Edit Issue Succeed</string>
+    <string name="loading_preview">loading preview</string>
+    <string name="committing_comment">committing comment</string>
+    <string name="commen_succeed">Comment succeed</string>
+    <string name="newing_gist">creating gist</string>
+    <string name="new_gist_succeed">New Gist succeed</string>
+    <string name="unstaring_gist">unstaring gist</string>
+    <string name="staring_gist">staring gist</string>
+    <string name="forking_gist">forking gist</string>
+    <string name="deleting_gist">deleting gist</string>
+    <string name="edit_user">updating profile</string>
+    <string name="edit_succeed">Update Succeed</string>
+    <string name="clearing_cache">clearing cache</string>
+    <string name="clearing_succeed">Clear Succeed</string>
+    <string name="clearing_failed">Clear Failed</string>
 
 </resources>

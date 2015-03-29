@@ -1,5 +1,7 @@
 package com.gdestiny.github.ui.activity;
 
+import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
+
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 
@@ -15,18 +17,19 @@ import android.webkit.WebViewClient;
 import android.widget.ZoomButtonsController;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
+import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 
 public class WebViewActivity extends BaseLoadFragmentActivity<Void, Void> {
 
-	public static final String URL = "url";
-
 	private String url = "";
 	private String currUrl;
 	private WebView webview;
+	private String data;
 
 	@Override
 	public void onRefreshStarted(View view) {
@@ -50,7 +53,7 @@ public class WebViewActivity extends BaseLoadFragmentActivity<Void, Void> {
 						if (!TextUtils.isEmpty(currUrl)) {
 							AndroidUtils.toClipboard(context, currUrl);
 						}
-						return false;
+						return true;
 					}
 				});
 		LinkedHashMap<Integer, Integer> itemmap = new LinkedHashMap<Integer, Integer>();
@@ -141,9 +144,15 @@ public class WebViewActivity extends BaseLoadFragmentActivity<Void, Void> {
 	@Override
 	protected void initData() {
 		// TODO Auto-generated method stub
-		url = getIntent().getStringExtra(URL);
+		url = getIntent().getStringExtra(Constants.Extra.URL);
+		data = getIntent().getStringExtra(Constants.Extra.DATA);
 		if (TextUtils.isEmpty(url)) {
-			finish();
+			if (TextUtils.isEmpty(data))
+				finish();
+			else {
+				webview.loadDataWithBaseURL(null, data, "text/html",
+						CHARSET_UTF8, null);
+			}
 		} else {
 			getTitlebar().setTitleIcon(null);
 			webview.loadUrl(url);

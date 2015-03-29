@@ -1,9 +1,11 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item name="tag_imageloader" type="id"></item>
+    <item name="tag_group" type="id"></item>
+    <item name="tag_child" type="id"></item>
 
     <style name="SwipeBackLayout">
-        <item name="edge_size">10dip</item>
+        <item name="edge_size">10dp</item>
         <item name="shadow_left">@drawable/shadow_left</item>
         <item name="shadow_right">@drawable/shadow_right</item>
         <item name="shadow_bottom">@drawable/shadow_bottom</item>
@@ -29,6 +31,9 @@
         <item name="ptrHeaderBackground">@color/common_icon_blue</item>
         <item name="ptrHeaderTitleTextAppearance">@style/TextAppearance.Custom.Pull_Text</item>
         <item name="ptrProgressBarColor">@color/common_title_refresh_blue</item>
+        <item name="ptrPullText">@string/pull_to_refresh_pull_label</item>
+        <item name="ptrRefreshingText">@string/pull_to_refresh_refreshing_label</item>
+        <item name="ptrReleaseText">@string/pull_to_refresh_release_label</item>
     </style>
 
     <style name="TextAppearance.Custom.Pull_Text" parent="android:TextAppearance.Large.Inverse">
@@ -46,8 +51,14 @@
     </style>
 
     <style name="editText_style">
-        <item name="android:layout_height">50dp</item>
-        <item name="android:background">@drawable/selector_common_edtitext_background</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:background">@drawable/selector_common_edtitext_editable</item>
+    </style>
+
+    <style name="user_editText_style" parent="editText_style">
+        <item name="android:drawablePadding">@dimen/margin8</item>
+        <item name="android:textColorHint">@color/common_icon_grey</item>
     </style>
 
     <style name="common_menu_text_style">
@@ -61,6 +72,7 @@
         <item name="android:textColor">@drawable/selector_common_menu_text</item>
         <item name="android:textSize">@dimen/text18</item>
         <item name="android:clickable">true</item>
+        <item name="android:singleLine">true</item>
         <item name="android:background">@drawable/selector_common_menu_item</item>
     </style>
 
@@ -87,6 +99,22 @@
     <style name="titlebar_popupwindow_anim">
         <item name="android:windowEnterAnimation">@anim/titlebar_popupwindow_in</item>
         <item name="android:windowExitAnimation">@anim/titlebar_popupwindow_out</item>
+    </style>
+
+    <style name="settingText_style">
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">@dimen/margin16</item>
+        <item name="android:paddingRight">@dimen/margin16</item>
+        <item name="android:background">@drawable/selector_listviewitem</item>
+        <item name="android:layout_weight">1.0</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/common_light_black</item>
+        <item name="android:textSize">@dimen/text18</item>
+        <item name="android:drawableRight">@drawable/common_forward_grey</item>
+        <item name="android:paddingBottom">@dimen/margin16</item>
+        <item name="android:paddingTop">@dimen/margin16</item>
+        <item name="android:clickable">true</item>
     </style>
 
 </resources>

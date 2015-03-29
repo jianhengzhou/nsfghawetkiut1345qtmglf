@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_background" >
+
+    <ImageView
+        android:id="@+id/detail_icon"
+        style="@style/image_with_frame"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin16"
+        android:background="@drawable/common_image_bg"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/common_repository_item" />
+
+    <TextView
+        android:id="@+id/comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin8"
+        android:layout_toLeftOf="@id/comment"
+        android:drawableLeft="@drawable/little_comment"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text14" />
+
+    <TextView
+        android:id="@+id/detail_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin8"
+        android:layout_toLeftOf="@id/comment"
+        android:layout_toRightOf="@id/detail_icon"
+        android:ellipsize="end"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text16" />
+
+    <TextView
+        android:id="@+id/created_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/detail_name"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin4"
+        android:layout_toRightOf="@id/detail_icon"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text14" />
+
+    <TextView
+        android:id="@+id/updated_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/created_date"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin4"
+        android:layout_toRightOf="@id/detail_icon"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text14" />
+
+    <TextView
+        android:id="@+id/sha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/updated_date"
+        android:layout_marginBottom="@dimen/margin8"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin4"
+        android:layout_toRightOf="@id/detail_icon"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text14" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sha"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin4"
+        android:background="@drawable/drawable_corner_ligth_blue"
+        android:padding="@dimen/margin8"
+        android:textColor="@color/common_light_black"
+        android:textSize="@dimen/text16" />
+
+    <TextView
+        android:id="@+id/detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/content"
+        android:layout_marginBottom="@dimen/margin4"
+        android:layout_marginLeft="@dimen/margin24"
+        android:layout_marginRight="@dimen/margin24"
+        android:layout_marginTop="@dimen/margin4"
+        android:padding="@dimen/margin8"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text16" />
+
+    <include
+        android:id="@+id/btn_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detail"
+        layout="@layout/layout_comment" />
+
+</RelativeLayout>

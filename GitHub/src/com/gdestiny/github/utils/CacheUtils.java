@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -39,6 +40,10 @@ public class CacheUtils {
 			+ "SNAPPYDB_EXTERNAL";
 
 	public static FileNameGenerator nameGenerator = new Md5FileNameGenerator();
+
+	public static void init(Context context) {
+		ImageLoaderUtils.initImageLoader(context);
+	}
 
 	public static boolean isBitmapExistInDisk(String url) {
 		File file = DiskCacheUtils.findInCache(url,

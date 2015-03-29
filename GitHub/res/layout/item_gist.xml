@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/icon"
+        style="@style/image_with_frame"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin8"
+        android:background="@drawable/common_image_bg"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/default_avatar" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin8"
+        android:layout_toRightOf="@id/icon"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text14"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/margin2"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin8"
+        android:drawableLeft="@drawable/little_comment"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text12" />
+
+    <TextView
+        android:id="@+id/file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin2"
+        android:layout_marginTop="@dimen/margin8"
+        android:layout_toLeftOf="@id/comment"
+        android:drawableLeft="@drawable/little_file"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text12" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignTop="@id/name"
+        android:layout_marginTop="@dimen/margin8"
+        android:layout_toLeftOf="@id/comment"
+        android:layout_toRightOf="@id/name"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text12" />
+
+    <TextView
+        android:id="@+id/sha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/date"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin4"
+        android:layout_toRightOf="@id/icon"
+        android:singleLine="true"
+        android:textColor="@color/common_icon_grey"
+        android:textSize="@dimen/text14" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sha"
+        android:layout_marginBottom="@dimen/margin8"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin4"
+        android:layout_toRightOf="@id/icon"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/common_light_black"
+        android:textSize="@dimen/text16" />
+
+    <TextView
+        android:id="@+id/isPublic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/content"
+        android:layout_marginBottom="@dimen/margin8"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginRight="@dimen/margin16"
+        android:layout_toRightOf="@id/icon"
+        android:background="@color/common_light_orange"
+        android:paddingBottom="@dimen/margin2"
+        android:paddingLeft="@dimen/margin4"
+        android:paddingRight="@dimen/margin4"
+        android:paddingTop="@dimen/margin2"
+        android:text="@string/secret"
+        android:textColor="#ad892a"
+        android:textSize="@dimen/text10" />
+
+</RelativeLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="startup_list">
+        <item>Repository</item>
+        <item>Events</item>
+        <item>Followers</item>
+        <item>Following</item>
+        <item>Gists</item>
+        <item>Issue Dashboard</item>
+    </string-array>
+
+</resources>

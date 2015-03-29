@@ -28,11 +28,12 @@ import com.gdestiny.github.adapter.RepositoryAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.SimpleUpdateTask;
 import com.gdestiny.github.bean.comparator.RepositoryComparator;
-import com.gdestiny.github.ui.activity.BaseFragmentActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
+import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants.Sort;
+import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ToastUtils;
@@ -75,7 +76,7 @@ public class RepositoryFragment extends BaseLoadFragment<GitHubClient, Boolean> 
 					int position, long arg3) {
 				// TODO Auto-generated method stub
 				IntentUtils.start(context, RepositoryDetailActivity.class,
-						RepositoryDetailActivity.EXTRA_REPOSITORY,
+						Constants.Extra.REPOSITORY,
 						(Repository) viewRepository.get(position));
 			}
 		});

@@ -114,8 +114,8 @@ public class StatusPopUpWindow extends PopupWindow {
 
 	public void showSecondlyStatus() {
 		if (mListViewSecondly != null) {
-			mListView.setAnimation(AnimationUtils.loadAnimation(
-					mContext, R.anim.right_to_left_out));
+			mListView.setAnimation(AnimationUtils.loadAnimation(mContext,
+					R.anim.right_to_left_out));
 			mListView.setVisibility(View.GONE);
 			mListViewSecondly.setAnimation(AnimationUtils.loadAnimation(
 					mContext, R.anim.right_to_left_in));
@@ -128,8 +128,8 @@ public class StatusPopUpWindow extends PopupWindow {
 			mListViewSecondly.setAnimation(AnimationUtils.loadAnimation(
 					mContext, R.anim.left_to_right_out));
 			mListViewSecondly.setVisibility(View.GONE);
-			mListView.setAnimation(AnimationUtils.loadAnimation(
-					mContext, R.anim.left_to_right_in));
+			mListView.setAnimation(AnimationUtils.loadAnimation(mContext,
+					R.anim.left_to_right_in));
 			mListView.setVisibility(View.VISIBLE);
 		}
 	}
@@ -172,6 +172,39 @@ public class StatusPopUpWindow extends PopupWindow {
 			}
 		}
 		this.mOnitemclicklistener = mOnitemclicklistener;
+		mAdapter.notifyDataSetChanged();
+
+	}
+
+	/**
+	 * 添加子类项
+	 */
+	public void addItem(Context context, int titleId, int drawableId) {
+		StatusPopWindowItem action = null;
+		if (drawableId == 0)
+			action = new StatusPopWindowItem(context, titleId);
+		else
+			action = new StatusPopWindowItem(context, titleId, drawableId);
+		if (action != null && !mActionItems.contains(action)) {
+			mActionItems.add(action);
+		}
+		mAdapter.notifyDataSetChanged();
+
+	}
+
+	/**
+	 * 添加子类项
+	 */
+	public void addItem(Context context, int position, int titleId,
+			int drawableId) {
+		StatusPopWindowItem action = null;
+		if (drawableId == 0)
+			action = new StatusPopWindowItem(context, titleId);
+		else
+			action = new StatusPopWindowItem(context, titleId, drawableId);
+		if (action != null && !mActionItems.contains(action)) {
+			mActionItems.add(position, action);
+		}
 		mAdapter.notifyDataSetChanged();
 
 	}

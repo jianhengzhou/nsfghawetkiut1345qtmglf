@@ -1,113 +1,50 @@
 package com.gdestiny.github.ui.fragment;
 
-import java.util.LinkedHashMap;
-
 import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.UserService;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.gdestiny.github.R;
-import com.gdestiny.github.async.SimpleUpdateTask;
-import com.gdestiny.github.ui.activity.BaseFragmentActivity;
-import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
-import com.gdestiny.github.utils.TestUtils;
-import com.gdestiny.github.utils.ToastUtils;
+import com.gdestiny.github.utils.Constants;
 
-public class FollowerFragment extends BaseLoadFragment<GitHubClient, String> {
+public class FollowerFragment extends AbstractFollowFragment {
 
-	// menu
-	private LinkedHashMap<Integer, Integer> itemmap;
-	private StatusPopUpWindow.StatusPopUpWindowItemClickListener menuListener;
+	private String user;
 
-	@Override
-	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		setContentView(inflater, R.layout.frag_follower,
-				R.id.pull_refresh_layout);
+	public FollowerFragment(String user) {
+		this.user = user;
 	}
 
-	@Override
-	protected void initView() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	protected void initData() {
-		// TODO Auto-generated method stub
-		// execute(GitHubApplication.getClient());
-	}
-
-	@Override
-	public String onBackground(GitHubClient params) throws Exception {
-		// TODO Auto-generated method stub
-		TestUtils.interrupt(5000);
-		return super.onBackground(params);
-	}
-
-	@Override
-	public void onSuccess(String result) {
-		// TODO Auto-generated method stub
-		super.onSuccess(result);
+	public FollowerFragment() {
+		this.user = null;
 	}
 
 	@Override
 	public void initStatusPopup(TitleBar title) {
-		if (itemmap == null) {
-			itemmap = new LinkedHashMap<Integer, Integer>();
-			itemmap.put(R.string.app_name, R.drawable.common_status_sort);
-			itemmap.put(R.string.followers, R.drawable.common_status_refresh);
-		}
-		if (menuListener == null) {
-			menuListener = new StatusPopUpWindow.StatusPopUpWindowItemClickListener() {
-
-				@Override
-				public void onitemclick(int titleId) {
-					// TODO Auto-generated method stub
-					ToastUtils.show(context,
-							context.getResources().getString(titleId));
-				}
-			};
-		}
-		title.setStatusItem(context, itemmap, menuListener);
+		if (TextUtils.isEmpty(user))
+			super.initStatusPopup(title);
 	}
 
 	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-		if (!hidden)
-			initStatusPopup(((BaseFragmentActivity) context).getTitlebar());
+	protected void initData() {
+		super.initData();
+		// 防止与其他页面重叠
+		if (!TextUtils.isEmpty(user))
+			getPullToRefreshLayout().getHeaderTransformer()
+					.setProgressbarVisibility(View.GONE);
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
+	public void newPageData(GitHubClient params) {
 		// TODO Auto-generated method stub
-		ToastUtils.show(context, "FollowerFragment onRefreshStarted");
-		new SimpleUpdateTask(new SimpleUpdateTask.UpdateListener() {
-
-			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				ToastUtils.show(context, "FollowerFragment onSuccess");
-				dismissProgress();
-				noData(true);
-			}
-
-			@Override
-			public void onPrev() {
-				// TODO Auto-generated method stub
-				showProgress();
-			}
-
-			@Override
-			public void onExcute() {
-				// TODO Auto-generated method stub
-				TestUtils.interrupt(5000);
-			}
-		}).execute();
+		UserService service = new UserService(params);
+		if (TextUtils.isEmpty(user))
+			setDataPage(service.pageFollowers(Constants.DEFAULT_PAGE_SIZE));
+		else
+			setDataPage(service
+					.pageFollowers(user, Constants.DEFAULT_PAGE_SIZE));
 	}
 
 }

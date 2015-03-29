@@ -1,5 +1,7 @@
 package com.gdestiny.github.async;
 
+import com.gdestiny.github.async.abstracts.BaseAsyncTask;
+
 public class SimpleUpdateTask extends BaseAsyncTask<Void, Void, Void> {
 
 	private UpdateListener listener;

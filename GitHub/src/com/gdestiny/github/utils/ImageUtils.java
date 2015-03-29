@@ -1,14 +1,21 @@
 package com.gdestiny.github.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.graphics.Bitmap.Config;
+import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.Rect;
 
 public class ImageUtils {
 
 	private ImageUtils() {
 		throw new AssertionError();
+	}
+
+	public static boolean isLight(int color) {
+		return Math.sqrt(Color.red(color) * Color.red(color) * .241
+				+ Color.green(color) * Color.green(color) * .691
+				+ Color.blue(color) * Color.blue(color) * .068) > 130;
 	}
 
 	public static boolean isImage(String name) {

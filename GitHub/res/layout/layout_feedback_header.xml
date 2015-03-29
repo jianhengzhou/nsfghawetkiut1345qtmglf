@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/selector_listviewitem"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/fb_userinfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="@dimen/margin8"
+        android:layout_marginLeft="@dimen/margin16"
+        android:layout_marginTop="@dimen/margin8"
+        android:gravity="left"
+        android:textColor="@color/common_indicator_pressed"
+        android:textSize="@dimen/text14" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dip"
+        android:background="#dddddd" />
+
+</LinearLayout>

@@ -1,12 +1,46 @@
 package com.gdestiny.github.utils;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 public class ToastUtils {
 
+	private static Handler handler = new Handler(Looper.getMainLooper());
+
 	private ToastUtils() {
 		throw new AssertionError();
+	}
+
+	public static void showAsync(final Context context, final int resId) {
+		showAsync(context, context.getResources().getText(resId),
+				Toast.LENGTH_SHORT);
+	}
+
+	public static void showAsync(final Context context, final CharSequence text) {
+		showAsync(context, text, Toast.LENGTH_SHORT);
+	}
+
+	public static void showAsync(final Context context, final int resId,
+			final int duration) {
+		showAsync(context, context.getResources().getText(resId), duration);
+	}
+
+	public static void showAsync(final Context context,
+			final CharSequence text, final int duration) {
+		handler.post(new Runnable() {
+			@Override
+			public void run() {
+				synchronized (this) {
+					try {
+						show(context, text, duration);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
+			}
+		});
 	}
 
 	public static void show(Context context, int resId) {

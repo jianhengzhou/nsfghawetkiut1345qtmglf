@@ -83,9 +83,9 @@ public class CodeTreeAdapter extends BaseAdapter {
 		public ImageView forward;
 
 		public Holder(View v) {
-			name = (TextView) v.findViewById(R.id.name);
+			name = (TextView) v.findViewById(R.id.file_name);
 			size = (TextView) v.findViewById(R.id.size);
-			icon = (ImageView) v.findViewById(R.id.icon);
+			icon = (ImageView) v.findViewById(R.id.file_icon);
 			forward = (ImageView) v.findViewById(R.id.icon_forword);
 		}
 	}

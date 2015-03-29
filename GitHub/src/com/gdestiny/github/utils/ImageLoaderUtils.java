@@ -609,8 +609,8 @@ public class ImageLoaderUtils {
 				.tasksProcessingOrder(QueueProcessingType.FIFO)
 				.build();
 		ImageLoader.getInstance().init(config);
-		L.writeDebugLogs(Constants.isDebug);
-		L.writeLogs(Constants.isDebug);
+		L.writeDebugLogs(Constants.isDebug && false);
+		L.writeLogs(Constants.isDebug && false);
 	}
 
 	public static FileNameGenerator diskCacheFileNameGenerator() {

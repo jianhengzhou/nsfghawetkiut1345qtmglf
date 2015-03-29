@@ -8,16 +8,23 @@
     <color name="card_shadow">#10000000</color>
     <color name="lite_blue">#ff359ff2</color>
     <color name="window_background">#00000000</color>
+    <color name="addition">#528E4C</color>
+    <color name="deletion">#932121</color>
+    <color name="light_addition">#77dbffdb</color>
+    <color name="light_deletion">#77ffdddd</color>
     <!-- materialdesign dialog -->
 
     <color name="transparent">#00000000</color>
     <color name="white">#ffffff</color>
     <color name="common_blue_bk">#ff1a85ff</color>
+    <color name="common_icon_white">#ecf0f1</color>
     <color name="common_icon_blue">#56abe4</color>
     <color name="common_listitem_blue">#2256abe4</color>
     <color name="common_light_black">#2a2a2a</color>
     <color name="common_icon_grey">#a9b7b7</color>
     <color name="common_light_grey">#aab7b7</color>
+    <color name="common_light_blue">#aa56abe4</color>
+    <color name="common_light_orange">#f9efc7</color>
     <color name="common_title_refresh_blue">#aa56abe4</color>
     <color name="common_title_back_layout">#55ffffff</color>
     <color name="common_indicator_pressed">#9956abe4</color>
@@ -25,5 +32,6 @@
     <drawable name="common_blue_drawable_bk">#1a85ff</drawable>
     <drawable name="menu_item_normal">#00000000</drawable>
     <drawable name="menu_item_pressed">#55ffffff</drawable>
+    <drawable name="draw_transparent">#00000000</drawable>
 
 </resources>

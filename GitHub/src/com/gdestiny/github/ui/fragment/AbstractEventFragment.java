@@ -6,10 +6,12 @@ import org.eclipse.egit.github.core.event.Event;
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.EventAdapter;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
+import com.gdestiny.github.ui.activity.UserNavigationActivity;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
+import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.EventUtils;
-import com.gdestiny.github.utils.GLog;
-import com.gdestiny.github.utils.ToastUtils;
+import com.gdestiny.github.utils.IntentUtils;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -54,7 +56,7 @@ public abstract class AbstractEventFragment extends
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
 			int position, long id) {
 		// TODO Auto-generated method stub
-		Event event = getDatas().get(position);
+		final Event event = getDatas().get(position);
 		MaterialDialog mMaterialDialog = new MaterialDialog(context);
 		mMaterialDialog
 				.setTitle("Go To")
@@ -62,14 +64,28 @@ public abstract class AbstractEventFragment extends
 				.addItem(EventUtils.getAuthorAvatarUrl(event),
 						EventUtils.getAuthor(event))
 				.addItem(R.drawable.common_repository_item,
-						event.getRepo().getName())
+						event.getRepo().getName(), false)
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						GLog.sysout(position + "");
-						ToastUtils.show(context, position + "");
+						switch (position) {
+						case 0:
+							IntentUtils
+									.create(context,
+											UserNavigationActivity.class)
+									.putExtra(Constants.Extra.USER,
+											EventUtils.getEventUser(event))
+									.start();
+							break;
+						case 1:
+							IntentUtils.create(context,
+									RepositoryDetailActivity.class).putExtra(
+									Constants.Extra.REPOSITORY,
+									EventUtils.getRepository(event));
+							break;
+						}
 					}
 				}).setCanceledOnTouchOutside(true);
 		mMaterialDialog.show();

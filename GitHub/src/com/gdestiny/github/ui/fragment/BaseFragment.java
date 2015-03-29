@@ -2,13 +2,14 @@ package com.gdestiny.github.ui.fragment;
 
 import java.util.LinkedHashMap;
 
-import com.gdestiny.github.ui.activity.BaseFragmentActivity;
+import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -273,4 +274,21 @@ public abstract class BaseFragment extends Fragment {
 		return getClass().getName();
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == Activity.RESULT_OK) {
+			onResultOk(requestCode, data);
+		} else {
+			onResultCancle(requestCode, data);
+		}
+	}
+
+	public void onResultOk(int requestCode, Intent data) {
+
+	}
+
+	public void onResultCancle(int requestCode, Intent data) {
+
+	}
 }

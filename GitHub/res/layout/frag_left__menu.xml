@@ -114,17 +114,19 @@
                 android:id="@+id/menu_issue"
                 style="@style/common_menu_text_style"
                 android:drawableLeft="@drawable/selector_icon_issue"
-                android:text="@string/issue" />
+                android:text="@string/issue_dashboard" />
 
             <include layout="@layout/includer_divider_h" />
 
             <TextView
                 android:id="@+id/menu_bookmarks"
                 style="@style/common_menu_text_style"
+                android:visibility="gone"
                 android:drawableLeft="@drawable/selector_icon_bookmarks"
                 android:text="@string/bookmarks" />
 
-            <include layout="@layout/includer_divider_h" />
+            <include layout="@layout/includer_divider_h"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 

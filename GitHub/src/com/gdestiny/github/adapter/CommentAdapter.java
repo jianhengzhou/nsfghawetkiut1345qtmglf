@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.async.AsyncImageGetter;
+import com.gdestiny.github.utils.CommonUtils;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
 import com.gdestiny.github.utils.ViewUtils;
@@ -25,6 +26,15 @@ public class CommentAdapter extends BaseAdapter {
 	private List<Comment> datas;
 
 	private OnListener listener;
+	private boolean isCollaborator;
+
+	public boolean isCollaborator() {
+		return isCollaborator;
+	}
+
+	public void setIsCollaborator(boolean isCollaborator) {
+		this.isCollaborator = isCollaborator;
+	}
 
 	public CommentAdapter(Context context) {
 		this.context = context;
@@ -50,7 +60,7 @@ public class CommentAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		Holder holder = null;
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
@@ -67,17 +77,18 @@ public class CommentAdapter extends BaseAdapter {
 				R.drawable.default_avatar, true);
 
 		String name = comment.getUser().getLogin();
-		// if (CommonUtils.isAuthUser(name)) {
-		// ViewUtils.setVisibility(holder.btnLayout, View.VISIBLE);
-		// } else {
-		// ViewUtils.setVisibility(holder.btnLayout, View.GONE);
-		// }
+		if (isCollaborator
+				|| CommonUtils.isAuthUser(name)) {
+			ViewUtils.setVisibility(holder.btnLayout, View.VISIBLE);
+		} else {
+			ViewUtils.setVisibility(holder.btnLayout, View.GONE);
+		}
 		holder.edit.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				if (listener != null) {
-					listener.onEdit(comment);
+					listener.onEdit(position, comment);
 				}
 			}
 		});
@@ -126,7 +137,7 @@ public class CommentAdapter extends BaseAdapter {
 		View edit;
 		View delete;
 
-		// View btnLayout;
+		View btnLayout;
 
 		public Holder(View v) {
 			icon = (ImageView) v.findViewById(R.id.icon);
@@ -136,7 +147,7 @@ public class CommentAdapter extends BaseAdapter {
 			edit = v.findViewById(R.id.edit);
 			delete = v.findViewById(R.id.delete);
 
-			// btnLayout = v.findViewById(R.id.comment_btn);
+			btnLayout = v.findViewById(R.id.comment_btn);
 		}
 	}
 
@@ -149,7 +160,7 @@ public class CommentAdapter extends BaseAdapter {
 	}
 
 	public interface OnListener {
-		public void onEdit(Comment comment);
+		public void onEdit(int position, Comment comment);
 
 		public void onDelete(Comment comment);
 	}

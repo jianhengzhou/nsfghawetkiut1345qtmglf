@@ -21,7 +21,7 @@
     <dimen name="margin60">60dp</dimen>
     <dimen name="margin110">110dp</dimen>
     <dimen name="margin180">180dp</dimen>
-
-    
     <dimen name="divider_dimens">2px</dimen>
+    <dimen name="divider_0.5">0.5dip</dimen>
+
 </resources>

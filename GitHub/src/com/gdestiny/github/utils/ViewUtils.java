@@ -5,12 +5,16 @@ import com.gdestiny.github.ui.activity.WebViewActivity;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.text.style.URLSpan;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class ViewUtils {
@@ -32,6 +36,42 @@ public class ViewUtils {
 					animId));
 			view.setVisibility(visibility);
 		}
+	}
+
+	/**
+	 * 动态测量listview-Item的高度
+	 * 
+	 * @param listView
+	 */
+	public static void setListViewHeightBasedOnChildren(ListView listView) {
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			// pre-condition
+			return;
+		}
+
+		int totalHeight = 0;
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight
+				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
+	}
+
+	public static void setText(TextView tv, String text) {
+		if (TextUtils.isEmpty(text)) {
+			GLog.sysout("View.GONE");
+			setVisibility(tv, View.GONE);
+		} else {
+			GLog.sysout("View.VISIBLE");
+			setVisibility(tv, View.VISIBLE);
+		}
+		tv.setText(text);
 	}
 
 	public static void handleLink(TextView textview) {
@@ -78,9 +118,9 @@ public class ViewUtils {
 				}
 			} else if (AndroidUtils.isEmail(url)) {
 				AndroidUtils.openEmail(widget.getContext(), url);
-			} else if(AndroidUtils.isHttpUrl(url)){
+			} else if (AndroidUtils.isHttpUrl(url)) {
 				IntentUtils.create(widget.getContext(), WebViewActivity.class)
-						.putExtra(WebViewActivity.URL, url).start();
+						.putExtra(Constants.Extra.URL, url).start();
 			}
 
 		}

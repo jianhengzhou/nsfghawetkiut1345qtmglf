@@ -3,6 +3,8 @@ package com.gdestiny.github.utils;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
@@ -11,12 +13,19 @@ import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.provider.Browser;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.gdestiny.github.R;
 
@@ -44,6 +53,134 @@ public class AndroidUtils {
 
 	private AndroidUtils() {
 		throw new AssertionError();
+	}
+
+	public static class Keyboard {
+
+		// 显示或者隐藏输入键盘
+		public static void hideKeyboard(Activity context,
+				final Runnable afterHide) {
+
+			InputMethodManager imm = (InputMethodManager) context
+					.getSystemService(Activity.INPUT_METHOD_SERVICE);
+			View view = context.getCurrentFocus();
+			if (view != null) {
+				imm.hideSoftInputFromWindow(view.getWindowToken(), 0,
+						new ResultReceiver(new Handler()) {
+
+							protected void onReceiveResult(int resultCode,
+									Bundle resultData) {
+								afterHide.run();
+							}
+
+						});
+			}
+		}
+
+		// 隐藏软键盘
+		public static void hideKeyboard(Activity context) {
+			InputMethodManager imm = (InputMethodManager) context
+					.getSystemService(Activity.INPUT_METHOD_SERVICE);
+			View view = context.getCurrentFocus();
+			if (view != null && imm.isActive()) {
+				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);// 隐藏软键盘
+
+			}
+		}
+
+		// 键盘是否已经显示出来
+		public static boolean isKeybordShown(Activity context, View focusView) {
+			InputMethodManager imm = (InputMethodManager) context
+					.getSystemService(Activity.INPUT_METHOD_SERVICE);
+			return imm.isActive(focusView);
+
+		}
+
+		// 这个方法是可用的
+		public static void showKeyboard(Activity context, View focusView) {
+			InputMethodManager imm = (InputMethodManager) context
+					.getSystemService(Activity.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(focusView, 0);
+
+		}
+
+		/**
+		 * 默认不显示输入面板
+		 * 
+		 * @param context
+		 */
+		public static void noExplicityInputMethod(Activity context) {
+			context.getWindow().setSoftInputMode(
+					WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		}
+
+	}
+
+	public static class FileManager {
+
+		public static boolean delete(File file) {
+			try {
+				if (file.isFile()) {
+					return file.delete();
+				}
+				if (file.isDirectory()) {
+					File[] childFile = file.listFiles();
+					if (childFile == null || childFile.length == 0) {
+						return file.delete();
+					}
+					for (File f : childFile) {
+						delete(f);
+					}
+					return file.delete();
+				}
+			} catch (Exception ex) {
+				return false;
+			}
+			return false;
+		}
+
+		public static boolean delete(String path) {
+			File file = new File(path);
+			return delete(file);
+		}
+
+		public static long getSize(File file) {
+			if (file.isDirectory()) {
+				File[] files = file.listFiles();
+				int size = 0;
+				for (File f : files) {
+					size += getSize(f);
+				}
+				return size;
+			} else {
+				FileInputStream fis = null;
+				try {
+					fis = new FileInputStream(file);
+					long size = fis.available();
+					fis.close();
+					return size;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return 0;
+				}
+			}
+		}
+
+		public static long getSize(String path) {
+			File file = new File(path);
+			return getSize(file);
+		}
+
+		public static boolean clearPreference(Context context, String name) {
+			try {
+				SharedPreferences settings = context.getSharedPreferences(name,
+						0);
+				SharedPreferences.Editor localEditor = settings.edit();
+				return localEditor.clear().commit();
+			} catch (Exception ex) {
+				return false;
+			}
+		}
 	}
 
 	@SuppressWarnings({ "rawtypes" })
@@ -154,6 +291,12 @@ public class AndroidUtils {
 		}
 	}
 
+	public static void vibrate(Context context, long milliseconds) {
+		android.os.Vibrator vibrator = (android.os.Vibrator) context
+				.getSystemService(Context.VIBRATOR_SERVICE);
+		vibrator.vibrate(milliseconds);
+	}
+
 	/**
 	 * Finish the given activity and start a home activity class.
 	 * <p>
@@ -170,12 +313,19 @@ public class AndroidUtils {
 		activity.startActivity(intent);
 	}
 
-	public static void share(Context context, String title,String content) {
+	public static void share(Context context, String title, String content) {
 		Intent intent = new Intent(Intent.ACTION_SEND);
 
 		intent.setType("text/plain");
 		intent.putExtra(Intent.EXTRA_SUBJECT, "share");
-		intent.putExtra(Intent.EXTRA_TEXT,content);
+		intent.putExtra(Intent.EXTRA_TEXT, content);
 		context.startActivity(Intent.createChooser(intent, title));
+	}
+
+	public static void market(Context context) {
+		Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
+		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
 	}
 }

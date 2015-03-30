@@ -119,13 +119,22 @@
             <include layout="@layout/includer_divider_h" />
 
             <TextView
+                android:id="@+id/menu_search"
+                style="@style/common_menu_text_style"
+                android:drawableLeft="@drawable/selector_icon_search"
+                android:text="@string/search" />
+
+            <include layout="@layout/includer_divider_h" />
+
+            <TextView
                 android:id="@+id/menu_bookmarks"
                 style="@style/common_menu_text_style"
-                android:visibility="gone"
                 android:drawableLeft="@drawable/selector_icon_bookmarks"
-                android:text="@string/bookmarks" />
+                android:text="@string/bookmarks"
+                android:visibility="gone" />
 
-            <include layout="@layout/includer_divider_h"
+            <include
+                layout="@layout/includer_divider_h"
                 android:visibility="gone" />
         </LinearLayout>
     </ScrollView>

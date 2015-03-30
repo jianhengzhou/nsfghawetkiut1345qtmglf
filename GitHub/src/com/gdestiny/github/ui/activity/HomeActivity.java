@@ -165,6 +165,10 @@ public class HomeActivity extends BaseFragmentActivity implements
 			close = false;
 			IntentUtils.start(context, UserActivity.class);
 			break;
+		case R.id.menu_search:
+			close = false;
+			IntentUtils.start(context, SearchActivity.class);
+			break;
 		case R.id.menu_repository:
 			changeOrNewFragment(v);
 			break;

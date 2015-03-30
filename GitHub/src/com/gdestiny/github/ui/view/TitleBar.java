@@ -7,9 +7,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
@@ -20,7 +20,7 @@ import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
-public class TitleBar extends LinearLayout implements View.OnClickListener {
+public class TitleBar extends FrameLayout implements View.OnClickListener {
 
 	public static final int ICON = 0;
 	public static final int MAIN = 1;

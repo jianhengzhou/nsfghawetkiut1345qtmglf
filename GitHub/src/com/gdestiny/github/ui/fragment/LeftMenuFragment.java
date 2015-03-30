@@ -47,6 +47,7 @@ public class LeftMenuFragment extends BaseFragment implements OnClickListener {
 		findViewById(R.id.menu_bookmarks).setOnClickListener(this);
 		findViewById(R.id.menu_setting).setOnClickListener(this);
 		findViewById(R.id.menu_exit).setOnClickListener(this);
+		findViewById(R.id.menu_search).setOnClickListener(this);
 
 		avatar = (ImageViewEx) findViewById(R.id.menu_avatar);
 		name = (TextView) findViewById(R.id.menu_name);

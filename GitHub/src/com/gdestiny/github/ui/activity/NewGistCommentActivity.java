@@ -5,7 +5,6 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.User;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.GistCommentTask;
 import com.gdestiny.github.ui.activity.abstracts.AbstractCommentActivity;
 import com.gdestiny.github.utils.AndroidUtils;
@@ -43,6 +42,6 @@ public class NewGistCommentActivity extends AbstractCommentActivity {
 						.putExtra(Constants.Extra.COMMENT, comment)
 						.setResultOk().finish();
 			}
-		}.execute(GitHubApplication.getClient());
+		}.execute();
 	}
 }

@@ -7,8 +7,6 @@ import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.CollaboratorService;
 import org.eclipse.egit.github.core.service.IssueService;
 
 import android.content.Intent;
@@ -27,6 +25,7 @@ import com.gdestiny.github.adapter.CommentAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.AsyncImageGetter;
 import com.gdestiny.github.async.DeleteCommentTask;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.LabelViewGroup;
@@ -40,7 +39,7 @@ import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
 public class IssueDetailActivity extends
-		BaseLoadFragmentActivity<GitHubClient, List<Comment>> {
+		BaseLoadFragmentActivity<Void, List<Comment>> {
 
 	private Issue issue;
 	private Repository repository;
@@ -216,12 +215,12 @@ public class IssueDetailActivity extends
 						comments.remove(comment);
 						commentAdapter.notifyDataSetChanged();
 					}
-				}.execute(GitHubApplication.getClient());
+				}.execute();
 			}
 		});
 		commentList.setAdapter(commentAdapter);
 
-		execute(GitHubApplication.getClient());
+		execute();
 
 		initDetail(issue);
 	}
@@ -317,20 +316,12 @@ public class IssueDetailActivity extends
 	}
 
 	@Override
-	public List<Comment> onBackground(GitHubClient params) throws Exception {
-		try {
-			CollaboratorService collaboratorService = new CollaboratorService(
-					params);
-			isCollaborator = collaboratorService.isCollaborator(repository,
-					GitHubApplication.getUser().getLogin());
-		} catch (Exception ex) {
-			isCollaborator = false;
-			ex.printStackTrace();
-		}
+	public List<Comment> onBackground(Void params) throws Exception {
+		isCollaborator = GitHubConsole.getInstance().isCollaborator(repository,
+				GitHubApplication.getUser().getLogin());
 
-		IssueService service = new IssueService(params);
-
-		return service.getComments(repository, issue.getNumber());
+		return GitHubConsole.getInstance().getIssueComments(repository,
+				issue.getNumber());
 	}
 
 	@Override
@@ -403,7 +394,7 @@ public class IssueDetailActivity extends
 
 	@Override
 	public void onRefreshStarted(View view) {
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 }

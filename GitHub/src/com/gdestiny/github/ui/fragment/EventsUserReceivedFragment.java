@@ -1,14 +1,11 @@
 package com.gdestiny.github.ui.fragment;
 
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.EventService;
-
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.view.TitleBar;
-import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 
 public class EventsUserReceivedFragment extends AbstractEventFragment {
@@ -20,10 +17,8 @@ public class EventsUserReceivedFragment extends AbstractEventFragment {
 	}
 
 	@Override
-	public void newPageData(GitHubClient params) {
-		EventService service = new EventService(params);
-		setDataPage(service.pageUserReceivedEvents(user, false,
-				Constants.DEFAULT_PAGE_SIZE));
+	public void newPageData(Void params) {
+		setDataPage(GitHubConsole.getInstance().pageUserReceivedEvents(user));
 	}
 
 	@Override

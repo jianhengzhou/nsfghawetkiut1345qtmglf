@@ -1,18 +1,13 @@
 package com.gdestiny.github.ui.fragment;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.CommitService;
-import org.eclipse.egit.github.core.service.RepositoryService;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.CommitAdapter;
-import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.CommitDetailActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.dialog.BranchDialog;
@@ -35,7 +30,7 @@ import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
 public class RepositoryCommitFragment extends
-		BaseLoadPageFragment<RepositoryCommit, GitHubClient> {
+		BaseLoadPageFragment<RepositoryCommit, Void> {
 
 	private Repository repository;
 
@@ -91,7 +86,7 @@ public class RepositoryCommitFragment extends
 		repository = (Repository) context.getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
 		curBranch = repository.getMasterBranch();
-		execute(GitHubApplication.getClient());
+		execute();
 		// 防止与其他页面重叠
 		getPullToRefreshLayout().getHeaderTransformer()
 				.setProgressbarVisibility(View.GONE);
@@ -139,7 +134,7 @@ public class RepositoryCommitFragment extends
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 	@Override
@@ -150,21 +145,9 @@ public class RepositoryCommitFragment extends
 	}
 
 	@Override
-	public void newPageData(GitHubClient params) {
-		if (TextUtils.isEmpty(curBranch)) {
-			try {
-				curBranch = new RepositoryService(params).getRepository(
-						repository).getMasterBranch();
-			} catch (IOException e) {
-				e.printStackTrace();
-				curBranch = "master";
-			}
-			if (TextUtils.isEmpty(curBranch))
-				curBranch = "master";
-		}
-		CommitService service = new CommitService(params);
-		setDataPage(service.pageCommits(repository, curBranch, null,
-				Constants.DEFAULT_PAGE_SIZE));
+	public void newPageData(Void params) {
+		setDataPage(GitHubConsole.getInstance().pageCommits(repository,
+				curBranch));
 	}
 
 	@Override

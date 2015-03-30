@@ -1,11 +1,6 @@
 package com.gdestiny.github.async;
 
-import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_COMMENTS;
-import static org.eclipse.egit.github.core.client.IGitHubConstants.SEGMENT_GISTS;
-
 import org.eclipse.egit.github.core.Comment;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.GistService;
 
 import android.content.Context;
 import android.view.View;
@@ -15,7 +10,7 @@ import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
 import com.gdestiny.github.utils.ToastUtils;
 
-public class DeleteGistCommentTask extends DialogTask<GitHubClient, Boolean> {
+public class DeleteGistCommentTask extends DialogTask<Void, Boolean> {
 
 	private Comment comment;
 	private String gistId;
@@ -33,15 +28,8 @@ public class DeleteGistCommentTask extends DialogTask<GitHubClient, Boolean> {
 	}
 
 	@Override
-	public Boolean onBackground(GitHubClient params) throws Exception {
-		GistService service = new GistService(params);
-		// ืํมห
-		// service.deleteComment(comment.getId());
-		StringBuilder uri = new StringBuilder(SEGMENT_GISTS);
-		uri.append('/').append(gistId);
-		uri.append(SEGMENT_COMMENTS);
-		uri.append('/').append(comment.getId());
-		service.getClient().delete(uri.toString());
+	public Boolean onBackground(Void params) throws Exception {
+		GitHubConsole.getInstance().deleteGistComment(gistId, comment);
 		return true;
 	}
 
@@ -51,7 +39,7 @@ public class DeleteGistCommentTask extends DialogTask<GitHubClient, Boolean> {
 	}
 
 	@Override
-	public void execute(final GitHubClient params) {
+	public void execute(final Void params) {
 		final MaterialDialog materialDialog = new MaterialDialog(context);
 		materialDialog.setTitle(R.string.warning)
 				.setMessage(R.string.warning_delete)

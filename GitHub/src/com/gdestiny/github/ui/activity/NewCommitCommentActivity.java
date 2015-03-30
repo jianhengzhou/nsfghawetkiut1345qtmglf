@@ -4,7 +4,6 @@ import org.eclipse.egit.github.core.CommitComment;
 
 import android.text.TextUtils;
 
-import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.CommitCommentTask;
 import com.gdestiny.github.bean.CommitLine;
 import com.gdestiny.github.ui.activity.abstracts.AbstractCommentActivity;
@@ -55,7 +54,7 @@ public class NewCommitCommentActivity extends AbstractCommentActivity {
 						.putExtra(Constants.Extra.COMMIT_COMMENT, comment)
 						.setResultOk().finish();
 			}
-		}.execute(GitHubApplication.getClient());
+		}.execute();
 	}
 
 }

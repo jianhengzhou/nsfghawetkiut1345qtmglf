@@ -2,8 +2,6 @@ package com.gdestiny.github.async;
 
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.IssueService;
 
 import android.content.Context;
 import android.view.View;
@@ -13,7 +11,7 @@ import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
 import com.gdestiny.github.utils.ToastUtils;
 
-public class DeleteCommentTask extends DialogTask<GitHubClient, Boolean> {
+public class DeleteCommentTask extends DialogTask<Void, Boolean> {
 
 	private Repository repository;
 	private Comment comment;
@@ -23,7 +21,7 @@ public class DeleteCommentTask extends DialogTask<GitHubClient, Boolean> {
 		super(context);
 		this.repository = repository;
 		this.comment = comment;
-//		this.setTitle(repository.getName());
+		// this.setTitle(repository.getName());
 
 		this.setLoadingMessage(R.string.deleting);
 	}
@@ -35,9 +33,9 @@ public class DeleteCommentTask extends DialogTask<GitHubClient, Boolean> {
 	}
 
 	@Override
-	public Boolean onBackground(GitHubClient params) throws Exception {
-		IssueService service = new IssueService(params);
-		service.deleteComment(repository, comment.getId());
+	public Boolean onBackground(Void params) throws Exception {
+		GitHubConsole.getInstance().deleteIssueComment(repository,
+				comment.getId());
 		return true;
 	}
 
@@ -47,7 +45,7 @@ public class DeleteCommentTask extends DialogTask<GitHubClient, Boolean> {
 	}
 
 	@Override
-	public void execute(final GitHubClient params) {
+	public void execute(final Void params) {
 		final MaterialDialog materialDialog = new MaterialDialog(context);
 		materialDialog.setTitle(R.string.warning)
 				.setMessage(R.string.warning_delete)

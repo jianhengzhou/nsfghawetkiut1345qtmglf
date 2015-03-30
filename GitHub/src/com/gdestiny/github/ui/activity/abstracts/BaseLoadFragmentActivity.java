@@ -113,6 +113,10 @@ public abstract class BaseLoadFragmentActivity<Params, Result> extends
 		}
 	}
 
+	public void execute() {
+		execute(null);
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(Params params) {
@@ -145,6 +149,8 @@ public abstract class BaseLoadFragmentActivity<Params, Result> extends
 			@Override
 			protected Result doInBackground(Params... params) {
 				try {
+					if (params == null)
+						return BaseLoadFragmentActivity.this.onBackground(null);
 					return BaseLoadFragmentActivity.this
 							.onBackground(params[0]);
 				} catch (Exception e) {

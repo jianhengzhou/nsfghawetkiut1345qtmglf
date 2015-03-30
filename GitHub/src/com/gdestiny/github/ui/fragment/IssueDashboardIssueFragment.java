@@ -11,7 +11,6 @@ import java.util.Map;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.RepositoryIssue;
-import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.IssueService;
 
 import android.content.Intent;
@@ -23,7 +22,7 @@ import android.widget.AdapterView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.IssueDashboardAdapter;
-import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.IssueDetailActivity;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
@@ -31,7 +30,7 @@ import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
 
 public class IssueDashboardIssueFragment extends
-		BaseLoadPageFragment<RepositoryIssue, GitHubClient> {
+		BaseLoadPageFragment<RepositoryIssue, Void> {
 
 	private String filterType;
 	private Map<String, String> filterData;
@@ -60,7 +59,7 @@ public class IssueDashboardIssueFragment extends
 		filterData.put(FIELD_SORT, SORT_UPDATED);
 		filterData.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
 
-		execute(GitHubApplication.getClient());
+		execute();
 		if (!filterType.equals(IssueService.FILTER_CREATED)) {
 			getPullToRefreshLayout().getHeaderTransformer()
 					.setProgressbarVisibility(View.GONE);
@@ -75,9 +74,8 @@ public class IssueDashboardIssueFragment extends
 	}
 
 	@Override
-	public void newPageData(GitHubClient params) {
-		IssueService service = new IssueService(params);
-		setDataPage(service.pageIssues(filterData, Constants.DEFAULT_PAGE_SIZE));
+	public void newPageData(Void params) {
+		setDataPage(GitHubConsole.getInstance().pageIssues(filterData));
 	}
 
 	@Override
@@ -133,7 +131,7 @@ public class IssueDashboardIssueFragment extends
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 }

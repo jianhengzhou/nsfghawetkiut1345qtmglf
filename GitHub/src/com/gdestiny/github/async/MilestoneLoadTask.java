@@ -6,9 +6,7 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.Milestone;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.IssueService;
-import org.eclipse.egit.github.core.service.MilestoneService;
 
 import android.content.Context;
 import android.view.View;
@@ -20,8 +18,7 @@ import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.bean.comparator.MilestoneComparator;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
 
-public class MilestoneLoadTask extends
-		DialogTask<GitHubClient, List<Milestone>> {
+public class MilestoneLoadTask extends DialogTask<Void, List<Milestone>> {
 
 	private Repository repository;
 	private Context context;
@@ -47,13 +44,11 @@ public class MilestoneLoadTask extends
 	}
 
 	@Override
-	public List<Milestone> onBackground(GitHubClient params) throws Exception {
-		// TODO Auto-generated method stub
-		MilestoneService service = new MilestoneService(params);
+	public List<Milestone> onBackground(Void params) throws Exception {
 		List<Milestone> result = new ArrayList<Milestone>();
-		result.addAll(service
-				.getMilestones(repository, IssueService.STATE_OPEN));
-		result.addAll(service.getMilestones(repository,
+		result.addAll(GitHubConsole.getInstance().getMilestones(repository,
+				IssueService.STATE_OPEN));
+		result.addAll(GitHubConsole.getInstance().getMilestones(repository,
 				IssueService.STATE_CLOSED));
 		Collections.sort(result, new MilestoneComparator());
 		return result;

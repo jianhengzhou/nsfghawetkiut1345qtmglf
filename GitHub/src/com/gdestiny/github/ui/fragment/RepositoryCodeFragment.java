@@ -2,12 +2,7 @@ package com.gdestiny.github.ui.fragment;
 
 import java.util.LinkedHashMap;
 
-import org.eclipse.egit.github.core.Commit;
-import org.eclipse.egit.github.core.Reference;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.Tree;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.DataService;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +15,7 @@ import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.CodeTreeAdapter;
-import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.bean.CodeTree;
 import com.gdestiny.github.ui.activity.CodeFileActivity;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
@@ -35,8 +30,7 @@ import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
-public class RepositoryCodeFragment extends
-		BaseLoadFragment<GitHubClient, Tree> {
+public class RepositoryCodeFragment extends BaseLoadFragment<Void, CodeTree> {
 
 	public static final String EXTRA_CODE = "codetree";
 
@@ -119,7 +113,7 @@ public class RepositoryCodeFragment extends
 											.getName();
 									if (!branch.equals(curBranch)) {
 										curBranch = branch;
-										execute(GitHubApplication.getClient());
+										execute();
 									}
 								}
 							});
@@ -140,7 +134,7 @@ public class RepositoryCodeFragment extends
 		curBranch = repository.getMasterBranch();
 
 		if (currCodeTree == null)
-			execute(GitHubApplication.getClient());
+			execute();
 		else {
 			codeAdapter.setCodeTree(currCodeTree);
 			if (!currCodeTree.name.equals(CodeTree.ROOT))
@@ -195,24 +189,15 @@ public class RepositoryCodeFragment extends
 	}
 
 	@Override
-	public Tree onBackground(GitHubClient params) throws Exception {
-		DataService dataService = new DataService(params);
-		GLog.sysout(repository.getMasterBranch());
-		Reference ref = dataService.getReference(repository, "heads/"
-				+ curBranch);
-		Commit commit = dataService.getCommit(repository, ref.getObject()
-				.getSha());
-		Tree tree = dataService.getTree(repository, commit.getTree().getSha(),
-				true);
-
-		return tree;
+	public CodeTree onBackground(Void params) throws Exception {
+		return GitHubConsole.getInstance().getCodeTree(repository, curBranch);
 	}
 
 	@Override
-	public void onSuccess(Tree result) {
+	public void onSuccess(CodeTree result) {
 		// TODO Auto-generated method stub
 		super.onSuccess(result);
-		currCodeTree = CodeTree.toCodeTree(result);
+		currCodeTree = result;
 		codeAdapter.setCodeTree(currCodeTree);
 		ViewUtils.setVisibility(listPopup, View.VISIBLE, R.anim.alpha_in);
 		branch.setText(curBranch);
@@ -240,7 +225,7 @@ public class RepositoryCodeFragment extends
 
 	@Override
 	public void onRefreshStarted(View view) {
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 }

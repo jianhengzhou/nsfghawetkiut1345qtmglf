@@ -21,7 +21,6 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.CollaboratorLoadTask;
 import com.gdestiny.github.async.LabelLoadTask;
 import com.gdestiny.github.async.MilestoneLoadTask;
@@ -106,10 +105,8 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 		repository = (Repository) getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
 
-		getTitlebar().setLeftLayout(
-				repository.getOwner().getAvatarUrl(),
-				"Issue Filter",
-				repository.generateId());
+		getTitlebar().setLeftLayout(repository.getOwner().getAvatarUrl(),
+				"Issue Filter", repository.generateId());
 
 		// init filter data
 		filter = (IssueFilter) getIntent().getSerializableExtra(
@@ -235,7 +232,7 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 				public void onCollaborator(User selected) {
 					onAssignee(selected);
 				}
-			}.execute(GitHubApplication.getClient());
+			}.execute();
 			break;
 		case R.id.milestone_layout:
 			new MilestoneLoadTask(context, repository) {
@@ -244,8 +241,7 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 				public void onMilestone(Milestone selected) {
 					IssueFilterActivity.this.onMilestone(selected);
 				}
-			}.putSelected(filter.getMilestone()).execute(
-					GitHubApplication.getClient());
+			}.putSelected(filter.getMilestone()).execute();
 			break;
 		case R.id.label_layout:
 			new LabelLoadTask(context, repository) {
@@ -254,8 +250,7 @@ public class IssueFilterActivity extends BaseFragmentActivity implements
 				public void onLabels(ArrayList<Label> selected) {
 					IssueFilterActivity.this.onLabels(selected);
 				}
-			}.putSelected(filter.getLabels()).execute(
-					GitHubApplication.getClient());
+			}.putSelected(filter.getLabels()).execute();
 			break;
 		default:
 			break;

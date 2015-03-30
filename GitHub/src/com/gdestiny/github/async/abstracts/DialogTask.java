@@ -71,6 +71,10 @@ public abstract class DialogTask<Params, Result> implements
 		}
 	}
 
+	public void execute() {
+		execute(null);
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(Params params) {
@@ -99,6 +103,8 @@ public abstract class DialogTask<Params, Result> implements
 			@Override
 			protected Result doInBackground(Params... params) {
 				try {
+					if (params == null)
+						return DialogTask.this.onBackground(null);
 					return DialogTask.this.onBackground(params[0]);
 				} catch (final Exception e) {
 					e.printStackTrace();

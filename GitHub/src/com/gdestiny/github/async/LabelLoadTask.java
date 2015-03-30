@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.LabelService;
 import org.eclipse.egit.github.core.util.LabelComparator;
 
 import com.gdestiny.github.R;
@@ -21,7 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
 
-public class LabelLoadTask extends DialogTask<GitHubClient, List<Label>> {
+public class LabelLoadTask extends DialogTask<Void, List<Label>> {
 
 	private Repository repository;
 	private Context context;
@@ -49,17 +47,14 @@ public class LabelLoadTask extends DialogTask<GitHubClient, List<Label>> {
 	}
 
 	@Override
-	public List<Label> onBackground(GitHubClient params) throws Exception {
-		// TODO Auto-generated method stub
-		LabelService service = new LabelService(params);
-		List<Label> result = service.getLabels(repository);
+	public List<Label> onBackground(Void params) throws Exception {
+		List<Label> result = GitHubConsole.getInstance().getLabels(repository);
 		Collections.sort(result, new LabelComparator());
 		return result;
 	}
 
 	@Override
 	public void onSuccess(List<Label> result) {
-		// TODO Auto-generated method stub
 
 		final MaterialDialog dialog = new MaterialDialog(context).setTitle(
 				"Labels").setCanceledOnTouchOutside(true);

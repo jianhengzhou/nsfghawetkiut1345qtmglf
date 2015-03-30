@@ -99,7 +99,7 @@ public class NewEditIssueActivity extends BaseFragmentActivity implements
 								.setResultOk().finish();
 					}
 
-				}.execute(GitHubApplication.getClient());
+				}.execute();
 			}
 		});
 	}
@@ -177,10 +177,8 @@ public class NewEditIssueActivity extends BaseFragmentActivity implements
 			}.execute(GitHubApplication.getClient());
 		}
 
-		getTitlebar().setLeftLayout(
-				repository.getOwner().getAvatarUrl(),
-				actTitle,
-				repository.generateId());
+		getTitlebar().setLeftLayout(repository.getOwner().getAvatarUrl(),
+				actTitle, repository.generateId());
 	}
 
 	private void hideAML() {
@@ -281,7 +279,7 @@ public class NewEditIssueActivity extends BaseFragmentActivity implements
 				public void onCollaborator(User selected) {
 					onAssignee(selected);
 				}
-			}.execute(GitHubApplication.getClient());
+			}.execute();
 			break;
 		case R.id.milestone_layout:
 			new MilestoneLoadTask(context, repository) {
@@ -290,8 +288,7 @@ public class NewEditIssueActivity extends BaseFragmentActivity implements
 				public void onMilestone(Milestone selected) {
 					NewEditIssueActivity.this.onMilestone(selected);
 				}
-			}.putSelected(filter.getMilestone()).execute(
-					GitHubApplication.getClient());
+			}.putSelected(filter.getMilestone()).execute();
 			break;
 		case R.id.label_layout:
 			new LabelLoadTask(context, repository) {
@@ -300,8 +297,7 @@ public class NewEditIssueActivity extends BaseFragmentActivity implements
 				public void onLabels(ArrayList<Label> selected) {
 					NewEditIssueActivity.this.onLabels(selected);
 				}
-			}.putSelected(filter.getLabels()).execute(
-					GitHubApplication.getClient());
+			}.putSelected(filter.getLabels()).execute();
 			break;
 		default:
 			break;

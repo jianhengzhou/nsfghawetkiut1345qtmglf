@@ -11,9 +11,6 @@ import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.CommitStats;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.CollaboratorService;
-import org.eclipse.egit.github.core.service.CommitService;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +30,7 @@ import com.gdestiny.github.adapter.CommitExpandAdapter;
 import com.gdestiny.github.adapter.CommitExpandAdapter.OnCommitCommentListener;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.DeleteCommitCommentTask;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.bean.CommitLine;
 import com.gdestiny.github.bean.CommitTree;
 import com.gdestiny.github.bean.comparator.CommitCommentComparator;
@@ -50,7 +48,7 @@ import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
 public class CommitDetailActivity extends
-		BaseLoadFragmentActivity<GitHubClient, CommitTree> {
+		BaseLoadFragmentActivity<Void, CommitTree> {
 
 	private Repository repository;
 	private RepositoryCommit commit;
@@ -124,7 +122,7 @@ public class CommitDetailActivity extends
 						hasChange = true;
 						updateComment();
 					}
-				}.execute(GitHubApplication.getClient());
+				}.execute();
 			}
 		});
 
@@ -245,7 +243,7 @@ public class CommitDetailActivity extends
 				"Commit " + CommitUtils.getSubSha(commit),
 				repository.generateId());
 
-		execute(GitHubApplication.getClient());
+		execute();
 		updataDetail(commit);
 	}
 
@@ -347,22 +345,14 @@ public class CommitDetailActivity extends
 	}
 
 	@Override
-	public CommitTree onBackground(GitHubClient params) throws Exception {
-		// TODO Auto-generated method stub
-		try {
-			CollaboratorService collaboratorService = new CollaboratorService(
-					params);
-			isCollaborator = collaboratorService.isCollaborator(repository,
-					GitHubApplication.getUser().getLogin());
-		} catch (Exception ex) {
-			isCollaborator = false;
-			ex.printStackTrace();
-		}
+	public CommitTree onBackground(Void params) throws Exception {
+		isCollaborator = GitHubConsole.getInstance().isCollaborator(repository,
+				GitHubApplication.getUser().getLogin());
 
-		CommitService service = new CommitService(params);
-		commit = service.getCommit(repository, commit.getSha());
-		List<CommitComment> comments = service.getComments(repository,
+		commit = GitHubConsole.getInstance().getCommit(repository,
 				commit.getSha());
+		List<CommitComment> comments = GitHubConsole.getInstance()
+				.getCommitComment(repository, commit.getSha());
 
 		// for (CommitComment c : comments) {
 		// System.out.println("----------------------------------------");
@@ -476,7 +466,7 @@ public class CommitDetailActivity extends
 
 	@Override
 	public void onRefreshStarted(View view) {
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 }

@@ -1,15 +1,12 @@
 package com.gdestiny.github.async;
 
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.GistService;
-
 import android.content.Context;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.utils.ToastUtils;
 
-public class DeleteGistTask extends DialogTask<GitHubClient, Boolean> {
+public class DeleteGistTask extends DialogTask<Void, Boolean> {
 
 	private String gistId;
 
@@ -20,9 +17,8 @@ public class DeleteGistTask extends DialogTask<GitHubClient, Boolean> {
 	}
 
 	@Override
-	public Boolean onBackground(GitHubClient params) throws Exception {
-		GistService service = new GistService(params);
-		service.deleteGist(gistId);
+	public Boolean onBackground(Void params) throws Exception {
+		GitHubConsole.getInstance().deleteGist(gistId);
 		return true;
 	}
 

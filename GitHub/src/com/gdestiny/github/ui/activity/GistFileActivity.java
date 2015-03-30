@@ -5,8 +5,6 @@ import java.util.Map;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.GistService;
 
 import android.os.Bundle;
 import android.view.View;
@@ -14,13 +12,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.view.FileIndicatorView;
 import com.gdestiny.github.utils.Constants;
 
-public class GistFileActivity extends
-		BaseLoadFragmentActivity<GitHubClient, Gist> {
+public class GistFileActivity extends BaseLoadFragmentActivity<Void, Gist> {
 
 	private Map<String, GistFile> files;
 
@@ -73,7 +70,7 @@ public class GistFileActivity extends
 		}
 
 		indicator.add(fileName, gist.getFiles().keySet());
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 	private void onFileContent(final String fileName) {
@@ -88,10 +85,9 @@ public class GistFileActivity extends
 	}
 
 	@Override
-	public Gist onBackground(GitHubClient params) throws Exception {
+	public Gist onBackground(Void params) throws Exception {
 		// TODO Auto-generated method stub
-		GistService service = new GistService(params);
-		return service.getGist(gist.getId());
+		return GitHubConsole.getInstance().getGist(gist.getId());
 	}
 
 	@Override

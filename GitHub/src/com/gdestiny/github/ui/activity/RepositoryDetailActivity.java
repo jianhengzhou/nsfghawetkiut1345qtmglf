@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.service.WatcherService;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -14,6 +13,7 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.SimplePageAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.ForkRepositoryTask;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.async.StarRepositoryTask;
 import com.gdestiny.github.async.abstracts.BaseAsyncTask;
 import com.gdestiny.github.async.abstracts.RepositoryRefreshTask;
@@ -113,11 +113,11 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 					isStarred = !isStarred;
 					refreshStarPopup(indicatorView.getCurrentPosition());
 				}
-			}.execute(GitHubApplication.getClient());
+			}.execute();
 			break;
 		case R.string.fork:
 			new ForkRepositoryTask(context, repository)
-					.execute(GitHubApplication.getClient());
+					.execute();
 			break;
 		case R.string.share:
 			AndroidUtils.share(context, repository.getName(),
@@ -186,10 +186,8 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 			@Override
 			protected Boolean doInBackground(Void... params) {
 				// TODO Auto-generated method stub
-				WatcherService service = new WatcherService(
-						GitHubApplication.getClient());
 				try {
-					return service.isWatching(repository);
+					return GitHubConsole.getInstance().isWatching(repository);
 				} catch (IOException e) {
 					e.printStackTrace();
 					return false;

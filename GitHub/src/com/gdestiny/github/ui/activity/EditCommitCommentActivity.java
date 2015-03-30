@@ -2,7 +2,6 @@ package com.gdestiny.github.ui.activity;
 
 import org.eclipse.egit.github.core.CommitComment;
 
-import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.CommitCommentTask;
 import com.gdestiny.github.ui.activity.abstracts.AbstractCommentActivity;
 import com.gdestiny.github.utils.Constants;
@@ -44,7 +43,7 @@ public class EditCommitCommentActivity extends AbstractCommentActivity {
 						.putExtra(Constants.Extra.CHILD_POSITION, childPosition)
 						.setResultOk().finish();
 			}
-		}.execute(GitHubApplication.getClient());
+		}.execute();
 	}
 
 }

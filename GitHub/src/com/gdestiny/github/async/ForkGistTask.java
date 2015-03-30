@@ -1,18 +1,13 @@
 package com.gdestiny.github.async;
 
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.GistService;
-
 import com.gdestiny.github.R;
 import com.gdestiny.github.async.abstracts.DialogTask;
-import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
 import android.content.Context;
 
-public class ForkGistTask extends DialogTask<GitHubClient, Boolean> {
+public class ForkGistTask extends DialogTask<Void, Boolean> {
 
-	@SuppressWarnings("unused")
 	private String gistId;
 
 	public ForkGistTask(Context context, String gistId) {
@@ -22,11 +17,8 @@ public class ForkGistTask extends DialogTask<GitHubClient, Boolean> {
 	}
 
 	@Override
-	public Boolean onBackground(GitHubClient params) throws Exception {
-		@SuppressWarnings("unused")
-		GistService service = new GistService(params);
-		// service.forkGist(gistId);
-		TestUtils.interrupt(5000);
+	public Boolean onBackground(Void params) throws Exception {
+		GitHubConsole.getInstance().forkGist(gistId);
 		return true;
 	}
 

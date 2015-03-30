@@ -3,8 +3,6 @@ package com.gdestiny.github.async;
 import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.IssueService;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -13,7 +11,7 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.utils.ToastUtils;
 
-public class CommentTask extends DialogTask<GitHubClient, Comment> {
+public class CommentTask extends DialogTask<Void, Comment> {
 
 	private Repository repository;
 	private Issue issue;
@@ -40,15 +38,15 @@ public class CommentTask extends DialogTask<GitHubClient, Comment> {
 	}
 
 	@Override
-	public Comment onBackground(GitHubClient params) throws Exception {
-		IssueService service = new IssueService(params);
+	public Comment onBackground(Void params) throws Exception {
 
 		if (comment != null) {
 			if (repository == null) {
 				throw new IllegalArgumentException(
 						"the repository  can not be null");
 			}
-			return service.editComment(repository, comment);
+			return GitHubConsole.getInstance().editIssueComment(repository,
+					comment);
 		} else {
 			if (TextUtils.isEmpty(commentContent.trim())) {
 				throw new IllegalAccessException("the content is empty");
@@ -57,8 +55,8 @@ public class CommentTask extends DialogTask<GitHubClient, Comment> {
 				throw new IllegalArgumentException(
 						"the repository and issue can not be null");
 			}
-			return service.createComment(repository, issue.getNumber(),
-					commentContent);
+			return GitHubConsole.getInstance().createIssueComment(repository,
+					issue.getNumber(), commentContent);
 		}
 	}
 

@@ -1,8 +1,6 @@
 package com.gdestiny.github.async;
 
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.UserService;
 
 import android.content.Context;
 
@@ -10,7 +8,7 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.utils.ToastUtils;
 
-public class EditUserTask extends DialogTask<GitHubClient, User> {
+public class EditUserTask extends DialogTask<Void, User> {
 
 	private User user;
 
@@ -21,10 +19,9 @@ public class EditUserTask extends DialogTask<GitHubClient, User> {
 	}
 
 	@Override
-	public User onBackground(GitHubClient params) throws Exception {
+	public User onBackground(Void params) throws Exception {
 		// throw new Exception("");
-		UserService service = new UserService(params);
-		return service.editUser(user);
+		return GitHubConsole.getInstance().editUser(user);
 	}
 
 	@Override

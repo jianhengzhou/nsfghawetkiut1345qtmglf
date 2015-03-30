@@ -4,7 +4,6 @@ import static org.eclipse.egit.github.core.client.IGitHubConstants.CHARSET_UTF8;
 
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.UserService;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
@@ -31,6 +30,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.EditUserTask;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.async.GitHubTask;
 import com.gdestiny.github.async.abstracts.ContributionWebTask;
 import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
@@ -351,8 +351,7 @@ public class UserActivity extends BaseFragmentActivity implements
 			@Override
 			public User onExcute(GitHubClient client) {
 				try {
-					UserService service = new UserService(client);
-					return service.getUser(user.getLogin());
+					return GitHubConsole.getInstance().getUser(user.getLogin());
 				} catch (Exception e) {
 					e.printStackTrace();
 					ToastUtils.showAsync(context, e.getMessage());
@@ -379,7 +378,7 @@ public class UserActivity extends BaseFragmentActivity implements
 				refreshBar.setProgress(0);
 
 			}
-		}).execute(GitHubApplication.getClient());
+		}).execute();
 	}
 
 	private void bindUserEdit(User user) {
@@ -516,7 +515,7 @@ public class UserActivity extends BaseFragmentActivity implements
 							refreshEditState(true);
 							bindUserEdit(result);
 						}
-					}.execute(GitHubApplication.getClient());
+					}.execute();
 				}
 
 				@Override

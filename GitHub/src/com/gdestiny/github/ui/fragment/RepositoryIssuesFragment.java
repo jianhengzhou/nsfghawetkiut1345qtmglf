@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.IssueService;
 
 import android.content.Intent;
@@ -17,7 +16,7 @@ import android.widget.AdapterView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.IssueAdapter;
-import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.bean.IssueFilter;
 import com.gdestiny.github.ui.activity.IssueDetailActivity;
 import com.gdestiny.github.ui.activity.IssueFilterActivity;
@@ -30,8 +29,7 @@ import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
 
-public class RepositoryIssuesFragment extends
-		BaseLoadPageFragment<Issue, GitHubClient> {
+public class RepositoryIssuesFragment extends BaseLoadPageFragment<Issue, Void> {
 
 	private Repository repository;
 	private IssueFilter issueFilter = new IssueFilter();
@@ -70,7 +68,7 @@ public class RepositoryIssuesFragment extends
 	protected void initData() {
 		repository = (Repository) context.getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
-		execute(GitHubApplication.getClient());
+		execute();
 		// 防止与其他页面重叠
 		getPullToRefreshLayout().getHeaderTransformer()
 				.setProgressbarVisibility(View.GONE);
@@ -196,16 +194,15 @@ public class RepositoryIssuesFragment extends
 	}
 
 	@Override
-	public void newPageData(GitHubClient params) {
-		IssueService service = new IssueService(params);
-		setDataPage(service.pageIssues(repository, issueFilter == null ? null
-				: issueFilter.toHashMap(), Constants.DEFAULT_PAGE_SIZE));
+	public void newPageData(Void params) {
+		setDataPage(GitHubConsole.getInstance().pageIssues(repository,
+				issueFilter));
 	}
 
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 }

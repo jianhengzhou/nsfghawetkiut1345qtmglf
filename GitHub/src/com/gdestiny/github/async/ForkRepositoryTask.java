@@ -1,19 +1,15 @@
 package com.gdestiny.github.async;
 
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.RepositoryService;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.async.abstracts.DialogTask;
-import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
 import android.content.Context;
 
-public class ForkRepositoryTask extends DialogTask<GitHubClient, Boolean> {
+public class ForkRepositoryTask extends DialogTask<Void, Boolean> {
 
-	@SuppressWarnings("unused")
 	private Repository repository;
 
 	public ForkRepositoryTask(Context context, Repository repository) {
@@ -23,13 +19,9 @@ public class ForkRepositoryTask extends DialogTask<GitHubClient, Boolean> {
 		this.setLoadingMessage(R.string.forking);
 	}
 
-
 	@Override
-	public Boolean onBackground(GitHubClient params) throws Exception {
-		@SuppressWarnings("unused")
-		RepositoryService service = new RepositoryService(params);
-		// service.forkRepository(repository);
-		TestUtils.interrupt(5000);
+	public Boolean onBackground(Void params) throws Exception {
+		GitHubConsole.getInstance().fork(repository);
 		return true;
 	}
 

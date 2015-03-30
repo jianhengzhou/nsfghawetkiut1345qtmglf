@@ -1,13 +1,10 @@
 package com.gdestiny.github.ui.fragment;
 
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.UserService;
-
 import android.text.TextUtils;
 import android.view.View;
 
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.view.TitleBar;
-import com.gdestiny.github.utils.Constants;
 
 public class FollowerFragment extends AbstractFollowFragment {
 
@@ -37,14 +34,11 @@ public class FollowerFragment extends AbstractFollowFragment {
 	}
 
 	@Override
-	public void newPageData(GitHubClient params) {
-		// TODO Auto-generated method stub
-		UserService service = new UserService(params);
+	public void newPageData(Void params) {
 		if (TextUtils.isEmpty(user))
-			setDataPage(service.pageFollowers(Constants.DEFAULT_PAGE_SIZE));
+			setDataPage(GitHubConsole.getInstance().pageFollowers());
 		else
-			setDataPage(service
-					.pageFollowers(user, Constants.DEFAULT_PAGE_SIZE));
+			setDataPage(GitHubConsole.getInstance().pageFollowers(user));
 	}
 
 }

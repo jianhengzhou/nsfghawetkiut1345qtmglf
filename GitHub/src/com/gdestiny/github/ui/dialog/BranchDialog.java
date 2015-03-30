@@ -1,12 +1,10 @@
 package com.gdestiny.github.ui.dialog;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.RepositoryBranch;
 import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.RepositoryService;
 
 import android.content.Context;
 import android.view.View;
@@ -14,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.async.GitHubTask;
 import com.gdestiny.github.async.GitHubTask.TaskListener;
 
@@ -45,17 +43,8 @@ public class BranchDialog {
 
 					@Override
 					public List<RepositoryBranch> onExcute(GitHubClient client) {
-						// TODO Auto-generated method stub
-						RepositoryService service = new RepositoryService(
-								GitHubApplication.getClient());
-						List<RepositoryBranch> branch = null;
-						try {
-							branch = service.getBranches(repository);
-						} catch (IOException e) {
-							e.printStackTrace();
-							return null;
-						}
-						return branch;
+						return GitHubConsole.getInstance()
+								.getBranch(repository);
 					}
 
 					@Override
@@ -96,7 +85,7 @@ public class BranchDialog {
 						// TODO Auto-generated method stub
 
 					}
-				}).execute(GitHubApplication.getClient());
+				}).execute();
 		return this;
 	}
 

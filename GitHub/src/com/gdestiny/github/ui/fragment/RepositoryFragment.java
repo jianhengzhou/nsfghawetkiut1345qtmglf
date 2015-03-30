@@ -7,9 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.RepositoryService;
-import org.eclipse.egit.github.core.service.WatcherService;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,7 +22,7 @@ import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.RepositoryAdapter;
-import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.async.SimpleUpdateTask;
 import com.gdestiny.github.bean.comparator.RepositoryComparator;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
@@ -39,7 +36,7 @@ import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
-public class RepositoryFragment extends BaseLoadFragment<GitHubClient, Boolean> {
+public class RepositoryFragment extends BaseLoadFragment<Void, Boolean> {
 
 	private ListView repositoryList;
 	private RepositoryAdapter repositoryAdapter;
@@ -121,7 +118,7 @@ public class RepositoryFragment extends BaseLoadFragment<GitHubClient, Boolean> 
 							GLog.sysout("update is not complete");
 							return;
 						}
-						execute(GitHubApplication.getClient());
+						execute();
 						break;
 					case R.string.sort:
 						dismiss = false;
@@ -161,7 +158,7 @@ public class RepositoryFragment extends BaseLoadFragment<GitHubClient, Boolean> 
 		repositoryList.setAdapter(repositoryAdapter);
 
 		initAlaphtSort();
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 	private void initAlaphtSort() {
@@ -209,13 +206,11 @@ public class RepositoryFragment extends BaseLoadFragment<GitHubClient, Boolean> 
 	}
 
 	@Override
-	public Boolean onBackground(GitHubClient params) throws Exception {
+	public Boolean onBackground(Void params) throws Exception {
 		// TODO Auto-generated method stub
 		// TestUtils.interrupt(5000);
-		myRepository = new RepositoryService(GitHubApplication.getClient())
-				.getRepositories();
-		starRepository = new WatcherService(GitHubApplication.getClient())
-				.getWatched();
+		myRepository = GitHubConsole.getInstance().getRepositories();
+		starRepository = GitHubConsole.getInstance().getWatchRepositories();
 		if (myRepository != null && starRepository != null)
 			return true;
 		return null;
@@ -310,7 +305,7 @@ public class RepositoryFragment extends BaseLoadFragment<GitHubClient, Boolean> 
 
 	@Override
 	public void onRefreshStarted(View view) {
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 }

@@ -1,8 +1,6 @@
 package com.gdestiny.github.async;
 
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.WatcherService;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.async.abstracts.DialogTask;
@@ -10,7 +8,7 @@ import com.gdestiny.github.utils.ToastUtils;
 
 import android.content.Context;
 
-public class StarRepositoryTask extends DialogTask<GitHubClient, Boolean> {
+public class StarRepositoryTask extends DialogTask<Void, Boolean> {
 
 	private boolean isStar;
 	private Repository repository;
@@ -28,12 +26,11 @@ public class StarRepositoryTask extends DialogTask<GitHubClient, Boolean> {
 	}
 
 	@Override
-	public Boolean onBackground(GitHubClient params) throws Exception {
-		WatcherService service = new WatcherService(params);
+	public Boolean onBackground(Void params) throws Exception {
 		if (isStar)
-			service.unwatch(repository);
+			GitHubConsole.getInstance().unwatch(repository);
 		else
-			service.watch(repository);
+			GitHubConsole.getInstance().watch(repository);
 		return true;
 	}
 

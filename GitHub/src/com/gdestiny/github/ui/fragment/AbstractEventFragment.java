@@ -1,11 +1,9 @@
 package com.gdestiny.github.ui.fragment;
 
-import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.event.Event;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.EventAdapter;
-import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.activity.UserNavigationActivity;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
@@ -20,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 public abstract class AbstractEventFragment extends
-		BaseLoadPageFragment<Event, GitHubClient> {
+		BaseLoadPageFragment<Event, Void> {
 
 	@Override
 	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
@@ -39,12 +37,12 @@ public abstract class AbstractEventFragment extends
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 	@Override
 	protected void initData() {
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 	@Override

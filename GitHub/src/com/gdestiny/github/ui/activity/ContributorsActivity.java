@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.Contributor;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.RepositoryService;
 
 import android.os.Bundle;
 import android.view.View;
@@ -13,12 +11,12 @@ import android.widget.ListView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.ContributorsAdapter;
-import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.utils.Constants;
 
 public class ContributorsActivity extends
-		BaseLoadFragmentActivity<GitHubClient, List<Contributor>> {
+		BaseLoadFragmentActivity<Void, List<Contributor>> {
 
 	private Repository repository;
 	private ListView contributorList;
@@ -27,7 +25,7 @@ public class ContributorsActivity extends
 	@Override
 	public void onRefreshStarted(View view) {
 		// TODO Auto-generated method stub
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 	@Override
@@ -56,14 +54,13 @@ public class ContributorsActivity extends
 		contributorsAdapter = new ContributorsAdapter(context);
 		contributorList.setAdapter(contributorsAdapter);
 
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 	@Override
-	public List<Contributor> onBackground(GitHubClient params) throws Exception {
+	public List<Contributor> onBackground(Void params) throws Exception {
 		// TODO Auto-generated method stub
-		RepositoryService service = new RepositoryService(params);
-		return service.getContributors(repository, false);
+		return GitHubConsole.getInstance().getContributor(repository);
 	}
 
 	@Override

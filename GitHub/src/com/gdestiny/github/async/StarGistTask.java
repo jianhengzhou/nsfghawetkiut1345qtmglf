@@ -1,15 +1,12 @@
 package com.gdestiny.github.async;
 
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.GistService;
-
 import android.content.Context;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.utils.ToastUtils;
 
-public class StarGistTask extends DialogTask<GitHubClient, Boolean> {
+public class StarGistTask extends DialogTask<Void, Boolean> {
 
 	private boolean isStar;
 	private String gistId;
@@ -25,12 +22,11 @@ public class StarGistTask extends DialogTask<GitHubClient, Boolean> {
 	}
 
 	@Override
-	public Boolean onBackground(GitHubClient params) throws Exception {
-		GistService service = new GistService(params);
+	public Boolean onBackground(Void params) throws Exception {
 		if (isStar)
-			service.unstarGist(gistId);
+			GitHubConsole.getInstance().unstarGist(gistId);
 		else
-			service.starGist(gistId);
+			GitHubConsole.getInstance().starGist(gistId);
 		return true;
 	}
 

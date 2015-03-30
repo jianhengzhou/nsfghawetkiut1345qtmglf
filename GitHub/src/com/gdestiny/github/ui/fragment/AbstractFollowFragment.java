@@ -1,7 +1,6 @@
 package com.gdestiny.github.ui.fragment;
 
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.GitHubClient;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,7 +18,7 @@ import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
 
 public abstract class AbstractFollowFragment extends
-		BaseLoadPageFragment<User, GitHubClient> {
+		BaseLoadPageFragment<User, Void> {
 
 	@Override
 	protected void setCurrentView(LayoutInflater inflater, ViewGroup container,
@@ -53,12 +52,12 @@ public abstract class AbstractFollowFragment extends
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 	@Override
 	protected void initData() {
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 	@Override

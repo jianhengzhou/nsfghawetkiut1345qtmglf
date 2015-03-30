@@ -38,8 +38,8 @@ public class GitHubTask<Result> extends
 	@Override
 	protected Result doInBackground(GitHubClient... params) {
 		// TODO Auto-generated method stub
-		if (params == null || params[0] == null)
-			return null;
+		if (params == null || params.length == 0)
+			return listener.onExcute(null);
 		return listener.onExcute(params[0]);
 	}
 

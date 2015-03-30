@@ -1,8 +1,6 @@
 package com.gdestiny.github.ui.fragment;
 
 import org.eclipse.egit.github.core.Gist;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.GistService;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,12 +12,13 @@ import android.widget.AdapterView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.GistAdapter;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.GistDetailActivity;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.IntentUtils;
 
-public class GistListFragment extends BaseLoadPageFragment<Gist, GitHubClient> {
+public class GistListFragment extends BaseLoadPageFragment<Gist, Void> {
 
 	public enum GistType {
 		MINE, STAR, PUBLIC
@@ -46,7 +45,7 @@ public class GistListFragment extends BaseLoadPageFragment<Gist, GitHubClient> {
 
 	@Override
 	protected void initData() {
-		execute(GitHubApplication.getClient());
+		execute();
 		if (type != GistType.MINE) {
 			getPullToRefreshLayout().getHeaderTransformer()
 					.setProgressbarVisibility(View.GONE);
@@ -61,18 +60,17 @@ public class GistListFragment extends BaseLoadPageFragment<Gist, GitHubClient> {
 	}
 
 	@Override
-	public void newPageData(GitHubClient params) {
-		GistService service = new GistService(params);
+	public void newPageData(Void params) {
 		switch (type) {
 		case MINE:
-			setDataPage(service.pageGists(GitHubApplication.getUser()
-					.getLogin(), Constants.DEFAULT_PAGE_SIZE));
+			setDataPage(GitHubConsole.getInstance().pageGists(
+					GitHubApplication.getUser().getLogin()));
 			break;
 		case PUBLIC:
-			setDataPage(service.pagePublicGists(Constants.DEFAULT_PAGE_SIZE));
+			setDataPage(GitHubConsole.getInstance().pagePublicGists());
 			break;
 		case STAR:
-			setDataPage(service.pageStarredGists(Constants.DEFAULT_PAGE_SIZE));
+			setDataPage(GitHubConsole.getInstance().pageStarredGists());
 			break;
 		}
 	}
@@ -116,7 +114,7 @@ public class GistListFragment extends BaseLoadPageFragment<Gist, GitHubClient> {
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 }

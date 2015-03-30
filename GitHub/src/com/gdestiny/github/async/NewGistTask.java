@@ -4,8 +4,6 @@ import java.util.Map;
 
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.GistService;
 
 import android.content.Context;
 
@@ -13,7 +11,7 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.utils.ToastUtils;
 
-public class NewGistTask extends DialogTask<GitHubClient, Gist> {
+public class NewGistTask extends DialogTask<Void, Gist> {
 
 	private boolean isPublic;
 	private String description;
@@ -29,12 +27,10 @@ public class NewGistTask extends DialogTask<GitHubClient, Gist> {
 	}
 
 	@Override
-	public Gist onBackground(GitHubClient params) throws Exception {
-		GistService service = new GistService(params);
-
+	public Gist onBackground(Void params) throws Exception {
 		Gist gist = new Gist().setPublic(isPublic).setDescription(description)
 				.setFiles(files);
-		return service.createGist(gist);
+		return GitHubConsole.getInstance().createGist(gist);
 	}
 
 	@Override

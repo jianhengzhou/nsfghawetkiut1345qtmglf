@@ -62,7 +62,7 @@ public class NewGistActivity extends BaseFragmentActivity {
 								.putExtra(Constants.Extra.GIST, result)
 								.setResultOk().finish();
 					}
-				}.execute(GitHubApplication.getClient());
+				}.execute();
 			}
 		});
 		right.setOnLongClickListener(new View.OnLongClickListener() {

@@ -3,13 +3,12 @@ package com.gdestiny.github.ui.fragment;
 import java.util.LinkedHashMap;
 
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.EventService;
 
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
@@ -31,9 +30,8 @@ public class RepositoryEventFragment extends AbstractEventFragment {
 	}
 
 	@Override
-	public void newPageData(GitHubClient params) {
-		EventService service = new EventService(params);
-		setDataPage(service.pageEvents(repository, Constants.DEFAULT_PAGE_SIZE));
+	public void newPageData(Void params) {
+		setDataPage(GitHubConsole.getInstance().pageEvents(repository));
 	}
 
 	@Override

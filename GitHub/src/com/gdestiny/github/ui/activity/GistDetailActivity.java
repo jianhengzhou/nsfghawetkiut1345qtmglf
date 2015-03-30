@@ -9,8 +9,6 @@ import org.eclipse.egit.github.core.Comment;
 import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.GistService;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,10 +25,10 @@ import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.GistItemAdapter;
-import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.DeleteGistCommentTask;
 import com.gdestiny.github.async.DeleteGistTask;
 import com.gdestiny.github.async.ForkGistTask;
+import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.async.StarGistTask;
 import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
@@ -46,7 +44,7 @@ import com.gdestiny.github.utils.TimeUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
 public class GistDetailActivity extends
-		BaseLoadFragmentActivity<GitHubClient, List<Comment>> {
+		BaseLoadFragmentActivity<Void, List<Comment>> {
 
 	private Gist gist;
 	private ListView commentList;
@@ -114,7 +112,7 @@ public class GistDetailActivity extends
 						comments.remove(comment);
 						gistItemAdapter.notifyDataSetChanged();
 					}
-				}.execute(GitHubApplication.getClient());
+				}.execute();
 			}
 		});
 		commentList.setAdapter(gistItemAdapter);
@@ -224,7 +222,7 @@ public class GistDetailActivity extends
 			getTitlebar().getStatusPopup().addItem(context, 0, R.string.delete,
 					R.drawable.common_delete);
 
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 	private void updateFiles() {
@@ -244,10 +242,9 @@ public class GistDetailActivity extends
 	}
 
 	@Override
-	public List<Comment> onBackground(GitHubClient params) throws Exception {
-		GistService service = new GistService(params);
-		isStar = service.isStarred(gist.getId());
-		return service.getComments(gist.getId());
+	public List<Comment> onBackground(Void params) throws Exception {
+		isStar = GitHubConsole.getInstance().isStarred(gist.getId());
+		return GitHubConsole.getInstance().getGistComment(gist.getId());
 	}
 
 	@Override
@@ -263,7 +260,7 @@ public class GistDetailActivity extends
 
 	@Override
 	public void onRefreshStarted(View view) {
-		execute(GitHubApplication.getClient());
+		execute();
 	}
 
 	private void refreshStarPopup() {
@@ -344,7 +341,7 @@ public class GistDetailActivity extends
 									.putExtra(Constants.Extra.POSITION,
 											position).setResultOk().finish();
 						}
-					}.execute(GitHubApplication.getClient());
+					}.execute();
 					break;
 				case R.string.star:
 					new StarGistTask(context, isStar, gist.getId()) {
@@ -355,11 +352,11 @@ public class GistDetailActivity extends
 							isStar = !isStar;
 							refreshStarPopup();
 						}
-					}.execute(GitHubApplication.getClient());
+					}.execute();
 					break;
 				case R.string.fork:
 					new ForkGistTask(context, gist.getId())
-							.execute(GitHubApplication.getClient());
+							.execute();
 					break;
 				case R.string.share:
 					AndroidUtils.share(context, "Gist",

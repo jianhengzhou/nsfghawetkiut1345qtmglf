@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pull_refresh_layout"
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
         </com.gdestiny.github.ui.view.MoreListView>
-    </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <com.gdestiny.github.ui.view.ListPopupView
         android:id="@+id/filter_popup"

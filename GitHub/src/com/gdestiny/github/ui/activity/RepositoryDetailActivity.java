@@ -75,9 +75,6 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 							GLog.sysout("hide:"
 									+ indicatorView.getCurrentPosition()
 									+ ",show:" + position);
-							hideHeaderView(fragments.get(indicatorView
-									.getCurrentPosition()));
-							showRefreshHeader(fragments.get(position));
 							fragments.get(position).refreshPopup();
 						}
 						refreshStarPopup(position);

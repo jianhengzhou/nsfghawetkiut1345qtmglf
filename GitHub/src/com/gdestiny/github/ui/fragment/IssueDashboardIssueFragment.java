@@ -7,11 +7,11 @@ import static org.eclipse.egit.github.core.service.IssueService.FIELD_SORT;
 import static org.eclipse.egit.github.core.service.IssueService.SORT_UPDATED;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.RepositoryIssue;
-import org.eclipse.egit.github.core.service.IssueService;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,9 +25,11 @@ import com.gdestiny.github.adapter.IssueDashboardAdapter;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.IssueDetailActivity;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
+import com.google.gson.reflect.TypeToken;
 
 public class IssueDashboardIssueFragment extends
 		BaseLoadPageFragment<RepositoryIssue, Void> {
@@ -60,17 +62,24 @@ public class IssueDashboardIssueFragment extends
 		filterData.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
 
 		execute();
-		if (!filterType.equals(IssueService.FILTER_CREATED)) {
-			getPullToRefreshLayout().getHeaderTransformer()
-					.setProgressbarVisibility(View.GONE);
-		}
 	}
 
 	@Override
 	public void newListAdapter() {
+		List<RepositoryIssue> list = CacheUtils.getCacheObject(getCacheName(),
+				new TypeToken<List<RepositoryIssue>>() {
+				}.getType());
+		setDatas(list);
+
 		issueAdapter = new IssueDashboardAdapter(context);
 		issueAdapter.setDatas(getDatas());
 		setBaseAdapter(issueAdapter);
+	}
+
+	@Override
+	public String getCacheName() {
+		return CacheUtils.DIR.ISSUE + filterType.toString() + "#"
+				+ CacheUtils.NAME.LIST_ISSUE;
 	}
 
 	@Override
@@ -129,8 +138,8 @@ public class IssueDashboardIssueFragment extends
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
-		super.onRefreshStarted(view);
+	public void onRefresh() {
+		super.onRefresh();
 		execute();
 	}
 

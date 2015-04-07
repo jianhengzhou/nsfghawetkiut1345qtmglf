@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pull_refresh_layout"
         android:layout_width="match_parent"
@@ -21,6 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             layout="@layout/layout_comment" />
-    </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

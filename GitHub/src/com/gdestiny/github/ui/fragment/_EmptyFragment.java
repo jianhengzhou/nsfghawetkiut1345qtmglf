@@ -2,7 +2,6 @@ package com.gdestiny.github.ui.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.gdestiny.github.R;
@@ -36,8 +35,7 @@ public class _EmptyFragment extends BaseLoadFragment<Void, Void> {
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
-		// TODO Auto-generated method stub
+	public void onRefresh() {
 		dismissProgress();
 	}
 

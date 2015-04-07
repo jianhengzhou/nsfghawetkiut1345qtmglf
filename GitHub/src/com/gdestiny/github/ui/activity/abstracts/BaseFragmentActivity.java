@@ -1,6 +1,5 @@
 package com.gdestiny.github.ui.activity.abstracts;
 
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
@@ -17,7 +16,6 @@ import android.widget.ImageButton;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.gdestiny.github.R;
-import com.gdestiny.github.ui.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
@@ -93,35 +91,8 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 	protected void onRightBtn() {
 	}
 
-	public static BaseLoadFragment<?, ?> hideHeaderView(
-			BaseLoadFragment<?, ?> currentFragment) {
-		if (currentFragment != null) {
-			PullToRefreshLayout mPullToRefreshLayout = currentFragment
-					.getPullToRefreshLayout();
-			if (mPullToRefreshLayout != null) {
-				mPullToRefreshLayout.getHeaderTransformer()
-						.setProgressbarVisibility(View.GONE);
-			}
-		}
-		return currentFragment;
-	}
-
-	public static BaseLoadFragment<?, ?> showRefreshHeader(
-			BaseLoadFragment<?, ?> currentFragment) {
-		if (currentFragment != null && currentFragment.isLoading()) {
-			PullToRefreshLayout mPullToRefreshLayout = currentFragment
-					.getPullToRefreshLayout();
-			if (mPullToRefreshLayout != null) {
-				mPullToRefreshLayout.getHeaderTransformer()
-						.setProgressbarVisibility(View.VISIBLE);
-			}
-		}
-		return currentFragment;
-	}
-
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
-		// TODO Auto-generated method stub
 		super.onWindowFocusChanged(hasFocus);
 	}
 

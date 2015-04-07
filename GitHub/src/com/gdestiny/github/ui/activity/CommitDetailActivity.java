@@ -39,6 +39,7 @@ import com.gdestiny.github.ui.dialog.CommitLineDialog;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.CommitUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.ImageLoaderUtils;
@@ -239,6 +240,8 @@ public class CommitDetailActivity extends
 				Constants.Extra.REPOSITORY_COMMIT);
 		position = getIntent().getIntExtra(Constants.Extra.POSITION, -1);
 
+		setLoadCache(CacheUtils.contain(getCacheName()));
+
 		getTitlebar().setLeftLayout(repository.getOwner().getAvatarUrl(),
 				"Commit " + CommitUtils.getSubSha(commit),
 				repository.generateId());
@@ -262,7 +265,7 @@ public class CommitDetailActivity extends
 				switch (titleId) {
 				case R.string.refresh:
 					if (!isLoading())
-						onRefreshStarted(null);
+						onRefresh();
 					break;
 				case R.string.share:
 					AndroidUtils.share(context, repository.getName(),
@@ -345,12 +348,23 @@ public class CommitDetailActivity extends
 	}
 
 	@Override
+	public String getCacheName() {
+		return CacheUtils.DIR.COMMIT + commit.getSha();
+	}
+
+	@Override
 	public CommitTree onBackground(Void params) throws Exception {
 		isCollaborator = GitHubConsole.getInstance().isCollaborator(repository,
 				GitHubApplication.getUser().getLogin());
 
-		commit = GitHubConsole.getInstance().getCommit(repository,
-				commit.getSha());
+		if (isLoadCache()) {
+			commit = CacheUtils.getCacheObject(getCacheName(),
+					RepositoryCommit.class);
+		} else {
+			commit = GitHubConsole.getInstance().getCommit(repository,
+					commit.getSha());
+			CacheUtils.cacheObject(getCacheName(), commit);
+		}
 		List<CommitComment> comments = GitHubConsole.getInstance()
 				.getCommitComment(repository, commit.getSha());
 
@@ -465,7 +479,7 @@ public class CommitDetailActivity extends
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
+	public void onRefresh() {
 		execute();
 	}
 

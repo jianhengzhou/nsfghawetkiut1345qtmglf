@@ -7,7 +7,6 @@ import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.User;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -99,7 +98,7 @@ public class GistFileActivity extends BaseLoadFragmentActivity<Void, Gist> {
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
+	public void onRefresh() {
 		// TODO Auto-generated method stub
 
 	}

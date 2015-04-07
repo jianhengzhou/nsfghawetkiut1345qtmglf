@@ -259,7 +259,7 @@ public class GistDetailActivity extends
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
+	public void onRefresh() {
 		execute();
 	}
 
@@ -370,7 +370,7 @@ public class GistDetailActivity extends
 						GLog.sysout("update is not complete");
 						return;
 					}
-					onRefreshStarted(null);
+					onRefresh();
 					break;
 				default:
 					break;

@@ -70,7 +70,7 @@ public class SearchActivity extends
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
+	public void onRefresh() {
 		// TODO Auto-generated method stub
 
 	}

@@ -29,12 +29,14 @@ import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.Constants.Sort;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
+import com.google.gson.reflect.TypeToken;
 
 public class RepositoryFragment extends BaseLoadFragment<Void, Boolean> {
 
@@ -149,16 +151,29 @@ public class RepositoryFragment extends BaseLoadFragment<Void, Boolean> {
 		title.setStatusItem(context, itemmap, menuListener);
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes" })
 	@Override
 	protected void initData() {
 		viewRepository = new ArrayList();
-
 		repositoryAdapter = new RepositoryAdapter(context, viewRepository);
 		repositoryList.setAdapter(repositoryAdapter);
 
+		myRepository = CacheUtils.getCacheObject(
+				CacheUtils.NAME.LIST_OWN_REPOSITORY,
+				new TypeToken<List<Repository>>() {
+				}.getType());
+		starRepository = CacheUtils.getCacheObject(
+				CacheUtils.NAME.LIST_STAR_REPOSITORY,
+				new TypeToken<List<Repository>>() {
+				}.getType());
+
 		initAlaphtSort();
-		execute();
+
+		if (myRepository != null && starRepository != null) {
+			asyncSort(curSort, true);
+		} else {
+			execute();
+		}
 	}
 
 	private void initAlaphtSort() {
@@ -205,14 +220,27 @@ public class RepositoryFragment extends BaseLoadFragment<Void, Boolean> {
 		});
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Boolean onBackground(Void params) throws Exception {
 		// TODO Auto-generated method stub
 		// TestUtils.interrupt(5000);
 		myRepository = GitHubConsole.getInstance().getRepositories();
 		starRepository = GitHubConsole.getInstance().getWatchRepositories();
-		if (myRepository != null && starRepository != null)
+		if (myRepository != null && starRepository != null) {
+			// sort(curSort, true);
+			@SuppressWarnings("rawtypes")
+			List list = sort(curSort, true);
+			if (list != null) {
+				viewRepository.clear();
+				viewRepository.addAll(list);
+			}
+			CacheUtils.cacheObject(CacheUtils.NAME.LIST_OWN_REPOSITORY,
+					myRepository);
+			CacheUtils.cacheObject(CacheUtils.NAME.LIST_STAR_REPOSITORY,
+					starRepository);
 			return true;
+		}
 		return null;
 	}
 
@@ -220,19 +248,17 @@ public class RepositoryFragment extends BaseLoadFragment<Void, Boolean> {
 	public void onSuccess(Boolean result) {
 		// TODO Auto-generated method stub
 		super.onSuccess(result);
-		sort(curSort, true);
 		repositoryAdapter.notifyDataSetChanged();
 	}
 
-	@SuppressWarnings({ "unchecked" })
-	private void sort(Sort sort, boolean isRefresh) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private List sort(Sort sort, boolean isRefresh) {
 		if (sort == curSort && !isRefresh)
-			return;
+			return null;
 		curSort = sort;
 		long temp = System.currentTimeMillis();
 		GLog.sysout("sort begin:" + temp);
-		if (!viewRepository.isEmpty())
-			viewRepository.clear();
+		List viewRepository = new ArrayList();
 		switch (sort) {
 		case Own:
 			viewRepository.addAll(myRepository);
@@ -251,7 +277,7 @@ public class RepositoryFragment extends BaseLoadFragment<Void, Boolean> {
 		if (!alphaIndex.isEmpty())
 			alphaIndex.clear();
 		if (sort == Sort.Time)
-			return;
+			return viewRepository;
 		for (int i = 0; i < viewRepository.size(); i++) {
 			Repository repo = (Repository) viewRepository.get(i);
 			char alpha = repo.getName().charAt(0);
@@ -269,6 +295,7 @@ public class RepositoryFragment extends BaseLoadFragment<Void, Boolean> {
 			}
 		}
 		GLog.sysout("sort time:" + (System.currentTimeMillis() - temp));
+		return viewRepository;
 	}
 
 	private void asyncSort(final Sort sort, final boolean isRefresh) {
@@ -281,18 +308,24 @@ public class RepositoryFragment extends BaseLoadFragment<Void, Boolean> {
 
 			@Override
 			public void onPrev() {
-				showProgress();
+				// showProgress();
 				isSorting = true;
 			}
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void onExcute() {
-				sort(sort, isRefresh);
+				@SuppressWarnings("rawtypes")
+				List list = sort(sort, isRefresh);
+				if (list != null) {
+					viewRepository.clear();
+					viewRepository.addAll(list);
+				}
 			}
 
 			@Override
 			public void onSuccess() {
-				dismissProgress();
+				// dismissProgress();
 				isSorting = false;
 				if (sort == Sort.Time)
 					ViewUtils.setVisibility(az, View.GONE);
@@ -304,7 +337,7 @@ public class RepositoryFragment extends BaseLoadFragment<Void, Boolean> {
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
+	public void onRefresh() {
 		execute();
 	}
 

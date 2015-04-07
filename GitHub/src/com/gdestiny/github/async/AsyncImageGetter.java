@@ -110,7 +110,7 @@ public class AsyncImageGetter implements ImageGetter {
 				Bitmap bm = null;
 
 				if (CacheUtils.isBitmapExistInDisk(url)) {
-					bm = CacheUtils.getBitmap(url);
+					bm = CacheUtils.getCacheBitmap(url);
 				} else {
 					GLog.d(CacheUtils.TAG, "getImageFromNet " + url);
 					BaseImageDownloader downloader = new BaseImageDownloader(
@@ -121,7 +121,7 @@ public class AsyncImageGetter implements ImageGetter {
 
 					bm = BitmapFactory.decodeStream(is);
 
-					CacheUtils.cache(url, bm);
+					CacheUtils.cacheBitmap(url, bm);
 				}
 
 				CacheUtils.cacheMemory(url, bm);

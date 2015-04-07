@@ -1,19 +1,24 @@
 package com.gdestiny.github.ui.fragment;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.event.Event;
 
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.adapter.EventAdapter;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
+import com.google.gson.reflect.TypeToken;
 
 public class RepositoryEventFragment extends AbstractEventFragment {
 
@@ -24,9 +29,20 @@ public class RepositoryEventFragment extends AbstractEventFragment {
 		repository = (Repository) context.getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
 		super.initData();
-		// 防止与其他页面重叠
-		getPullToRefreshLayout().getHeaderTransformer()
-				.setProgressbarVisibility(View.GONE);
+		List<Event> list = CacheUtils.getCacheObject(getCacheName(),
+				new TypeToken<List<Event>>() {
+				}.getType());
+		if (list != null) {
+			setDatas(list);
+			((EventAdapter) getBaseAdapter()).setDatas(list);
+		}
+
+	}
+
+	@Override
+	public String getCacheName() {
+		return CacheUtils.DIR.EVENT + repository.getName() + "#"
+				+ CacheUtils.NAME.LIST_EVENTS;
 	}
 
 	@Override
@@ -66,7 +82,7 @@ public class RepositoryEventFragment extends AbstractEventFragment {
 							GLog.sysout("update is not complete");
 							return;
 						}
-						onRefreshStarted(null);
+						onRefresh();
 						break;
 					default:
 						((RepositoryDetailActivity) context).onMenu(titleId);

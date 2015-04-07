@@ -32,7 +32,7 @@ public class WebViewActivity extends BaseLoadFragmentActivity<Void, Void> {
 	private String data;
 
 	@Override
-	public void onRefreshStarted(View view) {
+	public void onRefresh() {
 		webview.loadUrl(currUrl);
 	}
 

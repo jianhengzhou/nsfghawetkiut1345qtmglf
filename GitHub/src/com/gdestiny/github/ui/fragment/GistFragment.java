@@ -69,15 +69,6 @@ public class GistFragment extends BaseFragment {
 									&& resideMenu.getIgnoredViews().size() == 0)
 								resideMenu.addIgnoredView(viewpager);
 						}
-						if (position != indicatorView.getCurrentPosition()) {
-							GLog.sysout("hide:"
-									+ indicatorView.getCurrentPosition()
-									+ ",show:" + position);
-							BaseFragmentActivity.hideHeaderView(fragments
-									.get(indicatorView.getCurrentPosition()));
-							BaseFragmentActivity.showRefreshHeader(fragments
-									.get(position));
-						}
 					}
 
 					@Override
@@ -144,7 +135,7 @@ public class GistFragment extends BaseFragment {
 							GLog.sysout("update is not complete");
 							return;
 						}
-						getCurrentFragment().onRefreshStarted(null);
+						getCurrentFragment().onRefresh();
 						break;
 					case R.string.random:
 						break;

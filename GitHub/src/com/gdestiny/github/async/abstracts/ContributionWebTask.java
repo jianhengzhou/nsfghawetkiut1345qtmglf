@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ToastUtils;
 
@@ -29,6 +30,7 @@ public abstract class ContributionWebTask {
 
 	private boolean exception = false;
 	private boolean reloadFlag = false;
+	private boolean loadFromCache = true;
 
 	private BaseAsyncTask<String, Integer, String> task;
 
@@ -110,6 +112,14 @@ public abstract class ContributionWebTask {
 			@Override
 			protected String doInBackground(String... params) {
 				synchronized (this) {
+					if (loadFromCache) {
+						loadFromCache = false;
+						String contribution = CacheUtils
+								.getContent(CacheUtils.NAME.CONTRIBUTION);
+						if (!TextUtils.isEmpty(contribution)) {
+							return contribution;
+						}
+					}
 					HttpClient client = new DefaultHttpClient();
 					try {
 						HttpGet get = new HttpGet("https://github.com/"
@@ -174,6 +184,8 @@ public abstract class ContributionWebTask {
 						sub.replace("<a href=", "<a ");
 						// System.out.println(sub);
 						// throw new Exception("test exception");
+						CacheUtils.cacheString(CacheUtils.NAME.CONTRIBUTION,
+								sub);
 						return sub;
 					} catch (Exception e) {
 						e.printStackTrace();

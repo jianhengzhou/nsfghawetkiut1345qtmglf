@@ -1,5 +1,7 @@
 package com.gdestiny.github.ui.fragment;
 
+import java.util.List;
+
 import org.eclipse.egit.github.core.Gist;
 
 import android.content.Intent;
@@ -15,8 +17,10 @@ import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.GistDetailActivity;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.IntentUtils;
+import com.google.gson.reflect.TypeToken;
 
 public class GistListFragment extends BaseLoadPageFragment<Gist, Void> {
 
@@ -44,16 +48,23 @@ public class GistListFragment extends BaseLoadPageFragment<Gist, Void> {
 	}
 
 	@Override
+	public String getCacheName() {
+		return CacheUtils.DIR.GIST + type.toString() + "#"
+				+ CacheUtils.NAME.LIST_GIST;
+	}
+
+	@Override
 	protected void initData() {
 		execute();
-		if (type != GistType.MINE) {
-			getPullToRefreshLayout().getHeaderTransformer()
-					.setProgressbarVisibility(View.GONE);
-		}
 	}
 
 	@Override
 	public void newListAdapter() {
+		List<Gist> list = CacheUtils.getCacheObject(getCacheName(),
+				new TypeToken<List<Gist>>() {
+				}.getType());
+		setDatas(list);
+
 		adapter = new GistAdapter(context);
 		adapter.setDatas(getDatas());
 		setBaseAdapter(adapter);
@@ -112,8 +123,8 @@ public class GistListFragment extends BaseLoadPageFragment<Gist, Void> {
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
-		super.onRefreshStarted(view);
+	public void onRefresh() {
+		super.onRefresh();
 		execute();
 	}
 

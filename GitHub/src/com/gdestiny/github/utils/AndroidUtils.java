@@ -4,7 +4,6 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
@@ -153,16 +152,7 @@ public class AndroidUtils {
 				}
 				return size;
 			} else {
-				FileInputStream fis = null;
-				try {
-					fis = new FileInputStream(file);
-					long size = fis.available();
-					fis.close();
-					return size;
-				} catch (Exception e) {
-					e.printStackTrace();
-					return 0;
-				}
+				return file.length();
 			}
 		}
 

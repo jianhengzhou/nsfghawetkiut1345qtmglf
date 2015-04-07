@@ -6,7 +6,6 @@ import org.eclipse.egit.github.core.Contributor;
 import org.eclipse.egit.github.core.Repository;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ListView;
 
 import com.gdestiny.github.R;
@@ -23,7 +22,7 @@ public class ContributorsActivity extends
 	private ContributorsAdapter contributorsAdapter;
 
 	@Override
-	public void onRefreshStarted(View view) {
+	public void onRefresh() {
 		// TODO Auto-generated method stub
 		execute();
 	}

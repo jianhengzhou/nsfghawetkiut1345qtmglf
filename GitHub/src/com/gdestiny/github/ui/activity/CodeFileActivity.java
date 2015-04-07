@@ -142,7 +142,7 @@ public class CodeFileActivity extends
 
 			}
 		} else if (fileType == FILETYPE.IMG) {
-			String result = CacheUtils.cache(sha,
+			String result = CacheUtils.cacheBitmap(sha,
 					EncodingUtils.fromBase64((blob.getContent())));
 			if (!TextUtils.isEmpty(result)) {
 				return result;
@@ -276,7 +276,7 @@ public class CodeFileActivity extends
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
+	public void onRefresh(){
 		// TODO Auto-generated method stub
 
 	}

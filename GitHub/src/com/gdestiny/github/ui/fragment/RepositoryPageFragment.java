@@ -1,5 +1,7 @@
 package com.gdestiny.github.ui.fragment;
 
+import java.util.List;
+
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 
@@ -14,8 +16,10 @@ import com.gdestiny.github.adapter.RepositoryAdapter;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.IntentUtils;
+import com.google.gson.reflect.TypeToken;
 
 public class RepositoryPageFragment extends
 		BaseLoadPageFragment<Repository, Void> {
@@ -34,10 +38,21 @@ public class RepositoryPageFragment extends
 	}
 
 	@Override
+	public String getCacheName() {
+		return CacheUtils.DIR.USER + user.getLogin() + "@"
+				+ CacheUtils.NAME.LIST_REPOSITORY;
+	}
+
+	@Override
 	public void newListAdapter() {
-		RepositoryAdapter repositoryAdapter = new RepositoryAdapter(context);
-		repositoryAdapter.setData(getDatas());
-		setBaseAdapter(repositoryAdapter);
+		// List<Repository> list = CacheUtils.getCacheObject(getCacheName(),
+		// new TypeToken<List<Repository>>() {
+		// }.getType());
+		// setDatas(list);
+		//
+		// RepositoryAdapter repositoryAdapter = new RepositoryAdapter(context);
+		// repositoryAdapter.setData(getDatas());
+		// setBaseAdapter(repositoryAdapter);
 	}
 
 	@Override
@@ -47,8 +62,8 @@ public class RepositoryPageFragment extends
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
-		super.onRefreshStarted(view);
+	public void onRefresh() {
+		super.onRefresh();
 		execute();
 	}
 
@@ -56,6 +71,18 @@ public class RepositoryPageFragment extends
 	protected void initData() {
 		user = (User) context.getIntent().getSerializableExtra(
 				Constants.Extra.USER);
+
+		List<Repository> list = CacheUtils.getCacheObject(getCacheName(),
+				new TypeToken<List<Repository>>() {
+				}.getType());
+		if (list != null) {
+			setDatas(list);
+		}
+
+		RepositoryAdapter repositoryAdapter = new RepositoryAdapter(context);
+		repositoryAdapter.setData(getDatas());
+		setBaseAdapter(repositoryAdapter);
+
 		execute();
 	}
 

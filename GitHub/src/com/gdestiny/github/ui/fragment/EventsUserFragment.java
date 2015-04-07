@@ -1,11 +1,16 @@
 package com.gdestiny.github.ui.fragment;
 
-import android.text.TextUtils;
+import java.util.List;
+
+import org.eclipse.egit.github.core.event.Event;
+
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.CacheUtils;
+import com.google.gson.reflect.TypeToken;
 
 public class EventsUserFragment extends AbstractEventFragment {
 
@@ -21,12 +26,23 @@ public class EventsUserFragment extends AbstractEventFragment {
 	}
 
 	@Override
+	public void newListAdapter() {
+		List<Event> list = CacheUtils.getCacheObject(getCacheName(),
+				new TypeToken<List<Event>>() {
+				}.getType());
+		setDatas(list);
+
+		super.newListAdapter();
+	}
+
+	@Override
+	public String getCacheName() {
+		return CacheUtils.DIR.USER + user + "@" + CacheUtils.NAME.LIST_EVENTS;
+	}
+
+	@Override
 	protected void initData() {
 		super.initData();
-		// 防止与其他页面重叠
-		if (!TextUtils.isEmpty(user))
-			getPullToRefreshLayout().getHeaderTransformer()
-					.setProgressbarVisibility(View.GONE);
 	}
 
 	@Override

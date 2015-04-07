@@ -360,7 +360,7 @@ public class FeedbackActivity extends BaseLoadFragmentActivity<Void, Void> {
 				switch (titleId) {
 				case R.string.refresh:
 					if (!isLoading())
-						onRefreshStarted(null);
+						onRefresh();
 					break;
 				case R.string.clear:
 					if (AndroidUtils.FileManager.clearPreference(context,
@@ -392,7 +392,7 @@ public class FeedbackActivity extends BaseLoadFragmentActivity<Void, Void> {
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
+	public void onRefresh() {
 		showProgress();
 		sync();
 	}

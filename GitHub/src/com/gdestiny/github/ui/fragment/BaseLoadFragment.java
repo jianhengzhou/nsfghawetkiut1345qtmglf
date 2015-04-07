@@ -3,28 +3,38 @@ package com.gdestiny.github.ui.fragment;
 import com.gdestiny.github.R;
 import com.gdestiny.github.async.abstracts.BaseAsyncTask;
 import com.gdestiny.github.async.abstracts.LoadingTask;
+import com.gdestiny.github.async.abstracts.OnRefreshListener;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 		implements OnRefreshListener, LoadingTask<Params, Result> {
 
-	private PullToRefreshLayout pullToRefreshLayout;
+	private SwipeRefreshLayout swipeRefreshLayout;
+
 	private boolean isLoading = false;
 	private View noDataView;
 	private boolean noData;
 
 	private boolean exception = false;
+	private boolean loadCache = false;
 
+	public boolean isLoadCache() {
+		return loadCache;
+	}
+
+	public void setLoadCache(boolean loadCache) {
+		this.loadCache = loadCache;
+	}
+
+	@SuppressWarnings("deprecation")
 	public void setContentView(LayoutInflater inflater, int id, int refreshId) {
 		// nodata 界面
 		setContentView(inflater, R.layout.layout_nodata);
@@ -37,28 +47,47 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 		// 同步颜色
 		// getCurrentView().setBackground(content.getBackground());
 
-		pullToRefreshLayout = (PullToRefreshLayout) findViewById(refreshId);
-		ActionBarPullToRefresh.from(context).allChildrenArePullable()
-				.listener(this).setup(pullToRefreshLayout);
+		swipeRefreshLayout = (SwipeRefreshLayout) findViewById(refreshId);
+		swipeRefreshLayout.setColorScheme(R.color.common_icon_blue);
+		swipeRefreshLayout
+				.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+					@Override
+					public void onRefresh() {
+						BaseLoadFragment.this.onRefresh();
+					}
+				});
 
 		noDataView = findViewById(R.id.nodata);
 	}
 
-	public PullToRefreshLayout getPullToRefreshLayout() {
-		return pullToRefreshLayout;
+	public SwipeRefreshLayout getSwipeRefreshLayout() {
+		return swipeRefreshLayout;
 	}
 
 	public void showProgress() {
 		isLoading = true;
-		if (pullToRefreshLayout != null && !pullToRefreshLayout.isRefreshing()) {
-			pullToRefreshLayout.setRefreshing(true);
+		if (swipeRefreshLayout != null && !swipeRefreshLayout.isRefreshing()) {
+			swipeRefreshLayout.post(new Runnable() {
+
+				@Override
+				public void run() {
+					swipeRefreshLayout.setRefreshing(true);
+				}
+			});
 		}
 	}
 
 	public void dismissProgress() {
 		isLoading = false;
-		if (pullToRefreshLayout != null && pullToRefreshLayout.isRefreshing()) {
-			pullToRefreshLayout.setRefreshing(false);
+		if (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
+			swipeRefreshLayout.post(new Runnable() {
+
+				@Override
+				public void run() {
+					swipeRefreshLayout.setRefreshing(false);
+				}
+			});
 		}
 	}
 
@@ -82,6 +111,14 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 	@Override
 	public void onPrev() {
 		showProgress();
+	}
+
+	public String getCacheName() {
+		return "";
+	}
+
+	public String getSubDir() {
+		return null;
 	}
 
 	@Override

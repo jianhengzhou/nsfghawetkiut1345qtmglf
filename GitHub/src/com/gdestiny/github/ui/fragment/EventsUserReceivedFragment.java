@@ -1,12 +1,17 @@
 package com.gdestiny.github.ui.fragment;
 
-import android.text.TextUtils;
+import java.util.List;
+
+import org.eclipse.egit.github.core.event.Event;
+
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.GLog;
+import com.google.gson.reflect.TypeToken;
 
 public class EventsUserReceivedFragment extends AbstractEventFragment {
 
@@ -25,9 +30,9 @@ public class EventsUserReceivedFragment extends AbstractEventFragment {
 	protected void initData() {
 		super.initData();
 		// 防止与其他页面重叠
-		if (!TextUtils.isEmpty(user))
-			getPullToRefreshLayout().getHeaderTransformer()
-					.setProgressbarVisibility(View.GONE);
+		// if (!TextUtils.isEmpty(user))
+		// getPullToRefreshLayout().getHeaderTransformer()
+		// .setProgressbarVisibility(View.GONE);
 	}
 
 	@Override
@@ -38,6 +43,21 @@ public class EventsUserReceivedFragment extends AbstractEventFragment {
 	}
 
 	@Override
+	public void newListAdapter() {
+		List<Event> list = CacheUtils.getCacheObject(getCacheName(),
+				new TypeToken<List<Event>>() {
+				}.getType());
+		setDatas(list);
+
+		super.newListAdapter();
+	}
+
+	@Override
+	public String getCacheName() {
+		return CacheUtils.NAME.LIST_EVENTS;
+	}
+
+	@Override
 	public void initStatusPopup(TitleBar title) {
 		title.showRightBtn();
 		title.getRightBtn().setOnClickListener(new View.OnClickListener() {
@@ -45,7 +65,7 @@ public class EventsUserReceivedFragment extends AbstractEventFragment {
 			@Override
 			public void onClick(View v) {
 				if (!isLoading())
-					onRefreshStarted(v);
+					onRefresh();
 				else
 					GLog.sysout("no need to refresh");
 			}

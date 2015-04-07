@@ -7,9 +7,11 @@ import org.eclipse.egit.github.core.client.PageIterator;
 
 import com.gdestiny.github.ui.view.MoreListView;
 import com.gdestiny.github.ui.view.MoreListView.OnAutoLoadListener;
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.IteratorUtils;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -23,7 +25,7 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 	private MoreListView moreList;
 	private BaseAdapter baseAdapter;
 
-	private List<Elem> datas = new ArrayList<Elem>();
+	private List<Elem> datas;
 
 	private PageIterator<Elem> dataPage;
 	private boolean refresh = true;
@@ -36,6 +38,7 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 
 	public void setMoreListView(int id) {
 		moreList = (MoreListView) findViewById(id);
+
 		newListAdapter();
 
 		moreList.setOnFooterClickListener(new View.OnClickListener() {
@@ -61,7 +64,14 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 		if (refresh) {
 			newPageData(params);
 		}
-		return IteratorUtils.iteratorNextPage(dataPage);
+		List<Elem> list = IteratorUtils.iteratorNextPage(dataPage);
+		if (refresh && !TextUtils.isEmpty(getCacheName())) {
+			if (TextUtils.isEmpty(getSubDir()))
+				CacheUtils.cacheObject(getCacheName(), list);
+			else
+				CacheUtils.cacheObject(getSubDir(), getCacheName(), list);
+		}
+		return list;
 	}
 
 	public abstract void newListAdapter();
@@ -97,7 +107,7 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
+	public void onRefresh() {
 		if (datas == null)
 			datas = new ArrayList<Elem>();
 		// datas.clear();
@@ -115,10 +125,14 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 	}
 
 	public List<Elem> getDatas() {
+		if (datas == null)
+			datas = new ArrayList<Elem>();
 		return datas;
 	}
 
 	public void setDatas(List<Elem> datas) {
+		if (datas == null)
+			return;
 		this.datas = datas;
 	}
 
@@ -132,6 +146,14 @@ public abstract class BaseLoadPageFragment<Elem, Params> extends
 
 	public MoreListView getMoreList() {
 		return moreList;
+	}
+
+	public boolean isRefresh() {
+		return refresh;
+	}
+
+	public void setRefresh(boolean refresh) {
+		this.refresh = refresh;
 	}
 
 }

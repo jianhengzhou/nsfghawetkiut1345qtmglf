@@ -12,7 +12,6 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.fragment.BaseFragment;
-import com.gdestiny.github.ui.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.fragment.EventsUserReceivedFragment;
 import com.gdestiny.github.ui.fragment.FollowerFragment;
 import com.gdestiny.github.ui.fragment.FollowingFragment;
@@ -104,51 +103,6 @@ public class HomeActivity extends BaseFragmentActivity implements
 		resideMenu.setDirectionDisable(ResideMenu.DIRECTION_RIGHT);
 		resideMenu.attachToActivity(this);
 		resideMenu.setLeftMenuFragment(this, new LeftMenuFragment(this));
-		resideMenu.setMenuListener(new ResideMenu.OnMenuListener() {
-
-			@Override
-			public void openMenu() {
-				GLog.sysout("resideMenu openMenu");
-				hideHeader();
-			}
-
-			@Override
-			public void closeMenu() {
-				GLog.sysout("resideMenu closeMenu");
-				showHeader();
-			}
-
-			@Override
-			public void onMove() {
-				if (!resideMenu.isOpened()) {
-					hideHeader();
-				}
-			}
-		});
-	}
-
-	private void hideHeader() {
-		if (currentFragment instanceof BaseLoadFragment<?, ?>)
-			hideHeaderView((BaseLoadFragment<?, ?>) currentFragment);
-		else if (currentFragment instanceof IssueDashboardFragment) {
-			hideHeaderView(((IssueDashboardFragment) currentFragment)
-					.getCurrentFragment());
-		} else if (currentFragment instanceof GistFragment) {
-			hideHeaderView(((GistFragment) currentFragment)
-					.getCurrentFragment());
-		}
-	}
-
-	private void showHeader() {
-		if (currentFragment instanceof BaseLoadFragment<?, ?>)
-			showRefreshHeader((BaseLoadFragment<?, ?>) currentFragment);
-		else if (currentFragment instanceof IssueDashboardFragment) {
-			showRefreshHeader(((IssueDashboardFragment) currentFragment)
-					.getCurrentFragment());
-		} else if (currentFragment instanceof GistFragment) {
-			showRefreshHeader(((GistFragment) currentFragment)
-					.getCurrentFragment());
-		}
 	}
 
 	@Override
@@ -212,7 +166,6 @@ public class HomeActivity extends BaseFragmentActivity implements
 			currentFragment.onShowRepeat(context);
 			GLog.sysout("currentFragment.onShowRepeat(context);");
 		} else {
-			hideHeader();
 			if (newFragment == null) {
 				GLog.sysout("newFragment == null");
 				switch (v.getId()) {

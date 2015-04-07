@@ -39,6 +39,7 @@ import com.gdestiny.github.ui.view.ImageViewEx;
 import com.gdestiny.github.ui.view.ObservableScrollView;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.CommonUtils;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ImageLoaderUtils;
@@ -252,6 +253,11 @@ public class UserActivity extends BaseFragmentActivity implements
 		gistPrivate = (TextView) findViewById(R.id.gist_private);
 
 		bindUser(user);
+		if (CacheUtils.contain(CacheUtils.NAME.CONTRIBUTION)) {
+			ViewUtils.setVisibility(findViewById(R.id.load_contribution),
+					View.GONE);
+			loadContribution(user.getLogin());
+		}
 	}
 
 	@SuppressWarnings("deprecation")

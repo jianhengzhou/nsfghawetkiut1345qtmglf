@@ -54,34 +54,6 @@ public class UserNavigationActivity extends BaseFragmentActivity {
 
 		indicatorView.bind(viewpager);
 		viewpager.setOnPageChangeListener(indicatorView);
-		indicatorView
-				.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-					@Override
-					public void onPageSelected(int position) {
-						// TODO Auto-generated method stub
-						if (position != indicatorView.getCurrentPosition()) {
-							GLog.sysout("hide:"
-									+ indicatorView.getCurrentPosition()
-									+ ",show:" + position);
-							hideHeaderView(fragments.get(indicatorView
-									.getCurrentPosition()));
-							showRefreshHeader(fragments.get(position));
-						}
-					}
-
-					@Override
-					public void onPageScrolled(int arg0, float arg1, int arg2) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void onPageScrollStateChanged(int arg0) {
-						// TODO Auto-generated method stub
-
-					}
-				});
 	}
 
 	@Override
@@ -128,7 +100,7 @@ public class UserNavigationActivity extends BaseFragmentActivity {
 					if (!fragments.get(indicatorView.getCurrentPosition())
 							.isLoading()) {
 						fragments.get(indicatorView.getCurrentPosition())
-								.onRefreshStarted(null);
+								.onRefresh();
 					}
 					break;
 				case R.string.follow:

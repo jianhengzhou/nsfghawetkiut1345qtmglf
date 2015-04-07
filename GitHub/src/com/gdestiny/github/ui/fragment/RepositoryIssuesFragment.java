@@ -2,6 +2,7 @@ package com.gdestiny.github.ui.fragment;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
@@ -25,9 +26,11 @@ import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.ListPopupView;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
+import com.google.gson.reflect.TypeToken;
 
 public class RepositoryIssuesFragment extends BaseLoadPageFragment<Issue, Void> {
 
@@ -65,13 +68,25 @@ public class RepositoryIssuesFragment extends BaseLoadPageFragment<Issue, Void> 
 	}
 
 	@Override
+	public String getCacheName() {
+		return CacheUtils.DIR.ISSUE + repository.getName() + "#"
+				+ CacheUtils.NAME.LIST_ISSUE;
+	}
+
+	@Override
 	protected void initData() {
 		repository = (Repository) context.getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
+
+		List<Issue> list = CacheUtils.getCacheObject(getCacheName(),
+				new TypeToken<List<Issue>>() {
+				}.getType());
+		if (list != null) {
+			setDatas(list);
+			((IssueAdapter) getBaseAdapter()).setDatas(list);
+		}
+
 		execute();
-		// 防止与其他页面重叠
-		getPullToRefreshLayout().getHeaderTransformer()
-				.setProgressbarVisibility(View.GONE);
 	}
 
 	@Override
@@ -101,7 +116,7 @@ public class RepositoryIssuesFragment extends BaseLoadPageFragment<Issue, Void> 
 							GLog.sysout("update is not complete");
 							return;
 						}
-						onRefreshStarted(null);
+						onRefresh();
 						break;
 					case R.string.filter:
 						openFilter();
@@ -137,7 +152,7 @@ public class RepositoryIssuesFragment extends BaseLoadPageFragment<Issue, Void> 
 			issueFilter = filter;
 			issueAdapter.setOpen(issueFilter.getState().equals(
 					IssueService.STATE_OPEN));
-			onRefreshStarted(null);
+			onRefresh();
 		} else if (requestCode == Constants.Request.NEW_ISSUE) {
 			GLog.sysout("NEW_ISSUE");
 			Issue issue = (Issue) data
@@ -200,8 +215,8 @@ public class RepositoryIssuesFragment extends BaseLoadPageFragment<Issue, Void> 
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
-		super.onRefreshStarted(view);
+	public void onRefresh() {
+		super.onRefresh();
 		execute();
 	}
 

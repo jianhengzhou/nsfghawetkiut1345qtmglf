@@ -23,17 +23,7 @@
     <style name="AppTheme" parent="Theme.Sherlock.Light">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/common_background</item>
-        <item name="ptrHeaderStyle">@style/Widget.Custom.Pull_Style</item>
         <item name="cpbStyle">@style/CircleProgressBar</item>
-    </style>
-
-    <style name="Widget.Custom.Pull_Style" parent="android:Widget">
-        <item name="ptrHeaderBackground">@color/common_icon_blue</item>
-        <item name="ptrHeaderTitleTextAppearance">@style/TextAppearance.Custom.Pull_Text</item>
-        <item name="ptrProgressBarColor">@color/common_icon_blue</item>
-        <item name="ptrPullText">@string/pull_to_refresh_pull</item>
-        <item name="ptrRefreshingText">@string/pull_to_refresh_refreshing</item>
-        <item name="ptrReleaseText">@string/pull_to_refresh_release</item>
     </style>
 
     <style name="TextAppearance.Custom.Pull_Text" parent="android:TextAppearance.Large.Inverse">

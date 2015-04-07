@@ -17,7 +17,7 @@
         </com.gdestiny.github.ui.view.FileIndicatorView>
     </RelativeLayout>
 
-    <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pull_refresh_layout"
         android:layout_width="match_parent"
@@ -45,6 +45,6 @@
                     android:textSize="16sp" />
             </HorizontalScrollView>
         </com.gdestiny.github.ui.view.ObservableScrollView>
-    </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

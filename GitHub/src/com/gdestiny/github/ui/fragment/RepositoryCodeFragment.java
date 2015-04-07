@@ -3,6 +3,7 @@ package com.gdestiny.github.ui.fragment;
 import java.util.LinkedHashMap;
 
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.Tree;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.gdestiny.github.ui.view.ListPopupView;
 import com.gdestiny.github.ui.view.PathView;
 import com.gdestiny.github.ui.view.PathView.PathClickListener;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
@@ -55,6 +57,12 @@ public class RepositoryCodeFragment extends BaseLoadFragment<Void, CodeTree> {
 			currCodeTree = (CodeTree) savedInstanceState
 					.getSerializable(EXTRA_CODE);
 		}
+	}
+
+	@Override
+	public String getCacheName() {
+		return CacheUtils.DIR.CODE_TREE + repository.getName() + "#"
+				+ curBranch + "#" + CacheUtils.NAME.CODE_TREE;
 	}
 
 	@Override
@@ -133,9 +141,13 @@ public class RepositoryCodeFragment extends BaseLoadFragment<Void, CodeTree> {
 
 		curBranch = repository.getMasterBranch();
 
+		setLoadCache(CacheUtils.contain(getCacheName()));
+
 		if (currCodeTree == null)
 			execute();
 		else {
+			ViewUtils.setVisibility(listPopup, View.VISIBLE, R.anim.alpha_in);
+			branch.setText(curBranch);
 			codeAdapter.setCodeTree(currCodeTree);
 			if (!currCodeTree.name.equals(CodeTree.ROOT))
 				pathView.resetView(currCodeTree.currEntry.getPath());
@@ -168,7 +180,7 @@ public class RepositoryCodeFragment extends BaseLoadFragment<Void, CodeTree> {
 							GLog.sysout("update is not complete");
 							return;
 						}
-						onRefreshStarted(null);
+						onRefresh();
 						break;
 					default:
 						((RepositoryDetailActivity) context).onMenu(titleId);
@@ -190,19 +202,29 @@ public class RepositoryCodeFragment extends BaseLoadFragment<Void, CodeTree> {
 
 	@Override
 	public CodeTree onBackground(Void params) throws Exception {
-		return GitHubConsole.getInstance().getCodeTree(repository, curBranch);
+		Tree tree = null;
+		if (isLoadCache()) {
+			tree = CacheUtils.getCacheObject(getCacheName(), Tree.class);
+			setLoadCache(false);
+		} else {
+			tree = GitHubConsole.getInstance().getTree(repository, curBranch);
+			CacheUtils.cacheObject(getCacheName(), tree);
+		}
+
+		return CodeTree.toCodeTree(tree);
 	}
 
 	@Override
 	public void onSuccess(CodeTree result) {
-		// TODO Auto-generated method stub
 		super.onSuccess(result);
 		currCodeTree = result;
+		showData();
+	}
+
+	private void showData() {
 		codeAdapter.setCodeTree(currCodeTree);
 		ViewUtils.setVisibility(listPopup, View.VISIBLE, R.anim.alpha_in);
 		branch.setText(curBranch);
-
-		// star
 	}
 
 	public boolean onBackPressed() {
@@ -224,7 +246,7 @@ public class RepositoryCodeFragment extends BaseLoadFragment<Void, CodeTree> {
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
+	public void onRefresh() {
 		execute();
 	}
 

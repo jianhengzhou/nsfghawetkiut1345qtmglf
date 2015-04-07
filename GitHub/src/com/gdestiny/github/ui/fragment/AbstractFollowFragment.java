@@ -35,7 +35,7 @@ public abstract class AbstractFollowFragment extends
 			@Override
 			public void onClick(View v) {
 				if (!isLoading())
-					onRefreshStarted(v);
+					onRefresh();
 				else
 					GLog.sysout("no need to refresh");
 			}
@@ -50,8 +50,8 @@ public abstract class AbstractFollowFragment extends
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
-		super.onRefreshStarted(view);
+	public void onRefresh() {
+		super.onRefresh();
 		execute();
 	}
 

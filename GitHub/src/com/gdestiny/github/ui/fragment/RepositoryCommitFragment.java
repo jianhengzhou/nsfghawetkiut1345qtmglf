@@ -24,10 +24,12 @@ import com.gdestiny.github.ui.dialog.BranchDialog;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.ListPopupView;
 import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ViewUtils;
+import com.google.gson.reflect.TypeToken;
 
 public class RepositoryCommitFragment extends
 		BaseLoadPageFragment<RepositoryCommit, Void> {
@@ -69,7 +71,7 @@ public class RepositoryCommitFragment extends
 											.getName();
 									if (!branch.equals(curBranch)) {
 										curBranch = branch;
-										onRefreshStarted(null);
+										onRefresh();
 									}
 								}
 							});
@@ -82,14 +84,33 @@ public class RepositoryCommitFragment extends
 	}
 
 	@Override
+	public String getCacheName() {
+		return CacheUtils.DIR.COMMIT + repository.getName() + "#" + curBranch
+				+ "#" + CacheUtils.NAME.LIST_COMMIT;
+	}
+
+	@Override
 	protected void initData() {
 		repository = (Repository) context.getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
 		curBranch = repository.getMasterBranch();
+
+		List<RepositoryCommit> list = CacheUtils.getCacheObject(getCacheName(),
+				new TypeToken<List<RepositoryCommit>>() {
+				}.getType());
+		if (list != null) {
+			setDatas(list);
+			((CommitAdapter) getBaseAdapter()).setDatas(list);
+		}
+
 		execute();
-		// 防止与其他页面重叠
-		getPullToRefreshLayout().getHeaderTransformer()
-				.setProgressbarVisibility(View.GONE);
+	}
+
+	@Override
+	public void newListAdapter() {
+		commitAdapter = new CommitAdapter(context);
+		commitAdapter.setDatas(getDatas());
+		setBaseAdapter(commitAdapter);
 	}
 
 	@Override
@@ -118,7 +139,7 @@ public class RepositoryCommitFragment extends
 							GLog.sysout("update is not complete");
 							return;
 						}
-						onRefreshStarted(null);
+						onRefresh();
 						break;
 					default:
 						((RepositoryDetailActivity) context).onMenu(titleId);
@@ -132,16 +153,9 @@ public class RepositoryCommitFragment extends
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
-		super.onRefreshStarted(view);
+	public void onRefresh() {
+		super.onRefresh();
 		execute();
-	}
-
-	@Override
-	public void newListAdapter() {
-		commitAdapter = new CommitAdapter(context);
-		commitAdapter.setDatas(getDatas());
-		setBaseAdapter(commitAdapter);
 	}
 
 	@Override

@@ -124,7 +124,7 @@ public class IssueDetailActivity extends
 				switch (titleId) {
 				case R.string.refresh:
 					if (!isLoading())
-						onRefreshStarted(null);
+						onRefresh();
 					break;
 				case R.string.edit_issue:
 					IntentUtils
@@ -393,7 +393,7 @@ public class IssueDetailActivity extends
 	}
 
 	@Override
-	public void onRefreshStarted(View view) {
+	public void onRefresh() {
 		execute();
 	}
 

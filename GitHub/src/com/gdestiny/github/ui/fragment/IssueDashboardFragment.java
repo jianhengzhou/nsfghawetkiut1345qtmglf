@@ -17,7 +17,6 @@ import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.view.IndicatorView;
 import com.gdestiny.github.ui.view.ResideMenu;
 import com.gdestiny.github.ui.view.TitleBar;
-import com.gdestiny.github.utils.GLog;
 
 public class IssueDashboardFragment extends BaseFragment {
 
@@ -61,15 +60,6 @@ public class IssueDashboardFragment extends BaseFragment {
 							if (resideMenu.getIgnoredViews() != null
 									&& resideMenu.getIgnoredViews().size() == 0)
 								resideMenu.addIgnoredView(viewpager);
-						}
-						if (position != indicatorView.getCurrentPosition()) {
-							GLog.sysout("hide:"
-									+ indicatorView.getCurrentPosition()
-									+ ",show:" + position);
-							BaseFragmentActivity.hideHeaderView(fragments
-									.get(indicatorView.getCurrentPosition()));
-							BaseFragmentActivity.showRefreshHeader(fragments
-									.get(position));
 						}
 					}
 

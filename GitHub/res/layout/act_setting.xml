@@ -4,6 +4,7 @@
     style="@style/scrollbar_style"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
     android:fitsSystemWindows="true" >
 
     <LinearLayout
@@ -183,7 +184,6 @@
         </LinearLayout>
 
         <include layout="@layout/layout_about" />
-
     </LinearLayout>
 
 </com.gdestiny.github.ui.view.ObservableScrollView>

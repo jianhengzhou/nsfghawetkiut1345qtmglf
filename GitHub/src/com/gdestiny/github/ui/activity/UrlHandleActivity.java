@@ -41,6 +41,7 @@ public class UrlHandleActivity extends BaseFragmentActivity {
 	protected void initData() {
 		Intent intent = getIntent();
 		final Uri uri = intent.getData();
+		
 		new BaseAsyncTask<Void, Void, Repository>() {
 
 			@Override

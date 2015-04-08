@@ -21,6 +21,7 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryBranch;
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.RepositoryIssue;
+import org.eclipse.egit.github.core.SearchRepository;
 import org.eclipse.egit.github.core.Tree;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
@@ -43,6 +44,7 @@ import android.text.TextUtils;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.bean.CodeTree;
 import com.gdestiny.github.bean.IssueFilter;
+import com.gdestiny.github.bean.SearchUser;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 
@@ -115,12 +117,28 @@ public class GitHubConsole {
 	 * @return
 	 * @throws IOException
 	 */
+	public Repository getRepository(IRepositoryIdProvider provider)
+			throws IOException {
+		return repositoryService.getRepository(provider);
+	}
+
 	public List<Repository> getRepositories() throws IOException {
 		return repositoryService.getRepositories();
 	}
 
 	public void fork(Repository repository) throws IOException {
 		repositoryService.forkRepository(repository);
+	}
+
+	public List<SearchRepository> searchRepositories(String query)
+			throws IOException {
+		return repositoryService.searchRepositories(query);
+	}
+
+	public List<SearchUser> searchUsers(String query) throws IOException {
+		SearchUserService searchUserService = new SearchUserService(
+				GitHubApplication.getClient());
+		return searchUserService.searchUsers(query);
 	}
 
 	/**

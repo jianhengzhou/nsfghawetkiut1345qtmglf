@@ -81,7 +81,9 @@ public abstract class BaseLoadFragmentActivity<Params, Result> extends
 
 				@Override
 				public void run() {
-					swipeRefreshLayout.setRefreshing(true);
+					synchronized (swipeRefreshLayout) {
+						swipeRefreshLayout.setRefreshing(true);
+					}
 				}
 			});
 		}
@@ -94,7 +96,9 @@ public abstract class BaseLoadFragmentActivity<Params, Result> extends
 
 				@Override
 				public void run() {
-					swipeRefreshLayout.setRefreshing(false);
+					synchronized (swipeRefreshLayout) {
+						swipeRefreshLayout.setRefreshing(false);
+					}
 				}
 			});
 		}

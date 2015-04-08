@@ -4,15 +4,21 @@ import java.util.List;
 
 import org.eclipse.egit.github.core.Contributor;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.User;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.ContributorsAdapter;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
+import com.gdestiny.github.utils.CommonUtils;
 import com.gdestiny.github.utils.Constants;
+import com.gdestiny.github.utils.IntentUtils;
 
 public class ContributorsActivity extends
 		BaseLoadFragmentActivity<Void, List<Contributor>> {
@@ -41,7 +47,6 @@ public class ContributorsActivity extends
 
 	@Override
 	protected void initData() {
-		// TODO Auto-generated method stub
 		repository = (Repository) getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
 
@@ -52,26 +57,37 @@ public class ContributorsActivity extends
 		contributorList = (ListView) findViewById(R.id.list);
 		contributorsAdapter = new ContributorsAdapter(context);
 		contributorList.setAdapter(contributorsAdapter);
+		contributorList.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Contributor c = contributorsAdapter.getDatas().get(position);
+				User user = new User().setAvatarUrl(c.getAvatarUrl())
+						.setLogin(c.getLogin()).setName(c.getName());
+				if (CommonUtils.isAuthUser(user))
+					return;
+				IntentUtils.create(context, UserNavigationActivity.class)
+						.putExtra(Constants.Extra.USER, user).start();
+			}
+		});
 
 		execute();
 	}
 
 	@Override
 	public List<Contributor> onBackground(Void params) throws Exception {
-		// TODO Auto-generated method stub
 		return GitHubConsole.getInstance().getContributor(repository);
 	}
 
 	@Override
 	public void onSuccess(List<Contributor> result) {
-		// TODO Auto-generated method stub
 		super.onSuccess(result);
 		contributorsAdapter.setDatas(result);
 	}
 
 	@Override
 	protected void onleftLayout() {
-		// TODO Auto-generated method stub
 		finish();
 	}
 

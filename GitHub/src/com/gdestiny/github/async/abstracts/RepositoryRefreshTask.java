@@ -2,27 +2,38 @@ package com.gdestiny.github.async.abstracts;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.RepositoryService;
 
 import android.content.Context;
 
-import com.gdestiny.github.R;
+import com.gdestiny.github.async.GitHubConsole;
 
-public abstract class RepositoryRefreshTask extends DialogTask<GitHubClient, Repository> {
+public abstract class RepositoryRefreshTask extends
+		DialogTask<Void, Repository> {
 
 	private IRepositoryIdProvider repository;
 
-	public RepositoryRefreshTask(Context context, IRepositoryIdProvider repository) {
+	public RepositoryRefreshTask(Context context, final String id) {
+		super(context);
+		this.repository = new IRepositoryIdProvider() {
+
+			@Override
+			public String generateId() {
+				return id;
+			}
+		};
+		this.setLoadingMessage(repository.generateId());
+	}
+
+	public RepositoryRefreshTask(Context context,
+			IRepositoryIdProvider repository) {
 		super(context);
 		this.repository = repository;
-		this.setLoadingMessage(R.string.loading);
+		this.setLoadingMessage(repository.generateId());
 	}
 
 	@Override
-	public Repository onBackground(GitHubClient params) throws Exception {
-		RepositoryService service = new RepositoryService(params);
-		return service.getRepository(repository);
+	public Repository onBackground(Void params) throws Exception {
+		return GitHubConsole.getInstance().getRepository(repository);
 	}
 
 }

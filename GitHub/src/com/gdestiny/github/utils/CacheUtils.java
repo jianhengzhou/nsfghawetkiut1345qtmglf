@@ -60,6 +60,9 @@ public class CacheUtils {
 		public static final String LIST_COMMIT = "commitList.json";
 		public static final String CODE_TREE = "codeTree.json";
 		public static final String CONTRIBUTION = "contribution.html";
+		public static final String SEARCH_REPO = "searchRepo.json";
+		public static final String SEARCH_USER = "searchUser.json";
+		public static final String SEARCH_HISTORY = "searchHistory";
 	}
 
 	public static final class DIR {

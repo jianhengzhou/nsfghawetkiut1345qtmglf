@@ -66,7 +66,8 @@
     <string name="age_">Age:</string>
     <string name="age">Age</string>
     <string name="sure_to_delete_cache">Sure To Clear Cache?</string>
-
+    <string name="_repository">repository</string>
+    <string name="_user">user</string>
     <!-- error -->
     <string name="login_error">The account or password cannot be empty</string>
     <string name="auth_error">Check your account or password</string>

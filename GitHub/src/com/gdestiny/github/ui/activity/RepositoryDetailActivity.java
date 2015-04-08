@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.adapter.SimplePageAdapter;
-import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.ForkRepositoryTask;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.async.StarRepositoryTask;
@@ -113,8 +112,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 			}.execute();
 			break;
 		case R.string.fork:
-			new ForkRepositoryTask(context, repository)
-					.execute();
+			new ForkRepositoryTask(context, repository).execute();
 			break;
 		case R.string.share:
 			AndroidUtils.share(context, repository.getName(),
@@ -131,17 +129,18 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 		// TODO Auto-generated method stub
 		repository = (Repository) getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
+		// if (!TextUtils.isEmpty(repository.getOwner().getAvatarUrl()))
 		if (repository.getOwner() != null) {
 			init();
 		} else {
-			new RepositoryRefreshTask(context, repository) {
+			new RepositoryRefreshTask(context, repository.generateId()) {
 
 				@Override
 				public void onSuccess(Repository result) {
 					repository = result;
 					init();
 				}
-			}.execute(GitHubApplication.getClient());
+			}.execute();
 		}
 	}
 

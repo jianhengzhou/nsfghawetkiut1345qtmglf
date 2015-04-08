@@ -67,12 +67,15 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 
 	public void showProgress() {
 		isLoading = true;
+
 		if (swipeRefreshLayout != null && !swipeRefreshLayout.isRefreshing()) {
 			swipeRefreshLayout.post(new Runnable() {
 
 				@Override
 				public void run() {
-					swipeRefreshLayout.setRefreshing(true);
+					synchronized (swipeRefreshLayout) {
+						swipeRefreshLayout.setRefreshing(true);
+					}
 				}
 			});
 		}
@@ -85,7 +88,9 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 
 				@Override
 				public void run() {
-					swipeRefreshLayout.setRefreshing(false);
+					synchronized (swipeRefreshLayout) {
+						swipeRefreshLayout.setRefreshing(false);
+					}
 				}
 			});
 		}
@@ -110,6 +115,7 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 
 	@Override
 	public void onPrev() {
+		// if (!loadCache)
 		showProgress();
 	}
 

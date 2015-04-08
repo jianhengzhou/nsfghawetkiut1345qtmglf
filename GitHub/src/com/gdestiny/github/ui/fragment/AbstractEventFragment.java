@@ -98,10 +98,12 @@ public abstract class AbstractEventFragment extends
 									.start();
 							break;
 						case 1:
-							IntentUtils.create(context,
-									RepositoryDetailActivity.class).putExtra(
-									Constants.Extra.REPOSITORY,
-									EventUtils.getRepository(event));
+							IntentUtils
+									.create(context,
+											RepositoryDetailActivity.class)
+									.putExtra(Constants.Extra.REPOSITORY,
+											EventUtils.getRepository(event))
+									.start();
 							break;
 						}
 					}

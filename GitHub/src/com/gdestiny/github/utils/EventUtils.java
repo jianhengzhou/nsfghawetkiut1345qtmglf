@@ -34,18 +34,23 @@ public class EventUtils {
 			return null;
 
 		Repository result = new Repository();
+		result.setMasterBranch("master");
 		result.setId(er.getId());
 		result.setName(id.substring(slash + 1));
 		String login = id.substring(0, slash);
 		// Use actor if it matches login parsed from repository id
 		User actor = event.getActor();
 		User org = event.getOrg();
-		if (actor != null && login.equals(actor.getLogin()))
+		if (actor != null && login.equals(actor.getLogin())) {
 			result.setOwner(actor);
-		else if (org != null && login.equals(org.getLogin()))
+			GLog.sysout("setOwner(actor)");
+		} else if (org != null && login.equals(org.getLogin())) {
 			result.setOwner(org);
-		else
+			GLog.sysout("setOwner(org)");
+		} else {
 			result.setOwner(new User().setLogin(id.substring(0, slash)));
+			GLog.sysout("setOwner(new User())");
+		}
 		return result;
 	}
 

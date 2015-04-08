@@ -3,6 +3,7 @@ package com.gdestiny.github.utils;
 public class Constants {
 
 	public final static class Extra {
+		public static final String REPOSITORY_ID = "repository_id";
 		public static final String REPOSITORY = "repository";
 		public static final String ISSUE = "issue";
 		public static final String CODE_ENTRY = "code_entry";

@@ -24,7 +24,7 @@
         android:paddingRight="@dimen/margin16"
         android:src="@drawable/common_search" />
 
-    <EditText
+    <com.gdestiny.github.ui.view.FocusedEditText
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,10 +34,21 @@
         android:layout_toRightOf="@id/search_back_btn"
         android:background="@drawable/selector_common_edtitext_white"
         android:hint="@string/search"
+        android:paddingRight="@dimen/margin32"
         android:singleLine="true"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textCursorDrawable="@null"
         android:textSize="@dimen/text18" />
+
+    <ImageButton
+        android:id="@+id/search_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignRight="@id/search"
+        android:background="@color/transparent"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/common_delete_x"
+        android:visibility="gone" />
 
 </RelativeLayout>

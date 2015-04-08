@@ -3,7 +3,7 @@ package com.gdestiny.github.ui.activity;
 import android.os.Bundle;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
+import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
 import com.gdestiny.github.ui.view.TitleBar;
 
 public class AboutUSActivity extends BaseFragmentActivity {

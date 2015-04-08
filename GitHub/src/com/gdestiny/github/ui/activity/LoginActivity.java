@@ -22,10 +22,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.activity.BaseActivity;
 import com.gdestiny.github.app.DefaultClient;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.GitHubTask;
-import com.gdestiny.github.ui.activity.abstracts.BaseActivity;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.SnappyDBUtils;

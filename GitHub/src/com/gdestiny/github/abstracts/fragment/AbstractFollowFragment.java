@@ -1,4 +1,4 @@
-package com.gdestiny.github.ui.fragment;
+package com.gdestiny.github.abstracts.fragment;
 
 import org.eclipse.egit.github.core.User;
 

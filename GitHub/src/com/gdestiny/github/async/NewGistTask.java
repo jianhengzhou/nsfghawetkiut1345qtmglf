@@ -8,7 +8,7 @@ import org.eclipse.egit.github.core.GistFile;
 import android.content.Context;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.async.abstracts.DialogTask;
+import com.gdestiny.github.abstracts.async.DialogTask;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class NewGistTask extends DialogTask<Void, Gist> {

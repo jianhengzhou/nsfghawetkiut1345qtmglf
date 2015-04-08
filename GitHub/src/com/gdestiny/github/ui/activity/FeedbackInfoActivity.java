@@ -17,8 +17,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
 import com.gdestiny.github.app.GitHubApplication;
-import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.CommonUtils;

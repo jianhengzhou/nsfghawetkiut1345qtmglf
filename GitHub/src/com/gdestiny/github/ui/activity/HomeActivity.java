@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
+import com.gdestiny.github.abstracts.fragment.BaseFragment;
 import com.gdestiny.github.app.GitHubApplication;
-import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
-import com.gdestiny.github.ui.fragment.BaseFragment;
 import com.gdestiny.github.ui.fragment.EventsUserReceivedFragment;
 import com.gdestiny.github.ui.fragment.FollowerFragment;
 import com.gdestiny.github.ui.fragment.FollowingFragment;

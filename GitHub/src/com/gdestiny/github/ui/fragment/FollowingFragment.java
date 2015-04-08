@@ -6,6 +6,7 @@ import org.eclipse.egit.github.core.User;
 
 import android.text.TextUtils;
 
+import com.gdestiny.github.abstracts.fragment.AbstractFollowFragment;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.CacheUtils;

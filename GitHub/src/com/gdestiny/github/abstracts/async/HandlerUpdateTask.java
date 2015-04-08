@@ -1,4 +1,4 @@
-package com.gdestiny.github.async.abstracts;
+package com.gdestiny.github.abstracts.async;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

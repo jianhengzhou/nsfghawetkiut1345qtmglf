@@ -28,12 +28,12 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
+import com.gdestiny.github.abstracts.async.ContributionWebTask;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.EditUserTask;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.async.GitHubTask;
-import com.gdestiny.github.async.abstracts.ContributionWebTask;
-import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.dialog.ConfirmDialog;
 import com.gdestiny.github.ui.view.ImageViewEx;
 import com.gdestiny.github.ui.view.ObservableScrollView;

@@ -6,7 +6,7 @@ import org.eclipse.egit.github.core.Repository;
 import android.content.Context;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.async.abstracts.DialogTask;
+import com.gdestiny.github.abstracts.async.DialogTask;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class CommitCommentTask extends DialogTask<Void, CommitComment> {

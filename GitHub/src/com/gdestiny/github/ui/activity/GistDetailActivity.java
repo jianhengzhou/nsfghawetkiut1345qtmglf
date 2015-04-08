@@ -24,13 +24,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.activity.BaseLoadFragmentActivity;
 import com.gdestiny.github.adapter.GistItemAdapter;
 import com.gdestiny.github.async.DeleteGistCommentTask;
 import com.gdestiny.github.async.DeleteGistTask;
 import com.gdestiny.github.async.ForkGistTask;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.async.StarGistTask;
-import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.dialog.StatusPopWindowItem;
 import com.gdestiny.github.ui.view.TitleBar;

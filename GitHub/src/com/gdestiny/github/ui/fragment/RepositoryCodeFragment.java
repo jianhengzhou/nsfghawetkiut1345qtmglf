@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.fragment.BaseLoadFragment;
 import com.gdestiny.github.adapter.CodeTreeAdapter;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.bean.CodeTree;

@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.activity.BaseLoadFragmentActivity;
 import com.gdestiny.github.adapter.CommitExpandAdapter;
 import com.gdestiny.github.adapter.CommitExpandAdapter.OnCommitCommentListener;
 import com.gdestiny.github.app.GitHubApplication;
@@ -34,7 +35,6 @@ import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.bean.CommitLine;
 import com.gdestiny.github.bean.CommitTree;
 import com.gdestiny.github.bean.comparator.CommitCommentComparator;
-import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.dialog.CommitLineDialog;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;

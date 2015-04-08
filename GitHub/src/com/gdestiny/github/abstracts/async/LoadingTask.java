@@ -1,4 +1,4 @@
-package com.gdestiny.github.async.abstracts;
+package com.gdestiny.github.abstracts.async;
 
 public interface LoadingTask<Params, Result> {
 	public void onPrev();

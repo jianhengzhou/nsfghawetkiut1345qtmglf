@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.fragment.BaseLoadPageFragment;
 import com.gdestiny.github.adapter.IssueDashboardAdapter;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.IssueDetailActivity;

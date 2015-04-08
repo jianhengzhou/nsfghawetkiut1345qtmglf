@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.fragment.BaseLoadPageFragment;
 import com.gdestiny.github.adapter.CommitAdapter;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.CommitDetailActivity;

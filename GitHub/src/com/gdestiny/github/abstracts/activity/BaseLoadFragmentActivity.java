@@ -1,29 +1,29 @@
-package com.gdestiny.github.ui.fragment;
+package com.gdestiny.github.abstracts.activity;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.async.abstracts.BaseAsyncTask;
-import com.gdestiny.github.async.abstracts.LoadingTask;
-import com.gdestiny.github.async.abstracts.OnRefreshListener;
-import com.gdestiny.github.utils.GLog;
+import com.gdestiny.github.abstracts.async.BaseAsyncTask;
+import com.gdestiny.github.abstracts.async.LoadingTask;
+import com.gdestiny.github.abstracts.async.OnRefreshListener;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
-public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
-		implements OnRefreshListener, LoadingTask<Params, Result> {
+public abstract class BaseLoadFragmentActivity<Params, Result> extends
+		BaseFragmentActivity implements OnRefreshListener,
+		LoadingTask<Params, Result> {
 
 	private SwipeRefreshLayout swipeRefreshLayout;
-
 	private boolean isLoading = false;
+
 	private View noDataView;
 	private boolean noData;
-
-	private boolean exception = false;
 	private boolean loadCache = false;
 
 	public boolean isLoadCache() {
@@ -34,18 +34,33 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 		this.loadCache = loadCache;
 	}
 
-	@SuppressWarnings("deprecation")
-	public void setContentView(LayoutInflater inflater, int id, int refreshId) {
-		// nodata 界面
-		setContentView(inflater, R.layout.layout_nodata);
+	public String getCacheName() {
+		return "";
+	}
 
-		// 添加主界面
-		View content = inflater.inflate(id, null);
+	public String getSubDir() {
+		return null;
+	}
+
+	private boolean exception = false;
+	private Handler handler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			BaseLoadFragmentActivity.this.onException((Exception) msg.obj);
+		}
+
+	};
+
+	@SuppressWarnings("deprecation")
+	public void setContentView(int id, int refreshId) {
+
+		setContentView(R.layout.layout_nodata);
+
+		View content = LayoutInflater.from(context).inflate(id, null);
 		FrameLayout container = (FrameLayout) findViewById(R.id.nodata_content);
 		container.addView(content);
-
-		// 同步颜色
-		// getCurrentView().setBackground(content.getBackground());
+		noDataView = findViewById(R.id.nodata);
 
 		swipeRefreshLayout = (SwipeRefreshLayout) findViewById(refreshId);
 		swipeRefreshLayout.setColorScheme(R.color.common_icon_blue);
@@ -54,20 +69,13 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 
 					@Override
 					public void onRefresh() {
-						BaseLoadFragment.this.onRefresh();
+						BaseLoadFragmentActivity.this.onRefresh();
 					}
 				});
-
-		noDataView = findViewById(R.id.nodata);
-	}
-
-	public SwipeRefreshLayout getSwipeRefreshLayout() {
-		return swipeRefreshLayout;
 	}
 
 	public void showProgress() {
 		isLoading = true;
-
 		if (swipeRefreshLayout != null && !swipeRefreshLayout.isRefreshing()) {
 			swipeRefreshLayout.post(new Runnable() {
 
@@ -115,36 +123,23 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 
 	@Override
 	public void onPrev() {
-		// if (!loadCache)
 		showProgress();
-	}
-
-	public String getCacheName() {
-		return "";
-	}
-
-	public String getSubDir() {
-		return null;
 	}
 
 	@Override
 	public Result onBackground(Params params) throws Exception {
-		GLog.sysout("onBackground");
 		return null;
 	}
 
 	@Override
 	public void onSuccess(Result result) {
-		GLog.sysout("onSuccess");
 		dismissProgress();
 	}
 
 	@Override
 	public void onException(Exception ex) {
-		ex.printStackTrace();
-		GLog.sysout("onException");
 		dismissProgress();
-
+		ex.printStackTrace();
 		String message = ex.getMessage();
 		if (TextUtils.isEmpty(message))
 			message = "Unknow Error";
@@ -166,10 +161,11 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 			@Override
 			protected void onPostExecute(Result result) {
 				super.onPostExecute(result);
-				if (result != null)
-					BaseLoadFragment.this.onSuccess(result);
-				else {
-					BaseLoadFragment.this.onException(new Exception(
+				if (result != null) {
+					BaseLoadFragmentActivity.this.onSuccess(result);
+				} else {
+					noData(true);
+					BaseLoadFragmentActivity.this.onException(new Exception(
 							getResources().getString(R.string.network_error)));
 				}
 			}
@@ -177,7 +173,8 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
-				BaseLoadFragment.this.onPrev();
+				BaseLoadFragmentActivity.this.onPrev();
+				exception = false;
 			}
 
 			@Override
@@ -189,20 +186,16 @@ public abstract class BaseLoadFragment<Params, Result> extends BaseFragment
 			protected Result doInBackground(Params... params) {
 				try {
 					if (params == null)
-						return BaseLoadFragment.this.onBackground(null);
-					return BaseLoadFragment.this.onBackground(params[0]);
-				} catch (final Exception e) {
+						return BaseLoadFragmentActivity.this.onBackground(null);
+					return BaseLoadFragmentActivity.this
+							.onBackground(params[0]);
+				} catch (Exception e) {
 					exception = true;
-					getCurrentView().post(new Runnable() {
-
-						@Override
-						public void run() {
-							BaseLoadFragment.this.onException(e);
-							GLog.sysout("Exception");
-						}
-					});
-					return null;
+					Message msg = handler.obtainMessage();
+					msg.obj = e;
+					handler.sendMessage(msg);
 				}
+				return null;
 			}
 		}.execute(params);
 	}

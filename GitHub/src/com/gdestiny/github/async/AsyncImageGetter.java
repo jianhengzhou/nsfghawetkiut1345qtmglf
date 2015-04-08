@@ -12,7 +12,7 @@ import android.text.Html.ImageGetter;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.async.abstracts.BaseAsyncTask;
+import com.gdestiny.github.abstracts.async.BaseAsyncTask;
 import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;

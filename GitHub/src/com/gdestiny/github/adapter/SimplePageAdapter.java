@@ -2,7 +2,7 @@ package com.gdestiny.github.adapter;
 
 import java.util.List;
 
-import com.gdestiny.github.ui.fragment.BaseLoadFragment;
+import com.gdestiny.github.abstracts.fragment.BaseLoadFragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -11,8 +11,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.activity.BaseLoadFragmentActivity;
 import com.gdestiny.github.async.GitHubConsole;
-import com.gdestiny.github.ui.activity.abstracts.BaseLoadFragmentActivity;
 import com.gdestiny.github.ui.view.FileIndicatorView;
 import com.gdestiny.github.utils.Constants;
 

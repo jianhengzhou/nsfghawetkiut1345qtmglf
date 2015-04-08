@@ -6,10 +6,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
+import com.gdestiny.github.abstracts.async.BaseAsyncTask;
+import com.gdestiny.github.abstracts.async.DialogTask;
 import com.gdestiny.github.app.GitHubApplication;
-import com.gdestiny.github.async.abstracts.BaseAsyncTask;
-import com.gdestiny.github.async.abstracts.DialogTask;
-import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.dialog.ConfirmDialog;
 import com.gdestiny.github.ui.dialog.MaterialUpdateDialog;
 import com.gdestiny.github.ui.dialog.StartUpDialog;

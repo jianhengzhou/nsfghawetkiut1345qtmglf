@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.fragment.AbstractEventFragment;
 import com.gdestiny.github.adapter.EventAdapter;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;

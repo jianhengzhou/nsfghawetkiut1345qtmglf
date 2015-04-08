@@ -13,9 +13,9 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
+import com.gdestiny.github.abstracts.async.BaseAsyncTask;
 import com.gdestiny.github.app.GitHubApplication;
-import com.gdestiny.github.async.abstracts.BaseAsyncTask;
-import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.ViewUtils;

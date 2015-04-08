@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.fragment.BaseLoadPageFragment;
 import com.gdestiny.github.adapter.GistAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.GitHubConsole;

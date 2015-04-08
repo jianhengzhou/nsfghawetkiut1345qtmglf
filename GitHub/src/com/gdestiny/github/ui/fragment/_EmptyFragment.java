@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.fragment.BaseLoadFragment;
 import com.gdestiny.github.ui.view.TitleBar;
 
 public class _EmptyFragment extends BaseLoadFragment<Void, Void> {

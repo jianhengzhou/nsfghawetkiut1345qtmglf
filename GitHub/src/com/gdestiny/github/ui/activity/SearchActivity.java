@@ -18,8 +18,8 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
 import com.gdestiny.github.adapter.SearchHistoryAdapter;
-import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.fragment.SearchRepositoryFragment;
 import com.gdestiny.github.ui.fragment.SearchUserFragment;
 import com.gdestiny.github.ui.view.FocusedEditText;

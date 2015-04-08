@@ -3,7 +3,7 @@ package com.gdestiny.github.async;
 import org.eclipse.egit.github.core.Repository;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.async.abstracts.DialogTask;
+import com.gdestiny.github.abstracts.async.DialogTask;
 import com.gdestiny.github.utils.ToastUtils;
 
 import android.content.Context;

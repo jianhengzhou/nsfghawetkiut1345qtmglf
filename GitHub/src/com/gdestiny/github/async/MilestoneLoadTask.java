@@ -13,8 +13,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.gdestiny.github.abstracts.async.DialogTask;
 import com.gdestiny.github.adapter.MilestoneAdapter;
-import com.gdestiny.github.async.abstracts.DialogTask;
 import com.gdestiny.github.bean.comparator.MilestoneComparator;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
 

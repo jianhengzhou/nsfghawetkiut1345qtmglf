@@ -10,14 +10,14 @@ import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.IssueService;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
+import com.gdestiny.github.abstracts.async.IsCollaboratorTask;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.async.CollaboratorLoadTask;
 import com.gdestiny.github.async.LabelLoadTask;
 import com.gdestiny.github.async.MilestoneLoadTask;
 import com.gdestiny.github.async.NewEditIssueTask;
-import com.gdestiny.github.async.abstracts.IsCollaboratorTask;
 import com.gdestiny.github.bean.IssueFilter;
-import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.view.LabelViewGroup;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;

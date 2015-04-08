@@ -13,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
+import com.gdestiny.github.abstracts.fragment.BaseFragment;
+import com.gdestiny.github.abstracts.fragment.BaseLoadFragment;
 import com.gdestiny.github.adapter.SimplePageAdapter;
 import com.gdestiny.github.ui.activity.HomeActivity;
 import com.gdestiny.github.ui.activity.NewGistActivity;
-import com.gdestiny.github.ui.activity.abstracts.BaseFragmentActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.fragment.GistListFragment.GistType;
 import com.gdestiny.github.ui.view.IndicatorView;

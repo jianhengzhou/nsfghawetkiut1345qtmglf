@@ -2,7 +2,7 @@
  * 
  */
 
-package com.gdestiny.github.ui.activity.abstracts;
+package com.gdestiny.github.abstracts.activity;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;

@@ -13,10 +13,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.async.UserRefreshTask;
+import com.gdestiny.github.abstracts.fragment.BaseLoadFragment;
 import com.gdestiny.github.adapter.SearchUserAdapter;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.async.SimpleUpdateResultTask;
-import com.gdestiny.github.async.abstracts.UserRefreshTask;
 import com.gdestiny.github.bean.SearchUser;
 import com.gdestiny.github.ui.activity.UserNavigationActivity;
 import com.gdestiny.github.ui.view.MoreListView;

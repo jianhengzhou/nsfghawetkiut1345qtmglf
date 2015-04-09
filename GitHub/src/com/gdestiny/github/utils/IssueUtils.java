@@ -1,6 +1,7 @@
 package com.gdestiny.github.utils;
 
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.PullRequest;
 
 import com.gdestiny.github.bean.IssueFilter;
 
@@ -21,6 +22,31 @@ public class IssueUtils {
 				&& IssueFilter.equals(l.getAssignee(), r.getAssignee())
 				&& IssueFilter.equals(l.getMilestone(), r.getMilestone())
 				&& IssueFilter.equals(l.getLabels(), r.getLabels());
+	}
+
+	public static Issue toIssue(final PullRequest pullRequest) {
+		if (pullRequest == null)
+			return null;
+
+		Issue issue = new Issue();
+		issue.setAssignee(pullRequest.getAssignee());
+		issue.setBody(pullRequest.getBody());
+		issue.setBodyHtml(pullRequest.getBodyHtml());
+		issue.setBodyText(pullRequest.getBodyText());
+		issue.setClosedAt(pullRequest.getClosedAt());
+		issue.setComments(pullRequest.getComments());
+		issue.setCreatedAt(pullRequest.getCreatedAt());
+		issue.setHtmlUrl(pullRequest.getHtmlUrl());
+		issue.setId(pullRequest.getId());
+		issue.setMilestone(pullRequest.getMilestone());
+		issue.setNumber(pullRequest.getNumber());
+		issue.setPullRequest(pullRequest);
+		issue.setState(pullRequest.getState());
+		issue.setTitle(pullRequest.getTitle());
+		issue.setUpdatedAt(pullRequest.getUpdatedAt());
+		issue.setUrl(pullRequest.getUrl());
+		issue.setUser(pullRequest.getUser());
+		return issue;
 	}
 
 	/**

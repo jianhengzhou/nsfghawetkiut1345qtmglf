@@ -1,14 +1,30 @@
 package com.gdestiny.github.utils;
 
+import java.util.List;
+
+import org.eclipse.egit.github.core.Commit;
+import org.eclipse.egit.github.core.CommitComment;
+import org.eclipse.egit.github.core.Download;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.Team;
 import org.eclipse.egit.github.core.User;
+import org.eclipse.egit.github.core.event.CommitCommentPayload;
+import org.eclipse.egit.github.core.event.CreatePayload;
 import org.eclipse.egit.github.core.event.DeletePayload;
+import org.eclipse.egit.github.core.event.DownloadPayload;
 import org.eclipse.egit.github.core.event.Event;
+import org.eclipse.egit.github.core.event.EventPayload;
 import org.eclipse.egit.github.core.event.EventRepository;
+import org.eclipse.egit.github.core.event.ForkPayload;
+import org.eclipse.egit.github.core.event.GistPayload;
 import org.eclipse.egit.github.core.event.IssueCommentPayload;
 import org.eclipse.egit.github.core.event.IssuesPayload;
 import org.eclipse.egit.github.core.event.MemberPayload;
+import org.eclipse.egit.github.core.event.PullRequestPayload;
+import org.eclipse.egit.github.core.event.PullRequestReviewCommentPayload;
+import org.eclipse.egit.github.core.event.PushPayload;
+import org.eclipse.egit.github.core.event.TeamAddPayload;
 
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -23,6 +39,22 @@ public class EventUtils {
 	}
 
 	public static Repository getRepository(Event event) {
+		if (event == null)
+			return null;
+
+		if (Event.TYPE_FORK.equals(event.getType())) {
+			EventPayload payload = event.getPayload();
+			if (payload != null) {
+				Repository repository = ((ForkPayload) payload).getForkee();
+				// Verify repository has valid name and owner
+				if (repository != null
+						&& !TextUtils.isEmpty(repository.getName())
+						&& repository.getOwner() != null
+						&& !TextUtils.isEmpty(repository.getOwner().getLogin()))
+					return repository;
+			}
+		}
+
 		EventRepository er = event.getRepo();
 
 		if (er == null)
@@ -94,110 +126,6 @@ public class EventUtils {
 	// public static final String TYPE_TEAM_ADD = "TeamAddEvent";
 	// public static final String TYPE_WATCH = "WatchEvent";
 
-	public static String getEventType(Event event) {
-		String type = event.getType();
-		if (Event.TYPE_COMMIT_COMMENT.equals(type)) {
-			return "commented commit on";
-		} else if (Event.TYPE_CREATE.equals(type)) {
-			return "created repository";
-		} else if (Event.TYPE_DELETE.equals(type)) {
-			return "deleted repository";
-		} else if (Event.TYPE_DOWNLOAD.equals(type)) {
-			return "uploaded a file to";
-		} else if (Event.TYPE_FOLLOW.equals(type)) {
-			return "started following";
-		} else if (Event.TYPE_FORK.equals(type)) {
-			return "forked";
-		} else if (Event.TYPE_FORK_APPLY.equals(type)) {
-			return "";
-		} else if (Event.TYPE_GIST.equals(type)) {
-			return "";
-		} else if (Event.TYPE_GOLLUM.equals(type)) {
-			return "edited the wiki in";
-		} else if (Event.TYPE_ISSUE_COMMENT.equals(type)) {
-			IssueCommentPayload payload = (IssueCommentPayload) event
-					.getPayload();
-			Issue issue = payload.getIssue();
-			String number;
-			if (issue != null && issue.getPullRequest() != null
-					&& !TextUtils.isEmpty(issue.getPullRequest().getHtmlUrl())) {
-				number = "pull request #" + issue.getNumber();
-			} else {
-				number = "issue #" + issue.getNumber();
-			}
-			return "commented on " + number;
-		} else if (Event.TYPE_ISSUES.equals(type)) {
-			IssuesPayload payload = (IssuesPayload) event.getPayload();
-			String action = payload.getAction();
-			Issue issue = payload.getIssue();
-			return action + " " + "issue #" + issue.getNumber() + " on";
-		} else if (Event.TYPE_MEMBER.equals(type)) {
-			User member = ((MemberPayload) event.getPayload()).getMember();
-			String mem = "";
-			if (member != null)
-				mem = member.getLogin();
-			mem = "as a collaborator to ";
-			return "added " + mem;
-		} else if (Event.TYPE_PUBLIC.equals(type)) {
-			return "open sourced";
-		} else if (Event.TYPE_PULL_REQUEST.equals(type)) {
-			return "opened pull request";
-		} else if (Event.TYPE_PULL_REQUEST_REVIEW_COMMENT.equals(type)) {
-			return "commented on";
-		} else if (Event.TYPE_PUSH.equals(type)) {
-			return "";
-		} else if (Event.TYPE_TEAM_ADD.equals(type)) {
-			return "";
-		} else if (Event.TYPE_WATCH.equals(type)) {
-			return "starred";
-		}
-		return null;
-	}
-
-	public static String getEventPayload(Event event) {
-		String type = event.getType();
-		if (Event.TYPE_COMMIT_COMMENT.equals(type)) {
-			return "";
-		} else if (Event.TYPE_CREATE.equals(type)) {
-			return "";
-		} else if (Event.TYPE_DELETE.equals(type)) {
-			return "";
-		} else if (Event.TYPE_DOWNLOAD.equals(type)) {
-			return "";
-		} else if (Event.TYPE_FOLLOW.equals(type)) {
-			return "";
-		} else if (Event.TYPE_FORK.equals(type)) {
-			return "";
-		} else if (Event.TYPE_FORK_APPLY.equals(type)) {
-			return "";
-		} else if (Event.TYPE_GIST.equals(type)) {
-			return "";
-		} else if (Event.TYPE_GOLLUM.equals(type)) {
-			return "";
-		} else if (Event.TYPE_ISSUE_COMMENT.equals(type)) {
-			IssueCommentPayload payload = (IssueCommentPayload) event
-					.getPayload();
-			return payload.getComment().getBody();
-		} else if (Event.TYPE_ISSUES.equals(type)) {
-			return "";
-		} else if (Event.TYPE_MEMBER.equals(type)) {
-			return "";
-		} else if (Event.TYPE_PUBLIC.equals(type)) {
-			return "";
-		} else if (Event.TYPE_PULL_REQUEST.equals(type)) {
-			return "";
-		} else if (Event.TYPE_PULL_REQUEST_REVIEW_COMMENT.equals(type)) {
-			return "";
-		} else if (Event.TYPE_PUSH.equals(type)) {
-			return "";
-		} else if (Event.TYPE_TEAM_ADD.equals(type)) {
-			return "";
-		} else if (Event.TYPE_WATCH.equals(type)) {
-			return "";
-		}
-		return null;
-	}
-
 	public static final int blueColor = 0xff56abe4;
 	public static final int blackColor = 0xff2a2a2a;
 
@@ -208,24 +136,6 @@ public class EventUtils {
 		return string;
 	}
 
-	public static SpannableString authorSpanableString(Event event) {
-		return toColorString(blueColor, getAuthor(event));
-	}
-
-	public static SpannableString repositorySpanableString(Event event) {
-		return toColorString(blueColor, event.getRepo().getName());
-	}
-
-	public static SpannableString typeSpanableString(Event event) {
-		return toColorString(blackColor,
-				getEventType(event).equals("") ? event.getType()
-						: getEventType(event));
-	}
-
-	public static SpannableString typeSpanableString(String type) {
-		return toColorString(blackColor, type);
-	}
-
 	public static SpannableString toBlackString(String str) {
 		return toColorString(blackColor, str);
 	}
@@ -234,76 +144,214 @@ public class EventUtils {
 		return toColorString(blueColor, str);
 	}
 
-	public static SpannableStringBuilder toSpannableString(Event event) {
+	public static SpannableStringBuilder getEventTitle(Event event) {
 		SpannableStringBuilder builder = new SpannableStringBuilder();
-		builder.append(authorSpanableString(event));
+		builder.append(toBlueString(getAuthor(event)));
 		builder.append(' ');
 
 		String type = event.getType();
 		if (Event.TYPE_COMMIT_COMMENT.equals(type)) {
 			builder.append(toBlackString("commented commit on"));
+		} else if (Event.TYPE_WATCH.equals(type)) {
+			builder.append(toBlackString("starred"));
 		} else if (Event.TYPE_CREATE.equals(type)) {
-			builder.append(toBlackString("created repository"));
+			builder.append(toBlackString("created "));
+			CreatePayload payload = (CreatePayload) event.getPayload();
+			String refType = payload.getRefType();
+			builder.append(refType);
+			builder.append(' ');
+			if (!"repository".equals(refType)) {
+				builder.append(payload.getRef());
+				builder.append(toBlackString(" at "));
+			}
 		} else if (Event.TYPE_DELETE.equals(type)) {
 			DeletePayload payload = (DeletePayload) event.getPayload();
-			builder.append(toBlackString("deleted " + payload.getRefType()
-					+ payload.getRef() + " at"));
+			builder.append("deleted ");
+			builder.append(payload.getRefType());
+			builder.append(' ');
+			builder.append(payload.getRef());
+			builder.append(" at ");
 		} else if (Event.TYPE_DOWNLOAD.equals(type)) {
 			builder.append(toBlackString("uploaded a file to"));
 		} else if (Event.TYPE_FOLLOW.equals(type)) {
 			builder.append(toBlackString("started following"));
 		} else if (Event.TYPE_FORK.equals(type)) {
 			builder.append(toBlackString("forked"));
-		} else if (Event.TYPE_FORK_APPLY.equals(type)) {
-			builder.append(toBlackString("TYPE_FORK_APPLY"));
-		} else if (Event.TYPE_GIST.equals(type)) {
-			builder.append(toBlackString("TYPE_GIST"));
 		} else if (Event.TYPE_GOLLUM.equals(type)) {
 			builder.append(toBlackString("edited the wiki in"));
 		} else if (Event.TYPE_ISSUE_COMMENT.equals(type)) {
+			builder.append(toBlackString("commented on "));
 			IssueCommentPayload payload = (IssueCommentPayload) event
 					.getPayload();
 			Issue issue = payload.getIssue();
-			String number;
 			if (issue != null && issue.getPullRequest() != null
 					&& !TextUtils.isEmpty(issue.getPullRequest().getHtmlUrl())) {
-				number = "pull request #" + issue.getNumber();
+				builder.append(toBlackString("pull request"));
 			} else {
-				number = "issue #" + issue.getNumber();
+				builder.append(toBlackString("issue"));
 			}
-			builder.append(toBlackString("commented on " + number));
+			builder.append(toBlueString("#" + issue.getNumber()));
+			builder.append(toBlackString(" at "));
 		} else if (Event.TYPE_ISSUES.equals(type)) {
 			IssuesPayload payload = (IssuesPayload) event.getPayload();
 			String action = payload.getAction();
 			Issue issue = payload.getIssue();
-			builder.append(toBlackString(action + " " + "issue #"
-					+ issue.getNumber() + " on"));
+			builder.append(toBlackString(action + " " + "issue"));
+			builder.append(toBlueString("#" + issue.getNumber()));
+			builder.append(toBlackString(" on"));
 		} else if (Event.TYPE_MEMBER.equals(type)) {
 			User member = ((MemberPayload) event.getPayload()).getMember();
 			String mem = "";
 			if (member != null)
 				mem = member.getLogin();
 			mem = "as a collaborator to ";
-			builder.append(toBlackString("added "));
-			builder.append(toBlueString(mem));
-			return builder;
+			builder.append(toBlackString("added " + mem));
 		} else if (Event.TYPE_PUBLIC.equals(type)) {
 			builder.append(toBlackString("open sourced"));
 		} else if (Event.TYPE_PULL_REQUEST.equals(type)) {
-			builder.append(toBlackString("opened pull request"));
+			PullRequestPayload payload = (PullRequestPayload) event
+					.getPayload();
+			String action = payload.getAction();
+			if ("synchronize".equals(action))
+				action = "updated";
+			builder.append(' ');
+			builder.append(action);
+			builder.append(' ');
+			builder.append("pull request ");
+			builder.append(toBlueString(String.valueOf(payload.getNumber())));
+			builder.append(" on ");
 		} else if (Event.TYPE_PULL_REQUEST_REVIEW_COMMENT.equals(type)) {
 			builder.append(toBlackString("commented on"));
 		} else if (Event.TYPE_PUSH.equals(type)) {
-			builder.append(toBlackString("TYPE_PUSH"));
+			builder.append(toBlackString("pushed to "));
+			PushPayload payload = (PushPayload) event.getPayload();
+			String ref = payload.getRef();
+			if (ref.startsWith("refs/heads/"))
+				ref = ref.substring(11);
+			builder.append(toBlueString(ref));
+			builder.append(toBlackString(" at "));
 		} else if (Event.TYPE_TEAM_ADD.equals(type)) {
-			builder.append(toBlackString("TYPE_TEAM_ADD"));
-		} else if (Event.TYPE_WATCH.equals(type)) {
-			builder.append(toBlackString("starred"));
+			TeamAddPayload payload = (TeamAddPayload) event.getPayload();
+
+			builder.append("added ");
+
+			User user = payload.getUser();
+			if (user != null)
+				builder.append(toBlueString(user.getLogin()));
+
+			builder.append(" to team");
+
+			Team team = payload.getTeam();
+			String teamName = team != null ? team.getName() : null;
+			if (teamName != null)
+				builder.append(' ').append(toBlueString(teamName));
+		} else if (Event.TYPE_GIST.equals(type)) {
+			GistPayload payload = (GistPayload) event.getPayload();
+			builder.append(' ');
+			String action = payload.getAction();
+			if ("create".equals(action))
+				builder.append("created");
+			else if ("update".equals(action))
+				builder.append("updated");
+			else
+				builder.append(action);
+			builder.append(" Gist ");
+			builder.append(toBlueString(payload.getGist().getId()));
 		}
 
 		// builder.append(typeSpanableString(event));
 		builder.append(' ');
-		builder.append(repositorySpanableString(event));
+		builder.append(toColorString(blueColor, event.getRepo().getName()));
 		return builder;
 	}
+
+	public static SpannableStringBuilder getEventDetail(Event event) {
+		SpannableStringBuilder builder = new SpannableStringBuilder();
+		String type = event.getType();
+		if (Event.TYPE_COMMIT_COMMENT.equals(type)) {
+			CommitCommentPayload payload = (CommitCommentPayload) event
+					.getPayload();
+			CommitComment comment = payload.getComment();
+			if (comment != null) {
+
+				String id = comment.getCommitId();
+				if (!TextUtils.isEmpty(id)) {
+					if (id.length() > 10)
+						id = id.substring(0, 10);
+					builder.append(toBlackString("Comment in "));
+					builder.append(toBlueString(id));
+					builder.append(':').append('\n');
+					builder.append(comment.getBody());
+				}
+			}
+		} else if (Event.TYPE_CREATE.equals(type)) {
+		} else if (Event.TYPE_DELETE.equals(type)) {
+		} else if (Event.TYPE_DOWNLOAD.equals(type)) {
+			DownloadPayload payload = (DownloadPayload) event.getPayload();
+			Download download = payload.getDownload();
+			if (download != null)
+				builder.append(download.getName());
+		} else if (Event.TYPE_FOLLOW.equals(type)) {
+		} else if (Event.TYPE_FORK_APPLY.equals(type)) {
+		} else if (Event.TYPE_GIST.equals(type)) {
+		} else if (Event.TYPE_GOLLUM.equals(type)) {
+		} else if (Event.TYPE_ISSUE_COMMENT.equals(type)) {
+			IssueCommentPayload payload = (IssueCommentPayload) event
+					.getPayload();
+			builder.append(payload.getComment().getBody());
+		} else if (Event.TYPE_ISSUES.equals(type)) {
+		} else if (Event.TYPE_MEMBER.equals(type)) {
+		} else if (Event.TYPE_PUBLIC.equals(type)) {
+		} else if (Event.TYPE_PULL_REQUEST.equals(type)) {
+		} else if (Event.TYPE_PULL_REQUEST_REVIEW_COMMENT.equals(type)) {
+			PullRequestReviewCommentPayload payload = (PullRequestReviewCommentPayload) event
+					.getPayload();
+			builder.append(payload.getComment().getBody());
+		} else if (Event.TYPE_PUSH.equals(type)) {
+			PushPayload payload = (PushPayload) event.getPayload();
+			final List<Commit> commits = payload.getCommits();
+			int size = commits != null ? commits.size() : -1;
+			if (size > 0) {
+				if (size != 1)
+					builder.append(toBlackString(size + " new commits"));
+				else
+					builder.append(toBlackString("1 new commit"));
+
+				int max = 3;
+				int appended = 0;
+				for (Commit commit : commits) {
+					if (commit == null)
+						continue;
+
+					String sha = commit.getSha();
+					if (TextUtils.isEmpty(sha))
+						continue;
+
+					builder.append('\n');
+					if (sha.length() > 7)
+						builder.append(toBlueString(sha.substring(0, 7)));
+					else
+						builder.append(toBlueString(sha));
+
+					String message = commit.getMessage();
+					if (!TextUtils.isEmpty(message)) {
+						builder.append(' ');
+						int newline = message.indexOf('\n');
+						if (newline > 0)
+							builder.append(message.subSequence(0, newline));
+						else
+							builder.append(message);
+					}
+
+					appended++;
+					if (appended == max)
+						break;
+				}
+			}
+		} else if (Event.TYPE_TEAM_ADD.equals(type)) {
+		} else if (Event.TYPE_WATCH.equals(type)) {
+		}
+		return builder;
+	}
+
 }

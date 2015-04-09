@@ -20,6 +20,7 @@ import org.eclipse.egit.github.core.Reference;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryBranch;
 import org.eclipse.egit.github.core.RepositoryCommit;
+import org.eclipse.egit.github.core.RepositoryCommitCompare;
 import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.SearchRepository;
 import org.eclipse.egit.github.core.Tree;
@@ -251,9 +252,20 @@ public class GitHubConsole {
 				Constants.DEFAULT_PAGE_SIZE);
 	}
 
+	public Issue getIssue(IRepositoryIdProvider repository, int issueNumber)
+			throws IOException {
+		return issueService.getIssue(repository, issueNumber);
+	}
+
 	public RepositoryCommit getCommit(IRepositoryIdProvider repository,
 			String sha) throws IOException {
 		return commitService.getCommit(repository, sha);
+	}
+
+	public RepositoryCommitCompare getCommitCompare(
+			IRepositoryIdProvider repository, String base, String head)
+			throws IOException {
+		return commitService.compare(repository, base, head);
 	}
 
 	public List<CommitComment> getCommitComment(

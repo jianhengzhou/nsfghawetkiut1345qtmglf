@@ -6,7 +6,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 import org.eclipse.egit.github.core.Blob;
 import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.Repository;
@@ -70,6 +80,27 @@ public class CodeFileActivity extends
 	@Override
 	protected void initView() {
 
+	}
+
+	public String testPost(String name, String code) {
+		String url = "http://prettify.bsdn.org/";
+		HttpPost httpRequest = new HttpPost(url);
+
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("code", code));
+		params.add(new BasicNameValuePair("name", name));
+		params.add(new BasicNameValuePair("lang", "java"));
+		try {
+			// 发出HTTP request
+			httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+			// 取得HTTP response
+			HttpResponse httpResponse = new DefaultHttpClient()
+					.execute(httpRequest);
+			return EntityUtils.toString(httpResponse.getEntity());
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
@@ -148,6 +179,12 @@ public class CodeFileActivity extends
 				return result;
 			}
 		}
+		// fileType = FILETYPE.MD;
+		// String str = testPost(CommonUtils.pathToName(treeEntry.getPath()),
+		// new String(
+		// EncodingUtils.fromBase64((blob).getContent()), "utf-8"));
+		// System.out.println("-----------------HTML:--------------\n"+str);
+		// return str;
 		return blob;
 	}
 
@@ -244,7 +281,7 @@ public class CodeFileActivity extends
 
 	@SuppressLint("SetJavaScriptEnabled")
 	private void onMdHtml(String content) throws Exception {
-		GLog.sysout("onMdHtml:\n" + content);
+		GLog.sysout("onMdHtml:\n");
 		webview = (WebView) findViewById(R.id.webview);
 		ViewUtils.setVisibility(webview, View.VISIBLE);
 
@@ -276,9 +313,8 @@ public class CodeFileActivity extends
 	}
 
 	@Override
-	public void onRefresh(){
-		// TODO Auto-generated method stub
-
+	public void onRefresh() {
+		execute();
 	}
 
 }

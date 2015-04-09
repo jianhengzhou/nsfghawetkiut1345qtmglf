@@ -5,7 +5,6 @@ import java.util.List;
 import org.eclipse.egit.github.core.event.Event;
 
 import android.view.View;
-import android.widget.AdapterView;
 
 import com.gdestiny.github.abstracts.fragment.AbstractEventFragment;
 import com.gdestiny.github.async.GitHubConsole;
@@ -34,13 +33,6 @@ public class EventsUserReceivedFragment extends AbstractEventFragment {
 		// if (!TextUtils.isEmpty(user))
 		// getPullToRefreshLayout().getHeaderTransformer()
 		// .setProgressbarVisibility(View.GONE);
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

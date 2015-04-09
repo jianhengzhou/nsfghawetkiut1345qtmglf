@@ -28,6 +28,7 @@ import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
+import com.gdestiny.github.utils.RepositoryUtils;
 import com.gdestiny.github.utils.ToastUtils;
 
 public class RepositoryDetailActivity extends BaseFragmentActivity {
@@ -129,11 +130,13 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 		// TODO Auto-generated method stub
 		repository = (Repository) getIntent().getSerializableExtra(
 				Constants.Extra.REPOSITORY);
-		// if (!TextUtils.isEmpty(repository.getOwner().getAvatarUrl()))
-		if (repository.getOwner() != null) {
+		if (!android.text.TextUtils.isEmpty(repository.getOwner()
+				.getAvatarUrl()) && RepositoryUtils.isComplete(repository))
+		// if (repository.getOwner() != null)
+		{
 			init();
 		} else {
-			new RepositoryRefreshTask(context, repository.generateId()) {
+			new RepositoryRefreshTask(context, repository) {
 
 				@Override
 				public void onSuccess(Repository result) {

@@ -5,6 +5,7 @@ import org.eclipse.egit.github.core.Repository;
 
 import android.content.Context;
 
+import com.gdestiny.github.R;
 import com.gdestiny.github.async.GitHubConsole;
 
 public abstract class RepositoryRefreshTask extends
@@ -21,14 +22,14 @@ public abstract class RepositoryRefreshTask extends
 				return id;
 			}
 		};
-		this.setLoadingMessage(repository.generateId());
+		this.setLoadingMessage(R.string.loading);
 	}
 
 	public RepositoryRefreshTask(Context context,
 			IRepositoryIdProvider repository) {
 		super(context);
 		this.repository = repository;
-		this.setLoadingMessage(repository.generateId());
+		this.setLoadingMessage(R.string.loading);
 	}
 
 	@Override

@@ -6,9 +6,6 @@ import java.util.List;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.event.Event;
 
-import android.view.View;
-import android.widget.AdapterView;
-
 import com.gdestiny.github.R;
 import com.gdestiny.github.abstracts.fragment.AbstractEventFragment;
 import com.gdestiny.github.adapter.EventAdapter;
@@ -49,13 +46,6 @@ public class RepositoryEventFragment extends AbstractEventFragment {
 	@Override
 	public void newPageData(Void params) {
 		setDataPage(GitHubConsole.getInstance().pageEvents(repository));
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

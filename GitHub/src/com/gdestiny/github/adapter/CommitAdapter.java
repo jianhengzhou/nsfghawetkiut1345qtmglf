@@ -13,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.utils.CommitUtils;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
+import com.gdestiny.github.utils.client.CommitUtils;
 
 public class CommitAdapter extends BaseAdapter {
 

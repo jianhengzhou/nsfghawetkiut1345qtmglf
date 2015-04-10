@@ -1,4 +1,4 @@
-package com.gdestiny.github.abstracts.async;
+package com.gdestiny.github.async;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
@@ -8,6 +8,7 @@ import org.eclipse.egit.github.core.service.CollaboratorService;
 import android.content.Context;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.async.DialogTask;
 
 public abstract class IsCollaboratorTask extends
 		DialogTask<GitHubClient, Boolean> {

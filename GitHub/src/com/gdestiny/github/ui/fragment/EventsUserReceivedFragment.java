@@ -6,7 +6,6 @@ import org.eclipse.egit.github.core.event.Event;
 
 import android.view.View;
 
-import com.gdestiny.github.abstracts.fragment.AbstractEventFragment;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.CacheUtils;

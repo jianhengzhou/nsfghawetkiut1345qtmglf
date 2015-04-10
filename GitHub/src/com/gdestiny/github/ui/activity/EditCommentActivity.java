@@ -2,7 +2,6 @@ package com.gdestiny.github.ui.activity;
 
 import org.eclipse.egit.github.core.Comment;
 
-import com.gdestiny.github.abstracts.activity.AbstractCommentActivity;
 import com.gdestiny.github.async.CommentTask;
 import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.Constants;

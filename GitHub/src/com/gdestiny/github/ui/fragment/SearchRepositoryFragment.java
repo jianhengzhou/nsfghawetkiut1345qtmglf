@@ -14,11 +14,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.abstracts.async.RepositoryRefreshTask;
+import com.gdestiny.github.abstracts.async.SimpleUpdateResultTask;
 import com.gdestiny.github.abstracts.fragment.BaseLoadFragment;
 import com.gdestiny.github.adapter.SearchRepositoryAdapter;
 import com.gdestiny.github.async.GitHubConsole;
-import com.gdestiny.github.async.SimpleUpdateResultTask;
+import com.gdestiny.github.async.refresh.RefreshRepositoryTask;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.view.MoreListView;
 import com.gdestiny.github.ui.view.TitleBar;
@@ -48,7 +48,7 @@ public class SearchRepositoryFragment extends
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				new RepositoryRefreshTask(context, adapter.getItem(position)) {
+				new RefreshRepositoryTask(context, adapter.getItem(position)) {
 
 					@Override
 					public void onSuccess(Repository result) {

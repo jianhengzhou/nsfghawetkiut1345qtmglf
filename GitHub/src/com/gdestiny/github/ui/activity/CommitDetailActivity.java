@@ -40,13 +40,13 @@ import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.CacheUtils;
-import com.gdestiny.github.utils.CommitUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.TimeUtils;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
+import com.gdestiny.github.utils.client.CommitUtils;
 
 public class CommitDetailActivity extends
 		BaseLoadFragmentActivity<Void, CommitTree> {

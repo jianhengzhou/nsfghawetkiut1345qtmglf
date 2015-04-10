@@ -9,7 +9,7 @@ import com.gdestiny.github.ui.view.MoreListView;
 import com.gdestiny.github.ui.view.MoreListView.OnAutoLoadListener;
 import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.Constants;
-import com.gdestiny.github.utils.IteratorUtils;
+import com.gdestiny.github.utils.client.IteratorUtils;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;

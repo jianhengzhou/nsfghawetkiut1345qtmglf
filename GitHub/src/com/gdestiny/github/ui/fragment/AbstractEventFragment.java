@@ -1,4 +1,4 @@
-package com.gdestiny.github.abstracts.fragment;
+package com.gdestiny.github.ui.fragment;
 
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.CATEGORY_BROWSABLE;
@@ -32,10 +32,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.abstracts.async.CommitListTask;
-import com.gdestiny.github.abstracts.async.CommitRefreshTask;
-import com.gdestiny.github.abstracts.async.IssueRefreshTask;
+import com.gdestiny.github.abstracts.fragment.BaseLoadPageFragment;
 import com.gdestiny.github.adapter.EventAdapter;
+import com.gdestiny.github.async.CommitListTask;
+import com.gdestiny.github.async.refresh.RefreshCommitTask;
+import com.gdestiny.github.async.refresh.RefreshIssueTask;
 import com.gdestiny.github.ui.activity.CommitDetailActivity;
 import com.gdestiny.github.ui.activity.GistDetailActivity;
 import com.gdestiny.github.ui.activity.IssueDetailActivity;
@@ -44,9 +45,9 @@ import com.gdestiny.github.ui.activity.UserNavigationActivity;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
-import com.gdestiny.github.utils.EventUtils;
 import com.gdestiny.github.utils.IntentUtils;
-import com.gdestiny.github.utils.IssueUtils;
+import com.gdestiny.github.utils.client.EventUtils;
+import com.gdestiny.github.utils.client.IssueUtils;
 
 public abstract class AbstractEventFragment extends
 		BaseLoadPageFragment<Event, Void> {
@@ -106,7 +107,7 @@ public abstract class AbstractEventFragment extends
 	}
 
 	private void openCommit(final Repository repository, String sha) {
-		new CommitRefreshTask(context, repository, sha) {
+		new RefreshCommitTask(context, repository, sha) {
 
 			@Override
 			public void onSuccess(RepositoryCommit result) {
@@ -182,7 +183,7 @@ public abstract class AbstractEventFragment extends
 					.getPullRequest());
 
 		if (issue != null) {
-			new IssueRefreshTask(context, repository, issue.getNumber()) {
+			new RefreshIssueTask(context, repository, issue.getNumber()) {
 
 				@Override
 				public void onSuccess(Issue result) {

@@ -13,11 +13,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.abstracts.async.UserRefreshTask;
+import com.gdestiny.github.abstracts.async.SimpleUpdateResultTask;
 import com.gdestiny.github.abstracts.fragment.BaseLoadFragment;
 import com.gdestiny.github.adapter.SearchUserAdapter;
 import com.gdestiny.github.async.GitHubConsole;
-import com.gdestiny.github.async.SimpleUpdateResultTask;
+import com.gdestiny.github.async.refresh.RefreshUserTask;
 import com.gdestiny.github.bean.SearchUser;
 import com.gdestiny.github.ui.activity.UserNavigationActivity;
 import com.gdestiny.github.ui.view.MoreListView;
@@ -52,7 +52,7 @@ public class SearchUserFragment extends
 				SearchUser user = adapter.getItem(position);
 				if (CommonUtils.isAuthUser(user.getLogin()))
 					return;
-				new UserRefreshTask(context, user.getLogin()) {
+				new RefreshUserTask(context, user.getLogin()) {
 
 					@Override
 					public void onSuccess(User result) {

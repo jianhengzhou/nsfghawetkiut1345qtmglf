@@ -1,6 +1,5 @@
-package com.gdestiny.github.async;
+package com.gdestiny.github.abstracts.async;
 
-import com.gdestiny.github.abstracts.async.BaseAsyncTask;
 
 public class SimpleUpdateResultTask<Result> extends
 		BaseAsyncTask<Void, Void, Result> {

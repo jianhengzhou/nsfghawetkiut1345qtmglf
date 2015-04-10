@@ -22,10 +22,10 @@ import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
+import com.gdestiny.github.abstracts.async.SimpleUpdateTask;
 import com.gdestiny.github.abstracts.fragment.BaseLoadFragment;
 import com.gdestiny.github.adapter.RepositoryAdapter;
 import com.gdestiny.github.async.GitHubConsole;
-import com.gdestiny.github.async.SimpleUpdateTask;
 import com.gdestiny.github.bean.comparator.RepositoryComparator;
 import com.gdestiny.github.ui.activity.RepositoryDetailActivity;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;

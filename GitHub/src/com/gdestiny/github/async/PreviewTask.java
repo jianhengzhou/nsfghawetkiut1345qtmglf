@@ -1,10 +1,11 @@
-package com.gdestiny.github.abstracts.async;
+package com.gdestiny.github.async;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.MarkdownService;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.async.DialogTask;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
 
 import android.content.Context;

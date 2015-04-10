@@ -1,4 +1,4 @@
-package com.gdestiny.github.utils;
+package com.gdestiny.github.utils.client;
 
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.PullRequest;

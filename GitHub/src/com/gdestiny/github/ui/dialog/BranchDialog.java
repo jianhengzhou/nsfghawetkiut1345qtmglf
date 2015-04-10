@@ -12,9 +12,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.async.GitHubTask;
+import com.gdestiny.github.abstracts.async.GitHubTask.TaskListener;
 import com.gdestiny.github.async.GitHubConsole;
-import com.gdestiny.github.async.GitHubTask;
-import com.gdestiny.github.async.GitHubTask.TaskListener;
 
 public class BranchDialog {
 

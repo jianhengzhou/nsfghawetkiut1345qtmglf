@@ -1,6 +1,7 @@
 package com.gdestiny.github.abstracts.async;
 
 import android.content.Context;
+
 import com.gdestiny.github.ui.dialog.ConfirmDialog;
 
 public abstract class ConfirmDialogTask<Params, Result> extends

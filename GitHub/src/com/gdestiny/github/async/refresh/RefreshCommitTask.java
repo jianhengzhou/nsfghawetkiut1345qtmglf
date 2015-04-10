@@ -1,19 +1,20 @@
-package com.gdestiny.github.abstracts.async;
+package com.gdestiny.github.async.refresh;
 
 import org.eclipse.egit.github.core.IRepositoryIdProvider;
 import org.eclipse.egit.github.core.RepositoryCommit;
 
 import android.content.Context;
 
+import com.gdestiny.github.abstracts.async.DialogTask;
 import com.gdestiny.github.async.GitHubConsole;
 
-public abstract class CommitRefreshTask extends
+public abstract class RefreshCommitTask extends
 		DialogTask<Void, RepositoryCommit> {
 
 	private String sha;
 	private IRepositoryIdProvider repository;
 
-	public CommitRefreshTask(Context context, IRepositoryIdProvider repository,
+	public RefreshCommitTask(Context context, IRepositoryIdProvider repository,
 			String sha) {
 		super(context);
 		this.sha = sha;

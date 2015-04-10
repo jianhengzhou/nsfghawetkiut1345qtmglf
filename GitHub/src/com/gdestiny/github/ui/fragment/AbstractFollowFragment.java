@@ -1,4 +1,4 @@
-package com.gdestiny.github.abstracts.fragment;
+package com.gdestiny.github.ui.fragment;
 
 import org.eclipse.egit.github.core.User;
 
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.fragment.BaseLoadPageFragment;
 import com.gdestiny.github.adapter.UserAdapter;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.ui.activity.UserNavigationActivity;

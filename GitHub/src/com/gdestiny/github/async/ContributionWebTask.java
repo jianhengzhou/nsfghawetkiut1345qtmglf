@@ -1,4 +1,4 @@
-package com.gdestiny.github.abstracts.async;
+package com.gdestiny.github.async;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
+import com.gdestiny.github.abstracts.async.BaseAsyncTask;
 import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ToastUtils;

@@ -25,9 +25,9 @@ import android.widget.TextView;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.abstracts.activity.BaseLoadFragmentActivity;
+import com.gdestiny.github.abstracts.async.SimpleUpdateTask;
 import com.gdestiny.github.adapter.FeedbackAdapter;
 import com.gdestiny.github.app.GitHubApplication;
-import com.gdestiny.github.async.SimpleUpdateTask;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;

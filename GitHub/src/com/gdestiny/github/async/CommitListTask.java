@@ -1,4 +1,4 @@
-package com.gdestiny.github.abstracts.async;
+package com.gdestiny.github.async;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.async.DialogTask;
 import com.gdestiny.github.adapter.CommitDialogAdapter;
-import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
 
 public abstract class CommitListTask extends

@@ -1,10 +1,12 @@
-package com.gdestiny.github.utils;
+package com.gdestiny.github.utils.client;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.egit.github.core.client.PageIterator;
+
+import com.gdestiny.github.utils.GLog;
 
 public class IteratorUtils {
 

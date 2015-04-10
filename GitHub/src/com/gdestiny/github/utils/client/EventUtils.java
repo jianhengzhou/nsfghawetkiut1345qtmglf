@@ -1,4 +1,4 @@
-package com.gdestiny.github.utils;
+package com.gdestiny.github.utils.client;
 
 import java.util.List;
 
@@ -25,6 +25,8 @@ import org.eclipse.egit.github.core.event.PullRequestPayload;
 import org.eclipse.egit.github.core.event.PullRequestReviewCommentPayload;
 import org.eclipse.egit.github.core.event.PushPayload;
 import org.eclipse.egit.github.core.event.TeamAddPayload;
+
+import com.gdestiny.github.utils.GLog;
 
 import android.text.Spannable;
 import android.text.SpannableString;

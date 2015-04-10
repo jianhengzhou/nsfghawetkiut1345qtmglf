@@ -12,12 +12,12 @@ import android.support.v4.view.ViewPager;
 import com.gdestiny.github.R;
 import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
 import com.gdestiny.github.abstracts.async.BaseAsyncTask;
-import com.gdestiny.github.abstracts.async.RepositoryRefreshTask;
 import com.gdestiny.github.abstracts.fragment.BaseLoadFragment;
 import com.gdestiny.github.adapter.SimplePageAdapter;
 import com.gdestiny.github.async.ForkRepositoryTask;
 import com.gdestiny.github.async.GitHubConsole;
 import com.gdestiny.github.async.StarRepositoryTask;
+import com.gdestiny.github.async.refresh.RefreshRepositoryTask;
 import com.gdestiny.github.ui.dialog.StatusPopWindowItem;
 import com.gdestiny.github.ui.fragment.RepositoryCodeFragment;
 import com.gdestiny.github.ui.fragment.RepositoryCommitFragment;
@@ -28,8 +28,8 @@ import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
-import com.gdestiny.github.utils.RepositoryUtils;
 import com.gdestiny.github.utils.ToastUtils;
+import com.gdestiny.github.utils.client.RepositoryUtils;
 
 public class RepositoryDetailActivity extends BaseFragmentActivity {
 
@@ -136,7 +136,7 @@ public class RepositoryDetailActivity extends BaseFragmentActivity {
 		{
 			init();
 		} else {
-			new RepositoryRefreshTask(context, repository) {
+			new RefreshRepositoryTask(context, repository) {
 
 				@Override
 				public void onSuccess(Repository result) {

@@ -5,7 +5,6 @@ import org.eclipse.egit.github.core.Gist;
 import org.eclipse.egit.github.core.User;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.abstracts.activity.AbstractCommentActivity;
 import com.gdestiny.github.async.GistCommentTask;
 import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.Constants;

@@ -6,6 +6,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.gdestiny.github.R;
+import com.gdestiny.github.abstracts.interfaces.LoadingTask;
 import com.gdestiny.github.ui.dialog.MaterialDialog;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ToastUtils;

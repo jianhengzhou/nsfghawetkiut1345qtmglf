@@ -15,10 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.utils.EventUtils;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.TimeUtils;
 import com.gdestiny.github.utils.ViewUtils;
+import com.gdestiny.github.utils.client.EventUtils;
 
 public class EventAdapter extends BaseAdapter {
 

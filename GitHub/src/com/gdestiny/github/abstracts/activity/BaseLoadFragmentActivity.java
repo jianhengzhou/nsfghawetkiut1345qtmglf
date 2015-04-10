@@ -2,8 +2,8 @@ package com.gdestiny.github.abstracts.activity;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.abstracts.async.BaseAsyncTask;
-import com.gdestiny.github.abstracts.async.LoadingTask;
-import com.gdestiny.github.abstracts.async.OnRefreshListener;
+import com.gdestiny.github.abstracts.interfaces.LoadingTask;
+import com.gdestiny.github.abstracts.interfaces.OnRefreshListener;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 

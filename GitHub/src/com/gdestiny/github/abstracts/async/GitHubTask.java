@@ -1,8 +1,7 @@
-package com.gdestiny.github.async;
+package com.gdestiny.github.abstracts.async;
 
 import org.eclipse.egit.github.core.client.GitHubClient;
 
-import com.gdestiny.github.abstracts.async.BaseAsyncTask;
 
 public class GitHubTask<Result> extends
 		BaseAsyncTask<GitHubClient, Void, Result> {

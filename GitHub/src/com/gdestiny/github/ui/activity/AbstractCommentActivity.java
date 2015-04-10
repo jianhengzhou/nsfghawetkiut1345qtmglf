@@ -1,4 +1,4 @@
-package com.gdestiny.github.abstracts.activity;
+package com.gdestiny.github.ui.activity;
 
 import org.eclipse.egit.github.core.Repository;
 
@@ -14,8 +14,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.abstracts.async.PreviewTask;
+import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.PreviewTask;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.Constants;

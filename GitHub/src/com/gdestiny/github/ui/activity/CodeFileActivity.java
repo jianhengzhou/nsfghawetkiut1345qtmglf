@@ -67,6 +67,7 @@ public class CodeFileActivity extends
 
 	private FILETYPE fileType;
 
+	private ScrollView scroll;
 	private TextView tv;
 	private WebView webview;
 	private TouchImageView normalImageView;
@@ -79,7 +80,7 @@ public class CodeFileActivity extends
 
 	@Override
 	protected void initView() {
-
+		scroll = (ScrollView) findViewById(R.id.scrollview);
 	}
 
 	public String testPost(String name, String code) {
@@ -296,7 +297,7 @@ public class CodeFileActivity extends
 	private void onOther(byte[] data) throws UnsupportedEncodingException {
 		GLog.sysout("onOther");
 		tv = (TextView) findViewById(R.id.text);
-		ViewUtils.setVisibility(tv, View.VISIBLE);
+		ViewUtils.setVisibility(scroll, View.VISIBLE);
 
 		String str = new String(data, "utf-8");
 		tv.setText(str);

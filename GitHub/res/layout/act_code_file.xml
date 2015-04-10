@@ -9,57 +9,52 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <FrameLayout
+        <com.gdestiny.github.ui.view.ObservableScrollView
+            android:id="@+id/scrollview"
+            style="@style/scrollbar_style"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:scrollbarAlwaysDrawVerticalTrack="false"
+            android:visibility="gone" >
 
-            <com.gdestiny.github.ui.view.ObservableScrollView
-                android:id="@+id/scrollview"
+            <HorizontalScrollView
                 style="@style/scrollbar_style"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbarAlwaysDrawVerticalTrack="false" >
+                android:layout_height="wrap_content" >
 
-                <HorizontalScrollView
-                    style="@style/scrollbar_style"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin8"
+                    android:scrollHorizontally="true"
+                    android:textColor="@color/common_light_black"
+                    android:textSize="16sp" />
+            </HorizontalScrollView>
+        </com.gdestiny.github.ui.view.ObservableScrollView>
 
-                    <TextView
-                        android:id="@+id/text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/margin8"
-                        android:scrollHorizontally="true"
-                        android:textColor="@color/common_light_black"
-                        android:textSize="16sp"
-                        android:visibility="gone" />
-                </HorizontalScrollView>
-            </com.gdestiny.github.ui.view.ObservableScrollView>
+        <com.gdestiny.github.ui.view.touchimageview.TouchImageView
+            android:id="@+id/imageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerInside"
+            android:visibility="gone" />
 
-            <com.gdestiny.github.ui.view.touchimageview.TouchImageView
-                android:id="@+id/imageview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/transparent"
-                android:contentDescription="@string/app_name"
-                android:scaleType="centerInside"
-                android:visibility="gone" />
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/gif_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:visibility="gone" />
 
-            <pl.droidsonroids.gif.GifImageView
-                android:id="@+id/gif_imageview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/transparent"
-                android:visibility="gone" />
-
-            <WebView
-                android:id="@+id/webview"
-                style="@style/scrollbar_style"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
-        </FrameLayout>
+        <WebView
+            android:id="@+id/webview"
+            style="@style/scrollbar_style"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

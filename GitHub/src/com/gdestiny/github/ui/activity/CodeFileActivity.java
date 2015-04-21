@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -28,29 +28,30 @@ import org.eclipse.egit.github.core.util.EncodingUtils;
 
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
+import android.view.LayoutInflater;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.webkit.WebViewClient;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.abstracts.activity.BaseLoadFragmentActivity;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
+import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.ui.view.touchimageview.TouchImageView;
+import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.CommonUtils;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.ImageUtils;
+import com.gdestiny.github.utils.SourceEditor;
 import com.gdestiny.github.utils.ToastUtils;
-import com.gdestiny.github.utils.ViewUtils;
 import com.gdestiny.github.utils.client.MarkdownUtils;
 
 public class CodeFileActivity extends
@@ -67,11 +68,14 @@ public class CodeFileActivity extends
 
 	private FILETYPE fileType;
 
-	private ScrollView scroll;
-	private TextView tv;
+	private SourceEditor sourceEditor;
+	private String path;
 	private WebView webview;
 	private TouchImageView normalImageView;
 	private GifImageView gifImageView;
+
+	private String markdownRaw = null;
+	private String markdown = null;
 
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
@@ -79,8 +83,60 @@ public class CodeFileActivity extends
 	}
 
 	@Override
+	protected void initActionBar(TitleBar titleBar) {
+		super.initActionBar(titleBar);
+		LinkedHashMap<Integer, Integer> itemmap = new LinkedHashMap<Integer, Integer>();
+		itemmap.put(R.string.save, R.drawable.common_icon_save);
+		// itemmap.put(R.string.share, R.drawable.common_share_grey);
+		itemmap.put(R.string.refresh, R.drawable.common_status_refresh);
+
+		StatusPopUpWindow.StatusPopUpWindowItemClickListener menuListener = new StatusPopUpWindow.StatusPopUpWindowItemClickListener() {
+
+			@Override
+			public void onitemclick(int titleId) {
+				switch (titleId) {
+				case R.string.refresh:
+					if (!isLoading())
+						onRefresh();
+					break;
+				case R.string.share:
+					AndroidUtils.share(context, repository.getName(),
+							"https://github.com/" + repository.generateId()
+									+ "/commit/");
+					break;
+				case R.string.wrap:
+					showProgress();
+					sourceEditor.toggleWrap();
+					if (sourceEditor.getWrap()) {
+						getTitlebar().getStatusPopup().getAction(1).mTitle = "Unwrap";
+					} else {
+						getTitlebar().getStatusPopup().getAction(1).mTitle = "Wrap";
+					}
+					break;
+				case R.string.raw:
+					showProgress();
+					sourceEditor.toggleMarkdown();
+					if (!sourceEditor.isMarkdown()) {
+						getTitlebar().getStatusPopup().getAction(2).mTitle = "Markdown";
+						sourceEditor.setContent(markdownRaw);
+					} else {
+						getTitlebar().getStatusPopup().getAction(2).mTitle = "Raw";
+						sourceEditor.setContent(markdown);
+					}
+					break;
+				default:
+					ToastUtils.show(context, "TODO "
+							+ context.getResources().getString(titleId));
+					break;
+				}
+				titlebar.dissmissStatus();
+			}
+		};
+		titlebar.setStatusItem(context, itemmap, menuListener);
+	}
+
+	@Override
 	protected void initView() {
-		scroll = (ScrollView) findViewById(R.id.scrollview);
 	}
 
 	public String testPost(String name, String code) {
@@ -114,7 +170,6 @@ public class CodeFileActivity extends
 		commitFile = (CommitFile) getIntent().getSerializableExtra(
 				Constants.Extra.COMMIT_FILE);
 
-		String path = null;
 		if (treeEntry != null) {
 			path = treeEntry.getPath();
 			sha = treeEntry.getSha();
@@ -122,7 +177,7 @@ public class CodeFileActivity extends
 			path = commitFile.getFilename();
 			sha = commitFile.getSha();
 		} else {
-			ToastUtils.show(context, "not fount(404)");
+			ToastUtils.show(context, "not found(404)");
 			finish();
 		}
 
@@ -142,8 +197,55 @@ public class CodeFileActivity extends
 		GLog.sysout(sha);
 		GLog.sysout(fileType.toString());
 		getTitlebar().setLeftLayout(null, CommonUtils.pathToName(path));
+		addComponent();
 
 		execute(GitHubApplication.getClient());
+	}
+
+	private void addComponent() {
+		if (fileType == FILETYPE.IMG) {
+			normalImageView = (TouchImageView) LayoutInflater.from(context)
+					.inflate(R.layout.layout_touchimageview, null);
+			getSwipeRefreshLayout().addView(normalImageView);
+		} else if (fileType == FILETYPE.GIF) {
+			gifImageView = (GifImageView) LayoutInflater.from(context).inflate(
+					R.layout.layout_gifimageview, null);
+			getSwipeRefreshLayout().addView(gifImageView);
+		} else {
+			webview = (WebView) LayoutInflater.from(context).inflate(
+					R.layout.layout_webview, null);
+			getSwipeRefreshLayout().addView(webview);
+			sourceEditor = new SourceEditor(webview);
+			getTitlebar().getStatusPopup().addItem(context, 1, R.string.wrap,
+					R.drawable.common_wrap);
+			if (fileType == FILETYPE.MD) {
+				getTitlebar().getStatusPopup().addItem(context, 2,
+						R.string.raw, R.drawable.common_markdown);
+				sourceEditor.setMarkdown(true);
+			}
+
+			WebSettings websetting = webview.getSettings();
+			websetting.setSupportZoom(true);
+			websetting.setBuiltInZoomControls(true);
+			webview.setWebViewClient(new WebViewClient() {
+
+				@Override
+				public void onPageFinished(WebView view, String url) {
+					super.onPageFinished(view, url);
+					dismissProgress();
+				}
+
+				@Override
+				public boolean shouldOverrideUrlLoading(WebView view, String url) {
+					if (SourceEditor.SOURCE_EDITOR.equals(url)) {
+						view.loadUrl(url);
+						return false;
+					} else {
+						return true;
+					}
+				}
+			});
+		}
 	}
 
 	@Override
@@ -164,13 +266,17 @@ public class CodeFileActivity extends
 
 		if (fileType == FILETYPE.MD) {
 			MarkdownService mdSerview = new MarkdownService(params);
-			String mdText = new String(EncodingUtils.fromBase64(blob
-					.getContent()), "utf-8");
-			if (mdText != null) {
+			markdownRaw = new String(
+					EncodingUtils.fromBase64(blob.getContent()), "utf-8");
+			if (markdownRaw != null) {
 				if (repository != null) {
-					return mdSerview.getRepositoryHtml(repository, mdText);
+					markdown = mdSerview.getRepositoryHtml(repository,
+							markdownRaw);
+					return markdown;
 				}
-				return mdSerview.getHtml(mdText, MarkdownService.MODE_GFM);
+				markdown = mdSerview.getHtml(markdownRaw,
+						MarkdownService.MODE_GFM);
+				return markdown;
 
 			}
 		} else if (fileType == FILETYPE.IMG) {
@@ -191,19 +297,21 @@ public class CodeFileActivity extends
 
 	@Override
 	public void onSuccess(Serializable result) {
-		super.onSuccess(result);
 		try {
 			// cache
 			byte[] data = null;
-			if (result instanceof Blob)
+			if (result instanceof Blob) {
 				data = EncodingUtils.fromBase64(((Blob) result).getContent());
-			else if (result instanceof String) {
-				if (fileType == FILETYPE.IMG)
+			} else if (result instanceof String) {
+				if (fileType == FILETYPE.IMG) {
+					super.onSuccess(result);
 					onNormalImage((String) result);
-				else if (fileType == FILETYPE.MD)
-					onMdHtml((String) result);
-				else
+				} else if (fileType == FILETYPE.MD) {
+					onMdHtml();
+				} else {
+					super.onSuccess(result);
 					onGifImage((String) result);
+				}
 				return;
 			}
 			// net
@@ -215,12 +323,13 @@ public class CodeFileActivity extends
 				onNormalImage(data);
 				break;
 			case MD:
-				onMdHtml((String) result);
+				onMdHtml();
 				break;
 			case PIC_IN_CACHE:
 				break;
 			default:
-				onOther(data);
+				// onOther(data);
+				onWebview(new String(data, "utf-8"));
 				break;
 			}
 		} catch (Exception e) {
@@ -231,39 +340,25 @@ public class CodeFileActivity extends
 
 	private void onNormalImage(byte[] data) {
 		GLog.sysout("onNormalImage");
-		normalImageView = (TouchImageView) findViewById(R.id.imageview);
-		ViewUtils.setVisibility(normalImageView, View.VISIBLE);
-
 		Bitmap bm = BitmapFactory.decodeByteArray(data, 0, data.length);
-
 		normalImageView.setImageBitmap(bm);
 	}
 
 	private void onNormalImage(String path) {
 		GLog.sysout("onNormalImage file");
-		normalImageView = (TouchImageView) findViewById(R.id.imageview);
-		ViewUtils.setVisibility(normalImageView, View.VISIBLE);
-
 		ImageLoaderUtils.displayImage("file://" + path, normalImageView,
 				R.color.transparent, false);
 	}
 
 	private void onGifImage(byte[] data) throws IOException {
 		GLog.sysout("onGifImage");
-		gifImageView = (GifImageView) findViewById(R.id.gif_imageview);
-		ViewUtils.setVisibility(gifImageView, View.VISIBLE);
-
 		GifDrawable gifDrawable = new GifDrawable(data);
-
 		// ImageLoaderUtils.cacheBitmap(treeEntry.getUrl(), gifDrawable);
-
 		gifImageView.setImageDrawable(gifDrawable);
 	}
 
 	private void onGifImage(String path) throws IOException {
 		GLog.sysout("onGifImage");
-		gifImageView = (GifImageView) findViewById(R.id.gif_imageview);
-		ViewUtils.setVisibility(gifImageView, View.VISIBLE);
 
 		File file = new File(path);
 		FileInputStream fis = new FileInputStream(file);
@@ -280,32 +375,17 @@ public class CodeFileActivity extends
 		gifImageView.setImageDrawable(gifDrawable);
 	}
 
-	@SuppressLint("SetJavaScriptEnabled")
-	private void onMdHtml(String content) throws Exception {
-		GLog.sysout("onMdHtml:\n");
-		webview = (WebView) findViewById(R.id.webview);
-		ViewUtils.setVisibility(webview, View.VISIBLE);
-
-		WebSettings websetting = webview.getSettings();
-		websetting.setJavaScriptEnabled(true);
-		websetting.setSupportZoom(true);
-		websetting.setBuiltInZoomControls(true);
-
-		webview.loadDataWithBaseURL(null, content, "text/html", "utf-8", null);
+	private void onWebview(String content) {
+		sourceEditor.setSource(path, content);
 	}
 
-	private void onOther(byte[] data) throws UnsupportedEncodingException {
-		GLog.sysout("onOther");
-		tv = (TextView) findViewById(R.id.text);
-		ViewUtils.setVisibility(scroll, View.VISIBLE);
-
-		String str = new String(data, "utf-8");
-		tv.setText(str);
-		tv.setHorizontallyScrolling(true);
-
-		ScrollView scroll = (ScrollView) findViewById(R.id.scrollview);
-		scroll.setFillViewport(true);
-		scroll.setHorizontalScrollBarEnabled(true);
+	private void onMdHtml() throws Exception {
+		GLog.sysout("onMdHtml:\n");
+		if (sourceEditor.isMarkdown()) {
+			onWebview(markdown);
+		} else {
+			onWebview(markdownRaw);
+		}
 	}
 
 	@Override
@@ -315,7 +395,7 @@ public class CodeFileActivity extends
 
 	@Override
 	public void onRefresh() {
-		execute();
+		execute(GitHubApplication.getClient());
 	}
 
 }

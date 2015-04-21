@@ -42,6 +42,9 @@
     <string name="unstar">Unstar</string>
     <string name="fork">Fork</string>
     <string name="share">Share</string>
+    <string name="save">Save As</string>
+    <string name="wrap">Wrap</string>
+    <string name="raw">Raw</string>
     <string name="contributors">Contributors</string>
 
     <!-- repository issue -->

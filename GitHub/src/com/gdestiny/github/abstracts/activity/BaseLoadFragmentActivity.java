@@ -74,6 +74,10 @@ public abstract class BaseLoadFragmentActivity<Params, Result> extends
 				});
 	}
 
+	public SwipeRefreshLayout getSwipeRefreshLayout() {
+		return swipeRefreshLayout;
+	}
+
 	public void showProgress() {
 		isLoading = true;
 		if (swipeRefreshLayout != null && !swipeRefreshLayout.isRefreshing()) {

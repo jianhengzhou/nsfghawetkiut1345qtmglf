@@ -50,6 +50,7 @@ import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.ImageLoaderUtils;
 import com.gdestiny.github.utils.ImageUtils;
+import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.SourceEditor;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.client.MarkdownUtils;
@@ -76,6 +77,7 @@ public class CodeFileActivity extends
 
 	private String markdownRaw = null;
 	private String markdown = null;
+	private Blob blob;
 
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
@@ -87,7 +89,6 @@ public class CodeFileActivity extends
 		super.initActionBar(titleBar);
 		LinkedHashMap<Integer, Integer> itemmap = new LinkedHashMap<Integer, Integer>();
 		itemmap.put(R.string.save, R.drawable.common_icon_save);
-		// itemmap.put(R.string.share, R.drawable.common_share_grey);
 		itemmap.put(R.string.refresh, R.drawable.common_status_refresh);
 
 		StatusPopUpWindow.StatusPopUpWindowItemClickListener menuListener = new StatusPopUpWindow.StatusPopUpWindowItemClickListener() {
@@ -123,6 +124,13 @@ public class CodeFileActivity extends
 						getTitlebar().getStatusPopup().getAction(2).mTitle = "Raw";
 						sourceEditor.setContent(markdown);
 					}
+					break;
+				case R.string.save:
+					IntentUtils
+							.create(context, SaveAsActivity.class)
+							.putExtra(Constants.Extra.NAME,
+									CommonUtils.pathToName(path))
+							.putExtra(Constants.Extra.BLOB, blob).start();
 					break;
 				default:
 					ToastUtils.show(context, "TODO "
@@ -262,7 +270,7 @@ public class CodeFileActivity extends
 		}
 		// from net
 		DataService dataService = new DataService(params);
-		Blob blob = dataService.getBlob(repository, sha);
+		blob = dataService.getBlob(repository, sha);
 
 		if (fileType == FILETYPE.MD) {
 			MarkdownService mdSerview = new MarkdownService(params);

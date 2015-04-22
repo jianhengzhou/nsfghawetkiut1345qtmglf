@@ -18,6 +18,19 @@ public class ImageUtils {
 				+ Color.blue(color) * Color.blue(color) * .068) > 130;
 	}
 
+	public static String getExt(String name) {
+		int index = name.lastIndexOf('.');
+		if (index < 0) {
+			return null;
+		}
+		String ex = name.substring(index + 1);
+		return ex;
+	}
+
+	public static boolean isPng(String name) {
+		return "png".equalsIgnoreCase(getExt(name));
+	}
+
 	public static boolean isImage(String name) {
 		int index = name.lastIndexOf('.');
 		if (index < 0) {

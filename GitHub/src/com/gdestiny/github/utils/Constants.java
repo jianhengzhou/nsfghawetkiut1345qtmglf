@@ -27,6 +27,8 @@ public class Constants {
 		public static final String FILE_NAME = "file_name";
 		public static final String DATA = "data";
 		public static final String USER_INFO = "userinfo";
+		public static final String NAME = "name";
+		public static final String BLOB = "blob";
 	}
 
 	public final static class Request {

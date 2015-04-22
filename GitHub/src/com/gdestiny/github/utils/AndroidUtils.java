@@ -3,7 +3,10 @@ package com.gdestiny.github.utils;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
@@ -26,6 +29,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import com.gdestiny.cache.utils.IoUtils;
 import com.gdestiny.github.R;
 
 public class AndroidUtils {
@@ -117,6 +121,11 @@ public class AndroidUtils {
 
 	public static class FileManager {
 
+		public static boolean isExternalStorageValid() {
+			return android.os.Environment.getExternalStorageState().equals(
+					android.os.Environment.MEDIA_MOUNTED);
+		}
+
 		public static boolean delete(File file) {
 			try {
 				if (file.isFile()) {
@@ -159,6 +168,23 @@ public class AndroidUtils {
 		public static long getSize(String path) {
 			File file = new File(path);
 			return getSize(file);
+		}
+
+		public static boolean save(File file, String content)
+				throws IOException {
+			BufferedOutputStream os = new BufferedOutputStream(
+					new FileOutputStream(file), 32 * 1024);
+			boolean savedSuccessfully = false;
+			try {
+				os.write(content.getBytes());
+				savedSuccessfully = true;
+			} finally {
+				IoUtils.closeSilently(os);
+				if (!savedSuccessfully) {
+					file.delete();
+				}
+			}
+			return savedSuccessfully;
 		}
 
 		public static boolean clearPreference(Context context, String name) {
@@ -318,4 +344,5 @@ public class AndroidUtils {
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
+
 }

@@ -27,9 +27,9 @@ import com.gdestiny.github.abstracts.async.GitHubTask;
 import com.gdestiny.github.app.DefaultClient;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.utils.Constants;
+import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
 import com.gdestiny.github.utils.SnappyDBUtils;
-import com.gdestiny.github.utils.TestUtils;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
 import com.snappydb.SnappydbException;
@@ -158,13 +158,51 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 			@Override
 			public User onExcute(GitHubClient client) {
+				// client.setUserAgent(getString(R.string.app_name));
+				// Authorization authorization = null;
+				// OAuthService oAuthService = new OAuthService(client);
+				// try {
+				// List<Authorization> authorizationList = oAuthService
+				// .getAuthorizations();
+				//
+				// for (Authorization a : authorizationList) {
+				// if (getString(R.string.app_name).equals(a.getNote())) {
+				// authorization = a;
+				// break;
+				// }
+				// }
+				//
+				// /* 如果当前应用没有被认证，则新建认证 */
+				// if (authorization == null) {
+				// GLog.sysout("createAuthorization");
+				// authorization = new Authorization();
+				// authorization.setNote(getString(R.string.app_name));
+				// authorization.setUrl("https://github.com/gdestiny");
+				// List<String> scopes = new ArrayList<String>();
+				// scopes.add("notifications");
+				// scopes.add("repo");
+				// scopes.add("user");
+				// authorization.setScopes(scopes);
+				// authorization = oAuthService
+				// .createAuthorization(authorization);
+				// }
+				// String token = authorization.getToken();
+				// PreferencesUtils.putString(context, "token", token);
+				// GLog.sysout("token:" + token);
+				// } catch (Exception ex) {
+				// ex.printStackTrace();
+				// return null;
+				// }
+				// return null;
+
+				// // ///////////////////////////////////
 				User user = null;
 				try {
 					user = new UserService(client).getUser();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					System.out.println(e.getMessage());
+					GLog.sysout(e.getMessage());
 					return null;
 				}
 				return user;
@@ -175,14 +213,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				// TODO Auto-generated method stub
 				dialog.dismiss();
 				if (result == null) {
+					ToastUtils.show(context, "Login Failed");
 				} else {
-					System.out.println("" + TestUtils.printUser(result));
 					try {
 						saveLoginState(result);
 						GitHubApplication.setUser(result);
 						GitHubApplication.setClient(client);
 					} catch (SnappydbException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 						ToastUtils.show(context, e.getMessage());
 					}

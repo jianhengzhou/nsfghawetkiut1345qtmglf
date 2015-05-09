@@ -1,0 +1,17 @@
+[1]. 初悦欣  活灵活现用Git_基础篇 2009-01-01
+[2]. 百度百科. GIT（分布式版本控制系统）
+http://baike.baidu.com/link?url=dcI4BsFaYhfAoK8bLLKhVzOv1VX
+7W-h4UiL2o7pnJRaEZ-DX-EeID9tg6AVQAR6FnlTYWG
+nrVMjKAdNf5Yl6w2-LFMBcw5UF8pomcY7KBK7
+[3]. Alexa网站排名  http://www.alexa.com/siteinfo/github.com
+[4]. 邵晔  GitHub与社会化编程2014-04-20
+[5]. IDC数据中心  http://www.idc.com/getdoc.jsp?containerId=prUS24676414
+[6]. 豌豆荚搜索结果  http://www.wandoujia.com/search?key=github
+[7]. android官网 http://wear.techbrood.com/guide/index.html
+
+
+[7]. GitHub官网  https://github.com/
+[8]. GitHub JavaAPI 
+https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core
+[9]. Android+MVC框架使用分析  https://code.google.com/p/androidbmi/wiki/BmiRefactor
+[10]. 吴想想  基于Android平台软件开发方法的研究与应用  2011-01-01

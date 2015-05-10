@@ -8,6 +8,8 @@ nrVMjKAdNf5Yl6w2-LFMBcw5UF8pomcY7KBK7
 [5]. IDC数据中心  http://www.idc.com/getdoc.jsp?containerId=prUS24676414
 [6]. 豌豆荚搜索结果  http://www.wandoujia.com/search?key=github
 [7]. android官网 http://wear.techbrood.com/guide/index.html
+[8]. Android系统架构研究与应用_张娜
+[9]  刘必刚.Android 通信模块的设计与优化[D].武汉理工大学,2010. 
 
 
 [7]. GitHub官网  https://github.com/

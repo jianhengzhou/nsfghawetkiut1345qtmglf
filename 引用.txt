@@ -11,10 +11,10 @@ nrVMjKAdNf5Yl6w2-LFMBcw5UF8pomcY7KBK7
 [8]. Android系统架构研究与应用_张娜
 [9]  刘必刚.Android 通信模块的设计与优化[D].武汉理工大学,2010. 
 [10]  李刚.疯狂Android讲义.北京:电子工业出版社,2011. 
+[11]. GitHub JavaAPI. 
+https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core
 
 
 [7]. GitHub官网  https://github.com/
-[8]. GitHub JavaAPI 
-https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core
 [9]. Android+MVC框架使用分析  https://code.google.com/p/androidbmi/wiki/BmiRefactor
 [10]. 吴想想  基于Android平台软件开发方法的研究与应用  2011-01-01

@@ -13,6 +13,14 @@ nrVMjKAdNf5Yl6w2-LFMBcw5UF8pomcY7KBK7
 [10]  李刚.疯狂Android讲义.北京:电子工业出版社,2011. 
 [11]. GitHub JavaAPI. 
 https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core
+[12].Oracle官方网站http://www.oracle.com/index.html
+[13].AndroidSDK开发者网站.http://developer.android.com/sdk/index.html
+[14].ActionBarSherlock.https://github.com/JakeWharton/ActionBarSherlock
+
+
+
+[12].Java环境搭建.http://docs.oracle.com/javase/8/docs/technotes/guides/install/windows_system_requirements.html#A1097784
+
 
 
 [7]. GitHub官网  https://github.com/

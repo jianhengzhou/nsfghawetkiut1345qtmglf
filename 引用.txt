@@ -16,6 +16,7 @@ https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core
 [12].Oracle官方网站http://www.oracle.com/index.html
 [13].AndroidSDK开发者网站.http://developer.android.com/sdk/index.html
 [14].ActionBarSherlock.https://github.com/JakeWharton/ActionBarSherlock
+[15].SmoothProgressBar.https://github.com/castorflex/SmoothProgressBar
 
 
 

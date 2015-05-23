@@ -18,6 +18,8 @@ https://github.com/eclipse/egit-github/tree/master/org.eclipse.egit.github.core
 [14].ActionBarSherlock.https://github.com/JakeWharton/ActionBarSherlock
 [15].SmoothProgressBar.https://github.com/castorflex/SmoothProgressBar
 [16].UniversalImageLoader.https://github.com/nostra13/Android-Universal-Image-Loader
+CodeMirror.http://codemirror.net/
+基于Android移动平台测试相关技术研究_蔡增柱
 
 
 [12].Java环境搭建.http://docs.oracle.com/javase/8/docs/technotes/guides/install/windows_system_requirements.html#A1097784

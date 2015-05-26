@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 
-import com.gdestiny.cache.utils.DirectNameGenerator;
 import com.nostra13.universalimageloader.cache.disc.naming.FileNameGenerator;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
@@ -29,7 +28,7 @@ public class CacheUtils {
 
 	public static final String TAG = "CacheUtils";
 
-	public static com.gdestiny.cache.disk.impl.BaseDiskCache diskCache;
+	public static com.gdestiny.github.cache.disk.impl.BaseDiskCache diskCache;
 
 	public static final String SD_PATH = android.os.Environment
 			.getExternalStorageDirectory().getPath();
@@ -76,8 +75,14 @@ public class CacheUtils {
 
 	public static void init(Context context) {
 		ImageLoaderUtils.initImageLoader(context);
-		diskCache = new com.gdestiny.cache.disk.impl.BaseDiskCache(DATA_PATH,
-				new DirectNameGenerator());
+		diskCache = new com.gdestiny.github.cache.disk.impl.BaseDiskCache(
+				DATA_PATH, new FileNameGenerator() {
+
+					@Override
+					public String generate(String imageUri) {
+						return imageUri;
+					}
+				});
 	}
 
 	public static final boolean isBitmapExistInDisk(String url) {

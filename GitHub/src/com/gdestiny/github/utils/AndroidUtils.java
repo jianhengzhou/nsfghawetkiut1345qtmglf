@@ -29,8 +29,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import com.gdestiny.cache.utils.IoUtils;
 import com.gdestiny.github.R;
+import com.nostra13.universalimageloader.utils.IoUtils;
 
 public class AndroidUtils {
 
@@ -168,6 +168,21 @@ public class AndroidUtils {
 		public static long getSize(String path) {
 			File file = new File(path);
 			return getSize(file);
+		}
+
+		public static void deleteContents(File dir) throws IOException {
+			File[] files = dir.listFiles();
+			if (files == null) {
+				throw new IOException("not a readable directory: " + dir);
+			}
+			for (File file : files) {
+				if (file.isDirectory()) {
+					deleteContents(file);
+				}
+				if (!file.delete()) {
+					throw new IOException("failed to delete file: " + file);
+				}
+			}
 		}
 
 		public static boolean save(File file, String content)

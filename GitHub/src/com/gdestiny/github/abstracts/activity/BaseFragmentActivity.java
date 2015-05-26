@@ -22,6 +22,7 @@ import com.gdestiny.github.R;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.Constants;
 import com.gdestiny.github.utils.GLog;
+import com.umeng.analytics.MobclickAgent;
 
 public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 		implements SwipeBackActivityBase {
@@ -306,6 +307,7 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 		GLog.d(Constants.GlobalTag,
 				mBuffer.delete(0, mBuffer.length()).append(mClassName)
 						.append(".onResume()").toString());
+		MobclickAgent.onResume(this);
 	}
 
 	@Override
@@ -363,6 +365,7 @@ public abstract class BaseFragmentActivity extends SherlockFragmentActivity
 				mBuffer.delete(0, mBuffer.length()).append(mClassName)
 						.append(".onPause()").toString());
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override

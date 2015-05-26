@@ -66,12 +66,14 @@ public class SplashActivity extends Activity {
 			isLogin = PreferencesUtils.getBoolean(context,
 					LoginActivity.IS_LOGIN);
 			if (isLogin) {
-				GitHubApplication
-						.initClient(
-								PreferencesUtils.getString(context, Base64Util
-										.encodeString(LoginActivity.ACCOUNT)),
-								PreferencesUtils.getString(context, Base64Util
+				String ac = Base64Util
+						.decodeToString(PreferencesUtils.getString(context,
+								Base64Util.encodeString(LoginActivity.ACCOUNT)));
+				String pa = Base64Util
+						.decodeToString(PreferencesUtils
+								.getString(context, Base64Util
 										.encodeString(LoginActivity.PASSWORD)));
+				GitHubApplication.initClient(ac, pa);
 				User user = (User) Base64Util.decodeToObject(PreferencesUtils
 						.getString(context, "user"));
 				// User user = SnappyDBUtils.getSerializable(context, "user",

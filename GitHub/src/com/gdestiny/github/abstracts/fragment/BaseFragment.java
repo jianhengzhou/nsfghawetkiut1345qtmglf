@@ -2,12 +2,6 @@ package com.gdestiny.github.abstracts.fragment;
 
 import java.util.LinkedHashMap;
 
-import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
-import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
-import com.gdestiny.github.ui.view.TitleBar;
-import com.gdestiny.github.utils.Constants;
-import com.gdestiny.github.utils.GLog;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +9,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
+import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
+import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.Constants;
+import com.gdestiny.github.utils.GLog;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * @author Lifeix
@@ -159,6 +160,7 @@ public abstract class BaseFragment extends Fragment {
 		GLog.d(Constants.GlobalTag,
 				mBuffer.delete(0, mBuffer.length()).append(mClassName)
 						.append(".onResume()").toString());
+		MobclickAgent.onPageStart(mClassName);
 	}
 
 	/**
@@ -213,6 +215,7 @@ public abstract class BaseFragment extends Fragment {
 				mBuffer.delete(0, mBuffer.length()).append(mClassName)
 						.append(".onPause()").toString());
 		super.onPause();
+		MobclickAgent.onPageEnd(mClassName);
 	}
 
 	/**

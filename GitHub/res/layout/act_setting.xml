@@ -184,6 +184,21 @@
         </LinearLayout>
 
         <include layout="@layout/layout_about" />
+
+        <TextView
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin16"
+            android:background="@drawable/selector_logout_btn"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin8"
+            android:paddingLeft="@dimen/margin16"
+            android:paddingRight="@dimen/margin16"
+            android:paddingTop="@dimen/margin8"
+            android:text="@string/logout"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text18" />
     </LinearLayout>
 
 </com.gdestiny.github.ui.view.ObservableScrollView>

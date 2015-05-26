@@ -14,4 +14,5 @@
     <issue id="Recycle" severity="ignore" />
     <issue id="SimpleDateFormat" severity="ignore" />
     <issue id="UseSparseArrays" severity="ignore" />
+    <issue id="WrongViewCast" severity="ignore" />
 </lint>

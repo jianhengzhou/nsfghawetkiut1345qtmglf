@@ -15,6 +15,28 @@
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+   public *;
+}
+-keepclassmembers class * {
+    public <init>(org.json.JSONObject);
+}
+
+#把[您的应用包名] 替换成您自己的包名，如"com.example.R$*"。
+-keep public class com.gdestiny.github.R$*{
+    public static final int *;
+}
+# 添加第三方jar包
+-libraryjars libs/umeng-feedback-v5.1.0.jar
+-libraryjars libs/umeng-feedback-v5.1.0.jar
+# 以下类过滤不混淆  
+-keep public class * extends com.umeng.**
+# 以下包不进行过滤 
+-keep class com.umeng.** { *; }
+
+-keep public class * extends com.esotericsoftware.kryo.**
+
+-libraryjars   libs/android-support-v4.jar
+-dontwarn android.support.v4.**    
+-keep class android.support.v4.** { *; }  
+-keep interface android.support.v4.app.** { *; }

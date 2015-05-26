@@ -300,4 +300,12 @@ public class PreferencesUtils {
 				PREFERENCE_NAME, Context.MODE_PRIVATE);
 		return settings.getBoolean(key, defaultValue);
 	}
+
+	public static boolean remove(Context context, String key) {
+		SharedPreferences settings = context.getSharedPreferences(
+				PREFERENCE_NAME, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.remove(key);
+		return editor.commit();
+	}
 }

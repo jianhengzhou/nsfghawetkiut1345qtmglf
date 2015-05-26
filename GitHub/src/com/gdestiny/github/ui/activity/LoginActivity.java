@@ -1,14 +1,12 @@
 package com.gdestiny.github.ui.activity;
 
-import java.io.IOException;
-
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.UserService;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,50 +20,49 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gdestiny.github.R;
-import com.gdestiny.github.abstracts.activity.BaseActivity;
-import com.gdestiny.github.abstracts.async.GitHubTask;
+import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
+import com.gdestiny.github.abstracts.async.DialogTask;
 import com.gdestiny.github.app.DefaultClient;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.Base64Util;
 import com.gdestiny.github.utils.Constants;
-import com.gdestiny.github.utils.GLog;
 import com.gdestiny.github.utils.IntentUtils;
-import com.gdestiny.github.utils.SnappyDBUtils;
+import com.gdestiny.github.utils.PreferencesUtils;
 import com.gdestiny.github.utils.ToastUtils;
 import com.gdestiny.github.utils.ViewUtils;
-import com.snappydb.SnappydbException;
 
-public class LoginActivity extends BaseActivity implements OnClickListener {
+public class LoginActivity extends BaseFragmentActivity implements
+		OnClickListener {
 
 	private EditText account;
 	private EditText password;
 	private View accountDel;
 	private View passwordDel;
-	private Context context;
-	private ProgressDialog dialog;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.act_login);
+	protected void onleftLayout() {
+		finish();
+	}
 
-		initView();
+	@Override
+	protected void setContentView(Bundle savedInstanceState) {
+		setContentView(R.layout.act_login);
 		setSwipeBackEnable(false);
 	}
 
 	@Override
-	protected void initActionBar() {
-		// TODO Auto-generated method stub
-		super.initActionBar();
+	protected void initActionBar(TitleBar titleBar) {
+		super.initActionBar(titleBar);
+
 		titlebar.setTitleText(R.string.login);
-		titlebar.hideRight();
+		titlebar.getRightBtn().setImageResource(R.drawable.common_login);
+		titlebar.showRightBtn();
 		ViewUtils.setVisibility(titlebar.getTitleBackIcon(), View.GONE);
 	}
 
 	@Override
 	protected void initView() {
-		// TODO Auto-generated method stub
-		context = this;
 		account = (EditText) findViewById(R.id.account);
 		password = (EditText) findViewById(R.id.password);
 		passwordDel = findViewById(R.id.password_del);
@@ -119,20 +116,32 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		TextView registe = (TextView) findViewById(R.id.registe);
 		registe.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-		if (Constants.isDebug) {
-			account.setText("guandichao@163.com");
-			password.setText("gdc723124938215");
-		}
-
 		registe.setOnClickListener(this);
-		findViewById(R.id.login).setOnClickListener(this);
 		passwordDel.setOnClickListener(this);
 		accountDel.setOnClickListener(this);
 	}
 
 	@Override
 	protected void initData() {
+		try {
+			String ac = PreferencesUtils.getString(context,
+					Base64Util.encodeString(ACCOUNT));
+			if (!TextUtils.isEmpty(ac)) {
 
+				account.setText(Base64Util.decodeToString(ac));
+
+				String pass = PreferencesUtils.getString(context,
+						Base64Util.encodeString(PASSWORD));
+				if (!TextUtils.isEmpty(pass)) {
+					password.setText(Base64Util.decodeToString(pass));
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			account.setText("");
+			password.setText("");
+		}
 	}
 
 	private boolean isLoginEnable() {
@@ -141,23 +150,24 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	}
 
+	@Override
+	protected void onRightBtn() {
+		if (isLoginEnable()) {
+			login(account.getText().toString(), password.getText().toString());
+		} else {
+			ToastUtils.show(context,
+					getResources().getString(R.string.login_error));
+		}
+	}
+
 	private void login(String account, String password) {
 		hideSoftInputMethod();
-		if (dialog == null)
-			dialog = new ProgressDialog(this);
-		dialog.setMessage(account);
-		dialog.setCancelable(true);
 		final DefaultClient client = GitHubApplication.initClient(account,
 				password);
-		new GitHubTask<User>(new GitHubTask.TaskListener<User>() {
+		new DialogTask<GitHubClient, User>(context) {
 
 			@Override
-			public void onPrev() {
-				dialog.show();
-			}
-
-			@Override
-			public User onExcute(GitHubClient client) {
+			public User onBackground(GitHubClient params) throws Exception {
 				// client.setUserAgent(getString(R.string.app_name));
 				// Authorization authorization = null;
 				// OAuthService oAuthService = new OAuthService(client);
@@ -197,29 +207,28 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 				// // ///////////////////////////////////
 				User user = null;
-				try {
-					user = new UserService(client).getUser();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					GLog.sysout(e.getMessage());
-					return null;
-				}
+				user = new UserService(client).getUser();
 				return user;
 			}
 
 			@Override
+			public void onException(Exception ex) {
+				Exception e = new Exception(getResources().getString(
+						R.string.auth_error)
+						+ ex.getMessage());
+				super.onException(e);
+			}
+
+			@Override
 			public void onSuccess(User result) {
-				// TODO Auto-generated method stub
-				dialog.dismiss();
 				if (result == null) {
-					ToastUtils.show(context, "Login Failed");
+					ToastUtils.show(context, R.string.auth_error);
 				} else {
 					try {
 						saveLoginState(result);
 						GitHubApplication.setUser(result);
 						GitHubApplication.setClient(client);
-					} catch (SnappydbException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 						ToastUtils.show(context, e.getMessage());
 					}
@@ -228,39 +237,45 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 					finish();
 				}
 			}
-
-			@Override
-			public void onError() {
-				dialog.dismiss();
-				ToastUtils.show(context,
-						getResources().getString(R.string.auth_error));
-
-			}
-		}).execute(client);
+		}.setTitle("Logging In").setLoadingMessage(account).execute(client);
 	}
 
-	private void saveLoginState(User user) throws SnappydbException {
-		SnappyDBUtils.putBoolean(context, "isLogin", true);
-		SnappyDBUtils.putString(context, "account", account.getText()
-				.toString());
-		SnappyDBUtils.putString(context, "password", password.getText()
-				.toString());
-		SnappyDBUtils.putSerializable(context, "user", user);
+	public static final String IS_LOGIN = "isLogin";
+	public static final String ACCOUNT = "account";
+	public static final String PASSWORD = "password";
+
+	private void saveLoginState(User user) throws Exception {
+		SharedPreferences settings = context.getSharedPreferences(
+				PreferencesUtils.PREFERENCE_NAME, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = settings.edit();
+
+		editor.putBoolean(IS_LOGIN, true);
+		editor.putString("login", user.getLogin());
+		editor.putString(Base64Util.encodeString(ACCOUNT),
+				Base64Util.encodeString(account.getText().toString()));
+		editor.putString(Base64Util.encodeString(PASSWORD),
+				Base64Util.encodeString(password.getText().toString()));
+		editor.putString("user", Base64Util.encodeObject(user, false));
+
+		editor.commit();
+
+		// PreferencesUtils.putBoolean(context, "isLogin", true);
+		// PreferencesUtils.putString(context, Base64.decode("account",
+		// Base64.DEFAULT), Base64.decode(account.getText()
+		// .toString(), Base64.DEFAULT));
+		// CacheUtils.cacheObject("user", user);
+
+		// SnappyDBUtils.putBoolean(context, "isLogin", true);
+		// SnappyDBUtils.putString(context, "account", account.getText()
+		// .toString());
+		// SnappyDBUtils.putString(context, "password", password.getText()
+		// .toString());
+		// SnappyDBUtils.putSerializable(context, "user", user);
 	}
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		case R.id.login:
-			if (isLoginEnable()) {
-				login(account.getText().toString(), password.getText()
-						.toString());
-			} else {
-				ToastUtils.show(context,
-						getResources().getString(R.string.login_error));
-			}
-			break;
 		case R.id.registe:
 			hideSoftInputMethod();
 			Intent intent = new Intent();
@@ -289,11 +304,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			imm.hideSoftInputFromWindow(
 					this.getCurrentFocus().getWindowToken(), 0);
 		}
-	}
-
-	@Override
-	protected void onleftLayout() {
-		finish();
 	}
 
 }

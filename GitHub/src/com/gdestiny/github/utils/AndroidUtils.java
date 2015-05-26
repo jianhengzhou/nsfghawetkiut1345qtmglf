@@ -1,8 +1,5 @@
 package com.gdestiny.github.utils;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -340,7 +337,8 @@ public class AndroidUtils {
 	public static void goHome(Activity activity, Class<?> homeActivityClass) {
 		activity.finish();
 		Intent intent = new Intent(activity, homeActivityClass);
-		intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+				| Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		activity.startActivity(intent);
 	}
 

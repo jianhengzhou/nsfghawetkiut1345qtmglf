@@ -1,5 +1,9 @@
 package com.gdestiny.github.ui.activity;
 
+import java.io.File;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -8,6 +12,7 @@ import android.widget.TextView;
 import com.gdestiny.github.R;
 import com.gdestiny.github.abstracts.activity.BaseFragmentActivity;
 import com.gdestiny.github.abstracts.async.BaseAsyncTask;
+import com.gdestiny.github.abstracts.async.ConfirmDialogTask;
 import com.gdestiny.github.abstracts.async.DialogTask;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.ui.dialog.ConfirmDialog;
@@ -15,6 +20,7 @@ import com.gdestiny.github.ui.dialog.MaterialUpdateDialog;
 import com.gdestiny.github.ui.dialog.StartUpDialog;
 import com.gdestiny.github.ui.view.TitleBar;
 import com.gdestiny.github.utils.AndroidUtils;
+import com.gdestiny.github.utils.Base64Util;
 import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.CommonUtils;
 import com.gdestiny.github.utils.GLog;
@@ -59,6 +65,7 @@ public class SettingActivity extends BaseFragmentActivity implements
 		findViewById(R.id.back).setOnClickListener(this);
 		findViewById(R.id.account).setOnClickListener(this);
 		findViewById(R.id.about_us).setOnClickListener(this);
+		findViewById(R.id.logout).setOnClickListener(this);
 		updateBar = (CircularProgressBar) findViewById(R.id.update_progressBar);
 		updateForword = findViewById(R.id.update_forword);
 		updateNew = findViewById(R.id.update_new);
@@ -85,6 +92,9 @@ public class SettingActivity extends BaseFragmentActivity implements
 			break;
 		case R.id.about_us:
 			IntentUtils.start(context, AboutUSActivity.class);
+			break;
+		case R.id.logout:
+			logout();
 			break;
 		case R.id.start_up:
 			new StartUpDialog(context) {
@@ -162,10 +172,15 @@ public class SettingActivity extends BaseFragmentActivity implements
 
 			@Override
 			public Boolean onBackground(Void params) throws Exception {
-				TestUtils.interrupt(5000);
+				// TestUtils.interrupt(5000);
+				// return true;
+				try {
+					AndroidUtils.FileManager.deleteContents(new File(
+							CacheUtils.DATA_PATH));
+				} catch (Exception ex) {
+					return false;
+				}
 				return true;
-				// return
-				// AndroidUtils.FileManager.delete(CacheUtils.SD_PATH+"/documents/com");
 			}
 
 			@Override
@@ -222,6 +237,34 @@ public class SettingActivity extends BaseFragmentActivity implements
 				}
 			}
 		}.execute();
+	}
+
+	private void logout() {
+		new ConfirmDialogTask<Void, Boolean>(context, "Are you sure to Logout?") {
+
+			@Override
+			public Boolean onBackground(Void params) throws Exception {
+				SharedPreferences settings = context.getSharedPreferences(
+						PreferencesUtils.PREFERENCE_NAME, Context.MODE_PRIVATE);
+				SharedPreferences.Editor editor = settings.edit();
+
+				editor.remove(LoginActivity.IS_LOGIN);
+				editor.remove("login");
+				editor.remove(Base64Util.encodeString(LoginActivity.PASSWORD));
+				editor.remove("user");
+
+				editor.commit();
+				AndroidUtils.FileManager.deleteContents(new File(
+						CacheUtils.DATA_PATH));
+				TestUtils.interrupt(2000);
+				return true;
+			}
+
+			@Override
+			public void onSuccess(Boolean result) {
+				AndroidUtils.goHome(SettingActivity.this, LoginActivity.class);
+			}
+		}.setLoadingMessage("Logging Out").execute();
 	}
 
 	@Override

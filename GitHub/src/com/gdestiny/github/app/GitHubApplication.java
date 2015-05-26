@@ -8,8 +8,6 @@ import android.content.Context;
 
 import com.gdestiny.github.utils.CacheUtils;
 import com.gdestiny.github.utils.GLog;
-import com.gdestiny.github.utils.SnappyDBUtils;
-import com.snappydb.SnappydbException;
 
 public class GitHubApplication extends Application {
 
@@ -23,7 +21,7 @@ public class GitHubApplication extends Application {
 		super.onCreate();
 		GLog.sysout("--------GitHub------------GitHub-------------GitHub--------");
 		context = getApplicationContext();
-		initLogin();
+		// initLogin();
 		CacheUtils.init(context);
 	}
 
@@ -37,23 +35,30 @@ public class GitHubApplication extends Application {
 		return client;
 	}
 
-	private void initLogin() {
-		try {
-			isLogin = SnappyDBUtils.getBoolean(getApplicationContext(),
-					"isLogin");
-			if (isLogin) {
-				client = initClient(SnappyDBUtils.getString(
-						getApplicationContext(), "account"),
-						SnappyDBUtils.getString(getApplicationContext(),
-								"password"));
-				user = SnappyDBUtils.getSerializable(context, "user",
-						User.class);
-			}
-		} catch (SnappydbException e) {
-			e.printStackTrace();
-			isLogin = false;
-		}
+	public static DefaultClient initClient(String token) {
+		client = new DefaultClient();
+		client.setOAuth2Token(token);
+		return client;
 	}
+
+	// private void initLogin() {
+	// try {
+	// isLogin = PreferencesUtils.getBoolean(context,
+	// LoginActivity.IS_LOGIN);
+	// if (isLogin) {
+	// client = initClient(
+	// PreferencesUtils.getString(context,
+	// Base64Util.encodeString(LoginActivity.ACCOUNT)),
+	// PreferencesUtils.getString(context,
+	// Base64Util.encodeString(LoginActivity.PASSWORD)));
+	// user = SnappyDBUtils.getSerializable(context, "user",
+	// User.class);
+	// }
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// isLogin = false;
+	// }
+	// }
 
 	public static GitHubClient getClient() {
 		return client;
@@ -73,6 +78,10 @@ public class GitHubApplication extends Application {
 
 	public static boolean isLogin() {
 		return isLogin;
+	}
+
+	public static void setLogin(boolean isLogin) {
+		GitHubApplication.isLogin = isLogin;
 	}
 
 }

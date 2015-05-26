@@ -15,6 +15,11 @@ public abstract class ConfirmDialogTask<Params, Result> extends
 	}
 
 	@Override
+	public void execute() {
+		execute(null);
+	}
+
+	@Override
 	public void execute(final Params params) {
 		new ConfirmDialog(context, message) {
 
@@ -27,6 +32,6 @@ public abstract class ConfirmDialogTask<Params, Result> extends
 			public void onCancle() {
 
 			}
-		};
+		}.show();
 	}
 }

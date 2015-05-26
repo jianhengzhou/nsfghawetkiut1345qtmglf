@@ -34,7 +34,7 @@ public class CacheUtils {
 			.getExternalStorageDirectory().getPath();
 	public static final String DATA_PATH = SD_PATH + File.separator + "GitHub";
 	public static final String IMAGE_PATH = DATA_PATH + File.separator
-			+ "ImageCache";
+			+ "ImageCache/";
 
 	static {
 		GLog.d(TAG, "SD_PATH:" + SD_PATH + "\nDATA_PATH:" + DATA_PATH

@@ -82,6 +82,7 @@
     <string name="login">Login</string>
     <string name="logining">Logining</string>
     <string name="registe">Registe</string>
+    <string name="logout">Logout</string>
 
     <!-- loading -->
     <string name="loading_branch">Loading Branch</string>

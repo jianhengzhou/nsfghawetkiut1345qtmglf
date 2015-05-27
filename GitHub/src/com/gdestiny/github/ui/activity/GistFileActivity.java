@@ -1,5 +1,6 @@
 package com.gdestiny.github.ui.activity;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.eclipse.egit.github.core.Gist;
@@ -7,14 +8,19 @@ import org.eclipse.egit.github.core.GistFile;
 import org.eclipse.egit.github.core.User;
 
 import android.os.Bundle;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.gdestiny.github.R;
 import com.gdestiny.github.abstracts.activity.BaseLoadFragmentActivity;
 import com.gdestiny.github.async.GitHubConsole;
+import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.view.FileIndicatorView;
+import com.gdestiny.github.ui.view.TitleBar;
+import com.gdestiny.github.utils.AndroidUtils;
 import com.gdestiny.github.utils.Constants;
+import com.gdestiny.github.utils.SourceEditor;
 
 public class GistFileActivity extends BaseLoadFragmentActivity<Void, Gist> {
 
@@ -22,9 +28,11 @@ public class GistFileActivity extends BaseLoadFragmentActivity<Void, Gist> {
 
 	private Gist gist;
 	private String fileName;
-	private TextView tv;
 
 	private FileIndicatorView indicator;
+
+	private SourceEditor sourceEditor;
+	private WebView webview;
 
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
@@ -45,12 +53,30 @@ public class GistFileActivity extends BaseLoadFragmentActivity<Void, Gist> {
 				onFileContent(file);
 			}
 		});
-		tv = (TextView) findViewById(R.id.text);
-		tv.setHorizontallyScrolling(true);
 
-		ScrollView scroll = (ScrollView) findViewById(R.id.scrollview);
-		scroll.setFillViewport(true);
-		scroll.setHorizontalScrollBarEnabled(true);
+		webview = (WebView) findViewById(R.id.webview);
+		WebSettings websetting = webview.getSettings();
+		websetting.setSupportZoom(true);
+		websetting.setBuiltInZoomControls(true);
+		sourceEditor = new SourceEditor(webview);
+		webview.setWebViewClient(new WebViewClient() {
+
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				super.onPageFinished(view, url);
+				dismissProgress();
+			}
+
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				if (SourceEditor.SOURCE_EDITOR.equals(url)) {
+					view.loadUrl(url);
+					return false;
+				} else {
+					return true;
+				}
+			}
+		});
 	}
 
 	@Override
@@ -73,14 +99,8 @@ public class GistFileActivity extends BaseLoadFragmentActivity<Void, Gist> {
 	}
 
 	private void onFileContent(final String fileName) {
-		// tv.post(new Runnable() {
-		//
-		// @Override
-		// public void run() {
 		String content = files.get(fileName).getContent();
-		tv.setText(content);
-		// }
-		// });
+		sourceEditor.setSource(fileName, content);
 	}
 
 	@Override
@@ -99,8 +119,44 @@ public class GistFileActivity extends BaseLoadFragmentActivity<Void, Gist> {
 
 	@Override
 	public void onRefresh() {
-		// TODO Auto-generated method stub
+		execute();
+	}
 
+	@Override
+	protected void initActionBar(TitleBar titleBar) {
+		super.initActionBar(titleBar);
+		LinkedHashMap<Integer, Integer> itemmap = new LinkedHashMap<Integer, Integer>();
+		itemmap.put(R.string.copy, R.drawable.common_icon_save);
+		itemmap.put(R.string.wrap, R.drawable.common_wrap);
+		itemmap.put(R.string.refresh, R.drawable.common_status_refresh);
+
+		StatusPopUpWindow.StatusPopUpWindowItemClickListener menuListener = new StatusPopUpWindow.StatusPopUpWindowItemClickListener() {
+
+			@Override
+			public void onitemclick(int titleId) {
+				switch (titleId) {
+				case R.string.refresh:
+					if (!isLoading())
+						onRefresh();
+					break;
+				case R.string.wrap:
+					showProgress();
+					sourceEditor.toggleWrap();
+					if (sourceEditor.getWrap()) {
+						getTitlebar().getStatusPopup().getAction(1).mTitle = "Unwrap";
+					} else {
+						getTitlebar().getStatusPopup().getAction(1).mTitle = "Wrap";
+					}
+					break;
+				case R.string.copy:
+					AndroidUtils.toClipboard(context, files.get(fileName)
+							.getContent());
+					break;
+				}
+				titlebar.dissmissStatus();
+			}
+		};
+		titlebar.setStatusItem(context, itemmap, menuListener);
 	}
 
 	@Override

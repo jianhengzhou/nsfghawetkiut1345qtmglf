@@ -184,6 +184,14 @@ public class GitHubConsole {
 		watchService.unwatch(repository);
 	}
 
+	public void follow(String user) throws IOException {
+		userService.follow(user);
+	}
+
+	public void unfollow(String user) throws IOException {
+		userService.unfollow(user);
+	}
+
 	/**
 	 * is repository forked?
 	 * 

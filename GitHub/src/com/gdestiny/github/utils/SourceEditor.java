@@ -63,6 +63,7 @@ public class SourceEditor {
 		WebSettings settings = view.getSettings();
 		settings.setJavaScriptEnabled(true);
 		view.addJavascriptInterface(this, "SourceEditor");
+		view.setHorizontalScrollBarEnabled(false);
 
 		this.view = view;
 	}

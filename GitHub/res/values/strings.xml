@@ -113,5 +113,9 @@
     <string name="clearing_cache">clearing cache</string>
     <string name="clearing_succeed">Clear Succeed</string>
     <string name="clearing_failed">Clear Failed</string>
+    <string name="following">following</string>
+    <string name="unfollowing">unfollowing</string>
+    <string name="following_succeed">followed</string>
+    <string name="unfollowing_succeed">unfollowed</string>
 
 </resources>

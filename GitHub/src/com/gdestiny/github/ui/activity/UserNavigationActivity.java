@@ -17,6 +17,7 @@ import com.gdestiny.github.abstracts.async.BaseAsyncTask;
 import com.gdestiny.github.abstracts.fragment.BaseLoadFragment;
 import com.gdestiny.github.adapter.SimplePageAdapter;
 import com.gdestiny.github.app.GitHubApplication;
+import com.gdestiny.github.async.FollowUserTask;
 import com.gdestiny.github.ui.dialog.StatusPopUpWindow;
 import com.gdestiny.github.ui.dialog.StatusPopWindowItem;
 import com.gdestiny.github.ui.fragment.EventsUserFragment;
@@ -38,6 +39,7 @@ public class UserNavigationActivity extends BaseFragmentActivity {
 	private SimplePageAdapter adapter;
 
 	private User user;
+	private boolean isFollowing;
 
 	@Override
 	protected void setContentView(Bundle savedInstanceState) {
@@ -104,6 +106,15 @@ public class UserNavigationActivity extends BaseFragmentActivity {
 					}
 					break;
 				case R.string.follow:
+					new FollowUserTask(context, isFollowing, user.getLogin()) {
+
+						@Override
+						public void onSuccess(Boolean result) {
+							super.onSuccess(result);
+							isFollowing = !isFollowing;
+							refreshFollow(isFollowing);
+						}
+					}.execute();
 					break;
 				}
 				titlebar.dissmissStatus();
@@ -130,6 +141,7 @@ public class UserNavigationActivity extends BaseFragmentActivity {
 			@Override
 			protected void onPostExecute(Boolean result) {
 				super.onPostExecute(result);
+				isFollowing = result;
 				refreshFollow(result);
 			}
 

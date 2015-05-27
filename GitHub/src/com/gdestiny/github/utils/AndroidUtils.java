@@ -1,9 +1,11 @@
 package com.gdestiny.github.utils;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
@@ -208,6 +210,25 @@ public class AndroidUtils {
 			} catch (Exception ex) {
 				return false;
 			}
+		}
+
+		public static String getAssets(Context context, String fileName) {
+			String result = "";
+			BufferedReader br = null;
+			try {
+				InputStreamReader inputReader = new InputStreamReader(context
+						.getAssets().open(fileName));
+				br = new BufferedReader(inputReader);
+				String s = null;
+				while ((s = br.readLine()) != null) {
+					result = result + "\n" + s;
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			} finally {
+				IoUtils.closeSilently(br);
+			}
+			return result;
 		}
 	}
 

@@ -30,7 +30,7 @@ public class AboutUSActivity extends BaseFragmentActivity {
 	protected void initActionBar(TitleBar titleBar) {
 		super.initActionBar(titleBar);
 		titleBar.hideRight();
-		titleBar.setLeftLayout("drawable://" + R.drawable.test, "GDC", "SCUT");
+		titleBar.setLeftLayout("drawable://" + R.drawable.test, "gdestiny", "guandichao@163.com");
 	}
 
 	@Override

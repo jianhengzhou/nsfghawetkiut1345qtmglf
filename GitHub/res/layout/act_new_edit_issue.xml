@@ -39,7 +39,6 @@
                 android:background="@drawable/selector_common_edtitext_background"
                 android:hint="@string/title"
                 android:padding="@dimen/margin8"
-                android:text="@string/test_title"
                 android:textColor="@color/common_light_black"
                 android:textSize="@dimen/text18" />
         </FrameLayout>

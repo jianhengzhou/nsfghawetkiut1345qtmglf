@@ -4,6 +4,7 @@ import java.io.File;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.gdestiny.github.abstracts.async.ConfirmDialogTask;
 import com.gdestiny.github.abstracts.async.DialogTask;
 import com.gdestiny.github.app.GitHubApplication;
 import com.gdestiny.github.ui.dialog.ConfirmDialog;
+import com.gdestiny.github.ui.dialog.MaterialDialog;
 import com.gdestiny.github.ui.dialog.MaterialUpdateDialog;
 import com.gdestiny.github.ui.dialog.StartUpDialog;
 import com.gdestiny.github.ui.view.TitleBar;
@@ -72,6 +74,10 @@ public class SettingActivity extends BaseFragmentActivity implements
 		sizeText = (TextView) findViewById(R.id.size_text);
 		startUpName = (TextView) findViewById(R.id.start_up_name);
 		accountName = (TextView) findViewById(R.id.account_name);
+
+		TextView license = (TextView) findViewById(R.id.license);
+		license.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+		license.setOnClickListener(this);
 	}
 
 	@Override
@@ -95,6 +101,13 @@ public class SettingActivity extends BaseFragmentActivity implements
 			break;
 		case R.id.logout:
 			logout();
+			break;
+		case R.id.license:
+			new MaterialDialog(context)
+					.setTitle("License")
+					.setMessage(
+							AndroidUtils.FileManager.getAssets(context,
+									"terms-and-privacy")).show();
 			break;
 		case R.id.start_up:
 			new StartUpDialog(context) {
@@ -137,9 +150,11 @@ public class SettingActivity extends BaseFragmentActivity implements
 						ViewUtils.setVisibility(updateForword, View.VISIBLE);
 						if (updateStatus == UpdateStatus.Yes) {
 							ViewUtils.setVisibility(updateNew, View.VISIBLE);
-							PreferencesUtils.putString(context, "net_version",
-									updateInfo.version);
+						}else{
+							ViewUtils.setVisibility(updateNew, View.GONE);
 						}
+						PreferencesUtils.putString(context, "net_version",
+								updateInfo.version);
 					}
 				});
 			}

@@ -3,7 +3,6 @@
 
     <!-- test test test test test test -->
     <string name="name">gdestiny</string>
-    <string name="gdc">gdestiny</string>
     <string name="test_title">test title int new issue</string>
     <!-- test test test test test test -->
     <string name="app_name">GitHub</string>
@@ -83,6 +82,7 @@
     <string name="logining">Logining</string>
     <string name="registe">Registe</string>
     <string name="logout">Logout</string>
+    <string name="terms_privacy">Terms and Privacy</string>
 
     <!-- loading -->
     <string name="loading_branch">Loading Branch</string>

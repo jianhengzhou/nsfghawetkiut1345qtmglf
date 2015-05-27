@@ -10,14 +10,4 @@
         android:clickable="true" >
     </com.gdestiny.github.ui.view.TestView>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
-        android:text="@string/gdc"
-        android:textColor="@color/common_icon_blue"
-        android:textSize="48sp" />
-
 </RelativeLayout>

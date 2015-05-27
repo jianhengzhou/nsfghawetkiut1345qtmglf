@@ -125,7 +125,6 @@ public class RepositoryCommitFragment extends
 					R.drawable.common_own_people_grey);
 			itemmap.put(R.string.share, R.drawable.common_share_grey);
 			itemmap.put(R.string.refresh, R.drawable.common_status_refresh);
-			itemmap.put(R.string.commit, R.drawable.common_status_refresh);
 		}
 		if (menuListener == null) {
 			menuListener = new StatusPopUpWindow.StatusPopUpWindowItemClickListener() {

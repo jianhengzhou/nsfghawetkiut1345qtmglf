@@ -40,6 +40,7 @@ window.onload = function () {
   var config = {};
   config.value = SourceEditor.getContent();
   config.readOnly = "nocursor";
+  config.inputStyle = "textarea";
   config.lineNumbers = true;
   config.autofocus = false;
   config.lineWrapping = !!SourceEditor.getWrap();
